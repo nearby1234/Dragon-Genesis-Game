@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: fea6d98214cdf6a4dbf053c0070e54e1
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  preprocessorOverride: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 247698
+  packageName: Character Auras 3
+  packageVersion: 1.0
+  assetPath: Assets/Hovl Studio/HSFiles/Shaders/ShockWave.shader
+  uploadId: 606921
