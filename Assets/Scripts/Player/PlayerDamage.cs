@@ -1,0 +1,97 @@
+using System.Collections;
+using UnityEngine;
+using UnityEngine.InputSystem;
+
+public class PlayerDamage : MonoBehaviour
+{
+    [SerializeField] private InputAction m_ButtonAttackLeftMouse;
+    [SerializeField] private InputAction m_ButtonAttackRightMouse;
+    [SerializeField] private bool m_IsPressLeftMouse;
+    [SerializeField] private bool m_IsPressRightMouse;
+    [SerializeField] private string[] m_AttackAnim;
+    [SerializeField] private int[] m_AttackAnimStringToHash;
+    [SerializeField] private int m_AttackAnimIndex;
+    
+    
+
+    private void Awake()
+    {
+      
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        m_AttackAnimStringToHash = new int[m_AttackAnim.Length];
+        m_ButtonAttackLeftMouse.Enable();
+        m_ButtonAttackLeftMouse.performed += OnPerformedAttackLeftMouse;
+        m_ButtonAttackLeftMouse.canceled += OnCancelAttackLeftMouse;
+        m_ButtonAttackRightMouse.Enable();
+        m_ButtonAttackRightMouse.performed += OnPerformedAttackRightMouse;
+        m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
+
+    }
+    private void OnDisable()
+    {
+        m_ButtonAttackLeftMouse.performed -= OnPerformedAttackLeftMouse;
+        m_ButtonAttackLeftMouse.canceled -= OnCancelAttackLeftMouse;
+        m_ButtonAttackLeftMouse.Disable();
+        m_ButtonAttackRightMouse.performed -= OnPerformedAttackRightMouse;
+        m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
+        m_ButtonAttackRightMouse.Disable();
+    }
+    void Update()
+    {
+        Attack();
+        
+
+    }
+
+    private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
+    {
+
+    }    
+
+    private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
+    {
+        m_IsPressRightMouse = true;
+        PlayerManager.instance.playerAnim.GetAnimator().Play("Heavy Attack");
+    }    
+
+    private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
+    {
+        m_IsPressLeftMouse = true;
+        if(m_IsPressLeftMouse && m_AttackAnimIndex < m_AttackAnimStringToHash.Length)
+        {
+            
+            PlayerManager.instance.playerAnim.GetAnimator().Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
+           
+           
+            m_AttackAnimIndex++;
+        }
+        
+    }
+    private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
+    {
+        m_IsPressLeftMouse = false;
+    }
+
+    private void Attack()
+    {
+        for(int i = 0; i < m_AttackAnim.Length; i++)
+        {
+            if(m_AttackAnimStringToHash != null)
+            {
+                m_AttackAnimStringToHash[i] = Animator.StringToHash(m_AttackAnim[i]);
+            }    
+        }
+        if (m_AttackAnimIndex == m_AttackAnimStringToHash.Length)
+        {
+            m_AttackAnimIndex = 0;
+        }
+       
+    }    
+
+    
+
+   
+}

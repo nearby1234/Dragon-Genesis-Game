@@ -68,7 +68,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _Alpha_clip: 0.38
-    - _BUILTIN_QueueControl: -1
+    - _BUILTIN_QueueControl: 0
     - _BUILTIN_QueueOffset: 0
     - _Back_face_intensity: 1
     - _Height_1: 0
