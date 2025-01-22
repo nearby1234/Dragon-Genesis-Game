@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Animatortest : MonoBehaviour
+public class ReplaceWeapon : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private Transform m_NewWeapon;

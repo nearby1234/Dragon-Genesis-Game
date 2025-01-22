@@ -11,8 +11,8 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private float groundDistance = 0.4f; // Bán kính kiểm tra mặt đất
     [SerializeField] private LayerMask groundMask; // Lớp mặt đất
 
-    [SerializeField] private Transform player;
-    [SerializeField] private Transform terrain;
+    //[SerializeField] private Transform player;
+    //[SerializeField] private Transform terrain;
     [SerializeField] private float distance;
     [SerializeField] private InputAction m_ButtonSpace;
     [SerializeField] private bool m_IsPressSpace;
