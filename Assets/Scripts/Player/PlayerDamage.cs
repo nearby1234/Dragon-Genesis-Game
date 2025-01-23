@@ -8,7 +8,7 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private InputAction m_ButtonAttackRightMouse;
     [SerializeField] private bool m_IsPressLeftMouse;
     [SerializeField] private bool m_IsPressRightMouse;
-    [SerializeField] private string[] m_AttackAnim;
+    [SerializeField] private string[] m_AttackNameAnim;
     [SerializeField] private int[] m_AttackAnimStringToHash;
     [SerializeField] private int m_AttackAnimIndex;
     
@@ -21,7 +21,7 @@ public class PlayerDamage : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        m_AttackAnimStringToHash = new int[m_AttackAnim.Length];
+        m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
         m_ButtonAttackLeftMouse.Enable();
         m_ButtonAttackLeftMouse.performed += OnPerformedAttackLeftMouse;
         m_ButtonAttackLeftMouse.canceled += OnCancelAttackLeftMouse;
@@ -77,11 +77,11 @@ public class PlayerDamage : MonoBehaviour
 
     private void Attack()
     {
-        for(int i = 0; i < m_AttackAnim.Length; i++)
+        for(int i = 0; i < m_AttackNameAnim.Length; i++)
         {
             if(m_AttackAnimStringToHash != null)
             {
-                m_AttackAnimStringToHash[i] = Animator.StringToHash(m_AttackAnim[i]);
+                m_AttackAnimStringToHash[i] = Animator.StringToHash(m_AttackNameAnim[i]);
             }    
         }
         if (m_AttackAnimIndex == m_AttackAnimStringToHash.Length)

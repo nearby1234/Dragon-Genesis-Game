@@ -42,19 +42,21 @@ public class PlayerJump : MonoBehaviour
         m_IsPressSpace = true;
         if (isGrounded && m_IsPressSpace)
         {
-            jumpCount++;
+            //jumpCount++;
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * Physics.gravity.y); // u2 = -2 * gravity * jumpHeight 
             PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsJump", true);
+            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsGround", false);
             //PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("isJump");
-        }else if(!isGrounded && m_IsPressSpace)
-        {
-            jumpCount++;
-            if (jumpCount == 2)
-            {
-                PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("DoubleJump");
-            }
         }
-        
+        //else if(!isGrounded && m_IsPressSpace)
+        //{
+        //    jumpCount++;
+        //    if (jumpCount == 2)
+        //    {
+        //        PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("DoubleJump");
+        //    }
+        //}
+
     }
     private void OnCancelSpace(InputAction.CallbackContext context)
     {
@@ -63,22 +65,35 @@ public class PlayerJump : MonoBehaviour
     public void PlayerJumpUp()
     {
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
-        
-        if(m_IsPressSpace)
-        {
-            return;
-        }else
-        {
-            StartCoroutine(Delay());
-        }
-        // Kiểm tra nhân vật có đứng trên mặt đất không
-        if (isGrounded && velocity.y < 0)
-        {
-            PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("Endouble Jump");
+        //if (isGrounded)
+        //{
+        //    PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsGround", true);
+        //}
+        //else
+        //{
+        //    PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsGround", false);
+        //}
 
-            if (jumpCount > 0) jumpCount = 0;
-            velocity.y = -2f; // Giữ nhân vật sát mặt đất
+        if (isGrounded && !m_IsPressSpace)
+        {
+            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsGround", true);
+            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsJump", false);
         }
+        //if (m_IsPressSpace)
+        //{
+        //    return;
+        //}else
+        //{
+        //    StartCoroutine(Delay());
+        //}
+        // Kiểm tra nhân vật có đứng trên mặt đất không
+        //if (isGrounded && velocity.y < 0)
+        //{
+        //    PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("Endouble Jump");
+
+        //    if (jumpCount > 0) jumpCount = 0;
+        //    velocity.y = -2f; // Giữ nhân vật sát mặt đất
+        //}
         // Áp dụng trọng lực
         velocity.y += Physics.gravity.y * Time.deltaTime;
 
@@ -86,14 +101,11 @@ public class PlayerJump : MonoBehaviour
         PlayerManager.instance.controller.Move(velocity * Time.deltaTime);
 
     }
-    IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(1f);
-        if (isGrounded && !m_IsPressSpace)
-        {
-            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsJump", false);
-        }
-    }
+    //IEnumerator Delay()
+    //{
+    //    yield return new WaitForSeconds(1f);
+
+    //}
 }
 
 
