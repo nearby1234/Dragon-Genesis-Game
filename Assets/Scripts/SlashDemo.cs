@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SlashDemo : MonoBehaviour
 {
-    public Transform weaponPivot;
+    //public Transform weaponPivot;
     public Transform m_spawnEffect;
     public GameObject slashEffectPrefab;
 

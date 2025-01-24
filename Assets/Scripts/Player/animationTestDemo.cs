@@ -5,7 +5,7 @@ using UnityEngine;
 public class animationTestDemo : MonoBehaviour
 {
     public Animator animator;
-    public GameObject m_slash;
+    //public GameObject m_slash;
     public Transform m_Tranform;
     public float m_Timer;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
