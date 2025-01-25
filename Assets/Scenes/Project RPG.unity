@@ -886,6 +886,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5515629849088924748, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
   m_PrefabInstance: {fileID: 6749667123753669639}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &71009112 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4405669676107320365, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+  m_PrefabInstance: {fileID: 6749667123753669639}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &72589956
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4752,7 +4757,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0977676, y: -0.022654817, z: 0.0022261515, w: 0.9949489}
-  m_LocalPosition: {x: 5.2342224, y: 4.088777, z: -6.261093}
+  m_LocalPosition: {x: 5.2342224, y: 2.5587769, z: -6.261093}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -18323,7 +18328,7 @@ Transform:
   m_GameObject: {fileID: 1435560297}
   serializedVersion: 2
   m_LocalRotation: {x: 0.097767584, y: -0.022654815, z: 0.002226151, w: 0.9949489}
-  m_LocalPosition: {x: 5.4637146, y: 5.0892696, z: -11.297562}
+  m_LocalPosition: {x: 5.4637146, y: 3.5592697, z: -11.297562}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -27854,13 +27859,17 @@ PrefabInstance:
       propertyPath: WeaponManager
       value: 
       objectReference: {fileID: 976260440}
+    - target: {fileID: 4405669676107320365, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_TagString
+      value: Sword
+      objectReference: {fileID: 0}
     - target: {fileID: 6604923220764969394, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 296.29333
       objectReference: {fileID: 0}
     - target: {fileID: 6604923220764969394, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.53
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6604923220764969394, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalPosition.z
@@ -27904,12 +27913,68 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6089120948158873642}
+    - targetCorrespondingSourceObject: {fileID: 4405669676107320365, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7044476286269802072}
+    - targetCorrespondingSourceObject: {fileID: 4405669676107320365, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7044476286269802073}
   m_SourcePrefab: {fileID: 100100000, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
 --- !u!4 &7044476286269802069 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1047813419336084882, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
   m_PrefabInstance: {fileID: 6749667123753669639}
   m_PrefabAsset: {fileID: 0}
+--- !u!136 &7044476286269802072
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71009112}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.055109218
+  m_Height: 1.290623
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.0300093, z: -0.01429685}
+--- !u!54 &7044476286269802073
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 71009112}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

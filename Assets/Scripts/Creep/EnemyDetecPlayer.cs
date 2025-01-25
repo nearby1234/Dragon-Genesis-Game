@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 
 public class EnemyDetecPlayer : MonoBehaviour
@@ -29,31 +29,43 @@ public class EnemyDetecPlayer : MonoBehaviour
     }
     private void CalculateDistance()
     {
+        // Tính khoảng cách giữa enemy và player
         m_DistacneWithPlayer = Vector3.Distance(this.transform.position, m_Player.position);
+
+        // Nếu player trong phạm vi phát hiện (maxDistance)
         if (m_DistacneWithPlayer < m_MaxDistance)
         {
             m_DetectedPlayer = true;
             enemyController.GetAnimator().SetBool("IsDetec", true);
+
+            // Enemy bắt đầu theo đuổi player
             enemyController.GetNavMeshAgent().SetDestination(m_Player.position);
             enemyController.GetNavMeshAgent().stoppingDistance = m_DictanceStopped;
-            if (enemyController.GetNavMeshAgent().remainingDistance <= enemyController.GetNavMeshAgent().stoppingDistance
-                 && !enemyController.GetNavMeshAgent().pathPending)
+
+            // Kiểm tra trạng thái tấn công
+            if (m_DistacneWithPlayer <= m_DictanceStopped) // Trong phạm vi tấn công
             {
-                enemyController.GetAnimator().SetBool("Attack", true);
+                enemyController.GetNavMeshAgent().isStopped = true; // Dừng di chuyển
+                enemyController.GetAnimator().SetBool("Attack", true); // Tấn công
             }
-            else
+            else // Ngoài phạm vi tấn công nhưng trong maxDistance
             {
-                enemyController.GetAnimator().SetBool("Attack", false);
+                enemyController.GetNavMeshAgent().isStopped = false; // Tiếp tục di chuyển
+                enemyController.GetAnimator().SetBool("Attack", false); // Không tấn công
             }
         }
         else
         {
+            // Nếu player vượt khỏi phạm vi phát hiện (maxDistance), reset trạng thái
             m_DetectedPlayer = false;
             enemyController.GetAnimator().SetBool("IsDetec", false);
-            enemyController.GetNavMeshAgent().stoppingDistance = 0f;
-            //enemyController.GetrandomNavMeshMovement().EnemyMoveTarget();
+            enemyController.GetAnimator().SetBool("Attack", false); // Tắt tấn công
+            enemyController.GetNavMeshAgent().stoppingDistance = 0f; // Reset khoảng cách dừng
+            enemyController.GetNavMeshAgent().isStopped = false; // Cho phép di chuyển tự do
         }
     }
+
+
 
     private void OnDrawGizmosSelected()
     {

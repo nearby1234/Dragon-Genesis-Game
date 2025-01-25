@@ -1191,6 +1191,8 @@ GameObject:
   - component: {fileID: 7378564185672662176}
   - component: {fileID: 2960792921122564242}
   - component: {fileID: 914158592424976190}
+  - component: {fileID: 7855663638744514345}
+  - component: {fileID: 6389948988384387381}
   m_Layer: 0
   m_Name: BatPADefault
   m_TagString: Untagged
@@ -1307,6 +1309,41 @@ MonoBehaviour:
   m_MaxDistance: 6
   m_DictanceStopped: 2
   m_DetectedPlayer: 0
+--- !u!114 &7855663638744514345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefd8d7b791314548b46f15b9b08de70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!136 &6389948988384387381
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650877}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.9128368
+  m_Height: 1.8256736
+  m_Direction: 1
+  m_Center: {x: -0.02871728, y: 1.2551484, z: -0.11996639}
 --- !u!1 &5122791751604650879
 GameObject:
   m_ObjectHideFlags: 0
