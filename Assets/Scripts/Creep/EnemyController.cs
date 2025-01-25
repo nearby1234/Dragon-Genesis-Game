@@ -1,6 +1,9 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+
+[RequireComponent(typeof(RandomNavMeshMovement))]
+[RequireComponent(typeof(NavMeshAgent))]
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
