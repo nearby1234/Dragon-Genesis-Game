@@ -15,7 +15,6 @@ public class RandomNavMeshMovement : MonoBehaviour
     {
         enemyController = GetComponent<EnemyController>();
         surface = GameObject.Find("NavmeshSurface").GetComponent<NavMeshSurface>();
-        
     }
 
     void Start()
@@ -23,14 +22,8 @@ public class RandomNavMeshMovement : MonoBehaviour
         enemyController.GetNavMeshAgent().agentTypeID = GetAgentTypeID();
         size = surface.size;
         center = surface.transform.position + surface.center;
-        MoveToRandomPosition();
+        //MoveToRandomPosition();
     }
-
-    void Update()
-    {
-        EnemyMoveTarget();
-    }
-
    public void MoveToRandomPosition()
     {
         Vector3 randomPoint = GetRandomPointInVolume();
@@ -66,8 +59,6 @@ public class RandomNavMeshMovement : MonoBehaviour
     {
         int settingsCount = NavMesh.GetSettingsCount(); // Số lượng Agent Type hiện có
         string agentName = "Creep";
-        Debug.Log($"Số lượng Agent Type: {settingsCount}");
-
         for (int i = 0; i < settingsCount; i++)
         {
             // Lấy thông tin của Agent Type theo index

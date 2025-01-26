@@ -2,12 +2,21 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
+
+    public enum PlayerState
+    {
+        idle,
+        attack
+    }
+
+
     public static PlayerManager instance;
 
     public CharacterController controller;
     public PlayerMove playerMove;
     public PlayerJump playerJump;
     public PlayerAnim playerAnim;
+    public PlayerState m_PlayerState;
 
 
     private void Awake()
@@ -30,7 +39,7 @@ public class PlayerManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        m_PlayerState = PlayerState.idle;
     }
 
     // Update is called once per frame
@@ -38,5 +47,10 @@ public class PlayerManager : MonoBehaviour
     {
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
+    }
+
+    public void ChangeStatePlayer(PlayerState playerState)
+    {
+        m_PlayerState = playerState;
     }
 }

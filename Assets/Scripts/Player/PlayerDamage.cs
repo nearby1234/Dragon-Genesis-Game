@@ -55,6 +55,7 @@ public class PlayerDamage : MonoBehaviour
     {
         m_IsPressRightMouse = true;
         PlayerManager.instance.playerAnim.GetAnimator().Play("Heavy Attack");
+        PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
     }    
 
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
@@ -62,13 +63,10 @@ public class PlayerDamage : MonoBehaviour
         m_IsPressLeftMouse = true;
         if(m_IsPressLeftMouse && m_AttackAnimIndex < m_AttackAnimStringToHash.Length)
         {
-            
             PlayerManager.instance.playerAnim.GetAnimator().Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
-           
-           
+            PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
             m_AttackAnimIndex++;
         }
-        
     }
     private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
     {

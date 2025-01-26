@@ -1193,6 +1193,7 @@ GameObject:
   - component: {fileID: 914158592424976190}
   - component: {fileID: 7855663638744514345}
   - component: {fileID: 6389948988384387381}
+  - component: {fileID: 5267458802063725537}
   m_Layer: 0
   m_Name: BatPADefault
   m_TagString: Untagged
@@ -1289,8 +1290,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  enemyHeal: {fileID: 0}
   agent: {fileID: 0}
   randomNavMeshMovement: {fileID: 0}
+  enemyDetecPlayer: {fileID: 0}
+  enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
+  m_EnemyHeal: 5
 --- !u!114 &914158592424976190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1321,6 +1326,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eefd8d7b791314548b46f15b9b08de70, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enemyController: {fileID: 0}
 --- !u!136 &6389948988384387381
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1344,6 +1350,20 @@ CapsuleCollider:
   m_Height: 1.8256736
   m_Direction: 1
   m_Center: {x: -0.02871728, y: 1.2551484, z: -0.11996639}
+--- !u!114 &5267458802063725537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650877}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f1c0071911c1a1d4dae46895bc443a9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemyHeal: 0
+  m_EnemyController: {fileID: 0}
 --- !u!1 &5122791751604650879
 GameObject:
   m_ObjectHideFlags: 0

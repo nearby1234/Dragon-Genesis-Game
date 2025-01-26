@@ -25,9 +25,9 @@ public class EnemyDetecPlayer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CalculateDistance();
+        //CalculateDistance();
     }
-    private void CalculateDistance()
+    public void CalculateDistance()
     {
         // Tính khoảng cách giữa enemy và player
         m_DistacneWithPlayer = Vector3.Distance(this.transform.position, m_Player.position);
