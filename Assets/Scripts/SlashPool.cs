@@ -19,17 +19,15 @@ public class SlashPool : MonoBehaviour
             Destroy(gameObject);
         }
 
-
         pool = new Queue<GameObject>();
+
         for (int i = 0; i < m_PoolCount; i++)
         {
             GameObject slash = Instantiate(m_Slash, this.transform);
             slash.SetActive(false);
             pool.Enqueue(slash);
-
         }
     }
-
     public GameObject GetSlash()
     {
         if (pool.Count > 0)
@@ -40,7 +38,6 @@ public class SlashPool : MonoBehaviour
         }
         return null;
     }
-
     public void ReturnPool(GameObject slash)
     {
         slash.SetActive(false);

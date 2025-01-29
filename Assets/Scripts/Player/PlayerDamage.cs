@@ -11,14 +11,6 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private string[] m_AttackNameAnim;
     [SerializeField] private int[] m_AttackAnimStringToHash;
     [SerializeField] private int m_AttackAnimIndex;
-    
-    
-
-    private void Awake()
-    {
-      
-    }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
@@ -42,8 +34,6 @@ public class PlayerDamage : MonoBehaviour
     void Update()
     {
         Attack();
-        
-
     }
 
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
@@ -72,7 +62,6 @@ public class PlayerDamage : MonoBehaviour
     {
         m_IsPressLeftMouse = false;
     }
-
     private void Attack()
     {
         for(int i = 0; i < m_AttackNameAnim.Length; i++)

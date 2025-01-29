@@ -17,16 +17,6 @@ public class EnemyDetecPlayer : MonoBehaviour
         m_Player = GameObject.Find("Player").GetComponent<Transform>();
         enemyController = GetComponent<EnemyController>();
     }
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //CalculateDistance();
-    }
     public void CalculateDistance()
     {
         // Tính khoảng cách giữa enemy và player
@@ -64,9 +54,6 @@ public class EnemyDetecPlayer : MonoBehaviour
             enemyController.GetNavMeshAgent().isStopped = false; // Cho phép di chuyển tự do
         }
     }
-
-
-
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

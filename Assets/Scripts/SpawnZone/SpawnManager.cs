@@ -3,7 +3,7 @@
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance;
-    public int m_Count;
+    public int m_EnemySpawnCount;
     private void Awake()
     {
         if (instance == null)
@@ -14,19 +14,12 @@ public class EnemyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-       
-    }
-    void Start()
-    {
-       
-        
     }
     private void Update()
     {
         // Gọi GetObject để spawn một quái vật tại spawnPoint
 
-        for (int i = 0; i < m_Count; i++)
+        for (int i = 0; i < m_EnemySpawnCount; i++)
         {
             GameObject enemy = SpawnEnemyPool.instance.GetObject();
 

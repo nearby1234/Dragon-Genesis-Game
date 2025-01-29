@@ -1196,7 +1196,7 @@ GameObject:
   - component: {fileID: 5267458802063725537}
   m_Layer: 0
   m_Name: BatPADefault
-  m_TagString: Untagged
+  m_TagString: Creep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1295,7 +1295,6 @@ MonoBehaviour:
   randomNavMeshMovement: {fileID: 0}
   enemyDetecPlayer: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
-  m_EnemyHeal: 5
 --- !u!114 &914158592424976190
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1346,10 +1345,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.9128368
-  m_Height: 1.8256736
-  m_Direction: 1
-  m_Center: {x: -0.02871728, y: 1.2551484, z: -0.11996639}
+  m_Radius: 0.6
+  m_Height: 1.04
+  m_Direction: 0
+  m_Center: {x: -0.02871728, y: 1.46, z: -0.11996639}
 --- !u!114 &5267458802063725537
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1364,6 +1363,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemyHeal: 0
   m_EnemyController: {fileID: 0}
+  m_IsDead: 0
 --- !u!1 &5122791751604650879
 GameObject:
   m_ObjectHideFlags: 0

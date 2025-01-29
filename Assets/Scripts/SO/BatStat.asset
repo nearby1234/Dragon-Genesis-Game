@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
   m_Name: BatStat
   m_EditorClassIdentifier: 
-  heal: 0
-  damage: 0
+  heal: 10
+  damage: 1

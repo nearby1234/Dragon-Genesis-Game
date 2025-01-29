@@ -16,6 +16,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerMove playerMove;
     public PlayerJump playerJump;
     public PlayerAnim playerAnim;
+    public EffectSpawn effectSpawn;
     public PlayerState m_PlayerState;
 
 
@@ -35,6 +36,7 @@ public class PlayerManager : MonoBehaviour
         playerMove = GetComponent<PlayerMove>();
         playerJump = GetComponent<PlayerJump>();
         playerAnim = GetComponent<PlayerAnim>();
+        effectSpawn = GetComponent<EffectSpawn>();
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

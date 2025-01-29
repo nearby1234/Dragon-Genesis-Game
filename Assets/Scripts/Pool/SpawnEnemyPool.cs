@@ -28,7 +28,7 @@ public class SpawnEnemyPool : MonoBehaviour
     // Lấy quái vật từ pool nếu còn quái vật và số lượng active chưa đạt giới hạn
     public GameObject GetObject()
     {
-        if (pool.Count > 0 && activeEnemies.Count < EnemyManager.instance.m_Count)
+        if (pool.Count > 0 && activeEnemies.Count < EnemyManager.instance.m_EnemySpawnCount)
         {
             GameObject enemy = pool.Dequeue();
             activeEnemies.Add(enemy);  // Thêm vào danh sách active

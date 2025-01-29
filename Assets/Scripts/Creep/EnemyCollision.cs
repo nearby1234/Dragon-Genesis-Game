@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class EnemyCollision : MonoBehaviour
 {
@@ -11,20 +11,10 @@ public class EnemyCollision : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Sword"))
         {
-            if (!PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle))
-            {
-                if (enemyController.IsDead) // Ki?m tra tr?ng th�i c?a enemy tr??c
-                {
-                    return;
-                }
-                enemyController.GetEnemyHeal().ReducePlayerHealth(1);
-                enemyController.GetAnimator().SetTrigger("Hit");
-            }
-            else
-            {
-                Debug.Log($"Is Idle not collision");
-            }
-
+            if (enemyController.GetEnemyHeal().IsEnemyDead()) return; // kiểm tra trạng thái của enemy
+            if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
+            Debug.Log("damage");
+            enemyController.GetEnemyHeal().ReducePlayerHealth(1);
         }
     }
 }

@@ -68,7 +68,6 @@ public class RandomNavMeshMovement : MonoBehaviour
             {
                 return settings.agentTypeID;
             }
-
         }
         return 0;
     }
