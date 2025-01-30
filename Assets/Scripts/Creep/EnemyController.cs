@@ -27,6 +27,12 @@ public class EnemyController : MonoBehaviour
     }
     void Update()
     {
+        if (PlayerManager.instance.playerHeal.GetPlayerDeath())
+        {
+            agent.isStopped = true;
+            animator.SetBool("Attack",false);
+            return;
+        }
         if (enemyHeal.IsEnemyDead())
         {
             agent.isStopped = true;

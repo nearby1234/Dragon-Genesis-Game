@@ -25,12 +25,7 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnDisable()
     {
-        m_ButtonAttackLeftMouse.performed -= OnPerformedAttackLeftMouse;
-        m_ButtonAttackLeftMouse.canceled -= OnCancelAttackLeftMouse;
-        m_ButtonAttackLeftMouse.Disable();
-        m_ButtonAttackRightMouse.performed -= OnPerformedAttackRightMouse;
-        m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
-        m_ButtonAttackRightMouse.Disable();
+        
     }
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
@@ -71,6 +66,16 @@ public class PlayerDamage : MonoBehaviour
         {
             m_AttackAnimIndex = 0;
         }
+    }
+
+    public void DegreeEventClickMouse()
+    {
+        m_ButtonAttackLeftMouse.performed -= OnPerformedAttackLeftMouse;
+        m_ButtonAttackLeftMouse.canceled -= OnCancelAttackLeftMouse;
+        m_ButtonAttackLeftMouse.Disable();
+        m_ButtonAttackRightMouse.performed -= OnPerformedAttackRightMouse;
+        m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
+        m_ButtonAttackRightMouse.Disable();
     }
     public int GetPlayerDamage() => m_PlayerDamage;
        

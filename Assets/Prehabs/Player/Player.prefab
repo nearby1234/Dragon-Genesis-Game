@@ -1522,6 +1522,7 @@ GameObject:
   - component: {fileID: 801735765996393815}
   - component: {fileID: 3460331695137001255}
   - component: {fileID: 2079011301511152358}
+  - component: {fileID: 3210564381004821764}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1620,7 +1621,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 1.8
-  m_Radius: 0.3
+  m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -1744,6 +1745,9 @@ MonoBehaviour:
   playerDamage: {fileID: 0}
   playerAnim: {fileID: 0}
   playerHeal: {fileID: 0}
+  playerCamera: {fileID: 0}
+  playerCasting: {fileID: 0}
+  playerDodge: {fileID: 0}
   effectSpawn: {fileID: 0}
   m_PlayerState: 0
 --- !u!114 &307520791741602282
@@ -1876,6 +1880,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PlayerHeal: 5
   m_IsPlayerDeath: 0
+--- !u!114 &3210564381004821764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e2b253292ea9094fad5fbe2c5b01727, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ButtonDodge: 118
+  m_IsPressDodge: 0
 --- !u!1 &2483095079543067042
 GameObject:
   m_ObjectHideFlags: 0

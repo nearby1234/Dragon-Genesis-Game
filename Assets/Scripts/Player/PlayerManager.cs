@@ -38,6 +38,11 @@ public class PlayerManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (playerHeal.GetPlayerDeath())
+        {
+            playerDamage.DegreeEventClickMouse();
+            return;
+        }
         switch (m_PlayerState)
         {
             case PlayerState.idle:

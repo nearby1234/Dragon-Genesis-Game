@@ -25,7 +25,6 @@ public class EnemyCollision : MonoBehaviour
         }
         if (other.CompareTag("Player"))
         {
-            if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
             PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage);
             Vector3 hitPoint = other.ClosestPoint(transform.position);
             GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPoint, Quaternion.identity);

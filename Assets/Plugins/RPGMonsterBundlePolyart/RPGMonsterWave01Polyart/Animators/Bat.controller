@@ -1,5 +1,30 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1107 &-8773078322587233177
+AnimatorStateMachine:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Idle
+  m_ChildStates:
+  - serializedVersion: 1
+    m_State: {fileID: 1102018805726419484}
+    m_Position: {x: 0, y: 0, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 1102063001559692752}
+    m_Position: {x: 0, y: 0, z: 0}
+  m_ChildStateMachines: []
+  m_AnyStateTransitions: []
+  m_EntryTransitions: []
+  m_StateMachineTransitions: {}
+  m_StateMachineBehaviours: []
+  m_AnyStatePosition: {x: 50, y: 20, z: 0}
+  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_ExitPosition: {x: 800, y: 120, z: 0}
+  m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
+  m_DefaultState: {fileID: 1102018805726419484}
 --- !u!1101 &-7731411501503197264
 AnimatorStateTransition:
   m_ObjectHideFlags: 1
@@ -732,12 +757,6 @@ AnimatorStateMachine:
   m_Name: Base Layer
   m_ChildStates:
   - serializedVersion: 1
-    m_State: {fileID: 1102018805726419484}
-    m_Position: {x: 285, y: -15, z: 0}
-  - serializedVersion: 1
-    m_State: {fileID: 1102063001559692752}
-    m_Position: {x: 180, y: 70, z: 0}
-  - serializedVersion: 1
     m_State: {fileID: 1102012175932895656}
     m_Position: {x: 290, y: 150, z: 0}
   - serializedVersion: 1
@@ -772,19 +791,22 @@ AnimatorStateMachine:
     m_Position: {x: 1180, y: 50, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102822994629829428}
-    m_Position: {x: 280, y: -110, z: 0}
+    m_Position: {x: 290, y: -80, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102646557894488968}
-    m_Position: {x: 130, y: -160, z: 0}
-  m_ChildStateMachines: []
+    m_Position: {x: 60, y: -80, z: 0}
+  m_ChildStateMachines:
+  - serializedVersion: 1
+    m_StateMachine: {fileID: -8773078322587233177}
+    m_Position: {x: 290, y: 20, z: 0}
   m_AnyStateTransitions:
   - {fileID: 1715453322927156218}
   - {fileID: 8261459472278450616}
   m_EntryTransitions: []
   m_StateMachineTransitions: {}
   m_StateMachineBehaviours: []
-  m_AnyStatePosition: {x: 50, y: 20, z: 0}
-  m_EntryPosition: {x: 50, y: 120, z: 0}
+  m_AnyStatePosition: {x: 80, y: 30, z: 0}
+  m_EntryPosition: {x: 90, y: 130, z: 0}
   m_ExitPosition: {x: 48, y: 216, z: 0}
   m_ParentStateMachinePosition: {x: 800, y: 20, z: 0}
   m_DefaultState: {fileID: 1102018805726419484}

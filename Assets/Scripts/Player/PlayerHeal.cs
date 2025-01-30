@@ -13,7 +13,8 @@ public class PlayerHeal : MonoBehaviour
         {
             m_IsPlayerDeath = true;
             PlayerManager.instance.playerAnim.GetAnimator().SetTrigger("Death");
-            
         }
     }
+
+    public bool GetPlayerDeath() => m_IsPlayerDeath;
 }

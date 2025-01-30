@@ -10,7 +10,6 @@ public class EnemyDetecPlayer : MonoBehaviour
     [SerializeField] private float m_DictanceStopped;
     [SerializeField] private bool m_DetectedPlayer;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     private void Awake()
     {
