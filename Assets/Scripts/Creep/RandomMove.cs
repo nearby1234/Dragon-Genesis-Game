@@ -6,6 +6,7 @@ public class RandomNavMeshMovement : MonoBehaviour
 {
     [SerializeField] private EnemyController enemyController;
     [SerializeField] private NavMeshSurface surface;
+    [SerializeField] private int AgentTypeID;
     [SerializeField] private float stopDistance = 1f; 
 
     private Vector3 center; 
@@ -14,12 +15,10 @@ public class RandomNavMeshMovement : MonoBehaviour
     private void Awake()
     {
         enemyController = GetComponent<EnemyController>();
-        surface = GameObject.Find("NavmeshSurface").GetComponent<NavMeshSurface>();
     }
-
     void Start()
     {
-        enemyController.GetNavMeshAgent().agentTypeID = GetAgentTypeID();
+        enemyController.GetNavMeshAgent().agentTypeID = AgentTypeID;
         size = surface.size;
         center = surface.transform.position + surface.center;
         //MoveToRandomPosition();
@@ -54,22 +53,22 @@ public class RandomNavMeshMovement : MonoBehaviour
             MoveToRandomPosition();
         }
     }
-
-    private int GetAgentTypeID()
-    {
-        int settingsCount = NavMesh.GetSettingsCount(); // Số lượng Agent Type hiện có
-        string agentName = "Creep";
-        for (int i = 0; i < settingsCount; i++)
-        {
-            // Lấy thông tin của Agent Type theo index
-            NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(i);
-            string agentTypeName = NavMesh.GetSettingsNameFromID(settings.agentTypeID);
-            if (agentTypeName == agentName)
-            {
-                return settings.agentTypeID;
-            }
-        }
-        return 0;
-    }
+    // HÀM TÌM CHỈ SỐ AgentTypeID
+    //private int GetAgentTypeID()
+    //{
+    //    int settingsCount = NavMesh.GetSettingsCount(); // Số lượng Agent Type hiện có
+    //    string agentName = "Creep";
+    //    for (int i = 0; i < settingsCount; i++)
+    //    {
+    //        // Lấy thông tin của Agent Type theo index
+    //        NavMeshBuildSettings settings = NavMesh.GetSettingsByIndex(i);
+    //        string agentTypeName = NavMesh.GetSettingsNameFromID(settings.agentTypeID);
+    //        if (agentTypeName == agentName)
+    //        {
+    //            return settings.agentTypeID;
+    //        }
+    //    }
+    //    return 0;
+    //}
 
 }

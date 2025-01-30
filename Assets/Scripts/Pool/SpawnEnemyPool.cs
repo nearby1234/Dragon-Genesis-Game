@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class SpawnEnemyPool : MonoBehaviour
 {
-    public static SpawnEnemyPool instance;
     [SerializeField] private Queue<GameObject> pool;
     [SerializeField] private int m_PoolSize = 10;
     [SerializeField] private GameObject m_EnemyPrehabs;
@@ -13,29 +12,20 @@ public class SpawnEnemyPool : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-
         SpawnEnemyPrehabs();
     }
 
     // Lấy quái vật từ pool nếu còn quái vật và số lượng active chưa đạt giới hạn
     public GameObject GetObject()
     {
-        if (pool.Count > 0 && activeEnemies.Count < EnemyManager.instance.m_EnemySpawnCount)
+        if (pool.Count > 0 && activeEnemies.Count < m_ActiveEnemiesCount) // Giới hạn theo từng pool
         {
             GameObject enemy = pool.Dequeue();
-            activeEnemies.Add(enemy);  // Thêm vào danh sách active
-            enemy.SetActive(true);     // Kích hoạt quái vật
+            activeEnemies.Add(enemy);
+            enemy.SetActive(true);
             return enemy;
         }
-        return null;  // Nếu không còn enemy trong pool hoặc đạt số lượng active tối đa
+        return null;
     }
 
     // Trả lại quái vật vào pool
@@ -61,4 +51,5 @@ public class SpawnEnemyPool : MonoBehaviour
             pool.Enqueue(enemy);
         }
     }
+    public int GetActiveEnemiesCount() => m_ActiveEnemiesCount;
 }

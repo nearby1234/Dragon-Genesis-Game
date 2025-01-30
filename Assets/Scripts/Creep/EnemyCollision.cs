@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 
+[RequireComponent (typeof(CapsuleCollider))]
 public class EnemyCollision : MonoBehaviour
 {
     [SerializeField] private int m_EnemyDamage;

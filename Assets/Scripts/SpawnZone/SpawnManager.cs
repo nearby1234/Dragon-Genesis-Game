@@ -3,7 +3,11 @@
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager instance;
-    public int m_EnemySpawnCount;
+    [SerializeField] private Transform m_ParentSpawnEnemyPool;
+    [SerializeField] private SpawnEnemyPool[] spawnEnemyPool;
+    
+   
+    
     private void Awake()
     {
         if (instance == null)
@@ -14,21 +18,44 @@ public class EnemyManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        
+    }
+    private void Start()
+    {
+        GetChildSpawnPool();
     }
     private void Update()
     {
-        // Gọi GetObject để spawn một quái vật tại spawnPoint
+        CallObjectSpawnEnemy();
+    }
 
-        for (int i = 0; i < m_EnemySpawnCount; i++)
+    private void GetChildSpawnPool()
+    {
+        if (m_ParentSpawnEnemyPool == null)
         {
-            GameObject enemy = SpawnEnemyPool.instance.GetObject();
+            Debug.LogError("Zone Parent chưa được gán trong EnemyManager!");
+            return;
+        }
+        spawnEnemyPool = m_ParentSpawnEnemyPool.GetComponentsInChildren<SpawnEnemyPool>();
+    }
 
-            if (enemy != null)
+    private void CallObjectSpawnEnemy()
+    {
+        if (spawnEnemyPool == null || spawnEnemyPool.Length == 0)
+        {
+            Debug.LogWarning("spawnEnemyPool chưa được gán hoặc không có đối tượng!");
+            return;
+        }
+
+        foreach (var pool in spawnEnemyPool)
+        {
+            for (int i = 0; i < pool.GetActiveEnemiesCount(); i++) // Spawn theo số lượng riêng
             {
-                // Nếu thành công, đặt quái vật vào vị trí spawn
-                enemy.transform.SetPositionAndRotation(transform.position, transform.rotation);
-
-                // Bạn có thể thêm các hành vi khác như cho quái vật di chuyển, chiến đấu, v.v.
+                GameObject enemy = pool.GetObject();
+                if (enemy != null)
+                {
+                    enemy.transform.SetPositionAndRotation(pool.transform.position, Quaternion.identity);
+                }
             }
         }
     }
