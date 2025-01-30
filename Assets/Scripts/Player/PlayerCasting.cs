@@ -12,13 +12,6 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] private float m_TimeOffPower;
 
     [SerializeField] private bool m_CanCasting = true;
-
-    // Update is called once per frame
-    void Update()
-    {
-        Casting();
-    }
-
     private void ActivePartycleCasting()
     {
         if (m_PowerCasting != null)
@@ -31,7 +24,7 @@ public class PlayerCasting : MonoBehaviour
         }
     }
 
-    private void Casting()
+    public void Casting()
     {
         if (Input.GetKey(m_ButtonCasting) && m_CanCasting)
         {
@@ -40,7 +33,6 @@ public class PlayerCasting : MonoBehaviour
             ActiveAsura();
         }
     }
-
     private void ActiveAsura()
     {
         m_Time += Time.deltaTime;

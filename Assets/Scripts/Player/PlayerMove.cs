@@ -40,11 +40,6 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.canceled -= OnLeftShiftCancel;
         m_ButtonLeftShift.Disable();
     }
-    private void Update()
-    {
-        //PlayerMovement();
-    }
-
     private void OnMove(InputValue value)
     {
         inputVector = value.Get<Vector2>();

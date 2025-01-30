@@ -15,6 +15,9 @@ public class PlayerManager : MonoBehaviour
     public PlayerDamage playerDamage;
     public PlayerAnim playerAnim;
     public PlayerHeal playerHeal;
+    public PlayerCamera playerCamera;
+    public PlayerCasting playerCasting;
+    public PlayerDodge playerDodge;
     public EffectSpawn effectSpawn;
     public PlayerState m_PlayerState;
 
@@ -24,6 +27,33 @@ public class PlayerManager : MonoBehaviour
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
+        CacheComponents();
+    }
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        ChangeStatePlayer(PlayerState.idle);
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        switch (m_PlayerState)
+        {
+            case PlayerState.idle:
+                HandleIdleState();
+                break;
+            case PlayerState.attack:
+                HandleAttackState();
+                break;
+        }
+    }
+    public void ChangeStatePlayer(PlayerState playerState)
+    {
+        m_PlayerState = playerState;
+    }
+    private void CacheComponents()
+    {
         controller = GetComponent<CharacterController>();
         playerMove = GetComponent<PlayerMove>();
         playerJump = GetComponent<PlayerJump>();
@@ -31,22 +61,20 @@ public class PlayerManager : MonoBehaviour
         effectSpawn = GetComponent<EffectSpawn>();
         playerDamage = GetComponent<PlayerDamage>();
         playerHeal = GetComponent<PlayerHeal>();
+        playerCamera = GetComponent<PlayerCamera>();
+        playerCasting = GetComponent<PlayerCasting>();
+        playerDodge = GetComponent<PlayerDodge>();
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        m_PlayerState = PlayerState.idle;
-    }
-
-    // Update is called once per frame
-    void Update()
+    private void HandleIdleState()
     {
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
+        playerCamera.RotationPlayer();
+        playerDodge.Dodge();
+        playerCasting.Casting();
     }
-
-    public void ChangeStatePlayer(PlayerState playerState)
+    private void HandleAttackState()
     {
-        m_PlayerState = playerState;
+        playerDamage.Attack();
     }
 }

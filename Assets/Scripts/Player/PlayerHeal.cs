@@ -7,6 +7,7 @@ public class PlayerHeal : MonoBehaviour
    
     public void ReducePlayerHeal(int Enemydamage)
     {
+        if (m_IsPlayerDeath) return;
         m_PlayerHeal -= Enemydamage;
         if(m_PlayerHeal <= 0)
         {

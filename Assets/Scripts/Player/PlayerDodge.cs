@@ -4,13 +4,7 @@ public class PlayerDodge : MonoBehaviour
 {
     [SerializeField] private KeyCode m_ButtonDodge;
     [SerializeField] private bool m_IsPressDodge;
-
-    void Update()
-    {
-        Dodge();
-    }
-
-    private void Dodge()
+    public void Dodge()
     {
         if (Input.GetKeyDown(m_ButtonDodge))
         {

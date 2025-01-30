@@ -3,6 +3,7 @@
 public class EnemyCollision : MonoBehaviour
 {
     [SerializeField] private int m_EnemyDamage;
+    [SerializeField] private GameObject m_BloodPrehabs;
     [SerializeField] private EnemyStatSO m_EnemyStatSO;
 
     private void Start()
@@ -20,12 +21,14 @@ public class EnemyCollision : MonoBehaviour
         {
             if (enemyController.GetEnemyHeal().IsEnemyDead()) return; // kiểm tra trạng thái của enemy
             if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
-            Debug.Log("damage");
             enemyController.GetEnemyHeal().ReducePlayerHealth(PlayerManager.instance.playerDamage.GetPlayerDamage());
         }
         if (other.CompareTag("Player"))
         {
+            if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
             PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage);
+            Vector3 hitPoint = other.ClosestPoint(transform.position);
+            GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPoint, Quaternion.identity);
         }
     }
 }

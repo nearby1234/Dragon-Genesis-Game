@@ -10,7 +10,8 @@ public class WeaponCollision : MonoBehaviour
         {
             if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
             Vector3 hitPos = other.ClosestPoint(transform.position);
-            GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPos, quaternion.identity);
+            GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPos, Quaternion.identity);
         }
     }
 }
+  

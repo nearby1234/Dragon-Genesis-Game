@@ -833,6 +833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_EnemyDamage: 0
+  m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
   m_EnemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
   enemyController: {fileID: 0}
 --- !u!1 &5122791751604650853
@@ -1232,6 +1233,7 @@ GameObject:
   - component: {fileID: 2960792921122564242}
   - component: {fileID: 914158592424976190}
   - component: {fileID: 5267458802063725537}
+  - component: {fileID: 1666715201930247886}
   m_Layer: 0
   m_Name: BatPADefault
   m_TagString: Creep
@@ -1366,6 +1368,33 @@ MonoBehaviour:
   m_EnemyHeal: 0
   m_EnemyController: {fileID: 0}
   m_IsDead: 0
+--- !u!54 &1666715201930247886
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650877}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &5122791751604650879
 GameObject:
   m_ObjectHideFlags: 0

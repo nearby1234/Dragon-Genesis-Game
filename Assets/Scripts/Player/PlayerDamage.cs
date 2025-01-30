@@ -32,11 +32,6 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
         m_ButtonAttackRightMouse.Disable();
     }
-    void Update()
-    {
-        Attack();
-    }
-
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
 
@@ -63,7 +58,7 @@ public class PlayerDamage : MonoBehaviour
     {
         m_IsPressLeftMouse = false;
     }
-    private void Attack()
+    public void Attack()
     {
         for (int i = 0; i < m_AttackNameAnim.Length; i++)
         {

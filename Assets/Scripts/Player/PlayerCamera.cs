@@ -9,16 +9,12 @@ public class PlayerCamera : MonoBehaviour
     {
         Camera = Camera.main;
     }
-
-    // Update is called once per frame
-    void Update()
+    //void Update()
+    //{
+    //    RotationPlayer();
+    //}
+    public void RotationPlayer()
     {
-        RotationPlayer();
-    }
-
-    private void RotationPlayer()
-    {
-        
         float yourCamera = Camera.transform.rotation.eulerAngles.y;
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0, yourCamera, 0), m_TurnSpeed * Time.deltaTime);
     }
