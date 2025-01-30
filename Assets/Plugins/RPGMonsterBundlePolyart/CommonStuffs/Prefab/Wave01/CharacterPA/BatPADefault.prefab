@@ -772,9 +772,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5122791751604887363}
+  - component: {fileID: 3653312083133913786}
+  - component: {fileID: 2517642093523949315}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Creep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -795,6 +797,44 @@ Transform:
   - {fileID: 5122791751604887395}
   m_Father: {fileID: 5122791751604887389}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &3653312083133913786
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650851}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.6
+  m_Height: 0
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2517642093523949315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5122791751604650851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefd8d7b791314548b46f15b9b08de70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemyDamage: 0
+  m_EnemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
+  enemyController: {fileID: 0}
 --- !u!1 &5122791751604650853
 GameObject:
   m_ObjectHideFlags: 0
@@ -1191,8 +1231,6 @@ GameObject:
   - component: {fileID: 7378564185672662176}
   - component: {fileID: 2960792921122564242}
   - component: {fileID: 914158592424976190}
-  - component: {fileID: 7855663638744514345}
-  - component: {fileID: 6389948988384387381}
   - component: {fileID: 5267458802063725537}
   m_Layer: 0
   m_Name: BatPADefault
@@ -1313,42 +1351,6 @@ MonoBehaviour:
   m_MaxDistance: 6
   m_DictanceStopped: 2
   m_DetectedPlayer: 0
---- !u!114 &7855663638744514345
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5122791751604650877}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eefd8d7b791314548b46f15b9b08de70, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  enemyController: {fileID: 0}
---- !u!136 &6389948988384387381
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5122791751604650877}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6
-  m_Height: 1.04
-  m_Direction: 0
-  m_Center: {x: -0.02871728, y: 1.46, z: -0.11996639}
 --- !u!114 &5267458802063725537
 MonoBehaviour:
   m_ObjectHideFlags: 0

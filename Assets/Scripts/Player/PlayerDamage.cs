@@ -11,6 +11,7 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private string[] m_AttackNameAnim;
     [SerializeField] private int[] m_AttackAnimStringToHash;
     [SerializeField] private int m_AttackAnimIndex;
+    [SerializeField] private int m_PlayerDamage;
     void Start()
     {
         m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
@@ -64,21 +65,18 @@ public class PlayerDamage : MonoBehaviour
     }
     private void Attack()
     {
-        for(int i = 0; i < m_AttackNameAnim.Length; i++)
+        for (int i = 0; i < m_AttackNameAnim.Length; i++)
         {
-            if(m_AttackAnimStringToHash != null)
+            if (m_AttackAnimStringToHash != null)
             {
                 m_AttackAnimStringToHash[i] = Animator.StringToHash(m_AttackNameAnim[i]);
-            }    
+            }
         }
         if (m_AttackAnimIndex == m_AttackAnimStringToHash.Length)
         {
             m_AttackAnimIndex = 0;
         }
+    }
+    public int GetPlayerDamage() => m_PlayerDamage;
        
-    }    
-
-    
-
-   
 }
