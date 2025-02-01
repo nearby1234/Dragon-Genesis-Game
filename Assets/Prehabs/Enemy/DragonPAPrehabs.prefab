@@ -461,6 +461,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2619922458492024758}
+  - component: {fileID: 1270889516084401725}
+  - component: {fileID: 4284089634210404110}
   m_Layer: 0
   m_Name: Body
   m_TagString: Untagged
@@ -485,6 +487,45 @@ Transform:
   - {fileID: 3497850255383156797}
   m_Father: {fileID: 7765746994098836329}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &1270889516084401725
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439417770862581760}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.82
+  m_Height: 2.36
+  m_Direction: 0
+  m_Center: {x: -0.47, y: 0, z: -0.0018359423}
+--- !u!114 &4284089634210404110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439417770862581760}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eefd8d7b791314548b46f15b9b08de70, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_EnemyDamage: 0
+  m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
+  m_EnemyStatSO: {fileID: 11400000, guid: 827a2eb0a66503543a1f5fe3c8f7d6c8, type: 2}
+  enemyController: {fileID: 0}
 --- !u!1 &3251278306783449636
 GameObject:
   m_ObjectHideFlags: 0
@@ -1146,7 +1187,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7765746994098836329
 Transform:
   m_ObjectHideFlags: 0
@@ -1174,7 +1215,7 @@ Animator:
   m_GameObject: {fileID: 6910562150147660841}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 22c434b614d1427db735d1f7d618015d, type: 3}
-  m_Controller: {fileID: 9100000, guid: 009726fb7f8840548960b9e82fb44095, type: 2}
+  m_Controller: {fileID: 9100000, guid: 56de3ea9c6ae692478014d9c209365d2, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1279,7 +1320,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -1301,6 +1342,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   randomNavMeshMovement: {fileID: 0}
   enemyDetecPlayer: {fileID: 0}
+  enemyCollider: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 827a2eb0a66503543a1f5fe3c8f7d6c8, type: 2}
 --- !u!1 &6913474751924144068
 GameObject:

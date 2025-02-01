@@ -27,6 +27,7 @@ public class EnemyHeal : MonoBehaviour
     {
         m_IsDead = true;
         m_EnemyController.GetAnimator().SetTrigger("Death");
+        m_EnemyController.GetCollider.enabled = false;
     }
     public bool IsEnemyDead() => m_IsDead;
 }

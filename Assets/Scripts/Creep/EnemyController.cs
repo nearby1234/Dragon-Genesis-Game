@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private RandomNavMeshMovement randomNavMeshMovement;
     [SerializeField] private EnemyDetecPlayer enemyDetecPlayer;
+    [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
 
     private void Awake()
@@ -23,6 +24,7 @@ public class EnemyController : MonoBehaviour
         randomNavMeshMovement = GetComponent<RandomNavMeshMovement>();
         enemyHeal = GetComponent<EnemyHeal>();
         enemyDetecPlayer = GetComponent<EnemyDetecPlayer>();
+        enemyCollider = GetComponentInChildren<Collider>();
     }
     void Start()
     {
@@ -50,4 +52,5 @@ public class EnemyController : MonoBehaviour
     public EnemyHeal GetEnemyHeal() => enemyHeal;
     public EnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO() => enemyStatSO;
+    public Collider GetCollider => enemyCollider;
 }

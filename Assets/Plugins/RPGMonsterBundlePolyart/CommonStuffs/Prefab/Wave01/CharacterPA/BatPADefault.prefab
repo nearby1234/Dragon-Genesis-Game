@@ -1240,7 +1240,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &5122791751604887389
 Transform:
   m_ObjectHideFlags: 0
@@ -1335,6 +1335,7 @@ MonoBehaviour:
   agent: {fileID: 0}
   randomNavMeshMovement: {fileID: 0}
   enemyDetecPlayer: {fileID: 0}
+  enemyCollider: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
 --- !u!114 &914158592424976190
 MonoBehaviour:
