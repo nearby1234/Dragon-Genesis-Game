@@ -41,6 +41,7 @@ public class PlayerManager : MonoBehaviour
         if (playerHeal.GetPlayerDeath())
         {
             playerDamage.DegreeEventClickMouse();
+            playerAnim.GetAnimator().enabled = false;
             return;
         }
         switch (m_PlayerState)
@@ -75,7 +76,7 @@ public class PlayerManager : MonoBehaviour
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
         playerCamera.RotationPlayer();
-        playerDodge.Dodge();
+        //playerDodge.Dodge();
         playerCasting.Casting();
     }
     private void HandleAttackState()

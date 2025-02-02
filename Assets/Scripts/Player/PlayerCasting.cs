@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCasting : MonoBehaviour
 {
@@ -12,23 +13,16 @@ public class PlayerCasting : MonoBehaviour
     [SerializeField] private float m_TimeOffPower;
 
     [SerializeField] private bool m_CanCasting = true;
+
+
     private void ActivePartycleCasting()
     {
-        if (m_PowerCasting != null)
-        {
-            if (!m_PowerCasting.isPlaying)
-            {
-                m_PowerCasting.gameObject.SetActive(true);
-                m_PowerCasting.Play(); // Đảm bảo ParticleSystem được phát
-            }
-        }
+        ToggleParticle(m_PowerCasting, true);
     }
-
     public void Casting()
     {
         if (Input.GetKey(m_ButtonCasting) && m_CanCasting)
         {
-            // PlayerManager.instance.playerAnim.GetAnimator().Play("Attack_3Combo_2_Duplicate");
             ActivePartycleCasting();
             ActiveAsura();
         }
@@ -40,37 +34,24 @@ public class PlayerCasting : MonoBehaviour
         {
             if (m_PowerCasting != null && m_PowerCastingAsura != null && m_PowerCastingBigBang != null)
             {
-                if (m_PowerCasting.isPlaying) m_PowerCasting.Stop(); // Dừng trước khi tắt
-                m_PowerCasting.gameObject.SetActive(false);
-
-                m_PowerCastingBigBang.gameObject.SetActive(true);
-                m_PowerCastingBigBang.Play(); // Phát BigBang hiệu ứng
+                ToggleParticle(m_PowerCasting,false);
+                ToggleParticle(m_PowerCastingBigBang,true);
 
                 m_CanCasting = false;
                 StartCoroutine(DelayBigBang());
             }
 
-            if (!m_PowerCastingAsura.isPlaying)
-            {
-                m_PowerCastingAsura.gameObject.SetActive(true);
-                m_PowerCastingAsura.Play(); // Đảm bảo Asura hiệu ứng chạy
-            }
+            ToggleParticle(m_PowerCastingAsura,true);
         }
     }
-
     private IEnumerator DelayBigBang()
     {
         yield return new WaitForSeconds(0.5f);
 
-        if (m_PowerCastingBigBang != null)
-        {
-            if (m_PowerCastingBigBang.isPlaying) m_PowerCastingBigBang.Stop(); // Dừng trước khi tắt
-            m_PowerCastingBigBang.gameObject.SetActive(false);
-        }
+        ToggleParticle(m_PowerCastingBigBang,false);
 
         StartCoroutine(WaitForKeyRelease());
     }
-
     private IEnumerator WaitForKeyRelease()
     {
         while (Input.GetKey(m_ButtonCasting))
@@ -88,10 +69,25 @@ public class PlayerCasting : MonoBehaviour
     {
         yield return new WaitForSeconds(m_TimeOffPower);
 
-        if (m_PowerCastingAsura != null)
+        ToggleParticle(m_PowerCastingAsura, false);
+    }
+
+    private void ToggleParticle(ParticleSystem particle, bool state)
+    {
+        if (particle == null) return;
+        if (state)
         {
-            if (m_PowerCastingAsura.isPlaying) m_PowerCastingAsura.Stop(); // Dừng trước khi tắt
-            m_PowerCastingAsura.gameObject.SetActive(false);
+            if (!particle.isPlaying) 
+            {
+                particle.gameObject.SetActive(true);
+                particle.Play();
+            }
+        }
+        else
+        {
+            if (particle.isPlaying) particle.Stop();
+            particle.gameObject.SetActive(false);
         }
     }
+
 }

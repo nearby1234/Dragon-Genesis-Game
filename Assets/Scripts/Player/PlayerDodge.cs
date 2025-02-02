@@ -1,20 +1,32 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerDodge : MonoBehaviour
 {
-    [SerializeField] private KeyCode m_ButtonDodge;
     [SerializeField] private bool m_IsPressDodge;
-    public void Dodge()
+    [SerializeField] private InputAction dodgeAction;
+
+    private void Start()
     {
-        if (Input.GetKeyDown(m_ButtonDodge))
-        {
-            m_IsPressDodge = true;
-            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", true);
-        }
-        else
-        {
-            m_IsPressDodge = false;
-            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", false);
-        }
+        dodgeAction.Enable();
+        dodgeAction.performed += DodgeAction_performed; ;
+        dodgeAction.canceled += DodgeAction_canceled;
+    }
+
+    private void OnDestroy()
+    {
+        dodgeAction.performed -= DodgeAction_performed;
+        dodgeAction.canceled -= DodgeAction_canceled;
+        dodgeAction.Disable();
+    }
+    private void DodgeAction_performed(InputAction.CallbackContext obj)
+    {
+        m_IsPressDodge = true;
+        PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", true);
+    }
+    private void DodgeAction_canceled(InputAction.CallbackContext obj)
+    {
+        m_IsPressDodge = false;
+        PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", false);
     }
 }

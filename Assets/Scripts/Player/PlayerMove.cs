@@ -93,7 +93,11 @@ public class PlayerMove : MonoBehaviour
 
         velovity = (transform.forward * smoothInputVector.y + transform.right * smoothInputVector.x).normalized;
 
-        characterController.Move(m_CurrentSpeed * Time.deltaTime * velovity);
+        if (inputVector.magnitude > Mathf.Epsilon)
+        {
+            characterController.Move(m_CurrentSpeed * Time.deltaTime * velovity);
+        }
+        //characterController.Move(m_CurrentSpeed * Time.deltaTime * velovity);
 
         if (smoothInputVector.magnitude > Mathf.Epsilon)
         {

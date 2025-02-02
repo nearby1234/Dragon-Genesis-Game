@@ -23,26 +23,35 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
 
     }
-    private void OnDisable()
-    {
-        
-    }
+    //private void OnDisable()
+    //{
+    //    m_ButtonAttackLeftMouse.Disable();
+    //    m_ButtonAttackLeftMouse.performed -= OnPerformedAttackLeftMouse;
+    //    m_ButtonAttackLeftMouse.canceled -= OnCancelAttackLeftMouse;
+    //    m_ButtonAttackRightMouse.Disable();
+    //    m_ButtonAttackRightMouse.performed -= OnPerformedAttackRightMouse;
+    //    m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
+    //}
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
-
-    }    
+        m_IsPressRightMouse = false;
+    }
 
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
         m_IsPressRightMouse = true;
-        PlayerManager.instance.playerAnim.GetAnimator().Play("Heavy Attack");
+        if (!PlayerManager.instance.playerAnim.GetAnimator().GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
+        {
+            PlayerManager.instance.playerAnim.GetAnimator().Play("Heavy Attack");
+        }
+        //PlayerManager.instance.playerAnim.GetAnimator().Play("Heavy Attack");
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
-    }    
+    }
 
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
         m_IsPressLeftMouse = true;
-        if(m_IsPressLeftMouse && m_AttackAnimIndex < m_AttackAnimStringToHash.Length)
+        if (m_IsPressLeftMouse && m_AttackAnimIndex < m_AttackAnimStringToHash.Length)
         {
             PlayerManager.instance.playerAnim.GetAnimator().Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
             PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
@@ -78,5 +87,5 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.Disable();
     }
     public int GetPlayerDamage() => m_PlayerDamage;
-       
+
 }
