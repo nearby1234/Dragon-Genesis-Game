@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -41,7 +42,7 @@ public class PlayerManager : MonoBehaviour
         if (playerHeal.GetPlayerDeath())
         {
             playerDamage.DegreeEventClickMouse();
-            playerAnim.GetAnimator().enabled = false;
+            StartCoroutine(DelayHideAnimator());
             return;
         }
         switch (m_PlayerState)
@@ -73,14 +74,22 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleIdleState()
     {
+        
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
         playerCamera.RotationPlayer();
-        //playerDodge.Dodge();
         playerCasting.Casting();
+        
+
     }
     private void HandleAttackState()
     {
         playerDamage.Attack();
+    }
+
+    IEnumerator DelayHideAnimator()
+    {
+        yield return new WaitForSeconds(3f);
+        playerAnim.GetAnimator().enabled = false;
     }
 }
