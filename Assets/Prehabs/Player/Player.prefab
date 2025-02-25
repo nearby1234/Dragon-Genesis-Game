@@ -1523,6 +1523,9 @@ GameObject:
   - component: {fileID: 3460331695137001255}
   - component: {fileID: 2079011301511152358}
   - component: {fileID: 3210564381004821764}
+  - component: {fileID: 7139644548150101457}
+  - component: {fileID: 8433494335056789097}
+  - component: {fileID: 247066328539002933}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1561,7 +1564,7 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 2255221d850daf642981c1a4eedf85a1, type: 3}
   m_Controller: {fileID: 9100000, guid: ef6403663453e6a4cb106814a81e72b4, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
@@ -1620,7 +1623,7 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 1.8
+  m_Height: 1.65
   m_Radius: 0.15
   m_SlopeLimit: 45
   m_StepOffset: 0.3
@@ -1655,8 +1658,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   inputVector: {x: 0, y: 0}
-  velovity: {x: 0, y: 0, z: 0}
   smoothInputVector: {x: 0, y: 0}
+  velocity: {x: 0, y: 0, z: 0}
   characterController: {fileID: 0}
   m_SpeedMove: 1
   m_CurrentSpeed: 0
@@ -1686,6 +1689,7 @@ MonoBehaviour:
   m_JoggingSpeed: 0.6
   m_RunSpeed: 1
   m_SpeedBlendTree: 0
+  m_TurnSpeed: 20
 --- !u!114 &4969444613473582986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1770,13 +1774,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2473598755384956896}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bea5cc8c25cef8244801fa3472eb9e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TurnSpeed: 15
-  Camera: {fileID: 0}
 --- !u!114 &6873567481054794363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1878,8 +1880,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f0ec64cd0cdef469e05e45b1188ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerHeal: 5
+  m_PlayerHeal: 100
   m_IsPlayerDeath: 0
+  m_IsDamaging: 0
 --- !u!114 &3210564381004821764
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1892,8 +1895,100 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2b253292ea9094fad5fbe2c5b01727, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ButtonDodge: 118
   m_IsPressDodge: 0
+  dodgeAction:
+    m_Name: Dodge
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: c12beb03-36da-43ab-bcf2-8ebf83ab4803
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 335a3338-bd52-4b8a-9e21-df6ed1da2970
+      m_Path: <Keyboard>/v
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Dodge
+      m_Flags: 0
+    m_Flags: 0
+--- !u!54 &7139644548150101457
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!136 &8433494335056789097
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.15
+  m_Height: 1.8
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.88, z: 0}
+--- !u!114 &247066328539002933
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6c5336493498cd4bba8f252935e72fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LockOnCamera: {fileID: 0}
+  m_FreeLookCamera: {fileID: 0}
+  m_Radius: 25
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 384
+  m_LockOnIconPrefab: {fileID: 5166776256785882063, guid: 128b8236643807343b5436c33d735217, type: 3}
+  Camera: {fileID: 0}
+  canvas: {fileID: 0}
+  m_ValueBoss: 0.04
+  m_ValueCreep: 0.15
+  m_IsLockOn: 0
+  nearbyEnemies: []
+  updateInterval: 0.5
 --- !u!1 &2483095079543067042
 GameObject:
   m_ObjectHideFlags: 0
@@ -3929,12 +4024,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5724112330413665048}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f48e654bd925b541a014a3d18928638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
+  m_HitPrehabs: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
 --- !u!136 &3378524920145986603
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -3954,7 +4050,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05
+  m_Radius: 0.09
   m_Height: 1.290623
   m_Direction: 1
   m_Center: {x: 0, y: 1.0300093, z: -0.01}

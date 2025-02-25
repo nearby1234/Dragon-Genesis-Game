@@ -5,7 +5,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyHeal))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(RandomNavMeshMovement))]
-[RequireComponent(typeof(EnemyDetecPlayer))]
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour
 {
@@ -13,7 +12,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private EnemyHeal enemyHeal;
     [SerializeField] private NavMeshAgent agent;
     [SerializeField] private RandomNavMeshMovement randomNavMeshMovement;
-    [SerializeField] private EnemyDetecPlayer enemyDetecPlayer;
+    [SerializeField] private BaseEnemyDetecPlayer enemyDetecPlayer;
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
 
@@ -23,7 +22,7 @@ public class EnemyController : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         randomNavMeshMovement = GetComponent<RandomNavMeshMovement>();
         enemyHeal = GetComponent<EnemyHeal>();
-        enemyDetecPlayer = GetComponent<EnemyDetecPlayer>();
+        enemyDetecPlayer = GetComponent<BaseEnemyDetecPlayer>();
         enemyCollider = GetComponentInChildren<Collider>();
     }
     void Start()
@@ -35,7 +34,7 @@ public class EnemyController : MonoBehaviour
         if (PlayerManager.instance.playerHeal.GetPlayerDeath())
         {
             agent.isStopped = true;
-            animator.SetBool("Attack",false);
+            enemyDetecPlayer.ResetAttackAnimation();
             return;
         }
         if (enemyHeal.IsEnemyDead())
@@ -50,7 +49,11 @@ public class EnemyController : MonoBehaviour
     public NavMeshAgent GetNavMeshAgent() => agent;
     public RandomNavMeshMovement GetrandomNavMeshMovement() => randomNavMeshMovement;
     public EnemyHeal GetEnemyHeal() => enemyHeal;
-    public EnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
+    public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO() => enemyStatSO;
     public Collider GetCollider => enemyCollider;
+    private void ReturnWhenPlayerDeath()
+    {
+
+    }    
 }

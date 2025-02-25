@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Sword
   - Creep
+  - Ground
   layers:
   - Default
   - TransparentFX
@@ -14,8 +15,8 @@ TagManager:
   - Water
   - UI
   - Ground
-  - 
-  - 
+  - Creep
+  - Boss
   - 
   - 
   - 

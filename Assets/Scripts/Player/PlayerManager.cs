@@ -77,7 +77,7 @@ public class PlayerManager : MonoBehaviour
         
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
-        playerCamera.RotationPlayer();
+        //playerCamera.RotationPlayer();
         playerCasting.Casting();
         
 

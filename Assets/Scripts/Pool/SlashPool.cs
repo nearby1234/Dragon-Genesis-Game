@@ -5,7 +5,7 @@ public class SlashPool : MonoBehaviour
 {
     public static SlashPool instance;
     [SerializeField] private Queue<GameObject> pool;
-    [SerializeField] private int m_PoolCount = 3;
+    [SerializeField] private int m_PoolCount;
     [SerializeField] private GameObject m_Slash;
 
     private void Awake()

@@ -5,8 +5,10 @@ public class EnemyCollision : MonoBehaviour
 {
     [SerializeField] private int m_EnemyDamage;
     [SerializeField] private GameObject m_BloodPrehabs;
+    [SerializeField] private GameObject m_HitPrehabs;
     [SerializeField] private EnemyStatSO m_EnemyStatSO;
-
+    [SerializeField] private float lastHitTime;
+    [SerializeField] private float hitCooldown = 0.1f;
     private void Start()
     {
         m_EnemyDamage = m_EnemyStatSO.damage;
@@ -18,21 +20,20 @@ public class EnemyCollision : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.CompareTag("Sword"))
-        {
-            if (enemyController.GetEnemyHeal().IsEnemyDead()) return; // kiểm tra trạng thái của enemy
-            if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
-            enemyController.GetEnemyHeal().ReducePlayerHealth(PlayerManager.instance.playerDamage.GetPlayerDamage());
-        }
         if (other.CompareTag("Player"))
         {
             if (PlayerManager.instance.playerHeal.m_IsDamaging == false)
             {
                 PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage);
-            }    
+            }
 
-            Vector3 hitPoint = other.ClosestPoint(transform.position);
-            GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPoint, Quaternion.identity);
+            if (Time.time - lastHitTime > hitCooldown)
+            {
+                lastHitTime = Time.time;
+
+                Vector3 hitPoint = other.ClosestPoint(transform.position);
+                Instantiate(m_BloodPrehabs, hitPoint, Quaternion.identity);
+            }
         }
     }
 }
