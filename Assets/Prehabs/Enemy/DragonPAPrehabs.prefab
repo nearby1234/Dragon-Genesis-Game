@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 4284089634210404110}
   m_Layer: 7
   m_Name: Body
-  m_TagString: Untagged
+  m_TagString: Creep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -524,7 +524,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemyDamage: 0
   m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
-  m_HitPrehabs: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
   m_EnemyStatSO: {fileID: 11400000, guid: 827a2eb0a66503543a1f5fe3c8f7d6c8, type: 2}
   lastHitTime: 0
   hitCooldown: 0.1
@@ -1237,7 +1236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7765746994098836329
 Transform:
   m_ObjectHideFlags: 0
@@ -1375,7 +1374,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 0
-  m_IsKinematic: 0
+  m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0

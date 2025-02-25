@@ -5,7 +5,6 @@ public class EnemyCollision : MonoBehaviour
 {
     [SerializeField] private int m_EnemyDamage;
     [SerializeField] private GameObject m_BloodPrehabs;
-    [SerializeField] private GameObject m_HitPrehabs;
     [SerializeField] private EnemyStatSO m_EnemyStatSO;
     [SerializeField] private float lastHitTime;
     [SerializeField] private float hitCooldown = 0.1f;
