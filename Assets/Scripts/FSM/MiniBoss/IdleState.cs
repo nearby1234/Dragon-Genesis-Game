@@ -9,17 +9,19 @@ public class IdleState : BaseState
 
     public override void Enter()
     {
-        Debug.Log("Enter Idle");
+        Debug.Log($"Enter {GetType().Name}");
         miniBoss.state = ENEMYSTATE.IDLE;
-
+        miniBoss.NavmeshAgent.isStopped = true;
+        miniBoss.Animator.SetBool("IsMove", false);
     }
 
     public override void Executed()
     {
-       if(miniBoss.PlayerInRange())
+        if (miniBoss.PlayerInRange())
         {
-            fSM.ChangeState(new WalkState(miniBoss,fSM));
-        }    
+            fSM.ChangeState(new WalkState(miniBoss, fSM));
+        }
+      
     }
 
     public override void Exit()

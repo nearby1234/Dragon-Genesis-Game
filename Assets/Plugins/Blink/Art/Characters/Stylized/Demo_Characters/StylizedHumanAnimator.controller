@@ -317,7 +317,7 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -4681929437568063807}
-    m_Position: {x: 330, y: -130, z: 0}
+    m_Position: {x: 320, y: -130, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5645898114552103338}
     m_Position: {x: 330, y: -20, z: 0}
@@ -326,7 +326,7 @@ AnimatorStateMachine:
     m_Position: {x: 330, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3014033530292565666}
-    m_Position: {x: 710, y: -210, z: 0}
+    m_Position: {x: 700, y: -210, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -997,7 +997,7 @@ BlendTree:
   m_Name: Walk
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 8562ff966549f6f40b3d478d496646e0, type: 2}
+    m_Motion: {fileID: 7400000, guid: a800501111a782a49bed40071d6309c6, type: 3}
     m_Threshold: 0
     m_Position: {x: 0, y: -0.3}
     m_TimeScale: 1
@@ -1007,7 +1007,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: 7a9fd75120aaed74bb05a8e558bafdce, type: 2}
     m_Threshold: 0.125
-    m_Position: {x: -0.3, y: -0.3}
+    m_Position: {x: -0.2, y: -0.2}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveX
@@ -1015,7 +1015,7 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: 7400000, guid: e0e24dbd2a64b7e428ada295d7259ec2, type: 2}
     m_Threshold: 0.25
-    m_Position: {x: 0.3, y: -0.3}
+    m_Position: {x: 0.2, y: -0.2}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveX
@@ -1045,17 +1045,17 @@ BlendTree:
     m_DirectBlendParameter: MoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b6d0f01614dedfb4a9b9e9c91155279d, type: 2}
+    m_Motion: {fileID: 7400000, guid: 45baea34d4099cb4ea602eaf48c6533b, type: 2}
     m_Threshold: 0.75
-    m_Position: {x: 0.3, y: 0.3}
+    m_Position: {x: 0.2, y: 0.2}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: 45baea34d4099cb4ea602eaf48c6533b, type: 2}
+    m_Motion: {fileID: 7400000, guid: b6d0f01614dedfb4a9b9e9c91155279d, type: 2}
     m_Threshold: 0.875
-    m_Position: {x: -0.3, y: 0.3}
+    m_Position: {x: -0.2, y: 0.2}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: MoveX

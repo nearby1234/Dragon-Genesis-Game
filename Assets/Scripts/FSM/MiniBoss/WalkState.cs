@@ -9,13 +9,25 @@ public class WalkState : BaseState
 
     public override void Enter()
     {
+        Debug.Log($"Enter {GetType().Name}");
         miniBoss.state = ENEMYSTATE.WALK;
-        miniBoss.Animator.Play("WalkFWD");
+        miniBoss.Animator.SetBool("IsMove", true);
+        miniBoss.NavmeshAgent.isStopped = false;
     }
 
     public override void Executed()
     {
         miniBoss.MoveToPlayer();
+        if (!miniBoss.PlayerInRange())
+        {
+            this.fSM.ChangeState(new IdleState(miniBoss, fSM));
+        }
+        if (!miniBoss.NavmeshAgent.pathPending &&
+             miniBoss.NavmeshAgent.remainingDistance <= miniBoss.NavmeshAgent.stoppingDistance)
+        {
+            this.fSM.ChangeState(new AttackState(miniBoss, fSM));
+        }
+
     }
 
     public override void Exit()

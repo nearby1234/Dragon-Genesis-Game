@@ -72,7 +72,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleIdleState()
     {
-        
+
         //playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
         //playerCamera.RotationPlayer();
