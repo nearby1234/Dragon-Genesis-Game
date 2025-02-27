@@ -1,9 +1,15 @@
 using UnityEngine;
-using UnityEngine.InputSystem.iOS;
 
 public class MiniBoss : MonoBehaviour
 {
+    public enum ENEMYSTATE
+    {
+        DEFAULT =0,
+        IDLE,
+        WALK,
+    }
     private FSM fSM;
+    public ENEMYSTATE state;
     [SerializeField] private float m_Range;
     [SerializeField] private float m_Speed;
 

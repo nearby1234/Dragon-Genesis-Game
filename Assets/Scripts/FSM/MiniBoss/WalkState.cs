@@ -1,4 +1,5 @@
 using UnityEngine;
+using static MiniBoss;
 
 public class WalkState : BaseState
 {
@@ -8,6 +9,7 @@ public class WalkState : BaseState
 
     public override void Enter()
     {
+        miniBoss.state = ENEMYSTATE.WALK;
         miniBoss.Animator.Play("WalkFWD");
     }
 

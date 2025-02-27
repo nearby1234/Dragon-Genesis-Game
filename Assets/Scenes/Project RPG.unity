@@ -94,7 +94,7 @@ LightmapSettings:
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
   m_LightingDataAsset: {fileID: 20201, guid: 0000000000000000f000000000000000, type: 0}
-  m_LightingSettings: {fileID: 0}
+  m_LightingSettings: {fileID: 4890085278179872738, guid: daa7d20115a22e0499ad758b2529b377, type: 2}
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -3351,6 +3351,10 @@ PrefabInstance:
     - target: {fileID: 1802286859466036053, guid: 233c0a83f1244058bd17d227df2a2637, type: 3}
       propertyPath: m_Name
       value: BlackKnightPADefault
+      objectReference: {fileID: 0}
+    - target: {fileID: 1802286859466036053, guid: 233c0a83f1244058bd17d227df2a2637, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1802286859466067829, guid: 233c0a83f1244058bd17d227df2a2637, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8103,6 +8107,14 @@ PrefabInstance:
     - target: {fileID: 6899781153833532113, guid: 9753f860076a70942b7417f548ddde2a, type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.07
+      objectReference: {fileID: 0}
+    - target: {fileID: 6899781154056776009, guid: 9753f860076a70942b7417f548ddde2a, type: 3}
+      propertyPath: m_Lightmapping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6899781154056776011, guid: 9753f860076a70942b7417f548ddde2a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -15161,7 +15173,7 @@ Terrain:
   m_HeightmapPixelError: 5
   m_SplatMapDistance: 10
   m_HeightmapMinimumLODSimplification: 0
-  m_HeightmapMaximumLOD: 0
+  m_HeightmapMaximumLOD: 4
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 1
@@ -16854,6 +16866,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5349853094713900932, guid: 3657e241574237049b72dc96ff528963, type: 3}
+      propertyPath: m_Lightmapping
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5349853094713900934, guid: 3657e241574237049b72dc96ff528963, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -17380,6 +17400,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633bde01bce28cd4eaaf0cb6cf56dead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  state: 0
   m_Range: 5
   m_Speed: 1.5
   animator: {fileID: 0}
@@ -19619,6 +19640,42 @@ PrefabInstance:
       propertyPath: m_FreeLookCamera
       value: 
       objectReference: {fileID: 1723113373}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonSwap
+      value: 114
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_SpeedMove
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: CurrentSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: speedMultiplier
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonLeftShift.m_Name
+      value: Button Left Shift
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonLeftShift.m_SingletonActionBindings.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonLeftShift.m_SingletonActionBindings.Array.data[0].m_Id
+      value: 14b99d26-e724-401c-b70c-91641105df63
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonLeftShift.m_SingletonActionBindings.Array.data[0].m_Path
+      value: <Keyboard>/leftShift
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: buttonLeftShift.m_SingletonActionBindings.Array.data[0].m_Action
+      value: Button Left Shift
+      objectReference: {fileID: 0}
     - target: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Name
       value: Player

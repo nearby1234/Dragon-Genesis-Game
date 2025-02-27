@@ -16,7 +16,6 @@ public class PlayerManager : MonoBehaviour
     public PlayerDamage playerDamage;
     public PlayerAnim playerAnim;
     public PlayerHeal playerHeal;
-    public PlayerCamera playerCamera;
     public PlayerCasting playerCasting;
     public PlayerDodge playerDodge;
     public EffectSpawn effectSpawn;
@@ -68,14 +67,13 @@ public class PlayerManager : MonoBehaviour
         effectSpawn = GetComponent<EffectSpawn>();
         playerDamage = GetComponent<PlayerDamage>();
         playerHeal = GetComponent<PlayerHeal>();
-        playerCamera = GetComponent<PlayerCamera>();
         playerCasting = GetComponent<PlayerCasting>();
         playerDodge = GetComponent<PlayerDodge>();
     }
     private void HandleIdleState()
     {
         
-        playerMove.PlayerMovement();
+        //playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
         //playerCamera.RotationPlayer();
         playerCasting.Casting();
@@ -84,7 +82,7 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleAttackState()
     {
-        playerDamage.Attack();
+        //playerDamage.Attack();
     }
 
     IEnumerator DelayHideAnimator()

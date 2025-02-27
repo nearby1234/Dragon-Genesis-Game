@@ -1517,7 +1517,6 @@ GameObject:
   - component: {fileID: 4969444613473582986}
   - component: {fileID: 6545003383383865181}
   - component: {fileID: 307520791741602282}
-  - component: {fileID: 2218950396267953915}
   - component: {fileID: 6873567481054794363}
   - component: {fileID: 801735765996393815}
   - component: {fileID: 3460331695137001255}
@@ -1660,10 +1659,9 @@ MonoBehaviour:
   inputVector: {x: 0, y: 0}
   smoothInputVector: {x: 0, y: 0}
   velocity: {x: 0, y: 0, z: 0}
-  characterController: {fileID: 0}
-  m_SpeedMove: 1
-  m_CurrentSpeed: 0
+  animator: {fileID: 0}
   smoothTime: 0.1
+  speedMultiplier: 2
   IsPressLeftShift: 0
   isMove: 0
   m_IsPressButtonSwap: 0
@@ -1767,18 +1765,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
---- !u!114 &2218950396267953915
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2473598755384956896}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bea5cc8c25cef8244801fa3472eb9e38, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6873567481054794363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1977,7 +1963,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_LockOnCamera: {fileID: 0}
   m_FreeLookCamera: {fileID: 0}
-  m_Radius: 25
+  m_Radius: 10
   m_LayerMask:
     serializedVersion: 2
     m_Bits: 384
@@ -4024,13 +4010,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5724112330413665048}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9f48e654bd925b541a014a3d18928638, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
-  m_HitPrehabs: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
+  m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
 --- !u!136 &3378524920145986603
 CapsuleCollider:
   m_ObjectHideFlags: 0

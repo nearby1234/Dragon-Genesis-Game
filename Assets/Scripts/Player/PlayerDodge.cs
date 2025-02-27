@@ -1,32 +1,44 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 public class PlayerDodge : MonoBehaviour
 {
-    [SerializeField] private bool m_IsPressDodge;
+    [SerializeField] private float dodgeDuration = 0.5f; // Th?i gian dodge t?i thi?u
     [SerializeField] private InputAction dodgeAction;
+    private bool isDodging = false;
 
     private void Start()
     {
         dodgeAction.Enable();
-        dodgeAction.performed += DodgeAction_performed; ;
-        dodgeAction.canceled += DodgeAction_canceled;
+        dodgeAction.performed += DodgeAction_performed;
     }
 
     private void OnDestroy()
     {
         dodgeAction.performed -= DodgeAction_performed;
-        dodgeAction.canceled -= DodgeAction_canceled;
         dodgeAction.Disable();
     }
+
     private void DodgeAction_performed(InputAction.CallbackContext obj)
     {
-        m_IsPressDodge = true;
-        PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", true);
+        // N?u ?ang không dodge, b?t ??u dodge
+        if (!isDodging)
+        {
+            StartCoroutine(DodgeCoroutine());
+        }
     }
-    private void DodgeAction_canceled(InputAction.CallbackContext obj)
+    private IEnumerator DodgeCoroutine()
     {
-        m_IsPressDodge = false;
+        isDodging = true;
+        // Set tr?ng thái dodge cho Animator ?? OnAnimatorMove nhân v?i dodgeMultiplier
+        PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", true);
+
+        // Ch? trong kho?ng th?i gian dodgeDuration (?i?u ch?nh theo dodge animation)
+        yield return new WaitForSeconds(dodgeDuration);
+
+        // K?t thúc dodge
         PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", false);
+        isDodging = false;
     }
 }

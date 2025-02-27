@@ -1,4 +1,5 @@
 using UnityEngine;
+using static MiniBoss;
 
 public class IdleState : BaseState
 {
@@ -9,6 +10,8 @@ public class IdleState : BaseState
     public override void Enter()
     {
         Debug.Log("Enter Idle");
+        miniBoss.state = ENEMYSTATE.IDLE;
+
     }
 
     public override void Executed()
