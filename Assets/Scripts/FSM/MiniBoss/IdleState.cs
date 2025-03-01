@@ -11,21 +11,22 @@ public class IdleState : BaseState
     {
         Debug.Log($"Enter {GetType().Name}");
         miniBoss.state = ENEMYSTATE.IDLE;
-        miniBoss.NavmeshAgent.isStopped = true;
-        miniBoss.Animator.SetBool("IsMove", false);
+        miniBoss.GetRandomPointInVolume();
     }
 
     public override void Executed()
     {
-        if (miniBoss.PlayerInRange())
-        {
-            fSM.ChangeState(new WalkState(miniBoss, fSM));
-        }
-      
+        fSM.ChangeState(new WalkState(miniBoss, fSM));
+
+        //if (miniBoss.PlayerInRange())
+        //{
+        //    fSM.ChangeState(new WalkState(miniBoss, fSM));
+        //}
+
     }
 
     public override void Exit()
     {
-        Debug.Log("Exit Idle");
+        Debug.Log($"Exit {GetType().Name}");
     }
 }

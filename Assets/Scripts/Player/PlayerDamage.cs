@@ -14,10 +14,12 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int m_PlayerDamage;
 
     private Animator playerAnimator; // Animator của player
+    private PlayerMove playerMove;   // Tham chiếu đến script PlayerMove
 
     void Start()
     {
         playerAnimator = PlayerManager.instance.playerAnim.GetAnimator();
+        playerMove = GetComponent<PlayerMove>();
 
         // Khởi tạo danh sách animation hash
         m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
@@ -43,44 +45,71 @@ public class PlayerDamage : MonoBehaviour
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
         m_IsPressRightMouse = true;
+
+        // Vô hiệu hóa di chuyển khi bắt đầu attack
+        playerMove.canMove = false;
+
+        // Nếu animation Heavy Attack chưa đang chạy thì play nó
         if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
         {
             playerAnimator.Play("Heavy Attack");
         }
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
+
+        // Khởi chạy coroutine để chờ khi attack kết thúc
+        StartCoroutine(WaitForAttackFinish());
     }
 
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
         m_IsPressLeftMouse = true;
 
-        if (m_IsPressLeftMouse)
+        // Nếu animation attack hiện tại vẫn chưa hoàn thành, bỏ qua việc kích hoạt lại attack
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f &&
+            playerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
-            // Kiểm tra xem animation hiện tại đã kết thúc chưa
-            if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f &&
-                playerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
-            {
-                return; // Nếu animation trước chưa xong thì không play animation mới
-            }
-
-            // Play animation dựa trên index
-            playerAnimator.Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
-            PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
-
-            // Tăng chỉ số để chuyển sang animation tiếp theo
-            m_AttackAnimIndex++;
-
-            // Nếu đã hết animation trong chuỗi thì reset lại về animation đầu tiên
-            if (m_AttackAnimIndex >= m_AttackAnimStringToHash.Length)
-            {
-                m_AttackAnimIndex = 0;
-            }
+            return;
         }
+
+        // Vô hiệu hóa di chuyển khi bắt đầu attack
+        playerMove.canMove = false;
+
+        // Play attack animation theo index hiện tại
+        playerAnimator.Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
+        PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
+
+        // Tăng index để chuyển sang animation tiếp theo, nếu có
+        m_AttackAnimIndex++;
+        if (m_AttackAnimIndex >= m_AttackAnimStringToHash.Length)
+        {
+            m_AttackAnimIndex = 0;
+        }
+
+        // Khởi chạy coroutine để chờ khi attack kết thúc
+        StartCoroutine(WaitForAttackFinish());
     }
 
     private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
     {
         m_IsPressLeftMouse = false;
+    }
+
+    // Coroutine này sẽ đợi cho đến khi animation attack kết thúc,
+    // sau đó bật lại khả năng di chuyển của player
+    private IEnumerator WaitForAttackFinish()
+    {
+        yield return new WaitUntil(() =>
+        {
+            AnimatorStateInfo state = playerAnimator.GetCurrentAnimatorStateInfo(0);
+            // Chờ cho đến khi animation có tag "Attack" hoàn thành (normalizedTime >= 1)
+            // hoặc không còn ở trạng thái attack nữa
+            return (!state.IsTag("Attack") || state.normalizedTime >= 1.0f);
+        });
+
+        // Bật lại di chuyển sau khi attack kết thúc
+        playerMove.canMove = true;
+        // Optionally, chuyển trạng thái player về idle
+        PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
     }
 
     public void DegreeEventClickMouse()

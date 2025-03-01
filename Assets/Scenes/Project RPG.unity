@@ -9376,12 +9376,12 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 2.7800002, y: 1.9510001, z: 2.9670002}
-  m_MoveThreshold: 0.1
+  m_Extents: {x: 4.05, y: 1.9510001, z: 2.9670002}
+  m_MoveThreshold: 1.87
   m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0.011000001, y: 0.395, z: 0}
-  m_TimeToStationary: 0.5
+  m_TimeToStationary: 0.3
 --- !u!1 &722809536 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 9069872863127178892, guid: 2c4ada107f11c85428cf29b036419497, type: 3}
@@ -13359,7 +13359,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8114218300150996689, guid: 79b8b5eaf78e2f44b8fff131ecaab943, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -52.800003
+      value: -47.42
       objectReference: {fileID: 0}
     - target: {fileID: 8114218300150996689, guid: 79b8b5eaf78e2f44b8fff131ecaab943, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13417,7 +13417,7 @@ NavMeshObstacle:
   m_Enabled: 1
   serializedVersion: 3
   m_Shape: 1
-  m_Extents: {x: 2.7800002, y: 1.9510001, z: 2.9670002}
+  m_Extents: {x: 2.275, y: 1.505, z: 2.585}
   m_MoveThreshold: 0.1
   m_Carve: 1
   m_CarveOnlyStationary: 1
@@ -20784,7 +20784,7 @@ Terrain:
   m_HeightmapPixelError: 1
   m_SplatMapDistance: 806
   m_HeightmapMinimumLODSimplification: 0
-  m_HeightmapMaximumLOD: 3
+  m_HeightmapMaximumLOD: 0
   m_ShadowCastingMode: 2
   m_DrawHeightmap: 1
   m_DrawInstanced: 1
@@ -23283,8 +23283,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   m_Range: 13
-  m_Speed: 1.5
   m_Distacne: 0
+  stopDistance: 0
+  surface: {fileID: 1252711310}
   animator: {fileID: 0}
   m_Player: {fileID: 0}
   m_NavmeshAgent: {fileID: 0}
@@ -23298,7 +23299,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 287145453
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 1.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -28042,7 +28043,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_SpeedMove
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: CurrentSpeed
@@ -28051,6 +28052,10 @@ PrefabInstance:
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: speedMultiplier
       value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_IsPressButtonSwap
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: buttonLeftShift.m_Name
@@ -28075,6 +28080,10 @@ PrefabInstance:
     - target: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4245044671385147647, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: WeaponManager

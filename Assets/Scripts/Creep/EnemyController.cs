@@ -4,14 +4,14 @@ using UnityEngine.AI;
 
 [RequireComponent(typeof(EnemyHeal))]
 [RequireComponent(typeof(NavMeshAgent))]
-[RequireComponent(typeof(RandomNavMeshMovement))]
+[RequireComponent(typeof(RandomNavMeshMove))]
 [RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private EnemyHeal enemyHeal;
     [SerializeField] private NavMeshAgent agent;
-    [SerializeField] private RandomNavMeshMovement randomNavMeshMovement;
+    [SerializeField] private RandomNavMeshMove randomNavMeshMovement;
     [SerializeField] private BaseEnemyDetecPlayer enemyDetecPlayer;
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
@@ -20,7 +20,7 @@ public class EnemyController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         agent = GetComponent<NavMeshAgent>();
-        randomNavMeshMovement = GetComponent<RandomNavMeshMovement>();
+        randomNavMeshMovement = GetComponent<RandomNavMeshMove>();
         enemyHeal = GetComponent<EnemyHeal>();
         enemyDetecPlayer = GetComponent<BaseEnemyDetecPlayer>();
         enemyCollider = GetComponentInChildren<Collider>();
@@ -47,7 +47,7 @@ public class EnemyController : MonoBehaviour
     }
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetNavMeshAgent() => agent;
-    public RandomNavMeshMovement GetrandomNavMeshMovement() => randomNavMeshMovement;
+    public RandomNavMeshMove GetrandomNavMeshMovement() => randomNavMeshMovement;
     public EnemyHeal GetEnemyHeal() => enemyHeal;
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO() => enemyStatSO;

@@ -11,22 +11,24 @@ public class WalkState : BaseState
     {
         Debug.Log($"Enter {GetType().Name}");
         miniBoss.state = ENEMYSTATE.WALK;
+        miniBoss.EnemyMoveTarget();
         miniBoss.Animator.SetBool("IsMove", true);
-        miniBoss.NavmeshAgent.isStopped = false;
+        //miniBoss.NavmeshAgent.isStopped = false;
     }
 
     public override void Executed()
     {
-        miniBoss.MoveToPlayer();
-        if (!miniBoss.PlayerInRange())
-        {
-            this.fSM.ChangeState(new IdleState(miniBoss, fSM));
-        }
-        if (!miniBoss.NavmeshAgent.pathPending &&
-             miniBoss.NavmeshAgent.remainingDistance <= miniBoss.NavmeshAgent.stoppingDistance)
-        {
-            this.fSM.ChangeState(new AttackState(miniBoss, fSM));
-        }
+        miniBoss.EnemyMoveTarget();
+        //miniBoss.MoveToPlayer();
+        //if (!miniBoss.PlayerInRange())
+        //{
+        //    this.fSM.ChangeState(new IdleState(miniBoss, fSM));
+        //}
+        //if (!miniBoss.NavmeshAgent.pathPending &&
+        //     miniBoss.NavmeshAgent.remainingDistance <= miniBoss.NavmeshAgent.stoppingDistance)
+        //{
+        //    //this.fSM.ChangeState(new AttackState(miniBoss, fSM));
+        //}
 
     }
 

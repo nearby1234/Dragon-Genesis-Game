@@ -1,15 +1,18 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Collections;
 
 public class PlayerDodge : MonoBehaviour
 {
-    [SerializeField] private float dodgeDuration = 0.5f; // Th?i gian dodge t?i thi?u
+    [SerializeField] private float dodgeDuration = 0.5f; // Thời gian dodge tối thiểu
     [SerializeField] private InputAction dodgeAction;
     private bool isDodging = false;
 
+    private PlayerMove playerMove;
+
     private void Start()
     {
+        playerMove = PlayerManager.instance.playerMove;
         dodgeAction.Enable();
         dodgeAction.performed += DodgeAction_performed;
     }
@@ -22,23 +25,28 @@ public class PlayerDodge : MonoBehaviour
 
     private void DodgeAction_performed(InputAction.CallbackContext obj)
     {
-        // N?u ?ang kh�ng dodge, b?t ??u dodge
         if (!isDodging)
         {
             StartCoroutine(DodgeCoroutine());
         }
     }
+
     private IEnumerator DodgeCoroutine()
     {
         isDodging = true;
-        // Set tr?ng th�i dodge cho Animator ?? OnAnimatorMove nh�n v?i dodgeMultiplier
+
+        // Vô hiệu hóa di chuyển khi dodge bắt đầu
+        playerMove.canMove = false;
+
+        // Set trạng thái dodge cho Animator
         PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", true);
 
-        // Ch? trong kho?ng th?i gian dodgeDuration (?i?u ch?nh theo dodge animation)
+        // Chờ trong khoảng thời gian dodgeDuration
         yield return new WaitForSeconds(dodgeDuration);
 
-        // K?t th�c dodge
+        // Kết thúc dodge: reset trạng thái của Animator và bật lại di chuyển
         PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsDodge", false);
+        playerMove.canMove = true;
         isDodging = false;
     }
 }
