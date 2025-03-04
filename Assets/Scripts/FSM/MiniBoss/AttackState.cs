@@ -9,18 +9,18 @@ public class AttackState : BaseState
 
     public override void Enter()
     {
-        //Debug.Log($"Enter {GetType().Name}");
-        //miniBoss.state = ENEMYSTATE.ATTACK;
-        //miniBoss.Animator.Play("Attack02");
+        Debug.Log($"Enter {GetType().Name}");
+        miniBoss.state = ENEMYSTATE.ATTACK;
+        miniBoss.Animator.Play("Attack02");
     }
 
     public override void Executed()
     {
-        throw new System.NotImplementedException();
+        
     }
 
     public override void Exit()
     {
-        throw new System.NotImplementedException();
+        
     }
 }

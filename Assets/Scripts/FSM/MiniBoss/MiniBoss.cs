@@ -11,12 +11,15 @@ public class MiniBoss : MonoBehaviour
         IDLE,
         WALK,
         ATTACK,
+        DETEC,
+        RUN,
     }
     private FSM fSM;
     public ENEMYSTATE state;
     [SerializeField] private float m_Range;
     [SerializeField] private float m_Distacne;
     [SerializeField] private float stopDistance = 1f;
+    [SerializeField] private float m_RunSpeed;
     private Vector3 center;
     private Vector3 size;
 
@@ -28,6 +31,12 @@ public class MiniBoss : MonoBehaviour
 
     public Animator Animator => animator;
     public NavMeshAgent NavmeshAgent => m_NavmeshAgent;
+    public float Range => m_Range;
+    public float RunSpeed => m_RunSpeed;    
+
+    public float Distacne => m_Distacne;
+    public float StopDistance => stopDistance;
+    public GameObject Player => m_Player;
 
 
     private void Awake()
@@ -50,9 +59,9 @@ public class MiniBoss : MonoBehaviour
         fSM.Update();
     }
 
-    public bool PlayerInRange()
+    public bool PlayerInRange(float range)
     {
-        return (Vector3.Distance(this.transform.position, m_Player.transform.position) <= m_Range);
+        return (Vector3.Distance(this.transform.position, m_Player.transform.position) <= range);
     }
     public void MoveToPlayer()
     {
@@ -80,31 +89,24 @@ public class MiniBoss : MonoBehaviour
 
         return new Vector3(x, y, z);
     }
-    public void EnemyMoveTarget()
+    public bool IsMoveTarget()
     {
-        // Kiểm tra nếu đã tới đích
-        if (!m_NavmeshAgent.pathPending
+        return (!m_NavmeshAgent.pathPending
          && m_NavmeshAgent.remainingDistance <= m_NavmeshAgent.stoppingDistance
-        && m_NavmeshAgent.velocity.sqrMagnitude < 0.1f)
-        {
-            animator.SetBool("IsMove", false);
-            StartCoroutine(DelaySetDestination());
-        }
-    }
-
-    IEnumerator DelaySetDestination()
+        && m_NavmeshAgent.velocity.sqrMagnitude < 0.1f);
+    }    
+    public bool MoveTarget()
     {
-        yield return new WaitForSeconds(2f);
-
-        // Đảm bảo agent kích hoạt trước khi di chuyển
-        if (!m_NavmeshAgent.isActiveAndEnabled) yield break;
-
-        m_NavmeshAgent.isStopped = false;
-        MoveToRandomPosition();
-        animator.SetBool("IsMove", true);
+        return (!m_NavmeshAgent.pathPending && m_NavmeshAgent.remainingDistance <= m_NavmeshAgent.stoppingDistance);
     }
-
-
+    public Vector3 Distance()
+    {
+        return ( m_Player.transform.position - this.transform.position).normalized;
+    }    
+    public void ChangeStateCurrent(ENEMYSTATE state)
+    {
+        this.state = state;
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;

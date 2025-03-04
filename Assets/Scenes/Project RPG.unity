@@ -23284,7 +23284,8 @@ MonoBehaviour:
   state: 0
   m_Range: 13
   m_Distacne: 0
-  stopDistance: 0
+  stopDistance: 3.5
+  m_RunSpeed: 3.5
   surface: {fileID: 1252711310}
   animator: {fileID: 0}
   m_Player: {fileID: 0}
@@ -28043,7 +28044,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_SpeedMove
-      value: 2
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: CurrentSpeed
@@ -28051,7 +28052,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: speedMultiplier
-      value: 2.5
+      value: 4.79
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_IsPressButtonSwap
@@ -28129,6 +28130,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6873567481054794363, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_IsPressLeftMouse
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7457117346307106579, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Enabled
       value: 1
@@ -28137,6 +28142,10 @@ PrefabInstance:
       propertyPath: m_HitPrehabs
       value: 
       objectReference: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
+    - target: {fileID: 8891558968294154206, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
