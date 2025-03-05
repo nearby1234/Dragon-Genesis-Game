@@ -1,31 +1,35 @@
+﻿using System.Collections;
 using UnityEngine;
 using static MiniBoss;
 
 public class WalkState : BaseState
 {
-    public WalkState(MiniBoss MiniBoss, FSM FSM) : base(MiniBoss, FSM)
-    {
-    }
+    public WalkState(MiniBoss miniBoss, FSM fSM) : base(miniBoss, fSM) { }
 
     public override void Enter()
     {
-        Debug.Log($"Enter {GetType().Name}");
+        Debug.Log("Enter WalkState");
         miniBoss.ChangeStateCurrent(ENEMYSTATE.WALK);
         miniBoss.Animator.SetBool("IsMove", true);
-        miniBoss.MoveToRandomPosition();
     }
 
     public override void Executed()
     {
-        if(miniBoss.IsMoveTarget()) fSM.ChangeState(new IdleState(miniBoss, fSM));
-        if (miniBoss.PlayerInRange(miniBoss.Range))
+        // Nếu đã đến đích và chưa bắt đầu coroutine chuyển state
+        if (miniBoss.IsMoveWayPoint())
         {
-            fSM.ChangeState(new DetecState(miniBoss,fSM));
+            miniBoss.RequestStateTransition(ENEMYSTATE.IDLE);
+        }
+        else
+        {
+            if(miniBoss.PlayerInRange())
+            {
+                miniBoss.RequestStateTransition(ENEMYSTATE.DETEC);
+            }
         }
     }
-
     public override void Exit()
     {
-        Debug.Log("Exit Walk");
+        Debug.Log("Exit WalkState");
     }
 }

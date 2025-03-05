@@ -3,12 +3,12 @@ using UnityEngine;
 public abstract class BaseState
 {
     protected MiniBoss miniBoss;
-    protected FSM fSM;
+    protected FSM finiteSM;
 
-    public BaseState( MiniBoss MiniBoss, FSM FSM )
+    public BaseState( MiniBoss MiniBoss, FSM finiteSM )
     {
         this.miniBoss = MiniBoss;
-        this.fSM = FSM;
+        this.finiteSM = finiteSM;
     }
 
     public abstract void Enter();

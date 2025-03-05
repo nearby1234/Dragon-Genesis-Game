@@ -13,17 +13,17 @@ public class RunState : BaseState
         Debug.Log($"Enter {GetType().Name}");
         miniBoss.ChangeStateCurrent(ENEMYSTATE.RUN);
         miniBoss.Animator.SetBool("IsRun", true);
+        miniBoss.Animator.Play("Run");
         miniBoss.NavmeshAgent.speed = miniBoss.RunSpeed;
         miniBoss.NavmeshAgent.stoppingDistance = miniBoss.StopDistance;
     }
 
     public override void Executed()
     {
-        miniBoss.NavmeshAgent.SetDestination(miniBoss.Player.transform.position);
-        if(miniBoss.MoveTarget())
+        miniBoss.MoveToPlayer();
+        if(miniBoss.PlayerInStopRange())
         {
-            Debug.Log(miniBoss.MoveTarget());
-            fSM.ChangeState(new AttackState(miniBoss, fSM));
+            miniBoss.RequestStateTransition(ENEMYSTATE.ATTACK);
         }
 
     }

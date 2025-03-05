@@ -23283,13 +23283,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   state: 0
   m_Range: 13
-  m_Distacne: 0
-  stopDistance: 3.5
+  m_Distance: 0
+  m_AngularSpeed: 120
+  stopDistance: 4
   m_RunSpeed: 3.5
+  m_LateralDistance: 5
+  m_HasChosenLeftOrRight: 0
   surface: {fileID: 1252711310}
   animator: {fileID: 0}
   m_Player: {fileID: 0}
   m_NavmeshAgent: {fileID: 0}
+  AttackList:
+  - Attack01
+  - Attack02
 --- !u!195 &1782190994
 NavMeshAgent:
   m_ObjectHideFlags: 0
