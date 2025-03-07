@@ -16,6 +16,7 @@ public class RunState : BaseState
         miniBoss.Animator.Play("Run");
         miniBoss.NavmeshAgent.speed = miniBoss.RunSpeed;
         miniBoss.NavmeshAgent.stoppingDistance = miniBoss.StopDistance;
+        miniBoss.MoveToPlayer();
     }
 
     public override void Executed()

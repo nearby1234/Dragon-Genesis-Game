@@ -1,13 +1,15 @@
 ﻿using System.Collections;
-using System.Threading;
 using UnityEngine;
 using static MiniBoss;
 
 public class AttackState : BaseState
 {
     private float m_Timer;
-    private float m_AttackTime = 3f;
-    public AttackState(MiniBoss MiniBoss, FSM FSM) : base(MiniBoss, FSM)
+    private float m_AttackTime = 3f;         // Thời gian attack
+    private float m_RotationDelay = 0.5f;      // Khoảng delay sau attack trước khi xoay
+    private Quaternion lockedRotation;       // Lưu hướng ban đầu khi attack
+
+    public AttackState(MiniBoss miniBoss, FSM fsm) : base(miniBoss, fsm)
     {
     }
 
@@ -15,50 +17,46 @@ public class AttackState : BaseState
     {
         Debug.Log($"Enter {GetType().Name}");
         miniBoss.state = ENEMYSTATE.ATTACK;
-
-        //// Lưu hướng hiện tại của Boss khi bắt đầu tấn công
-        //lockedRotation = miniBoss.transform.rotation;
+        
+        // Lưu lại hướng hiện tại của Boss khi bắt đầu tấn công
+        lockedRotation = miniBoss.transform.rotation;
         miniBoss.NavmeshAgent.isStopped = true;
-        //// Chạy animation Attack
-        //miniBoss.Animator.Play("Attack02");
-        miniBoss.Attack();
-
+        // Chạy animation Attack
+        miniBoss.StartCoroutine(miniBoss.PlayAnimationAttack());
     }
 
     public override void Executed()
     {
         miniBoss.Rotation();
+        if(miniBoss.Distance()> miniBoss.StopDistance)
+        {
+            miniBoss.RequestStateTransition(ENEMYSTATE.DETEC);
+        }
+
         //m_Timer += Time.deltaTime;
-        //if(m_Timer >= m_AttackTime)
+
+        //if (m_Timer < m_AttackTime)
         //{
-           
-        //    m_Timer = 0;
+        //    // Trong suốt thời gian attack, giữ nguyên hướng ban đầu
+        //    miniBoss.transform.rotation = lockedRotation;
+        //}
+        //else if (m_Timer < m_AttackTime + m_RotationDelay)
+        //{
+        //    // Sau attack xong, chờ thêm delay - vẫn giữ nguyên hướng
+        //}
+        //else
+        //{
+        //    // Sau khi delay xong, cập nhật hướng xoay về phía player
+
+        //    // Nếu muốn reset cho lần attack tiếp theo:
+        //    lockedRotation = miniBoss.transform.rotation;
+        //    m_Timer = 0f;
         //}
         //Debug.Log(m_Timer);
-       //miniBoss.Rotation();
-
-        //// Giữ nguyên hướng trong suốt quá trình Attack
-        //miniBoss.transform.rotation = lockedRotation;
-
-        //if (miniBoss.Distance() > miniBoss.NavmeshAgent.stoppingDistance)
-        //{
-        //    Debug.Log(miniBoss.Distance());
-        //    if (idleTimer >= idleDuration)
-        //    {
-        //        fSM.ChangeState(new RunState(miniBoss, fSM));
-        //    }
-        //}
-        //else if (miniBoss.Distance() <= miniBoss.NavmeshAgent.stoppingDistance)
-        //{
-        //    miniBoss.Animator.Play("Attack02");
-        //}
     }
 
     public override void Exit()
     {
-        //miniBoss.Animator.SetBool("IsRun", false);
-
-        //// Cho phép Boss quay theo Player lại sau Attack
-        //miniBoss.Rotation();
+        // Xử lý khi thoát trạng thái nếu cần
     }
 }

@@ -12,8 +12,9 @@ public class DetecState : BaseState
     {
         Debug.Log($"Enter {GetType().Name}");
         miniBoss.ChangeStateCurrent(ENEMYSTATE.DETEC);
+        miniBoss.Animator.CrossFade("IdleBattle", 0.2f);
         miniBoss.Animator.SetBool("IsDetec", true);
-        miniBoss.NavmeshAgent.isStopped = true;
+        miniBoss.NavmeshAgent.isStopped = false;
         //idleTimer = 0f;
     }
 
@@ -21,6 +22,10 @@ public class DetecState : BaseState
     {
         miniBoss.Rotation();
         miniBoss.BossMoveLeftOrRight();
+        if(miniBoss.Distance() <= miniBoss.StopDistance )
+        {
+            miniBoss.RequestStateTransition(ENEMYSTATE.ATTACK);
+        }
     }
 
     public override void Exit()

@@ -34,7 +34,7 @@ public class MiniBoss : MonoBehaviour
     [SerializeField] private GameObject m_Player;
     [SerializeField] private NavMeshAgent m_NavmeshAgent;
 
-    [SerializeField] private List<string> AttackList = new List<string>();
+    public List<string> AttackList = new List<string>();
 
     public Animator Animator => animator;
     public NavMeshAgent NavmeshAgent => m_NavmeshAgent;
@@ -63,6 +63,7 @@ public class MiniBoss : MonoBehaviour
     void Update()
     {
         finiteSM.Update();
+
     }
     public void RequestStateTransition(ENEMYSTATE requestedState) // Siêu cấp quan trọng 
     {
@@ -84,6 +85,7 @@ public class MiniBoss : MonoBehaviour
                 }
                 break;
             case ENEMYSTATE.ATTACK:
+                stopDistance = 4f;
                 finiteSM.ChangeState(new AttackState(this, finiteSM));
                 break;
             case ENEMYSTATE.RUN:
@@ -146,7 +148,7 @@ public class MiniBoss : MonoBehaviour
         directionToPlayer.y = 0f;
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
         float rotationSpeed = m_AngularSpeed; // tốc độ góc tối đa (độ/giây hoặc radian/giây)
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
 
     public void ChangeStateCurrent(ENEMYSTATE newState)
@@ -172,12 +174,16 @@ public class MiniBoss : MonoBehaviour
             RequestStateTransition(ENEMYSTATE.RUN);
         }
     }
-    public void Attack()
+
+    public IEnumerator PlayAnimationAttack()
     {
+
         for (int i = 0; i < AttackList.Count; i++)
         {
-            int Index = i % AttackList.Count;
-            animator.Play(AttackList[Index]);
+            animator.CrossFade(AttackList[i], 0.2f);
+            yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName(AttackList[i]));
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+
         }
     }
 
