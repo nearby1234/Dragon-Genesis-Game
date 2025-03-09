@@ -8,28 +8,28 @@ public class WalkState : BaseState
 
     public override void Enter()
     {
-        Debug.Log("Enter WalkState");
         miniBoss.ChangeStateCurrent(ENEMYSTATE.WALK);
+        miniBoss.MoveToRandomPosition();
         miniBoss.Animator.SetBool("IsMove", true);
+        
     }
 
-    public override void Executed()
+    public override void Updates()
     {
-        // Nếu đã đến đích và chưa bắt đầu coroutine chuyển state
         if (miniBoss.IsMoveWayPoint())
         {
             miniBoss.RequestStateTransition(ENEMYSTATE.IDLE);
         }
-        else
+        else if (miniBoss.PlayerInRange())
         {
-            if(miniBoss.PlayerInRange())
-            {
-                miniBoss.RequestStateTransition(ENEMYSTATE.DETEC);
-            }
+            miniBoss.RequestStateTransition(ENEMYSTATE.DETEC);
         }
     }
+
     public override void Exit()
     {
-        Debug.Log("Exit WalkState");
+        miniBoss.Animator.SetBool("IsMove", false);
+        miniBoss.beforState = ENEMYSTATE.WALK;
     }
 }
+

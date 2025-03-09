@@ -23281,11 +23281,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 633bde01bce28cd4eaaf0cb6cf56dead, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  state: 0
+  currentState: 0
+  beforState: 0
+  currentAttackIndex: 0
+  m_IsMiniBossAttacked: 0
   m_Range: 13
-  m_Distance: 0
   m_AngularSpeed: 120
-  stopDistance: 4
+  stopDistance: 3.2
   m_RunSpeed: 3.5
   m_LateralDistance: 5
   m_HasChosenLeftOrRight: 0
@@ -28045,6 +28047,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1723113373}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: isMove
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: buttonSwap
       value: 114
       objectReference: {fileID: 0}
@@ -28062,7 +28068,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_IsPressButtonSwap
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2432459483507782909, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: buttonLeftShift.m_Name

@@ -12,6 +12,6 @@ public class FSM
 
     public void Update()
     {
-        currentState?.Executed();
+        currentState?.Updates();
     }
 }
