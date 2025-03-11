@@ -4,46 +4,56 @@ using static MiniBoss;
 
 public class AttackState : BaseState
 {
+    private Coroutine attackCoroutine;
+    private Quaternion lockedRotation;
+
     public AttackState(MiniBoss miniBoss, FSM fsm) : base(miniBoss, fsm) { }
 
     public override void Enter()
     {
+        // Chuyển sang trạng thái Attack và khóa hướng tại thời điểm bắt đầu
         miniBoss.ChangeStateCurrent(MiniBoss.ENEMYSTATE.ATTACK);
         miniBoss.NavmeshAgent.isStopped = true;
-        //miniBoss.Rotation();
-        miniBoss.StartCoroutine(miniBoss.PlaySingleAttackAnimation());
+        
+        lockedRotation = miniBoss.transform.rotation; // Lấy hướng hiện tại của boss
+        attackCoroutine = miniBoss.StartCoroutine(AttackSequence());
     }
 
     public override void Updates()
     {
-        if (!miniBoss.PlayerInStopRange() )
-        {
-            miniBoss.StartCoroutine(miniBoss.WaitFinishAttack());
-        }
-        //if (miniBoss.m_IsMiniBossAttacked)
-        //{
-        //    // Chuyển về Idle sau khi attack xong
-        //    miniBoss.RequestStateTransition(MiniBoss.ENEMYSTATE.IDLE);
-        //    return;
-        //}
-        //if (!miniBoss.PlayerInStopRange() && miniBoss.currentState.Equals(MiniBoss.ENEMYSTATE.ATTACK))
-        //{
-        //    miniBoss.RequestStateTransition(MiniBoss.ENEMYSTATE.RUN);
-        //}
+
     }
 
     public override void Exit()
     {
-        miniBoss.beforState = ENEMYSTATE.ATTACK;
-        miniBoss.StopCoroutine(miniBoss.WaitFinishAttack());
+        if (attackCoroutine != null)
+        {
+            miniBoss.StopCoroutine(attackCoroutine);
+            attackCoroutine = null;
+        }
         miniBoss.NavmeshAgent.isStopped = false;
-        miniBoss.Animator.CrossFade("Run", 0.2f);
-       
-        //// Reset trạng thái animation attack về trạng thái trung tính
-        //miniBoss.Animator.CrossFade("IdleBattle", 0.2f);
-        //miniBoss.m_IsMiniBossAttacked = false;
+        miniBoss.m_IsMiniBossAttacked = false;
+        miniBoss.NavmeshAgent.Warp(miniBoss.transform.position);
     }
+    private IEnumerator AttackSequence()
+    {
+        while (true)
+        {
+            miniBoss.transform.rotation = lockedRotation;
+            yield return miniBoss.PlaySingleAttackAnimation();
+            yield return new WaitForSeconds(1f);
 
-  
+            if (!miniBoss.PlayerInStopRange())
+            {
+                break;
+            }
+        }
+        yield return new WaitForSeconds(0.1f);
+
+        // Nếu sau attack, player không còn trong khoảng dừng, chuyển qua IdleStand để phát animation IdleCombat
+        if (!miniBoss.PlayerInStopRange())
+            miniBoss.RequestStateTransition(ENEMYSTATE.IDLESTAND);
+        else
+            miniBoss.RequestStateTransition(ENEMYSTATE.RUN);
+    }
 }
-

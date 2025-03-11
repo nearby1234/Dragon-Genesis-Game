@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using JetBrains.Annotations;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using Unity.AI.Navigation;
@@ -39,7 +40,7 @@ public class MiniBoss : MonoBehaviour
 
     [SerializeField] private NavMeshSurface surface;
     [SerializeField] private Animator animator;
-    [SerializeField] private GameObject m_Player;
+    public GameObject m_Player;
     [SerializeField] private NavMeshAgent m_NavmeshAgent;
 
     public List<string> AttackList = new List<string>();
@@ -80,9 +81,9 @@ public class MiniBoss : MonoBehaviour
                 finiteSM.ChangeState(new IdleState(this, finiteSM));
                 break;
 
-            //case ENEMYSTATE.IDLESTAND:
-            //    finiteSM.ChangeState(new IdleStandState(this, finiteSM));
-            //    break;
+            case ENEMYSTATE.IDLESTAND:
+                finiteSM.ChangeState(new IdleStandState(this, finiteSM));
+                break;
 
             case ENEMYSTATE.WALK:
                 // Trước khi chuyển sang Walk, lấy điểm ngẫu nhiên
@@ -208,7 +209,7 @@ public class MiniBoss : MonoBehaviour
         // Nếu yêu cầu khóa hướng, thì xoay boss về phía player
         if (lockRotation)
         {
-            m_NavmeshAgent.updatePosition = false;
+            // Không cần thay đổi updatePosition; chỉ xử lý rotation
             Vector3 direction = (targetPos - transform.position).normalized;
             direction.y = 0; // đảm bảo xoay theo trục ngang
             if (direction != Vector3.zero)
@@ -217,9 +218,8 @@ public class MiniBoss : MonoBehaviour
                 transform.rotation = targetRotation;
             }
         }
-        else m_NavmeshAgent.updatePosition = true;
-
     }
+
 
     public IEnumerator PlaySingleAttackAnimation()
     {
@@ -241,8 +241,10 @@ public class MiniBoss : MonoBehaviour
 
     public IEnumerator WaitFinishAttack()
     {
+        Debug.Log($"{AttackList[currentAttackIndex]} : {animator.GetCurrentAnimatorStateInfo(0).normalizedTime}");
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName(AttackList[currentAttackIndex]));
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
+        
         RequestStateTransition(ENEMYSTATE.RUN);
     }
 
@@ -252,6 +254,11 @@ public class MiniBoss : MonoBehaviour
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(this.transform.position, m_Range);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(this.transform.position, stopDistance);
     } // hàm vẽ zone
+
+    
 
 }

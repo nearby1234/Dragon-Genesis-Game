@@ -5,7 +5,7 @@ using static MiniBoss;
 
 public class DetecState : BaseState
 {
-    private bool isCoroutineRunning = false;
+    private Coroutine moveSideCoroutine;
 
     public DetecState(MiniBoss miniBoss, FSM FSM) : base(miniBoss, FSM) { }
 
@@ -14,10 +14,7 @@ public class DetecState : BaseState
         miniBoss.ChangeStateCurrent(ENEMYSTATE.DETEC);
         miniBoss.Animator.SetBool("IsDetec", true);
         miniBoss.NavmeshAgent.isStopped = true;
-        miniBoss.StartCoroutine(TimerExecuteBossMoveLeftOrRighto());
-        // Reset lateral choice flag khi vào DETEC
-
-        //miniBoss.ResetLateralChoice();
+        moveSideCoroutine = miniBoss.StartCoroutine(TimerExecuteBossMoveLeftOrRighto());
     }
 
     public override void Updates()
@@ -32,33 +29,7 @@ public class DetecState : BaseState
             miniBoss.RequestStateTransition(ENEMYSTATE.RUN);
         }
 
-
-
-
-        //if (miniBoss.PlayerInRange())
-        //{
-        //    if (!isCoroutineRunning)
-        //    {
-        //        isCoroutineRunning = true;
-        //        miniBoss.StartCoroutine(DelayAndResetCoroutine());
-        //    }
-        //    if (miniBoss.IsMoveWayPoint())
-        //    {
-        //        //miniBoss.RequestStateTransition(ENEMYSTATE.RUN);
-        //    }
-        //}
-        //if (miniBoss.PlayerInStopRange())
-        //{
-        //    miniBoss.RequestStateTransition(ENEMYSTATE.ATTACK);
-        //}
     }
-
-    // Coroutine bọc lại để reset flag sau khi chạy xong
-    //private IEnumerator DelayAndResetCoroutine()
-    //{
-    //    yield return miniBoss.DelayBossMoveLeftOrRighto();
-    //    isCoroutineRunning = false;
-    //}
     private IEnumerator TimerExecuteBossMoveLeftOrRighto()
     {
         yield return new WaitForSeconds(2f);
@@ -70,8 +41,11 @@ public class DetecState : BaseState
     public override void Exit()
     {
         miniBoss.Animator.SetBool("IsDetec", false);
-        //miniBoss.NavmeshAgent.isStopped = false;
-        isCoroutineRunning = false;
+        if (moveSideCoroutine != null)
+        {
+            miniBoss.StopCoroutine(moveSideCoroutine);
+            moveSideCoroutine = null;
+        }
         miniBoss.NavmeshAgent.updateRotation = true;
         miniBoss.beforState = ENEMYSTATE.DETEC;
     }

@@ -4459,6 +4459,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1802286859456520337, guid: 233c0a83f1244058bd17d227df2a2637, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1802286859466036053, guid: 233c0a83f1244058bd17d227df2a2637, type: 3}
       propertyPath: m_Name
       value: BlackKnightPADefault
@@ -23286,9 +23290,9 @@ MonoBehaviour:
   currentAttackIndex: 0
   m_IsMiniBossAttacked: 0
   m_Range: 13
-  m_AngularSpeed: 120
+  m_AngularSpeed: 200
   stopDistance: 3.2
-  m_RunSpeed: 3.5
+  m_RunSpeed: 4.5
   m_LateralDistance: 5
   m_HasChosenLeftOrRight: 0
   surface: {fileID: 1252711310}
