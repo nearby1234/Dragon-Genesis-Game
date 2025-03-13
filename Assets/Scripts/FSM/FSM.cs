@@ -1,12 +1,15 @@
-using UnityEngine;
+using System;
 
-public class FSM
+public class FSM<T, TState>
+    where T : BaseBoss<T, TState>
+    where TState : Enum
 {
-    private BaseState currentState;
-    public void ChangeState(BaseState newstate)
+    private BaseState<T, TState> currentState;
+
+    public void ChangeState(BaseState<T, TState> newState)
     {
         currentState?.Exit();
-        currentState = newstate;
+        currentState = newState;
         currentState.Enter();
     }
 

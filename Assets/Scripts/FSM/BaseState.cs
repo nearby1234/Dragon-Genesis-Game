@@ -1,17 +1,19 @@
-using UnityEngine;
+using System;
 
-public abstract class BaseState
+public abstract class BaseState<T, TState>
+    where T : BaseBoss<T, TState>
+    where TState : Enum
 {
-    protected MiniBoss miniBoss;
-    protected FSM finiteSM;
+    protected T boss;
+    protected FSM<T, TState> fsm;
 
-    public BaseState( MiniBoss MiniBoss, FSM finiteSM )
+    public BaseState(T boss, FSM<T, TState> fsm)
     {
-        this.miniBoss = MiniBoss;
-        this.finiteSM = finiteSM;
+        this.boss = boss;
+        this.fsm = fsm;
     }
 
     public abstract void Enter();
-    public abstract void Exit();
     public abstract void Updates();
+    public abstract void Exit();
 }
