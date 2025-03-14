@@ -7,6 +7,12 @@ using DG.Tweening;
 
 public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 {
+    [Header("Atribute")]
+    public float m_AngularSpeed;
+    public int currentAttackIndex = 0;
+    private Vector3 center;
+    private Vector3 size;
+
     [Header("Detection & Timing")]
     public float detectionRange = 10f;
     public float undergroundDuration = 3f;
@@ -22,13 +28,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     [Header("References")]
     public string[] listStringRefer;
     public GameObject m_Player;
-
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
-
-    public int currentAttackIndex = 0;
-
-    private Vector3 center;
-    private Vector3 size;
 
     private void Awake()
     {
@@ -68,6 +68,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
                 break;
             case WORMSTATE.EMERGE:
                 finiteSM.ChangeState(new WormEmergeState(this, finiteSM));
+                break;
+            case WORMSTATE.DETEC:
+                finiteSM.ChangeState(new WormDetecState(this, finiteSM));
                 break;
             case WORMSTATE.ATTACK:
                 finiteSM.ChangeState(new WormAttackState(this, finiteSM));
@@ -109,7 +112,19 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         return Vector3.Distance(transform.position, m_Player.transform.position) <= detectionRange;
     }
-   
+    public Vector3 DistanceToPlayerNormalized()
+    {
+        return (m_Player.transform.position - transform.position).normalized;
+    }
+    public void Rotation()
+    {
+        Vector3 directionToPlayer = DistanceToPlayerNormalized();
+        directionToPlayer.y = 0f;
+        Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+        float rotationSpeed = m_AngularSpeed;
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

@@ -16,10 +16,10 @@ public class WormIdleState : BaseState<WormBoss,WORMSTATE>
 
     public override void Updates()
     {
-        //if (!boss.PlayerInRange())
-        //{
-        //    boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
-        //}
+        if (boss.PlayerInRange())
+        {
+            boss.RequestStateTransition(WORMSTATE.DETEC);
+        }
     }
 
     public override void Exit()

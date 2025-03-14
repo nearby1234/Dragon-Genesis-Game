@@ -18,4 +18,5 @@ public enum WORMSTATE
     EMERGE,
     ATTACK,
     WALK,
+    DETEC,
 }
