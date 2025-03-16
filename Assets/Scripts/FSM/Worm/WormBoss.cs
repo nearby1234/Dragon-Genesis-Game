@@ -12,6 +12,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public int currentAttackIndex = 0;
     private Vector3 center;
     private Vector3 size;
+    public float m_StopDistance;
 
     [Header("Detection & Timing")]
     public float detectionRange = 10f;
@@ -80,7 +81,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         }
     }
 
-    // Ph??ng th?c l?y v? trí ng?u nhiên trên NavMesh cách player ít nh?t minDistance
     public Vector3 GetRandomEmergencePosition()
     {
         float x = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
@@ -112,6 +112,10 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         return Vector3.Distance(transform.position, m_Player.transform.position) <= detectionRange;
     }
+    public bool PlayerInAttackRange()
+    {
+        return Vector3.Distance(transform.position, m_Player.transform.position) <= m_StopDistance;
+    }
     public Vector3 DistanceToPlayerNormalized()
     {
         return (m_Player.transform.position - transform.position).normalized;
@@ -124,13 +128,31 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         float rotationSpeed = m_AngularSpeed;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
+    public float GetRandomStopDistanceListAttack()
+    {
+       
+        float getStopDistance = wormAttackDatas[GetRandomIndexAttackList()].stopDistance;
+        return getStopDistance;
+    }
+    public string GetRandomAnimationNameListAttack()
+    {
+        
+        string getNameAnimation = wormAttackDatas[GetRandomIndexAttackList()].animationName;
+        return getNameAnimation;
+    }
+
+    public int GetRandomIndexAttackList()
+    {
+        int indexCurrentAttack = Random.Range(0, 3);
+        return indexCurrentAttack;
+    }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, wormAttackDatas[currentAttackIndex].stopDistance);
+        Gizmos.DrawWireSphere(transform.position, m_StopDistance);
 
     }
 }

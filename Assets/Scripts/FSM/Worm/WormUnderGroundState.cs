@@ -20,7 +20,6 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 
     public override void Updates()
     {
-        // Không cần làm gì trong Update, tất cả xử lý trong coroutine
     }
 
     public override void Exit()
@@ -28,6 +27,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         boss.ChangeBeforeState(WORMSTATE.UNDERGROUND);
         boss.StopCoroutine(waitUnderground);
         boss.Animator.ResetTrigger("Underground");
+        
     }
 
     private IEnumerator WaitPlayAnimationUnderground()
@@ -44,12 +44,15 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         {
             if (!isLocated)
             {
+                boss.currentAttackIndex = boss.GetRandomIndexAttackList();
+                float result = boss.wormAttackDatas[boss.currentAttackIndex].stopDistance;
                 // Di chuyển tới vị trí của player + 7 đơn vị ở trục Z
                 Vector3 targetPos = boss.m_Player.transform.position;
-                targetPos.z += 7f;
+                targetPos.z += (result - 1.5f);
                 boss.NavMeshAgent.Warp(targetPos);
                 isLocated = true;
                 Debug.Log("Boss teleported near player.");
+                boss.RequestStateTransition(WORMSTATE.EMERGE);
             }
 
             yield return new WaitForSeconds(0.2f); // Kiểm tra lại mỗi 0.2 giây
@@ -58,6 +61,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         // Nếu player ra khỏi phạm vi, chờ 1 giây rồi chuyển sang trạng thái EMERGE
         Debug.Log("Player left range. Transitioning to EMERGE state.");
         yield return new WaitForSeconds(1f);
+        boss.MoveToRandomPosition();
         boss.RequestStateTransition(WORMSTATE.EMERGE);
     }
 }
