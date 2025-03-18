@@ -5,4 +5,5 @@ public class WormAttackData
 {
     public string animationName;
     public float stopDistance;
+    public bool needFollowUp;
 }

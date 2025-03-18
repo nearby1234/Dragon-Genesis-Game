@@ -45,15 +45,17 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
             if (!isLocated)
             {
                 boss.currentAttackIndex = boss.GetRandomIndexAttackList();
-                float result = boss.wormAttackDatas[boss.currentAttackIndex].stopDistance;
+                float distanceOffset = boss.wormAttackDatasPhase1[boss.currentAttackIndex].stopDistance - 1.5f;
+                float randomAngle = Random.Range(0f, 360f);
+                Vector3 offset = Quaternion.Euler(0f, randomAngle, 0f) * Vector3.forward * distanceOffset;
                 // Di chuyển tới vị trí của player + 7 đơn vị ở trục Z
-                Vector3 targetPos = boss.m_Player.transform.position;
-                targetPos.z += (result - 1.5f);
+                Vector3 targetPos = boss.m_Player.transform.position + offset;
                 boss.NavMeshAgent.Warp(targetPos);
                 isLocated = true;
                 Debug.Log("Boss teleported near player.");
                 boss.RequestStateTransition(WORMSTATE.EMERGE);
             }
+
 
             yield return new WaitForSeconds(0.2f); // Kiểm tra lại mỗi 0.2 giây
         }

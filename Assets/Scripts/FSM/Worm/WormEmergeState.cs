@@ -13,31 +13,25 @@ public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
         //boss.Animator.Play(boss.emergeAnimation, 0, 0f);
         boss.Animator.SetTrigger("Emege");
         waitPlayAnimationEmerge = boss.StartCoroutine(WaitPlayAnimationEmerge());
-       
-    }
-
-    private IEnumerator WaitForEmerge()
-    {
-        yield return new WaitForSeconds(1f); // gi? s? animation tr?i lên kéo dài 1s
-        boss.RequestStateTransition(WORMSTATE.ATTACK);
 
     }
-
     private IEnumerator WaitPlayAnimationEmerge()
     {
-        boss.m_StopDistance = boss.wormAttackDatas[boss.currentAttackIndex].stopDistance;
+        boss.m_StopDistance = boss.wormAttackDatasPhase1[boss.currentAttackIndex].stopDistance;
         yield return new WaitUntil(() =>
          boss.Animator.GetCurrentAnimatorStateInfo(0).IsName("GroundBreakThrough") &&
         boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
         while (boss.PlayerInRange())
         {
-           
+
             if (boss.PlayerInAttackRange())
             {
-                
-                Debug.Log("aa");
                 boss.RequestStateTransition(WORMSTATE.ATTACK);
                 yield break;
+            }
+            else
+            {
+                boss.RequestStateTransition(WORMSTATE.DETEC);
             }
             yield return new WaitForSeconds(0.2f);
 
@@ -48,10 +42,10 @@ public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
 
     public override void Updates()
     {
-        if(boss.PlayerInRange())
+        if (boss.PlayerInRange())
         {
             boss.Rotation();
-        }    
+        }
     }
 
     public override void Exit()

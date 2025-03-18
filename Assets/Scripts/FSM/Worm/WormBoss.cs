@@ -19,7 +19,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public float undergroundDuration = 3f;
 
     [Header("Attack Settings")]
-    public List<WormAttackData> wormAttackDatas = new();
+    public List<WormAttackData> wormAttackDatasPhase1 = new();
 
     [Header("Animations")]
     public Animator Animator => animator;
@@ -131,19 +131,19 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public float GetRandomStopDistanceListAttack()
     {
        
-        float getStopDistance = wormAttackDatas[GetRandomIndexAttackList()].stopDistance;
+        float getStopDistance = wormAttackDatasPhase1[GetRandomIndexAttackList()].stopDistance;
         return getStopDistance;
     }
     public string GetRandomAnimationNameListAttack()
     {
         
-        string getNameAnimation = wormAttackDatas[GetRandomIndexAttackList()].animationName;
+        string getNameAnimation = wormAttackDatasPhase1[GetRandomIndexAttackList()].animationName;
         return getNameAnimation;
     }
 
     public int GetRandomIndexAttackList()
     {
-        int indexCurrentAttack = Random.Range(0, 3);
+        int indexCurrentAttack = Random.Range(0, wormAttackDatasPhase1.Count);
         return indexCurrentAttack;
     }
 
