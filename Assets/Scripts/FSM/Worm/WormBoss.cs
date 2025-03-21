@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using Unity.AI.Navigation;
 using System.Collections;
@@ -7,6 +7,11 @@ using DG.Tweening;
 
 public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 {
+    [Header("Worm Imformation")]
+    public EnemyStatSO WormAttributeSO;
+    public float m_WormBossHeal;
+    public bool m_IsGetDamage;
+
     [Header("Atribute")]
     public float m_AngularSpeed;
     public int currentAttackIndex = 0;
@@ -40,9 +45,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     }
     protected override void Start()
     {
-
+        m_WormBossHeal = WormAttributeSO.heal;
         finiteSM = new FSM<WormBoss, WORMSTATE>();
-        // Kh?i t?o state ban ??u l� Idle
+        // Kh?i t?o state ban ??u là Idle
         finiteSM.ChangeState(new WormIdleState(this, finiteSM));
         if (m_NavmeshSurface != null)
         {
@@ -76,7 +81,11 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             case WORMSTATE.ATTACK:
                 finiteSM.ChangeState(new WormAttackState(this, finiteSM));
                 break;
+            case WORMSTATE.HIT:
+                finiteSM.ChangeState(new WormHitState(this, finiteSM));
+                break;
             default:
+                Debug.LogWarning($"State {requestedState} chưa được cài đặt trong RequestStateTransition.");
                 break;
         }
     }
@@ -130,13 +139,13 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     }
     public float GetRandomStopDistanceListAttack()
     {
-       
+
         float getStopDistance = wormAttackDatasPhase1[GetRandomIndexAttackList()].stopDistance;
         return getStopDistance;
     }
     public string GetRandomAnimationNameListAttack()
     {
-        
+
         string getNameAnimation = wormAttackDatasPhase1[GetRandomIndexAttackList()].animationName;
         return getNameAnimation;
     }
@@ -145,6 +154,32 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         int indexCurrentAttack = Random.Range(0, wormAttackDatasPhase1.Count);
         return indexCurrentAttack;
+    }
+
+    public void GetDamage(float damage)
+    {
+        if (m_WormBossHeal <= 0)
+        {
+            Debug.Log("Worm Boss Die");
+            return;
+        }
+        else
+        {
+            if (m_IsGetDamage) return;
+            else
+            {
+                m_WormBossHeal -= damage;
+                RequestStateTransition(WORMSTATE.HIT);
+                m_IsGetDamage = true;
+                StartCoroutine(ResetDamageFlag());
+            }
+
+        }
+    }
+    private IEnumerator ResetDamageFlag()
+    {
+        yield return new WaitForSeconds(0.5f);
+        m_IsGetDamage = false;
     }
 
     private void OnDrawGizmos()

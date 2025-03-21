@@ -27,7 +27,6 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         boss.ChangeBeforeState(WORMSTATE.UNDERGROUND);
         boss.StopCoroutine(waitUnderground);
         boss.Animator.ResetTrigger("Underground");
-        
     }
 
     private IEnumerator WaitPlayAnimationUnderground()
@@ -37,7 +36,6 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
             boss.Animator.GetCurrentAnimatorStateInfo(0).IsName("GroundDiveIn") &&
             boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
-        Debug.Log("Underground animation finished.");
 
         // Kiểm tra nếu player vẫn trong phạm vi
         while (boss.PlayerInRange())
@@ -52,11 +50,8 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
                 Vector3 targetPos = boss.m_Player.transform.position + offset;
                 boss.NavMeshAgent.Warp(targetPos);
                 isLocated = true;
-                Debug.Log("Boss teleported near player.");
                 boss.RequestStateTransition(WORMSTATE.EMERGE);
             }
-
-
             yield return new WaitForSeconds(0.2f); // Kiểm tra lại mỗi 0.2 giây
         }
 

@@ -1236,7 +1236,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7765746994098836329
 Transform:
   m_ObjectHideFlags: 0
@@ -1410,7 +1410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_SpawnEffect: {fileID: 3500746511885755824}
-  activeFireBall: {fileID: 4687789390539511055}
+  fxSpawn:
+  - {fileID: 3242734250904676165, guid: 4c53289de89fb5645b62727faeb1c786, type: 3}
 --- !u!1 &6913474751924144068
 GameObject:
   m_ObjectHideFlags: 0
@@ -2023,11 +2024,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddb2c97c4949b6f4392628e13892bf7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!198 &4687789390539511055 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 6910580753473602658, guid: 4c53289de89fb5645b62727faeb1c786, type: 3}
-  m_PrefabInstance: {fileID: 2227328025370939757}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8121479883462537934 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7952307893871715235, guid: 4c53289de89fb5645b62727faeb1c786, type: 3}

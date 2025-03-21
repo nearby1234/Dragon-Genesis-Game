@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMove : MonoBehaviour
@@ -52,23 +53,6 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.canceled -= OnLeftShiftCancel;
         m_ButtonLeftShift.Disable();
     }
-
-    private void OnMove(InputValue value)
-    {
-        inputVector = value.Get<Vector2>();
-    }
-
-    private void OnLeftShiftPerformed(InputAction.CallbackContext context)
-    {
-        IsPressLeftShift = true;
-        isMove = true;
-    }
-
-    private void OnLeftShiftCancel(InputAction.CallbackContext context)
-    {
-        IsPressLeftShift = false;
-    }
-
     public void PlayerMovement()
     {
         if (!canMove)
@@ -145,4 +129,33 @@ public class PlayerMove : MonoBehaviour
             characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity);
         }
     }
+
+    
+    private void OnMove(InputValue value)
+    {
+        inputVector = value.Get<Vector2>();
+    }
+
+    private void OnLeftShiftPerformed(InputAction.CallbackContext context)
+    {
+        IsPressLeftShift = true;
+        isMove = true;
+    }
+
+    private void OnLeftShiftCancel(InputAction.CallbackContext context)
+    {
+        IsPressLeftShift = false;
+    }
+   
+    public void ChangeIsCanMove(int move) // animation event
+    {
+        if(move == 0)
+        {
+            canMove = false;
+        }else if(move == 1)
+        {
+            canMove = true;
+        }
+    }
+
 }

@@ -36,18 +36,16 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.performed += OnPerformedAttackRightMouse;
         m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
     }
-
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
         m_IsPressRightMouse = false;
     }
-
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
         m_IsPressRightMouse = true;
 
         // Vô hiệu hóa di chuyển khi bắt đầu attack
-        playerMove.canMove = false;
+        //playerMove.canMove = false;
 
         // Nếu animation Heavy Attack chưa đang chạy thì play nó
         if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
@@ -55,11 +53,7 @@ public class PlayerDamage : MonoBehaviour
             playerAnimator.Play("Heavy Attack");
         }
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
-
-        // Khởi chạy coroutine để chờ khi attack kết thúc
-        StartCoroutine(WaitForAttackFinish());
     }
-
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
         m_IsPressLeftMouse = true;
@@ -70,10 +64,6 @@ public class PlayerDamage : MonoBehaviour
         {
             return;
         }
-
-        // Vô hiệu hóa di chuyển khi bắt đầu attack
-        playerMove.canMove = false;
-
         // Play attack animation theo index hiện tại
         playerAnimator.Play(m_AttackAnimStringToHash[m_AttackAnimIndex]);
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
@@ -84,33 +74,30 @@ public class PlayerDamage : MonoBehaviour
         {
             m_AttackAnimIndex = 0;
         }
-
-        // Khởi chạy coroutine để chờ khi attack kết thúc
-        StartCoroutine(WaitForAttackFinish());
     }
-
     private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
     {
         m_IsPressLeftMouse = false;
     }
 
-    // Coroutine này sẽ đợi cho đến khi animation attack kết thúc,
-    // sau đó bật lại khả năng di chuyển của player
-    private IEnumerator WaitForAttackFinish()
-    {
-        yield return new WaitUntil(() =>
-        {
-            AnimatorStateInfo state = playerAnimator.GetCurrentAnimatorStateInfo(0);
-            // Chờ cho đến khi animation có tag "Attack" hoàn thành (normalizedTime >= 1)
-            // hoặc không còn ở trạng thái attack nữa
-            return (!state.IsTag("Attack") || state.normalizedTime >= 1.0f);
-        });
+    //// Coroutine này sẽ đợi cho đến khi animation attack kết thúc,
+    //// sau đó bật lại khả năng di chuyển của player
+    //private IEnumerator WaitForAttackFinish()
+    //{
+    //    yield return new WaitUntil(() =>
+    //    {
+    //        AnimatorStateInfo state = playerAnimator.GetCurrentAnimatorStateInfo(0);
+    //        // Chờ cho đến khi animation có tag "Attack" hoàn thành (normalizedTime >= 1)
+    //        // hoặc không còn ở trạng thái attack nữa
+    //        return (!state.IsTag("Attack") || state.normalizedTime >= 1.0f);
+    //    });
 
-        // Bật lại di chuyển sau khi attack kết thúc
-        playerMove.canMove = true;
-        // Optionally, chuyển trạng thái player về idle
-        PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
-    }
+    //    // Bật lại di chuyển sau khi attack kết thúc
+    //    Debug.Log("bb");
+    //    playerMove.canMove = true;
+    //    // Optionally, chuyển trạng thái player về idle
+    //    //PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
+    //}
 
     public void DegreeEventClickMouse()
     {
@@ -121,6 +108,5 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
         m_ButtonAttackRightMouse.Disable();
     }
-
     public int GetPlayerDamage() => m_PlayerDamage;
 }

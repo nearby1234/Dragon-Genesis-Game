@@ -12,15 +12,9 @@ public class WormIdleState : BaseState<WormBoss,WORMSTATE>
         boss.ChangeStateCurrent(WORMSTATE.IDLE);
         boss.Animator.Play("IdleNormal");
         timerChangeState = boss.StartCoroutine(TimerChangeState());
-
     }
-
     public override void Updates()
     {
-        //if (boss.PlayerInRange())
-        //{
-        //    boss.RequestStateTransition(WORMSTATE.DETEC);
-        //}
     }
 
     public override void Exit()
@@ -28,19 +22,6 @@ public class WormIdleState : BaseState<WormBoss,WORMSTATE>
        boss.ChangeBeforeState(WORMSTATE.IDLE);
         boss.StopCoroutine(timerChangeState);
     }
-
-    //IEnumerator TimerChangeUndergroundState()
-    //{
-    //    yield return new WaitForSeconds(2f);
-    //    boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
-    //}
-
-    //IEnumerator TimerChangeDetecState()
-    //{
-    //    yield return new WaitForSeconds(2f);
-    //    boss.RequestStateTransition(WORMSTATE.DETEC);
-    //}
-
     IEnumerator TimerChangeState()
     {
         while (boss.PlayerInRange())

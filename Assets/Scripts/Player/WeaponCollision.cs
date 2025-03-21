@@ -13,12 +13,25 @@ public class WeaponCollision : MonoBehaviour
             EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
             if (enemyHeal != null)
             {
-
                 enemyHeal.ReducePlayerHealth(PlayerManager.instance.playerDamage.GetPlayerDamage());
             }
             Vector3 hitPos = other.ClosestPoint(transform.position);
             //GameObject BloodFX = Instantiate(m_BloodPrehabs, hitPos, Quaternion.identity);
             GameObject HitFX = Instantiate(m_HitPrehabs, hitPos, Quaternion.identity);
+        }
+
+        if(other.gameObject.CompareTag("Boss"))
+        {
+            
+            if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle)) return;
+            WormBoss wormBoss = other.GetComponent<WormBoss>();
+            if(wormBoss != null)
+            {
+                //Debug.Log("aaa");
+                Debug.Log($"Collision {other.name}");
+                wormBoss.GetDamage(PlayerManager.instance.playerDamage.GetPlayerDamage());
+            }
+            
         }
     }
 }
