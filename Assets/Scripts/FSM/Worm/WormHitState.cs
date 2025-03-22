@@ -13,13 +13,14 @@ public class WormHitState : BaseState<WormBoss, WORMSTATE>
         boss.ChangeStateCurrent(WORMSTATE.HIT);
         boss.Animator.SetTrigger("Hit");
         m_Timer = 0f;
-        Debug.Log("tesst");
+        boss.isInHitState = true;
     }
 
     public override void Exit()
     {
         boss.ChangeBeforeState(WORMSTATE.HIT);
         boss.Animator.ResetTrigger("Hit");
+        boss.isInHitState = false;
     }
 
     public override void Updates()
@@ -27,8 +28,7 @@ public class WormHitState : BaseState<WormBoss, WORMSTATE>
         m_Timer += Time.deltaTime;
         if (m_Timer >= m_HitDuration)
         {
-            Debug.Log(m_Timer);
-            boss.RequestStateTransition(WORMSTATE.IDLE);
+            boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
         }
     }
 }

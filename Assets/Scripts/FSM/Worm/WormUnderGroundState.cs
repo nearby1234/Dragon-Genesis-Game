@@ -5,17 +5,20 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 {
     private bool isLocated;
     private Coroutine waitUnderground;
+    private Coroutine resetIdleGrace;
 
     public WormUndergroundState(WormBoss boss, FSM<WormBoss, WORMSTATE> fsm) : base(boss, fsm) { }
 
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.UNDERGROUND);
-        boss.Animator.Play(boss.undergroundAnimation, 0, 0f);
+        boss.Animator.Play(boss.undergroundAnimation);
         boss.Animator.SetTrigger("Underground");
+        boss.idleGraceActive = true;
 
         // Bắt đầu kiểm tra sau khi animation hoàn tất
         waitUnderground = boss.StartCoroutine(WaitPlayAnimationUnderground());
+        resetIdleGrace = boss.StartCoroutine(ResetIdleGrace());
     }
 
     public override void Updates()
@@ -27,6 +30,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         boss.ChangeBeforeState(WORMSTATE.UNDERGROUND);
         boss.StopCoroutine(waitUnderground);
         boss.Animator.ResetTrigger("Underground");
+        boss.StopCoroutine(resetIdleGrace);
     }
 
     private IEnumerator WaitPlayAnimationUnderground()
@@ -60,5 +64,10 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         yield return new WaitForSeconds(1f);
         boss.MoveToRandomPosition();
         boss.RequestStateTransition(WORMSTATE.EMERGE);
+    }
+    private IEnumerator ResetIdleGrace()
+    {
+        yield return new WaitForSeconds(10f);
+        boss.idleGraceActive = false;
     }
 }

@@ -11,9 +11,12 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public EnemyStatSO WormAttributeSO;
     public float m_WormBossHeal;
     public bool m_IsGetDamage;
+    public bool isInHitState = false;
+    public bool idleGraceActive = false;
 
     [Header("Atribute")]
     public float m_AngularSpeed;
+
     public int currentAttackIndex = 0;
     private Vector3 center;
     private Vector3 size;
@@ -35,7 +38,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public string[] listStringRefer;
     public GameObject m_Player;
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
-
     private void Awake()
     {
         m_NavmeshSurface = GameObject.Find(listStringRefer[0]).GetComponent<NavMeshSurface>();
@@ -89,7 +91,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
                 break;
         }
     }
-
     public Vector3 GetRandomEmergencePosition()
     {
         float x = Random.Range(center.x - size.x / 2, center.x + size.x / 2);
@@ -97,7 +98,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         float z = Random.Range(center.z - size.z / 2, center.z + size.z / 2);
         return new Vector3(x, y, z);
     }
-
     public void MoveToRandomPosition()
     {
         Vector3 randomPoint = GetRandomEmergencePosition();
@@ -112,7 +112,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             Debug.Log("ko tim thay duong di");
         }
     }
-
     public void ChangeBeforeState(WORMSTATE wormState)
     {
         beforeState = wormState;
@@ -139,13 +138,11 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     }
     public float GetRandomStopDistanceListAttack()
     {
-
         float getStopDistance = wormAttackDatasPhase1[GetRandomIndexAttackList()].stopDistance;
         return getStopDistance;
     }
     public string GetRandomAnimationNameListAttack()
     {
-
         string getNameAnimation = wormAttackDatasPhase1[GetRandomIndexAttackList()].animationName;
         return getNameAnimation;
     }
@@ -163,9 +160,37 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             Debug.Log("Worm Boss Die");
             return;
         }
+
+        // Nếu boss đang ở state IDLE và đang trong khoảng thời gian grace, chỉ trừ damage
+        if (currentState.Equals(WORMSTATE.UNDERGROUND) && idleGraceActive)
+        {
+            if (m_IsGetDamage)
+                return;
+            else
+            {
+                m_WormBossHeal -= damage;
+                m_IsGetDamage = true;
+                StartCoroutine(ResetDamageFlag());
+            }
+            return;
+        }
+
+        // Nếu boss đã ở state HIT (hoặc không ở IDLE grace), xử lý như bình thường:
+        if (isInHitState)
+        {
+            if (m_IsGetDamage)
+                return;
+            else
+            {
+                m_WormBossHeal -= damage;
+                m_IsGetDamage = true;
+                StartCoroutine(ResetDamageFlag());
+            }
+        }
         else
         {
-            if (m_IsGetDamage) return;
+            if (m_IsGetDamage)
+                return;
             else
             {
                 m_WormBossHeal -= damage;
@@ -173,7 +198,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
                 m_IsGetDamage = true;
                 StartCoroutine(ResetDamageFlag());
             }
-
         }
     }
     private IEnumerator ResetDamageFlag()
