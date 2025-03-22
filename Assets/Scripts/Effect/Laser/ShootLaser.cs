@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class Testlasser : MonoBehaviour
+public class ShootLaser : MonoBehaviour
 {
     public GameObject FirePoint;
     public float MaxLength;
