@@ -5110,6 +5110,10 @@ PrefabInstance:
       value: 177.51283
       objectReference: {fileID: 0}
     - target: {fileID: 1704537611009590908, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
+      propertyPath: CenterOnActivate
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1704537611009590908, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
       propertyPath: Composition.ScreenPosition.y
       value: 0.26
       objectReference: {fileID: 0}
@@ -5144,6 +5148,10 @@ PrefabInstance:
     - target: {fileID: 4146068371865255290, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
       propertyPath: m_LocalRotation.z
       value: 0.0017953151
+      objectReference: {fileID: 0}
+    - target: {fileID: 6623193127524771941, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
+      propertyPath: Lens.NearClipPlane
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6623193127524771941, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
       propertyPath: Target.TrackingTarget
@@ -5196,7 +5204,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7460173317553489355, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2026791598}
   m_SourcePrefab: {fileID: 100100000, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
 --- !u!1001 &302307182
 PrefabInstance:
@@ -22903,7 +22914,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6623193127524771941, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
   m_PrefabInstance: {fileID: 300070512}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 2026791593}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f9dfa5b682dcd46bda6128250e975f58, type: 3}
@@ -25309,6 +25320,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4906168248126793034, guid: 7c264c480eff2f54eb763051932077e2, type: 3}
   m_PrefabInstance: {fileID: 567656180}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2026791593 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7460173317553489355, guid: e36ad4817356caf43a40446aeddb63bc, type: 3}
+  m_PrefabInstance: {fileID: 300070512}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2026791598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2026791593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbe43d662878a7c43bcd44d43c9e2094, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CollideAgainst:
+    serializedVersion: 2
+    m_Bits: 256
+  IgnoreTag: 
+  TransparentLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  MinimumDistanceFromTarget: 0.3
+  AvoidObstacles:
+    Enabled: 1
+    DistanceLimit: 0
+    MinimumOcclusionTime: 0
+    CameraRadius: 0.4
+    UseFollowTarget:
+      Enabled: 0
+      YOffset: 0
+    Strategy: 1
+    MaximumEffort: 1
+    SmoothingTime: 0
+    Damping: 0.4
+    DampingWhenOccluded: 0.2
+  ShotQualityEvaluation:
+    Enabled: 0
+    OptimalDistance: 10
+    NearLimit: 5
+    FarLimit: 30
+    MaxQualityBoost: 0.2
 --- !u!1001 &2027657940
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28473,6 +28528,8 @@ MonoBehaviour:
   WormAttributeSO: {fileID: 11400000, guid: ccc8e69880e90064993a83f246409fe5, type: 2}
   m_WormBossHeal: 0
   m_IsGetDamage: 0
+  isInHitState: 0
+  idleGraceActive: 0
   m_AngularSpeed: 120
   currentAttackIndex: 0
   m_StopDistance: 0
