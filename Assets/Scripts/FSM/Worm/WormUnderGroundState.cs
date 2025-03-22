@@ -12,7 +12,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.UNDERGROUND);
-        boss.Animator.Play(boss.undergroundAnimation);
+        //boss.Animator.Play(boss.undergroundAnimation);
         boss.Animator.SetTrigger("Underground");
         boss.idleGraceActive = true;
 

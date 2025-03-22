@@ -14,6 +14,7 @@ public class WormDetecState : BaseState<WormBoss, WORMSTATE>
     {
         boss.ChangeStateCurrent(WORMSTATE.DETEC);
         IsTaunting = false;
+        waitChangeStateUnderground = boss.StartCoroutine(WaitChangeStateUnderground());
         
     }
 
@@ -36,7 +37,6 @@ public class WormDetecState : BaseState<WormBoss, WORMSTATE>
                 waitChangeStateUnderground = boss.StartCoroutine(WaitChangeStateUnderground());
             }
         }
-        
     }
     private IEnumerator WaitChangeStateUnderground()
     {
