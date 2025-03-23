@@ -13,6 +13,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public bool m_IsGetDamage;
     public bool isInHitState = false;
     public bool idleGraceActive = false;
+    public bool IsRageState = false;
 
     [Header("Atribute")]
     public float m_AngularSpeed;
@@ -28,6 +29,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
     [Header("Attack Settings")]
     public List<WormAttackData> wormAttackDatasPhase1 = new();
+    public List<WormAttackData> wormAttackDatasPhase2 = new();
 
     [Header("Animations")]
     public Animator Animator => animator;
@@ -49,7 +51,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         m_WormBossHeal = WormAttributeSO.heal;
         finiteSM = new FSM<WormBoss, WORMSTATE>();
-        // Kh?i t?o state ban ??u là Idle
         finiteSM.ChangeState(new WormIdleState(this, finiteSM));
         if (m_NavmeshSurface != null)
         {
@@ -85,6 +86,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
                 break;
             case WORMSTATE.HIT:
                 finiteSM.ChangeState(new WormHitState(this, finiteSM));
+                break;
+            case WORMSTATE.RAGE:
+                finiteSM.ChangeState(new WormRageState(this, finiteSM));
                 break;
             default:
                 Debug.LogWarning($"State {requestedState} chưa được cài đặt trong RequestStateTransition.");
@@ -136,69 +140,82 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         float rotationSpeed = m_AngularSpeed;
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
     }
-    public float GetRandomStopDistanceListAttack()
-    {
-        float getStopDistance = wormAttackDatasPhase1[GetRandomIndexAttackList()].stopDistance;
-        return getStopDistance;
-    }
-    public string GetRandomAnimationNameListAttack()
-    {
-        string getNameAnimation = wormAttackDatasPhase1[GetRandomIndexAttackList()].animationName;
-        return getNameAnimation;
-    }
-
     public int GetRandomIndexAttackList()
     {
-        int indexCurrentAttack = Random.Range(0, wormAttackDatasPhase1.Count);
+        // Nếu boss đã vào rage, sử dụng danh sách phase2, ngược lại phase1
+        List<WormAttackData> attackList = IsRageState ? wormAttackDatasPhase2 : wormAttackDatasPhase1;
+        int indexCurrentAttack = Random.Range(0, attackList.Count);
         return indexCurrentAttack;
     }
 
+
     public void GetDamage(float damage)
     {
+        // Nếu máu boss đã ≤ 0 thì boss chết.
         if (m_WormBossHeal <= 0)
         {
+            IsRageState = false;
             Debug.Log("Worm Boss Die");
             return;
         }
 
-        // Nếu boss đang ở state IDLE và đang trong khoảng thời gian grace, chỉ trừ damage
-        if (currentState.Equals(WORMSTATE.UNDERGROUND) && idleGraceActive)
+        // Nếu boss đã ở phase 2 (RAGE), chỉ trừ damage mà không chuyển state.
+        if (IsRageState)
         {
-            if (m_IsGetDamage)
+            if (!TryApplyDamage(damage))
                 return;
-            else
-            {
-                m_WormBossHeal -= damage;
-                m_IsGetDamage = true;
-                StartCoroutine(ResetDamageFlag());
-            }
             return;
         }
 
-        // Nếu boss đã ở state HIT (hoặc không ở IDLE grace), xử lý như bình thường:
+        // Nếu sau khi trừ damage, máu boss ≤ 50 và boss chưa ở state RAGE,
+        // chuyển ngay sang state RAGE (phase 2) và áp dụng damage.
+        if (m_WormBossHeal - damage <= 50f && !currentState.Equals(WORMSTATE.RAGE))
+        {
+            if (!TryApplyDamage(damage))
+                return;
+            IsRageState = true;
+            RequestStateTransition(WORMSTATE.RAGE);
+            return;
+        }
+
+        // Nếu boss đang ở state UNDERGROUND và đang trong khoảng thời gian grace,
+        // chỉ trừ damage mà không chuyển state.
+        if (currentState.Equals(WORMSTATE.UNDERGROUND) && idleGraceActive)
+        {
+            if (!TryApplyDamage(damage))
+                return;
+            return;
+        }
+
+        // Nếu boss đã ở state HIT, chỉ trừ damage.
         if (isInHitState)
         {
-            if (m_IsGetDamage)
+            if (!TryApplyDamage(damage))
                 return;
-            else
-            {
-                m_WormBossHeal -= damage;
-                m_IsGetDamage = true;
-                StartCoroutine(ResetDamageFlag());
-            }
+            return;
         }
         else
         {
-            if (m_IsGetDamage)
+            // Trong trường hợp khác, boss chưa ở state HIT,
+            // áp dụng damage và chuyển sang state HIT.
+            if (!TryApplyDamage(damage))
                 return;
-            else
-            {
-                m_WormBossHeal -= damage;
-                RequestStateTransition(WORMSTATE.HIT);
-                m_IsGetDamage = true;
-                StartCoroutine(ResetDamageFlag());
-            }
+            RequestStateTransition(WORMSTATE.HIT);
+            return;
         }
+    }
+
+    private bool TryApplyDamage(float damage)
+    {
+        // Nếu damage đã được áp dụng cho va chạm hiện tại, trả về false.
+        if (m_IsGetDamage)
+            return false;
+
+        // Trừ damage, đặt flag và khởi chạy coroutine reset flag.
+        m_WormBossHeal -= damage;
+        m_IsGetDamage = true;
+        StartCoroutine(ResetDamageFlag());
+        return true;
     }
     private IEnumerator ResetDamageFlag()
     {
@@ -206,6 +223,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         m_IsGetDamage = false;
     }
 
+   
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

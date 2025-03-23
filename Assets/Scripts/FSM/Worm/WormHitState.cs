@@ -3,7 +3,7 @@ using UnityEngine;
 public class WormHitState : BaseState<WormBoss, WORMSTATE>
 {
     private float m_Timer = 0f;
-    private float m_HitDuration = 3f;
+    //private float m_HitDuration = 3f;
     public WormHitState(WormBoss boss, FSM<WormBoss, WORMSTATE> fsm) : base(boss, fsm)
     {
     }
@@ -26,7 +26,7 @@ public class WormHitState : BaseState<WormBoss, WORMSTATE>
     public override void Updates()
     {
         m_Timer += Time.deltaTime;
-        if (m_Timer >= m_HitDuration)
+        if (m_Timer >= boss.undergroundDuration)
         {
             boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
         }

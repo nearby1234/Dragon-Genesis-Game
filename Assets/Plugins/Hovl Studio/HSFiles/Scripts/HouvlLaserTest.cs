@@ -58,9 +58,10 @@ public class HouvlLaserTest : MonoBehaviour
                 Length[2] = NoiseTextureLength * Vector3.Distance(transform.position, hit.point);
 
                 // Gây sát thương nếu tag của collider là "Target"
-                if (hit.collider.tag == "Target")
+                if (hit.collider.CompareTag("Player"))
                 {
                     //hit.collider.GetComponent<HS_HittedObject>().TakeDamage(damageOverTime * Time.deltaTime);
+                    Debug.Log("va cham Player");
                 }
             }
             else

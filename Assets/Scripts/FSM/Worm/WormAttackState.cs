@@ -1,5 +1,6 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WormAttackState : BaseState<WormBoss, WORMSTATE>
 {
@@ -9,8 +10,10 @@ public class WormAttackState : BaseState<WormBoss, WORMSTATE>
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.ATTACK);
-        boss.Animator.Play(boss.wormAttackDatasPhase1[boss.currentAttackIndex].animationName);
-        waitForAttack = boss.StartCoroutine(WaitForAttack());
+        List<WormAttackData> attackDataList = boss.IsRageState ? boss.wormAttackDatasPhase2 : boss.wormAttackDatasPhase1;
+        string animName = attackDataList[boss.currentAttackIndex].animationName;
+        boss.Animator.Play(animName, 0, 0f);
+        waitForAttack = boss.StartCoroutine(WaitForAttack(attackDataList));
     }
 
 
@@ -20,36 +23,52 @@ public class WormAttackState : BaseState<WormBoss, WORMSTATE>
     public override void Exit()
     {
         boss.ChangeBeforeState(WORMSTATE.ATTACK);
-        boss.StopCoroutine(waitForAttack);
+        if (waitForAttack != null)
+        {
+            boss.StopCoroutine(waitForAttack);
+            waitForAttack = null;
+        }
     }
 
-    private IEnumerator WaitForAttack()
+    private IEnumerator WaitForAttack(List<WormAttackData> attackDataList)
     {
-        bool needFollowUp = boss.wormAttackDatasPhase1[boss.currentAttackIndex].needFollowUp;
+        bool needFollowUp = attackDataList[boss.currentAttackIndex].needFollowUp;
         if (needFollowUp)
         {
-            yield return new WaitUntil(() =>
+            if (boss.IsRageState)
             {
-                var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
-                return info.IsName("Attack05RPT");
-            });
-
-            yield return new WaitUntil(() =>
+                // Phase 2: chờ chuyển từ Attack05ST sang Attack05RPTSwing (với trigger "IsRage")
+                yield return new WaitUntil(() =>
+                {
+                    var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
+                    return info.IsName("Attack05RPTSwing");
+                });
+                yield return new WaitUntil(() =>
+                {
+                    var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
+                    return (!info.IsName("Attack05RPTSwing")) || (info.IsName("Attack05RPTSwing") && info.normalizedTime >= 1f);
+                });
+            }
+            else
             {
-                var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
-                return (!info.IsName("Attack05RPT")) || (info.IsName("Attack05RPT") && info.normalizedTime >= 1f);
-            });
+                // Phase 1: chờ chuyển từ Attack05ST sang Attack05RPT
+                yield return new WaitUntil(() =>
+                {
+                    var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
+                    return info.IsName("Attack05RPT");
+                });
+                yield return new WaitUntil(() =>
+                {
+                    var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
+                    return (!info.IsName("Attack05RPT")) || (info.IsName("Attack05RPT") && info.normalizedTime >= 1f);
+                });
+            }
         }
         else
         {
-            //yield return new WaitUntil(() =>
-            //{
-            //    var info = boss.Animator.GetCurrentAnimatorStateInfo(0);
-            //    return (!info.IsName(boss.wormAttackDatasPhase1[boss.currentAttackIndex].animationName)) || (info.normalizedTime >= 1f);
-            //});
             yield return new WaitForSeconds(boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         }
-        
+
         boss.RequestStateTransition(WORMSTATE.IDLE);
     }
 }

@@ -30,7 +30,7 @@ public class WormIdleState : BaseState<WormBoss,WORMSTATE>
     {
         while (boss.PlayerInRange())
         {
-            yield return new WaitForSeconds(3f);
+            yield return new WaitForSeconds(boss.undergroundDuration);
             boss.RequestStateTransition(WORMSTATE.DETEC);
             yield break;
         }

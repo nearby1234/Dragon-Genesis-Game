@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 {
@@ -12,7 +13,6 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.UNDERGROUND);
-        //boss.Animator.Play(boss.undergroundAnimation);
         boss.Animator.SetTrigger("Underground");
         boss.idleGraceActive = true;
 
@@ -28,9 +28,17 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
     public override void Exit()
     {
         boss.ChangeBeforeState(WORMSTATE.UNDERGROUND);
-        boss.StopCoroutine(waitUnderground);
+        if (waitUnderground != null)
+        {
+            boss.StopCoroutine(waitUnderground);
+            waitUnderground = null;
+        }
         boss.Animator.ResetTrigger("Underground");
-        boss.StopCoroutine(resetIdleGrace);
+        if (resetIdleGrace != null)
+        {
+            boss.StopCoroutine(resetIdleGrace);
+            resetIdleGrace = null;
+        }
     }
 
     private IEnumerator WaitPlayAnimationUnderground()
@@ -40,23 +48,22 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
             boss.Animator.GetCurrentAnimatorStateInfo(0).IsName("GroundDiveIn") &&
             boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
+        // Lựa chọn danh sách attack động theo phase hiện tại
+        List<WormAttackData> attackDataList = boss.IsRageState ? boss.wormAttackDatasPhase2 : boss.wormAttackDatasPhase1;
+        boss.currentAttackIndex = boss.GetRandomIndexAttackList();  
+        float distanceOffset = attackDataList[boss.currentAttackIndex].stopDistance - 1.5f;
+        float randomAngle = Random.Range(0f, 360f);
+        Vector3 offset = Quaternion.Euler(0f, randomAngle, 0f) * Vector3.forward * distanceOffset;
+        // Di chuyển boss đến vị trí của player cộng offset (vị trí xuất hiện dynamic)
+        Vector3 targetPos = boss.m_Player.transform.position + offset;
+        boss.NavMeshAgent.Warp(targetPos);
+        isLocated = true;
+        boss.RequestStateTransition(WORMSTATE.EMERGE);
 
         // Kiểm tra nếu player vẫn trong phạm vi
         while (boss.PlayerInRange())
         {
-            if (!isLocated)
-            {
-                boss.currentAttackIndex = boss.GetRandomIndexAttackList();
-                float distanceOffset = boss.wormAttackDatasPhase1[boss.currentAttackIndex].stopDistance - 1.5f;
-                float randomAngle = Random.Range(0f, 360f);
-                Vector3 offset = Quaternion.Euler(0f, randomAngle, 0f) * Vector3.forward * distanceOffset;
-                // Di chuyển tới vị trí của player + 7 đơn vị ở trục Z
-                Vector3 targetPos = boss.m_Player.transform.position + offset;
-                boss.NavMeshAgent.Warp(targetPos);
-                isLocated = true;
-                boss.RequestStateTransition(WORMSTATE.EMERGE);
-            }
-            yield return new WaitForSeconds(0.2f); // Kiểm tra lại mỗi 0.2 giây
+            yield return new WaitForSeconds(0.2f);
         }
 
         // Nếu player ra khỏi phạm vi, chờ 1 giây rồi chuyển sang trạng thái EMERGE

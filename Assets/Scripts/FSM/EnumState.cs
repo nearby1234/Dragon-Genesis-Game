@@ -20,4 +20,5 @@ public enum WORMSTATE
     WALK,
     DETEC,
     HIT,
+    RAGE,
 }

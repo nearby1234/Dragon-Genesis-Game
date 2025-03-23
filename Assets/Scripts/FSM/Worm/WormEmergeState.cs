@@ -1,6 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.AI;
+using System.Collections.Generic;
 
 public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
 {
@@ -10,14 +11,31 @@ public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.EMERGE);
-        //boss.Animator.Play(boss.emergeAnimation, 0, 0f);
+        // Lựa chọn danh sách attack dựa trên phase hiện tại
+        List<WormAttackData> attackDataList = boss.IsRageState ? boss.wormAttackDatasPhase2 : boss.wormAttackDatasPhase1;
+        boss.m_StopDistance = attackDataList[boss.currentAttackIndex].stopDistance;
         boss.Animator.SetTrigger("Emege");
         waitPlayAnimationEmerge = boss.StartCoroutine(WaitPlayAnimationEmerge());
 
     }
+    public override void Updates()
+    {
+        if (boss.PlayerInRange())
+        {
+            boss.Rotation();
+        }
+    }
+    public override void Exit()
+    {
+        boss.Animator.ResetTrigger("Emege");
+        if (waitPlayAnimationEmerge != null)
+        {
+            boss.StopCoroutine(waitPlayAnimationEmerge);
+            waitPlayAnimationEmerge = null;
+        }
+    }
     private IEnumerator WaitPlayAnimationEmerge()
     {
-        boss.m_StopDistance = boss.wormAttackDatasPhase1[boss.currentAttackIndex].stopDistance;
         yield return new WaitUntil(() =>
          boss.Animator.GetCurrentAnimatorStateInfo(0).IsName("GroundBreakThrough") &&
         boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
@@ -37,20 +55,5 @@ public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
 
         }
         boss.RequestStateTransition(WORMSTATE.IDLE);
-
-    }
-
-    public override void Updates()
-    {
-        if (boss.PlayerInRange())
-        {
-            boss.Rotation();
-        }
-    }
-
-    public override void Exit()
-    {
-        boss.Animator.ResetTrigger("Emege");
-        boss.StopCoroutine(waitPlayAnimationEmerge);
     }
 }
