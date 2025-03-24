@@ -41,7 +41,6 @@ public class WormEmergeState : BaseState<WormBoss, WORMSTATE>
         boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
         while (boss.PlayerInRange())
         {
-
             if (boss.PlayerInAttackRange())
             {
                 boss.RequestStateTransition(WORMSTATE.ATTACK);

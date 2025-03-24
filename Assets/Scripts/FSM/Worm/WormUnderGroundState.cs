@@ -58,6 +58,21 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         Vector3 targetPos = boss.m_Player.transform.position + offset;
         boss.NavMeshAgent.Warp(targetPos);
         isLocated = true;
+        while (true)
+        {
+            boss.Rotation(); // Xoay boss về phía player
+            float angle = Vector3.Angle(boss.transform.forward, boss.DistanceToPlayerNormalized());
+            if (angle < 5f)
+            {
+                break;
+            }
+            yield return null; // Kiểm tra lại mỗi frame
+        }
+
+        // Đợi thêm một chút (ví dụ 0.2 giây) để đảm bảo xoay đã ổn định
+        yield return new WaitForSeconds(0.2f);
+
+        // Sau khi xoay đủ, chuyển state
         boss.RequestStateTransition(WORMSTATE.EMERGE);
 
         // Kiểm tra nếu player vẫn trong phạm vi
@@ -65,9 +80,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         {
             yield return new WaitForSeconds(0.2f);
         }
-
         // Nếu player ra khỏi phạm vi, chờ 1 giây rồi chuyển sang trạng thái EMERGE
-        Debug.Log("Player left range. Transitioning to EMERGE state.");
         yield return new WaitForSeconds(1f);
         boss.MoveToRandomPosition();
         boss.RequestStateTransition(WORMSTATE.EMERGE);

@@ -1,11 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections;
+using PilotoStudio;
 
 public class EnemySkill : MonoBehaviour
 {
     [SerializeField] private Transform m_SpawnEffect;
     [SerializeField] private List<GameObject> fxSpawn = new();
+    [SerializeField] private ParticleHandler m_ParticleHandler;
     public void CastFireBall(int index)
     {
         if (fxSpawn != null)
@@ -20,15 +22,21 @@ public class EnemySkill : MonoBehaviour
     {
         if (fxSpawn != null)
         {
-            if(fxSpawn[index].TryGetComponent<ParticleSystem>(out var fx))
+            if (fxSpawn[index].TryGetComponent<ParticleSystem>(out var fx))
             {
                 fx.Stop();
                 fx.Play();
             }
-            
+
         }
     }
-    public IEnumerator StopFireBall(int index )
+
+    public void SetupBlackHole()
+    {
+        m_ParticleHandler.Cast();
+        m_ParticleHandler.gameObject.SetActive(true);
+    }
+    public IEnumerator StopFireBall(int index)
     {
         yield return new WaitForSeconds(3f);
         fxSpawn[index].SetActive(false);

@@ -39,7 +39,7 @@ public class WormDetecState : BaseState<WormBoss, WORMSTATE>
     {
         while (true)
         {
-            // Xoay boss v? phía player m?i frame
+           
             boss.Rotation();
 
             if (!IsTaunting)
@@ -52,7 +52,7 @@ public class WormDetecState : BaseState<WormBoss, WORMSTATE>
                     waitChangeStateUnderground = boss.StartCoroutine(WaitChangeStateUnderground());
                 }
             }
-            yield return null; // Ch? 1 frame
+            yield return null; 
         }
     }
     private IEnumerator WaitChangeStateUnderground()
