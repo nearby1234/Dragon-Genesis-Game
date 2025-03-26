@@ -7,7 +7,6 @@ public class WormRageState : BaseState<WormBoss, WORMSTATE>
     public WormRageState(WormBoss boss, FSM<WormBoss, WORMSTATE> fsm) : base(boss, fsm)
     {
     }
-
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.RAGE);
@@ -26,12 +25,10 @@ public class WormRageState : BaseState<WormBoss, WORMSTATE>
         }
 
     }
-
     public override void Updates()
     {
 
     }
-
     private IEnumerator PlayTauntingLoop()
     {
         int loop = 0;
@@ -50,7 +47,6 @@ public class WormRageState : BaseState<WormBoss, WORMSTATE>
             });
             loop++;
         }
-        Debug.Log(loop);
         boss.Animator.SetInteger("Loop",loop);
        
         if(loop == 2)

@@ -90,6 +90,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             case WORMSTATE.RAGE:
                 finiteSM.ChangeState(new WormRageState(this, finiteSM));
                 break;
+            case WORMSTATE.DIE:
+                finiteSM.ChangeState(new WormDieState(this, finiteSM));
+                break;
             default:
                 Debug.LogWarning($"State {requestedState} chưa được cài đặt trong RequestStateTransition.");
                 break;
@@ -155,6 +158,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         if (m_WormBossHeal <= 0)
         {
             IsRageState = false;
+            //RequestStateTransition(WORMSTATE.DIE);
             Debug.Log("Worm Boss Die");
             return;
         }
@@ -213,6 +217,12 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Trừ damage, đặt flag và khởi chạy coroutine reset flag.
         m_WormBossHeal -= damage;
+        if(m_WormBossHeal <= 0)
+        {
+            IsRageState = false;
+            RequestStateTransition(WORMSTATE.DIE);
+            return true;
+        }    
         m_IsGetDamage = true;
         StartCoroutine(ResetDamageFlag());
         return true;

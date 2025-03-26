@@ -834,7 +834,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EnemyDamage: 0
   m_BloodPrehabs: {fileID: 2309615735904344905, guid: 73489440d369d39419efbd8299b46d7a, type: 3}
-  m_HitPrehabs: {fileID: 8443315704496310910, guid: 6ef35fa36e3a65043b2d800600204bdd, type: 3}
   m_EnemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
   lastHitTime: 0
   hitCooldown: 0.1

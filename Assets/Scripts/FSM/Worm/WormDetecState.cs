@@ -58,7 +58,6 @@ public class WormDetecState : BaseState<WormBoss, WORMSTATE>
     private IEnumerator WaitChangeStateUnderground()
     {
         yield return new WaitForSeconds(boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
-        Debug.Log("aaa");
         boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
     }
 }

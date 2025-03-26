@@ -79,26 +79,6 @@ public class PlayerDamage : MonoBehaviour
     {
         m_IsPressLeftMouse = false;
     }
-
-    //// Coroutine này sẽ đợi cho đến khi animation attack kết thúc,
-    //// sau đó bật lại khả năng di chuyển của player
-    //private IEnumerator WaitForAttackFinish()
-    //{
-    //    yield return new WaitUntil(() =>
-    //    {
-    //        AnimatorStateInfo state = playerAnimator.GetCurrentAnimatorStateInfo(0);
-    //        // Chờ cho đến khi animation có tag "Attack" hoàn thành (normalizedTime >= 1)
-    //        // hoặc không còn ở trạng thái attack nữa
-    //        return (!state.IsTag("Attack") || state.normalizedTime >= 1.0f);
-    //    });
-
-    //    // Bật lại di chuyển sau khi attack kết thúc
-    //    Debug.Log("bb");
-    //    playerMove.canMove = true;
-    //    // Optionally, chuyển trạng thái player về idle
-    //    //PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
-    //}
-
     public void DegreeEventClickMouse()
     {
         m_ButtonAttackLeftMouse.performed -= OnPerformedAttackLeftMouse;

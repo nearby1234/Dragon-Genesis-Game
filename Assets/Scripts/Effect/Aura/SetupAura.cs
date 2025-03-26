@@ -4,7 +4,6 @@ using UnityEngine;
 public class SetupAura : MonoBehaviour
 {
     [SerializeField] private List<ParticleSystem> m_Aura = new();
-    [SerializeField] private bool m_IsRage;
     private WormBoss m_Boss;
 
     private void Awake()
@@ -15,7 +14,18 @@ public class SetupAura : MonoBehaviour
     {
         if (m_Boss != null)
         {
-            if (m_Boss.IsRageState && m_Aura != null)
+            if (m_Boss.m_WormBossHeal <= 0)
+            {
+                foreach (var a in m_Aura)
+                {
+                    a.gameObject.SetActive(false);
+                    if (a.isPlaying)
+                    {
+                        a.Stop();
+                    }
+                }
+            }
+            else if (m_Boss.IsRageState && m_Aura != null)
             {
                 foreach (var a in m_Aura)
                 {

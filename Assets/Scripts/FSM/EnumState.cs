@@ -21,4 +21,5 @@ public enum WORMSTATE
     DETEC,
     HIT,
     RAGE,
+    DIE,
 }
