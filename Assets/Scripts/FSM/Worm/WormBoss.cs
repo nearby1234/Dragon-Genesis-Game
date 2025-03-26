@@ -40,12 +40,14 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public string[] listStringRefer;
     public GameObject m_Player;
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
+    public DissovleController dissovleController;
     private void Awake()
     {
         m_NavmeshSurface = GameObject.Find(listStringRefer[0]).GetComponent<NavMeshSurface>();
         m_Player = GameObject.Find(listStringRefer[1]);
         animator = GetComponent<Animator>();
         m_NavmeshAgent = GetComponent<NavMeshAgent>();
+        dissovleController = GetComponent<DissovleController>();
     }
     protected override void Start()
     {

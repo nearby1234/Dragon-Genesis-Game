@@ -25,13 +25,7 @@ public class ShootLaser : MonoBehaviour
 
     void Update()
     {
-        //// Tính vector chuyển động của model
-        //Vector3 movement = transform.position - previousPosition;
-        //if (movement != Vector3.zero)
-        //{
-        //    RotateToMovementDirection(movement);
-        //}
-        //previousPosition = transform.position;
+        
     }
 
     // Phương thức này sẽ được gọi từ Animation Event để kích hoạt laser
