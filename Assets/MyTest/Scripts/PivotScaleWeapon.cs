@@ -1,67 +1,61 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using Unity.AI.Navigation.Samples;
+using UnityEditor.iOS.Xcode;
 using UnityEngine;
 using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.VFX;
 
-public class WeaponAdjuster : MonoBehaviour
+public class PivotScaleWeapon : MonoBehaviour
 {
     // Định nghĩa offset ban đầu từ pivot (điểm cầm) theo không gian local của đối tượng con
     public Vector3 handleLocalOffset = new(0f, -0.5f, 0f);
+    public Transform m_TranformEnergyWeapon;
+    public Transform m_Sword;
+    public MeshFilter m_CurrentMeshFilter;
+    public MeshFilter m_BeforMeshFilter;
+    public MeshRenderer m_EnergyWeaponMesh;
+
+    public ParticleSystem m_Cirlcle;
+    public ParticleSystem m_ShockWave;
+    public ParticleSystem m_Trial;
+    public ParticleSystem m_aura;
+    public ParticleSystem m_Explosion;
+    public VisualEffect m_Energy;
+    public Animator animator;
 
     private Vector3 initialScale;
-    private int Count = 1;
 
-    private float timer = 0f;
-    private bool isScaling = false;
-    private float duration = 1f; // 1 giây
+    private Material m_CircleMaterial;
 
-    private int level1 = 2;
-    private int level2 = 3;
-    private int level3 = 4;
+    private readonly float duration = 1f; // 1 giây
+
+    private readonly int[] levelFactors = { 1, 2, 3, 5 };
+    private int m_CurrentIndex = 0;
 
     private Coroutine scalingCoroutine;
+    private Coroutine setupScaleDefault;
 
-    [SerializeField] private LEVEL currentLevel;
+    [SerializeField] private int m_EnergyWeaponDamage;
 
-    //private int currentLevel = 0; // 0: chưa scale, 1: đã đạt level1, 2: đã đạt level2, 3: đã đạt level3
-
-    private enum LEVEL
+    private void Awake()
     {
-        DEFAULT,
-        LEVEL0,
-        LEVEL1,
-        LEVEL2,
-        LEVEL3,
-    }    
+        animator = GetComponent<Animator>();
+        m_BeforMeshFilter = m_Sword.GetComponent<MeshFilter>();
+        m_CurrentMeshFilter = m_TranformEnergyWeapon.GetComponent<MeshFilter>();
+        m_EnergyWeaponMesh = m_TranformEnergyWeapon.GetComponent<MeshRenderer>();
+        ParticleSystemRenderer psRenderer = m_Cirlcle.GetComponent<ParticleSystemRenderer>();
+        if (psRenderer != null)
+        {
+            m_CircleMaterial = psRenderer.material;
+        }
+    }
 
     private void Start()
     {
         // Lưu lại scale ban đầu
-        initialScale = transform.localScale;
-    }
-
-    // Hàm điều chỉnh scale và bù trừ vị trí
-    public void ScaleAndAdjust(Vector3 newScale)
-    {
-
-        // Lưu vị trí world hiện tại của điểm cầm (có tính rotation hiện tại)
-        Vector3 currentHandleWorldPos = transform.TransformPoint(handleLocalOffset); // worldPos = position + rotation × (localOffset × scale)
-
-        // Áp dụng scale mới
-        transform.localScale = newScale;
-
-        // Sau khi scale, tính vị trí world mới của điểm cầm
-        Vector3 newHandleWorldPos = transform.TransformPoint(handleLocalOffset);
-
-        // worldPos = position + rotation × (localOffset × scale)
-        //Có nghĩa là: chuyển đổi localOffset (đã nhân với scale)
-        //từ không gian local sang không gian world bằng cách áp dụng rotation,
-        //sau đó cộng với vị trí world của đối tượng để có được vị trí world thực sự của điểm đó.
-
-        // Tính delta hiệu chỉnh
-        Vector3 delta = currentHandleWorldPos - newHandleWorldPos;
-
-        // Điều chỉnh lại vị trí của đối tượng để điểm cầm không dịch chuyển
-        transform.position += delta;
+        initialScale = m_TranformEnergyWeapon.transform.localScale;
+        m_CurrentMeshFilter.mesh = m_BeforMeshFilter.mesh;
     }
 
     private void Update()
@@ -76,112 +70,231 @@ public class WeaponAdjuster : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.N))
         {
             // Reset và bắt đầu coroutine
-            ResetScale();
+            //ResetScale();
+            if (m_aura != null)
+            {
+                m_aura.gameObject.SetActive(true);
+                m_aura.Play();
+                animator.Play("Great Sword Casting");
+                animator.SetBool("IsPressN", true);
+                animator.SetTrigger("IsPress");
+            }
             scalingCoroutine = StartCoroutine(ScaleCoroutine());
         }
-
-        if (Input.GetKeyUp(KeyCode.M))
+        if (Input.GetKeyUp(KeyCode.N))
         {
-            if (scalingCoroutine != null)
-            {
-                StopCoroutine(scalingCoroutine);
-                scalingCoroutine = null;
-            }
-            ResetScale();
+            animator.SetBool("IsPressN", false);
+            setupScaleDefault = StartCoroutine(SetupScaleDefault());
+            m_aura.gameObject.SetActive(false);
         }
     }
-
-    private void ScaleWithTimer()
+    private void OnChildTriggerEnter(TriggerData data)
     {
-        // Khi nhấn phím N, reset timer và currentLevel
-        if (Input.GetKeyDown(KeyCode.N))
+        if (data != null)
         {
-            timer = 0f;
-            isScaling = true;
-            currentLevel = LEVEL.LEVEL0;
-        }
-
-        if (isScaling && Input.GetKey(KeyCode.N))
-        {
-            timer += Time.deltaTime;
-
-            // Khi vượt qua 1*duration và chưa đạt LEVEL1
-            if (timer >= duration && currentLevel == LEVEL.LEVEL0)
+            data.Collider.TryGetComponent<EnemyHeal>(out var enemyHeal);
+            enemyHeal.GetDamage(m_EnergyWeaponDamage);
+            Vector3 pointCol = data.Collider.ClosestPoint(data.ChildPos);
+            if (m_Explosion != null)
             {
-                Debug.Log("lv1");
-                ScaleAndAdjust(initialScale * level1);
-                currentLevel = LEVEL.LEVEL1;
+                m_Explosion.gameObject.transform.position = pointCol;
+                m_Explosion.gameObject.SetActive(true);
+                if (!m_Explosion.isPlaying)
+                {
+                    m_Explosion.Play();
+                }
+                StartCoroutine(TurnOffExplosion());
             }
-            // Khi vượt qua 2*duration và chưa đạt LEVEL2
-            else if (timer >= 2 * duration && currentLevel == LEVEL.LEVEL1)
-            {
-                Debug.Log("lv2");
-                ScaleAndAdjust(initialScale * level2);
-                currentLevel = LEVEL.LEVEL2;
-            }
-            // Khi vượt qua 3*duration và chưa đạt LEVEL3
-            else if (timer >= 3 * duration && currentLevel == LEVEL.LEVEL2)
-            {
-                Debug.Log("lv3");
-                ScaleAndAdjust(initialScale * level3);
-                currentLevel = LEVEL.LEVEL3;
-                // Nếu muốn dừng ngay khi đạt LEVEL3
-                isScaling = false;
-            }
-        }
-
-        // Khi thả phím N, reset trạng thái nếu cần
-        if (Input.GetKeyUp(KeyCode.M))
-        {
-            isScaling = false;
-            timer = 0f;
-            currentLevel = LEVEL.LEVEL0;
-            ScaleAndAdjust(initialScale * 1);
         }
     }
-
-    private void ScaleWhenPressButton()
+    public void ScaleAndAdjust(Vector3 newScale)
     {
-        if (Input.GetKeyDown(KeyCode.B))
+        // Lưu vị trí world hiện tại của điểm cầm (có tính rotation hiện tại)
+        Vector3 currentHandleWorldPos = m_TranformEnergyWeapon.transform.TransformPoint(handleLocalOffset); // worldPos = position + rotation × (localOffset × scale)
+
+        // Áp dụng scale mới
+        m_TranformEnergyWeapon.transform.localScale = newScale;
+
+        // Sau khi scale, tính vị trí world mới của điểm cầm
+        Vector3 newHandleWorldPos = m_TranformEnergyWeapon.transform.TransformPoint(handleLocalOffset);
+
+        // worldPos = position + rotation × (localOffset × scale)
+        //Có nghĩa là: chuyển đổi localOffset (đã nhân với scale)
+        //từ không gian local sang không gian world bằng cách áp dụng rotation,
+        //sau đó cộng với vị trí world của đối tượng để có được vị trí world thực sự của điểm đó.
+
+        // Tính delta hiệu chỉnh
+        Vector3 delta = currentHandleWorldPos - newHandleWorldPos;
+
+        // Điều chỉnh lại vị trí của đối tượng để điểm cầm không dịch chuyển
+        m_TranformEnergyWeapon.transform.position += delta;
+    }
+    public void AeSetupEffect()
+    {
+        if (m_Explosion != null)
         {
-            Count++;
-            Vector3 newScale = initialScale * Count;
-            ScaleAndAdjust(newScale);
+            m_Explosion.gameObject.SetActive(true);
+            if (!m_Explosion.isPlaying)
+            {
+                m_Explosion.Play();
+            }
         }
     }
-
+    public void AeStopEffect()
+    {
+        if (m_Explosion != null)
+        {
+            m_Explosion.gameObject.SetActive(false);
+        }
+    }
+    public void AeStartFade()
+    {
+        if (m_Cirlcle != null)
+        {
+            m_Cirlcle.gameObject.SetActive(true);
+            StartCoroutine(FadeAlphaCoroutine(0.5f));
+        }
+    }
+    public void StopFade()
+    {
+        if (m_Cirlcle != null)
+        {
+            m_Cirlcle.gameObject.SetActive(false);
+        }
+    }
     private IEnumerator ScaleCoroutine()
     {
         float timer = 0f;
         while (true)
         {
-            timer += Time.deltaTime;
+            // Chỉ tăng timer khi nhấn phím N
+            if (Input.GetKey(KeyCode.N))
+            {
+                timer += Time.deltaTime;
+            }
 
-            if (timer >= 3 * duration && currentLevel == LEVEL.LEVEL2)
+            // Tính level mới dựa trên thời gian đã trôi qua (mỗi 'duration' sẽ tăng level)
+            int newLevelIndex = Mathf.Clamp((int)(timer / duration), 0, levelFactors.Length - 1);
+
+            // Nếu có sự thay đổi level (và level tăng)
+            if (newLevelIndex > m_CurrentIndex)
             {
-                Debug.Log("lv3");
-                ScaleAndAdjust(initialScale * level3);
-                currentLevel = LEVEL.LEVEL3;
-                yield break; // Dừng coroutine khi đạt level3
-            }
-            else if (timer >= 2 * duration && currentLevel == LEVEL.LEVEL1)
-            {
-                Debug.Log("lv2");
-                ScaleAndAdjust(initialScale * level2);
-                currentLevel = LEVEL.LEVEL2;
-            }
-            else if (timer >= duration && currentLevel == LEVEL.LEVEL0)
-            {
-                Debug.Log("lv1");
-                ScaleAndAdjust(initialScale * level1);
-                currentLevel = LEVEL.LEVEL1;
+                m_CurrentIndex = newLevelIndex;
+                // Setup hiệu ứng (shockwave, energy) mỗi khi nâng cấp level
+
+                m_EnergyWeaponMesh.enabled = true;
+                SetupShockWave(m_ShockWave, true);
+                SetupShockWave(m_Trial, true);
+                SetupEnergy(m_Energy, true);
+                ScaleAndAdjust(initialScale * levelFactors[m_CurrentIndex]);
+                StopFade();
+
+                // Nếu đạt level cao nhất (LEVEL3) thì dừng coroutine
+                if (m_CurrentIndex == levelFactors.Length - 1)
+                {
+                    yield break;
+                }
             }
             yield return null;
         }
     }
 
+    private IEnumerator TurnOffExplosion()
+    {
+        yield return new WaitForSeconds(1f);
+        m_Explosion.gameObject.SetActive(false);
+    }
+    private IEnumerator SetupScaleDefault()
+    {
+        yield return new WaitUntil(() =>
+        {
+            var info = animator.GetCurrentAnimatorStateInfo(0);
+            return info.IsName("Great Sword Casting_attack");
+        });
+        yield return new WaitUntil(() =>
+        {
+            var info = animator.GetCurrentAnimatorStateInfo(0);
+            return (!info.IsName("Great Sword Casting_attack") || (info.IsName("Great Sword Casting_attack") && info.normalizedTime >= 1f));
+        });
+        ResetScale();
+    }
     private void ResetScale()
     {
-        currentLevel = LEVEL.LEVEL0;
+        m_CurrentIndex = 0;
+        m_TranformEnergyWeapon.transform.localScale = Vector3.one;
+        m_TranformEnergyWeapon.transform.localPosition = Vector3.zero;
+        m_EnergyWeaponMesh.enabled = false;
+        SetupShockWave(m_ShockWave, false);
+        SetupShockWave(m_Trial, false);
+        SetupEnergy(m_Energy, false);
     }
+    #region SETUP EFFECT 
+    private void SetupShockWave(ParticleSystem particleSystem, bool turn)
+    {
+        if (particleSystem != null)
+        {
+            if (turn)
+            {
+                particleSystem.gameObject.SetActive(true);
+                if (!particleSystem.isPlaying)
+                {
+                    particleSystem.Play();
+                }
+                else
+                {
+                    particleSystem.Stop();
+                    particleSystem.Play();
+                }
+            }
+            else
+            {
+                particleSystem.gameObject.SetActive(false);
+            }
+
+        }
+    }
+    private void SetupEnergy(VisualEffect energy, bool turn)
+    {
+        if (energy != null)
+        {
+            if (turn)
+            {
+                energy.gameObject.SetActive(true);
+                if (energy.aliveParticleCount <= 0)
+                {
+                    energy.Play();
+                }
+                else
+                {
+                    energy.Stop();
+                    energy.Play();
+                }
+            }
+            else
+            {
+                energy.gameObject.SetActive(false);
+            }
+
+        }
+    }
+   
+    private IEnumerator FadeAlphaCoroutine(float duration)
+    {
+        float elapsed = 0f;
+        Color initialColor = m_CircleMaterial.GetColor("_BaseColor");
+        // Giả sử alpha ban đầu là 0, và muốn đạt 1 sau duration
+        initialColor.a = 1f;
+        m_CircleMaterial.SetColor("_BaseColor", initialColor);
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            float newAlpha = Mathf.Lerp(1f, 0f, Mathf.Clamp01(elapsed / duration));
+            Color currentColor = m_CircleMaterial.GetColor("_BaseColor");
+            currentColor.a = newAlpha;
+            m_CircleMaterial.SetColor("_BaseColor", currentColor);
+            yield return null;
+        }
+    }
+    #endregion
 }

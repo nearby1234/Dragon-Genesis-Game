@@ -22,6 +22,7 @@ public class ShootLaser : MonoBehaviour
         previousPosition = transform.position;
         Prefab = 0;
     }
+    
 
     void Update()
     {
@@ -39,6 +40,7 @@ public class ShootLaser : MonoBehaviour
         startLaser = Instantiate(start, FirePoint.transform.position, FirePoint.transform.rotation, FirePoint.transform);
         //Instance.transform.parent = transform;);
         Instance = Instantiate(Prefabs[Prefab], FirePoint.transform.position, FirePoint.transform.rotation, FirePoint.transform);
+        Instance.SetActive(true);
         //Instance.transform.parent = transform;
         LaserScript = Instance.GetComponent<Hovl_Laser>();
         LaserScript2 = Instance.GetComponent<Hovl_Laser2>();
@@ -79,4 +81,6 @@ public class ShootLaser : MonoBehaviour
             Prefab = Prefabs.Length - 1;
         }
     }
+
+   
 }

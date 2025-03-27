@@ -20,17 +20,16 @@ public class DissovleController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    StartCoroutine(DissolveCo());
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            StartCoroutine(DissolveCo());
 
-        //}
+        }
     }
-    public IEnumerator DissolveCo()
+    IEnumerator DissolveCo()
     {
         if(VFXGraph != null)
         {
-            VFXGraph.gameObject.SetActive(true);
             VFXGraph.Play();
         }    
 
