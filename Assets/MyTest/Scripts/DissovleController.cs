@@ -13,14 +13,14 @@ public class DissovleController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(SkinnedMesh != null)
-            skineshMaterial = SkinnedMesh.material;   
+        if (SkinnedMesh != null)
+            skineshMaterial = SkinnedMesh.material;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             StartCoroutine(DissolveCo());
 
@@ -28,19 +28,20 @@ public class DissovleController : MonoBehaviour
     }
     public IEnumerator DissolveCo()
     {
-        if(VFXGraph != null)
+        if (VFXGraph != null)
         {
+            VFXGraph.gameObject.SetActive(true);
             VFXGraph.Play();
-        }    
+        }
 
-        if(skineshMaterial != null)
+        if (skineshMaterial != null)
         {
             float t = 0f;
-            while(t <1)
+            while (t < 1)
             {
                 t += dissolveRate * Time.deltaTime;
                 skineshMaterial.SetFloat("_DissvoleAmount", Mathf.Lerp(0f, 1f, t));
-                yield return null; 
+                yield return null;
             }
         }
     }

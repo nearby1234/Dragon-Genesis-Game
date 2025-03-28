@@ -14,7 +14,7 @@ public class PivotScaleWeapon : MonoBehaviour
     public Transform m_Sword;
     public MeshFilter m_CurrentMeshFilter;
     public MeshFilter m_BeforMeshFilter;
-    public MeshRenderer m_EnergyWeaponMesh;
+    //public MeshRenderer m_EnergyWeaponMesh;
 
     public ParticleSystem m_Cirlcle;
     public ParticleSystem m_ShockWave;
@@ -46,7 +46,7 @@ public class PivotScaleWeapon : MonoBehaviour
         animator = GetComponent<Animator>();
         m_BeforMeshFilter = m_Sword.GetComponent<MeshFilter>();
         m_CurrentMeshFilter = m_TranformEnergyWeapon.GetComponent<MeshFilter>();
-        m_EnergyWeaponMesh = m_TranformEnergyWeapon.GetComponent<MeshRenderer>();
+        //m_EnergyWeaponMesh = m_TranformEnergyWeapon.GetComponent<MeshRenderer>();
         ParticleSystemRenderer psRenderer = m_Cirlcle.GetComponent<ParticleSystemRenderer>();
         if (psRenderer != null)
         {
@@ -90,6 +90,7 @@ public class PivotScaleWeapon : MonoBehaviour
             animator.SetBool("IsPressN", false);
             setupScaleDefault = StartCoroutine(SetupScaleDefault());
             m_aura.gameObject.SetActive(false);
+            StartCoroutine(SmoothRotateToCameraDirection(0.3f));
         }
     }
     private void OnChildTriggerEnter(TriggerData data)
@@ -169,17 +170,17 @@ public class PivotScaleWeapon : MonoBehaviour
     }
     private IEnumerator ScaleCoroutine()
     {
-        
+        m_TranformEnergyWeapon.gameObject.SetActive(true);
         float timer = 0f;
         while (true)
         {
            
             // Chỉ tăng timer khi nhấn phím N
-            if (Input.GetKey(KeyCode.O))
+            if (!Input.GetKey(KeyCode.O))
             {
-                timer += Time.deltaTime;
+                yield break;
             }
-            
+            timer += Time.deltaTime;
             // Tính level mới dựa trên thời gian đã trôi qua (mỗi 'duration' sẽ tăng level)
             int newLevelIndex = Mathf.Clamp((int)(timer / duration), 0, levelFactors.Length - 1);
 
@@ -189,7 +190,7 @@ public class PivotScaleWeapon : MonoBehaviour
                 m_CurrentIndex = newLevelIndex;
                 // Setup hiệu ứng (shockwave, energy) mỗi khi nâng cấp level
 
-                m_EnergyWeaponMesh.enabled = true;
+                //m_EnergyWeaponMesh.enabled = true;
                 SetupShockWave(m_ShockWave, true);
                 SetupShockWave(m_Trial, true);
                 SetupEnergy(m_Energy, true);
@@ -214,6 +215,7 @@ public class PivotScaleWeapon : MonoBehaviour
     }
     private IEnumerator SetupScaleDefault()
     {
+        //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
         yield return new WaitUntil(() =>
         {
             var info = animator.GetCurrentAnimatorStateInfo(0);
@@ -226,12 +228,33 @@ public class PivotScaleWeapon : MonoBehaviour
         });
         ResetScale();
     }
+    private IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
+    {
+        // Lưu lại góc ban đầu của player
+        Quaternion initialRotation = transform.rotation;
+
+        // Lấy hướng forward của camera (chỉ tính trên mặt phẳng ngang)
+        Vector3 camForward = Camera.main.transform.forward;
+        camForward.y = 0f; // Bỏ phần y để xoay theo mặt đất
+        Quaternion targetRotation = Quaternion.LookRotation(camForward);
+
+        float elapsed = 0f;
+        while (elapsed < rotateDuration)
+        {
+            elapsed += Time.deltaTime;
+            // Nội suy xoay mượt theo thời gian
+            transform.rotation = Quaternion.Slerp(initialRotation, targetRotation, elapsed / rotateDuration);
+            yield return null;
+        }
+        transform.rotation = targetRotation; // Đảm bảo xoay đúng cuối
+    }
     private void ResetScale()
     {
         m_CurrentIndex = 0;
         m_TranformEnergyWeapon.transform.localScale = Vector3.one;
         m_TranformEnergyWeapon.transform.localPosition = Vector3.zero;
-        m_EnergyWeaponMesh.enabled = false;
+        m_TranformEnergyWeapon.gameObject.SetActive(false);
+        //m_EnergyWeaponMesh.enabled = false;
         SetupShockWave(m_ShockWave, false);
         SetupShockWave(m_Trial, false);
         SetupEnergy(m_Energy, false);

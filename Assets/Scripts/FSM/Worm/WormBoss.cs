@@ -17,7 +17,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
     [Header("Atribute")]
     public float m_AngularSpeed;
-
     public int currentAttackIndex = 0;
     private Vector3 center;
     private Vector3 size;
@@ -36,9 +35,15 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public string undergroundAnimation = "GroundDiveIn";
     public string emergeAnimation = "GroundBreakThrough";
 
+    [Header("Material")]
+    [SerializeField] private Material m_DefaultMaterial;
+    [SerializeField] private Material m_GetHitMaterial;
+     
+
     [Header("References")]
     public string[] listStringRefer;
     public GameObject m_Player;
+    [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
     public DissovleController dissovleController;
     private void Awake()
@@ -48,6 +53,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         animator = GetComponent<Animator>();
         m_NavmeshAgent = GetComponent<NavMeshAgent>();
         dissovleController = GetComponent<DissovleController>();
+        m_SkinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
     protected override void Start()
     {
@@ -219,6 +225,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Trừ damage, đặt flag và khởi chạy coroutine reset flag.
         m_WormBossHeal -= damage;
+        m_SkinnedMeshRenderer.material = m_GetHitMaterial;
+        StartCoroutine(RestoreDefaultMaterial(0.2f));
+
         if(m_WormBossHeal <= 0)
         {
             IsRageState = false;
@@ -233,6 +242,11 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         yield return new WaitForSeconds(0.5f);
         m_IsGetDamage = false;
+    }
+    private IEnumerator RestoreDefaultMaterial(float timer)
+    {
+        yield return new WaitForSeconds(timer);
+        m_SkinnedMeshRenderer.material = m_DefaultMaterial;
     }
 
    

@@ -61,7 +61,7 @@ public class HouvlLaserTest : MonoBehaviour
                 if (hit.collider.CompareTag("Player"))
                 {
                     //hit.collider.GetComponent<HS_HittedObject>().TakeDamage(damageOverTime * Time.deltaTime);
-                    Debug.Log("va cham Player");
+                    Debug.Log("Laser va cham Player");
                 }
             }
             else
