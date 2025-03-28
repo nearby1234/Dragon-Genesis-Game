@@ -5,7 +5,6 @@ using UnityEngine.AI;
 [RequireComponent(typeof(EnemyHeal))]
 [RequireComponent(typeof(NavMeshAgent))]
 [RequireComponent(typeof(RandomNavMeshMove))]
-[RequireComponent(typeof(Rigidbody))]
 public class EnemyController : MonoBehaviour
 {
     [SerializeField] private Animator animator;

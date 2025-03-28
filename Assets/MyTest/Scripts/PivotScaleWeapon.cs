@@ -36,6 +36,9 @@ public class PivotScaleWeapon : MonoBehaviour
     private Coroutine scalingCoroutine;
     private Coroutine setupScaleDefault;
 
+    private const string AttackAnimationClip = "Great Sword Casting_IK";
+    private const string AttackCastingAnimationClip = "Great Sword Casting_attack_IK";
+
     [SerializeField] private int m_EnergyWeaponDamage;
 
     private void Awake()
@@ -67,7 +70,7 @@ public class PivotScaleWeapon : MonoBehaviour
         //ScaleWhenPressButton();
         //ScaleWithTimer();
 
-        if (Input.GetKeyDown(KeyCode.N))
+        if (Input.GetKeyDown(KeyCode.O))
         {
             // Reset và bắt đầu coroutine
             //ResetScale();
@@ -75,13 +78,14 @@ public class PivotScaleWeapon : MonoBehaviour
             {
                 m_aura.gameObject.SetActive(true);
                 m_aura.Play();
-                animator.Play("Great Sword Casting");
-                animator.SetBool("IsPressN", true);
+                animator.Play(AttackAnimationClip);
                 animator.SetTrigger("IsPress");
+
+
             }
             scalingCoroutine = StartCoroutine(ScaleCoroutine());
         }
-        if (Input.GetKeyUp(KeyCode.N))
+        if (Input.GetKeyUp(KeyCode.O))
         {
             animator.SetBool("IsPressN", false);
             setupScaleDefault = StartCoroutine(SetupScaleDefault());
@@ -92,8 +96,8 @@ public class PivotScaleWeapon : MonoBehaviour
     {
         if (data != null)
         {
-            data.Collider.TryGetComponent<EnemyHeal>(out var enemyHeal);
-            enemyHeal.GetDamage(m_EnergyWeaponDamage);
+            data.Collider.TryGetComponent<WormBoss>(out var wormBoss);
+            wormBoss.GetDamage(m_EnergyWeaponDamage);
             Vector3 pointCol = data.Collider.ClosestPoint(data.ChildPos);
             if (m_Explosion != null)
             {
@@ -151,6 +155,7 @@ public class PivotScaleWeapon : MonoBehaviour
     {
         if (m_Cirlcle != null)
         {
+           
             m_Cirlcle.gameObject.SetActive(true);
             StartCoroutine(FadeAlphaCoroutine(0.5f));
         }
@@ -164,15 +169,17 @@ public class PivotScaleWeapon : MonoBehaviour
     }
     private IEnumerator ScaleCoroutine()
     {
+        
         float timer = 0f;
         while (true)
         {
+           
             // Chỉ tăng timer khi nhấn phím N
-            if (Input.GetKey(KeyCode.N))
+            if (Input.GetKey(KeyCode.O))
             {
                 timer += Time.deltaTime;
             }
-
+            
             // Tính level mới dựa trên thời gian đã trôi qua (mỗi 'duration' sẽ tăng level)
             int newLevelIndex = Mathf.Clamp((int)(timer / duration), 0, levelFactors.Length - 1);
 
@@ -188,6 +195,7 @@ public class PivotScaleWeapon : MonoBehaviour
                 SetupEnergy(m_Energy, true);
                 ScaleAndAdjust(initialScale * levelFactors[m_CurrentIndex]);
                 StopFade();
+                animator.SetBool("IsPressN", true);
 
                 // Nếu đạt level cao nhất (LEVEL3) thì dừng coroutine
                 if (m_CurrentIndex == levelFactors.Length - 1)
@@ -209,12 +217,12 @@ public class PivotScaleWeapon : MonoBehaviour
         yield return new WaitUntil(() =>
         {
             var info = animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsName("Great Sword Casting_attack");
+            return info.IsName(AttackCastingAnimationClip);
         });
         yield return new WaitUntil(() =>
         {
             var info = animator.GetCurrentAnimatorStateInfo(0);
-            return (!info.IsName("Great Sword Casting_attack") || (info.IsName("Great Sword Casting_attack") && info.normalizedTime >= 1f));
+            return (!info.IsName(AttackCastingAnimationClip) || (info.IsName(AttackCastingAnimationClip) && info.normalizedTime >= 1f));
         });
         ResetScale();
     }

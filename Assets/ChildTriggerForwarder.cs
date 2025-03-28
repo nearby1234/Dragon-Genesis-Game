@@ -5,7 +5,7 @@ public class ChildTriggerForwarder : MonoBehaviour
    
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("enemy"))
+        if(other.CompareTag("Boss")|| other.CompareTag("Creep"))
         {
             Vector3 childPos = transform.position;
 

@@ -154,7 +154,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     }
 
 
-    public void GetDamage(float damage)
+    public void GetDamage(int damage)
     {
         // Nếu máu boss đã ≤ 0 thì boss chết.
         if (m_WormBossHeal <= 0)

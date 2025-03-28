@@ -26,7 +26,7 @@ public class DissovleController : MonoBehaviour
 
         }
     }
-    IEnumerator DissolveCo()
+    public IEnumerator DissolveCo()
     {
         if(VFXGraph != null)
         {
