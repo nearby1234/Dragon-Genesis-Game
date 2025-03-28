@@ -30,6 +30,11 @@ public class UIManager : BaseManager<UIManager>
     public BaseNotify CurNotify => curNotify;
 
 
+    private void Start()
+    {
+        GameObject test = Instantiate(GetUIPrefab(UIType.Screen, "ScreenPlayerImformation"),cScreen.transform);
+    }
+
     #region Screen
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T: BaseScreen
     {

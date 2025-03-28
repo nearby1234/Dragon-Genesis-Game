@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 
 public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 {
@@ -43,11 +44,18 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 
     private IEnumerator WaitPlayAnimationUnderground()
     {
+
         // Chờ animation "GroundDiveIn" hoàn thành
         yield return new WaitUntil(() =>
             boss.Animator.GetCurrentAnimatorStateInfo(0).IsName("GroundDiveIn") &&
             boss.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
 
+        if (!boss.PlayerInRange())
+        {
+            boss.MoveToRandomPosition();
+            boss.RequestStateTransition(WORMSTATE.EMERGE);
+            yield break;
+        }
         // Lựa chọn danh sách attack động theo phase hiện tại
         List<WormAttackData> attackDataList = boss.IsRageState ? boss.wormAttackDatasPhase2 : boss.wormAttackDatasPhase1;
         boss.currentAttackIndex = boss.GetRandomIndexAttackList();  
