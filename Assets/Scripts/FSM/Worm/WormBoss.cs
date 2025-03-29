@@ -14,6 +14,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public bool isInHitState = false;
     public bool idleGraceActive = false;
     public bool IsRageState = false;
+    public bool isShowHealbarBoss = false;
 
     [Header("Atribute")]
     public float m_AngularSpeed;
@@ -65,10 +66,25 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             size = m_NavmeshSurface.size;
             center = m_NavmeshSurface.transform.position + m_NavmeshSurface.center;
         }
+        
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
+        }
     }
     protected override void Update()
     {
         finiteSM?.Update();
+        if (PlayerInRange())
+        {
+            if(!isShowHealbarBoss)
+            {
+                UIManager.Instance.ShowScreen<ScreenHealBarBoss>();
+                isShowHealbarBoss = true;
+            }    
+        }
+        
+        
     }
     public override void RequestStateTransition(WORMSTATE requestedState)
     {
@@ -225,6 +241,10 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Trừ damage, đặt flag và khởi chạy coroutine reset flag.
         m_WormBossHeal -= damage;
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.BOSS_UPDATE_HEAL_VALUE, m_WormBossHeal);
+        }
         m_SkinnedMeshRenderer.material = m_GetHitMaterial;
         StartCoroutine(RestoreDefaultMaterial(0.2f));
 

@@ -14,8 +14,12 @@ public class WormDieState : BaseState<WormBoss, WORMSTATE>
     {
         boss.ChangeStateCurrent(WORMSTATE.DIE);
         boss.Animator.CrossFade("Die", 0.1f);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.BOSS_STATE_CURRENT, WORMSTATE.DIE);
+        }
         waitBossDie = boss.StartCoroutine(WaitBossDie());
-        ListenerManager.Instance.BroadCast(ListenType.WORM_DIE, WORMSTATE.DIE);
+        
     }
 
     public override void Exit()

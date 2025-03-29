@@ -9,25 +9,21 @@ public class DissovleController : MonoBehaviour
     public VisualEffect VFXGraph;
     public float dissolveRate;
 
-    private Material skineshMaterial;
+    public Material skineshMaterial;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         if (SkinnedMesh != null)
-            skineshMaterial = SkinnedMesh.material;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
         {
-            StartCoroutine(DissolveCo());
-
-        }
+            skineshMaterial = SkinnedMesh.sharedMaterial;
+            skineshMaterial.SetFloat("_DissvoleAmount", 0f);
+        }    
+            
     }
     public IEnumerator DissolveCo()
     {
+        yield return new WaitForSeconds(1f);
         if (VFXGraph != null)
         {
             VFXGraph.gameObject.SetActive(true);

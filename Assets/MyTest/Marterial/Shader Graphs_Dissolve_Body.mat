@@ -21,8 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Shader Graphs_Dissolve_Body
-  m_Shader: {fileID: -6465566751694194690, guid: 8fe35746f56969a46b7606b3759c9af2,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 8fe35746f56969a46b7606b3759c9af2, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords:
@@ -68,7 +67,7 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _CastShadows: 1
     - _Cull: 2
-    - _DissvoleAmount: 0
+    - _DissvoleAmount: 1
     - _DissvoleScale: 40
     - _DissvoleWidht: 0.02
     - _DstBlend: 0
@@ -86,6 +85,6 @@ Material:
     - _ZWriteControl: 0
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 0}
-    - _DissvoleColor: {r: 0, g: 0.5226551, b: 3.193114, a: 0}
+    - _DissvoleColor: {r: 0, g: 0.85384285, b: 5.2164755, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
