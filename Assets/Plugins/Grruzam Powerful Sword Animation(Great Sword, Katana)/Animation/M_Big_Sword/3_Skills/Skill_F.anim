@@ -98549,7 +98549,7 @@ AnimationClip:
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.7
+  - time: 0.6666667
     functionName: ChangeStatePlayer
     data: 
     objectReferenceParameter: {fileID: 0}

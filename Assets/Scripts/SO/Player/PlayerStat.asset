@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
-  m_Name: BatStat
+  m_Script: {fileID: 11500000, guid: 78249a03e757ceb469a703054b9ab961, type: 3}
+  m_Name: PlayerStat
   m_EditorClassIdentifier: 
-  heal: 10
-  damage: 1
+  m_PlayerHeal: 100
+  m_PlayerMana: 100
+  m_PlayerStamina: 100

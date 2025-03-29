@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnemyStat",menuName = "New Enemy Stat")]
+[CreateAssetMenu(fileName = "New EnemyStat",menuName = "Scriptable Object/EnemyStatSO")]
 public class EnemyStatSO : ScriptableObject
 {
     public int heal;

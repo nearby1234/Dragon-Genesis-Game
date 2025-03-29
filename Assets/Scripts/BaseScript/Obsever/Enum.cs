@@ -4,6 +4,10 @@ public enum ListenType
     UPDATE_STATE_CALCULATOR,
     INIT_CALCULATOR,
     WORM_DIE,
+    SEND_HEAL_VALUE,
+    PLAYER_SEND_HEAL_VALUE,
+    CREEP_SEND_HEAL_VALUE,
+    CREEP_UPDATE_HEAL_VALUE
 }
 
 public enum CalculatorButtonState

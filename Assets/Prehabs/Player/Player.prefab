@@ -1757,6 +1757,7 @@ MonoBehaviour:
   playerDodge: {fileID: 0}
   effectSpawn: {fileID: 0}
   m_PlayerState: 0
+  m_PlayerStatSO: {fileID: 11400000, guid: 416aece4576b91146904393a73a36101, type: 2}
 --- !u!114 &307520791741602282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1871,7 +1872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f0ec64cd0cdef469e05e45b1188ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerHeal: 100
+  m_PlayerHeal: 0
   m_IsPlayerDeath: 0
   m_IsDamaging: 0
 --- !u!114 &3210564381004821764
@@ -6264,7 +6265,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -6312,6 +6313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
+  m_IsTakeDamaged: 0
+  m_timer: 0.5
 --- !u!1001 &800387386774036834
 PrefabInstance:
   m_ObjectHideFlags: 0

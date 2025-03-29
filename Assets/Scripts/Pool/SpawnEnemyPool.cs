@@ -23,6 +23,7 @@ public class SpawnEnemyPool : MonoBehaviour
             GameObject enemy = pool.Dequeue();
             activeEnemies.Add(enemy);
             enemy.SetActive(true);
+
             return enemy;
         }
         return null;
@@ -45,7 +46,7 @@ public class SpawnEnemyPool : MonoBehaviour
         for (int i = 0; i < m_PoolSize; i++)
         {
             GameObject enemy = Instantiate(m_EnemyPrehabs);
-            enemy.gameObject.name = $"{m_EnemyPrehabs.name} {i}";
+            enemy.name = $"{m_EnemyPrehabs.name} {i}";
             enemy.SetActive(false);  // Tắt quái vật khi mới tạo
             enemy.transform.SetPositionAndRotation(this.transform.position, Quaternion.identity);
             enemy.transform.parent = this.transform;

@@ -21,6 +21,10 @@ public class PlayerManager : MonoBehaviour
     public EffectSpawn effectSpawn;
     public PlayerState m_PlayerState;
 
+    [Header("Player Stat")]
+    [SerializeField] private PlayerStatSO m_PlayerStatSO;
+    public PlayerStatSO PlayerStatSO => m_PlayerStatSO;
+
 
     private void Awake()
     {
@@ -33,6 +37,7 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         ChangeStatePlayer(PlayerState.idle);
+       
     }
 
     // Update is called once per frame
@@ -53,6 +58,10 @@ public class PlayerManager : MonoBehaviour
                 HandleAttackState();
                 break;
         }
+    }
+    private void OnDisable()
+    {
+        
     }
     public void ChangeStatePlayer(PlayerState playerState)
     {

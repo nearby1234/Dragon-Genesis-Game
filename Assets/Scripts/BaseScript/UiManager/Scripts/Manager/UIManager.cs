@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -29,11 +29,15 @@ public class UIManager : BaseManager<UIManager>
     public BasePopup CurPopup => curPopup;
     public BaseNotify CurNotify => curNotify;
 
-
+    protected override void Awake()
+    {
+        ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+    }
     private void Start()
     {
-        GameObject test = Instantiate(GetUIPrefab(UIType.Screen, "ScreenPlayerImformation"),cScreen.transform);
+       
     }
+
 
     #region Screen
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T: BaseScreen
@@ -104,9 +108,16 @@ public class UIManager : BaseManager<UIManager>
             throw new MissingReferenceException("Cant found " + nameScreen + "screen. !!!");
         }
         GameObject ob = Instantiate(pfScreen) as GameObject;
+        RectTransform obrectTranform = ob.GetComponent<RectTransform>();
         ob.transform.SetParent(this.cScreen.transform);
         ob.transform.localScale = Vector3.one;
         ob.transform.localPosition = Vector3.zero;
+        if(obrectTranform != null)
+        {
+            obrectTranform.anchoredPosition = Vector3.zero;
+        }
+        
+        
 #if UNITY_EDITOR
         ob.name = "SCREEN_" + nameScreen;
 #endif

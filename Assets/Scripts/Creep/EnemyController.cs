@@ -23,10 +23,15 @@ public class EnemyController : MonoBehaviour
         enemyHeal = GetComponent<EnemyHeal>();
         enemyDetecPlayer = GetComponent<BaseEnemyDetecPlayer>();
         enemyCollider = GetComponentInChildren<Collider>();
+        
     }
     void Start()
     {
         randomNavMeshMovement.MoveToRandomPosition();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.CREEP_SEND_HEAL_VALUE, (this.gameObject, enemyStatSO));
+        }
     }
     void Update()
     {
@@ -39,17 +44,24 @@ public class EnemyController : MonoBehaviour
         if (enemyHeal.IsEnemyDead())
         {
             agent.isStopped = true;
+            animator.SetBool("Attack",false);
+            animator.SetBool("IsDetec", false);
             return;
         }
         randomNavMeshMovement.EnemyMoveTarget();
         enemyDetecPlayer.CalculateDistance();
     }
+    //private void OnEnable()
+    //{
+    //    Debug.Log($"EnemyController OnEnable: {gameObject.name}");
+    //    enemyHeal.ResetEnemy();
+    //}
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetNavMeshAgent() => agent;
     public RandomNavMeshMove GetrandomNavMeshMovement() => randomNavMeshMovement;
     public EnemyHeal GetEnemyHeal() => enemyHeal;
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
-    public EnemyStatSO GetEnemyStatSO() => enemyStatSO;
+    public EnemyStatSO GetEnemyStatSO => enemyStatSO;
     public Collider GetCollider => enemyCollider;
     private void ReturnWhenPlayerDeath()
     {

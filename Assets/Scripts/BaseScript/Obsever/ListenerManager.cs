@@ -12,6 +12,13 @@ public class ListenerManager : BaseManager<ListenerManager>
         { 
             listeners[eventType].BroadCast(value);
         }
+        else
+        {
+            // N?u ch?a có ListenerGroup nào cho s? ki?n, t?o m?i và l?u sticky value
+            ListenerGroup newGroup = new();
+            newGroup.BroadCast(value);
+            listeners.Add(eventType, newGroup);
+        }
     }
 
     public void Register(ListenType eventType, Action<object> action) 
@@ -21,10 +28,7 @@ public class ListenerManager : BaseManager<ListenerManager>
             listeners.Add(eventType, new ListenerGroup());
         }
 
-        if (listeners != null) 
-        {
-            listeners[eventType].Attatch(action);
-        }
+        listeners?[eventType].Attatch(action);
     }
 
     public void Unregister(ListenType eventType, Action<object> action)
