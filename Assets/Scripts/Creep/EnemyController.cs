@@ -51,11 +51,7 @@ public class EnemyController : MonoBehaviour
         randomNavMeshMovement.EnemyMoveTarget();
         enemyDetecPlayer.CalculateDistance();
     }
-    //private void OnEnable()
-    //{
-    //    Debug.Log($"EnemyController OnEnable: {gameObject.name}");
-    //    enemyHeal.ResetEnemy();
-    //}
+   
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetNavMeshAgent() => agent;
     public RandomNavMeshMove GetrandomNavMeshMovement() => randomNavMeshMovement;
@@ -63,8 +59,5 @@ public class EnemyController : MonoBehaviour
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO => enemyStatSO;
     public Collider GetCollider => enemyCollider;
-    private void ReturnWhenPlayerDeath()
-    {
-
-    }    
+   
 }

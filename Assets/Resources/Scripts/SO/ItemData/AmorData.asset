@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
-  m_Name: DragonStat
+  m_Script: {fileID: 11500000, guid: 27071ada2f055e2479b5827035ba37fd, type: 3}
+  m_Name: AmorData
   m_EditorClassIdentifier: 
-  heal: 15
-  damage: 5
+  itemType: 1
+  description: strong

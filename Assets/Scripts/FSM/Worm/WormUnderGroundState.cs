@@ -58,7 +58,11 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         }
         // Lựa chọn danh sách attack động theo phase hiện tại
         List<WormAttackData> attackDataList = boss.IsRageState ? boss.wormAttackDatasPhase2 : boss.wormAttackDatasPhase1;
-        boss.currentAttackIndex = boss.GetRandomIndexAttackList();  
+        boss.currentAttackIndex = boss.GetRandomIndexAttackList();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.BOSS_SENDER_DAMAGED, (boss.currentAttackIndex, attackDataList));
+        }
         float distanceOffset = attackDataList[boss.currentAttackIndex].stopDistance - 1.5f;
         float randomAngle = Random.Range(0f, 360f);
         Vector3 offset = Quaternion.Euler(0f, randomAngle, 0f) * Vector3.forward * distanceOffset;

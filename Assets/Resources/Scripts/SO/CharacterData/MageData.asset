@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
-  m_Name: DragonStat
+  m_Script: {fileID: 11500000, guid: fc00e84f9e3c85c4683372d5fedb2a3b, type: 3}
+  m_Name: MageData
   m_EditorClassIdentifier: 
-  heal: 15
-  damage: 5
+  characterType: 1
+  health: 20
+  damage: 20

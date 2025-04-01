@@ -9,8 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
-  m_Name: DragonStat
+  m_Script: {fileID: 11500000, guid: a0517d37a39e33d4faca1de57c90cad6, type: 3}
+  m_Name: WormData
   m_EditorClassIdentifier: 
-  heal: 15
-  damage: 5
+  enemyType: 0
+  m_PhysicsDamage: 0
+  m_MagicDamage: 0
+  m_EffectDamage: 0

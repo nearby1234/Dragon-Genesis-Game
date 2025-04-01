@@ -10,6 +10,7 @@ public enum ListenType
     BOSS_SEND_HEAL_VALUE,
     BOSS_UPDATE_HEAL_VALUE,
     BOSS_STATE_CURRENT,
+    BOSS_SENDER_DAMAGED,
 }
 
 public enum CalculatorButtonState

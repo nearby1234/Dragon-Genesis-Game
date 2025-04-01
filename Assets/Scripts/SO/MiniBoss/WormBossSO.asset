@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: WormBossSO
   m_EditorClassIdentifier: 
   heal: 51
-  damage: 10
+  damage: 100

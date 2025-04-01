@@ -292,6 +292,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 194354669}
     m_Modifications:
+    - target: {fileID: 1721459334361679429, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
+      propertyPath: m_damageFireBall
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6910562150147660841, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
       propertyPath: m_Name
       value: DragonPAPrehabs
@@ -8888,6 +8892,50 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1549431047095804266, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
   m_PrefabInstance: {fileID: 672230544}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &647636762
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 647636763}
+  - component: {fileID: 647636764}
+  m_Layer: 0
+  m_Name: DataManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &647636763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647636762}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1558735467}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &647636764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647636762}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05eac43f188304345967f880467d5c1b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &653353892
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12907,6 +12955,50 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 34.514183, y: 28.533817, z: 39.79328}
   m_Center: {x: 0, y: 14.266907, z: -0.000002861023}
+--- !u!1 &1029869366 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6790563398201054434, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+  m_PrefabInstance: {fileID: 1484559358967314799}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1029869368
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029869366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7425456eb6613b74699991bc3bd723f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_WormBoss: {fileID: 0}
+  m_DamageCurrent: 0
+  m_IsPlayerReceiverDamage: 0
+  m_TimerResetPlayerReceiverDamage: 1
+--- !u!136 &1029869369
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1029869366}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.4
+  m_Height: 1.2
+  m_Direction: 0
+  m_Center: {x: -0.04, y: 0, z: -0.02}
 --- !u!1001 &1031222220
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20169,7 +20261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1558735467}
   m_Layer: 0
-  m_Name: =Manager
+  m_Name: Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20194,6 +20286,7 @@ Transform:
   - {fileID: 6271507342885334191}
   - {fileID: 194354669}
   - {fileID: 2130666207}
+  - {fileID: 647636763}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1564148678
@@ -26761,6 +26854,46 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[0].damagePercent
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[1].damagePercent
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[2].damagePercent
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[3].damagePercent
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase2.Array.data[0].damagePercent
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase2.Array.data[1].damagePercent
+      value: 35
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[2].IsUpdateDamaged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase1.Array.data[3].IsUpdateDamaged
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase2.Array.data[0].IsUpdateDamaged
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 864919536687188993, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: wormAttackDatasPhase2.Array.data[1].IsUpdateDamaged
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1069796295707650244, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -63.730797
@@ -26860,6 +26993,14 @@ PrefabInstance:
     - target: {fileID: 5842237042230208322, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 7.1565504
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918143918948194853, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: m_Radius
+      value: 0.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 5918143918948194853, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      propertyPath: m_Center.y
+      value: 0.78
       objectReference: {fileID: 0}
     - target: {fileID: 6414654702226284039, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
       propertyPath: m_Name
@@ -26996,7 +27137,13 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6790563398201054434, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1029869369}
+    - targetCorrespondingSourceObject: {fileID: 6790563398201054434, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1029869368}
   m_SourcePrefab: {fileID: 100100000, guid: afe7bf413cb3c224bb9f0c6ccef7e286, type: 3}
 --- !u!1 &2982091676259028522
 GameObject:

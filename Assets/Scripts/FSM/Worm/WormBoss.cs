@@ -10,11 +10,14 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     [Header("Worm Imformation")]
     public EnemyStatSO WormAttributeSO;
     public float m_WormBossHeal;
+    public float m_WormDamage;
     public bool m_IsGetDamage;
     public bool isInHitState = false;
     public bool idleGraceActive = false;
     public bool IsRageState = false;
     public bool isShowHealbarBoss = false;
+    public WORMSTATE CurrenState => currentState;
+
 
     [Header("Atribute")]
     public float m_AngularSpeed;
@@ -59,6 +62,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     protected override void Start()
     {
         m_WormBossHeal = WormAttributeSO.heal;
+        m_WormDamage = WormAttributeSO.damage;
         finiteSM = new FSM<WormBoss, WORMSTATE>();
         finiteSM.ChangeState(new WormIdleState(this, finiteSM));
         if (m_NavmeshSurface != null)

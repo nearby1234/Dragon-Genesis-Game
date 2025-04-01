@@ -1,9 +1,13 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class HouvlLaserTest : MonoBehaviour
+public class Laser : MonoBehaviour
 {
-    public int damageOverTime;
+    [SerializeField] private WormBoss m_WormBoss;
+    private const string m_AnimationNamePhase1 = "Attack05ST"; 
+    private const string m_AnimationNamePhase2 = "Attack06ST";
+    [SerializeField] private bool m_IsReceiverDamageLaser;
+    public float damageOverTime;
     public GameObject HitEffect;
     public float HitOffset = 0;
     public bool useLaserRotation = false;
@@ -21,17 +25,35 @@ public class HouvlLaserTest : MonoBehaviour
 
     private ParticleSystem[] Effects;
     private ParticleSystem[] Hit;
-    
 
+    private void Awake()
+    {
+        m_WormBoss = GetComponentInParent<WormBoss>();
+    }
     void Start()
     {
         // Lấy tất cả các LineRenderer được gắn trên GameObject
         lasers = GetComponentsInChildren<LineRenderer>();
         Effects = GetComponentsInChildren<ParticleSystem>();
         Hit = HitEffect.GetComponentsInChildren<ParticleSystem>();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.BOSS_SENDER_DAMAGED, ReceiverBossDamageLaser);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.BOSS_SENDER_DAMAGED, ReceiverBossDamageLaser);
+        }
     }
 
     void Update()
+    {
+        SetLaser();
+    }
+    public void SetLaser()
     {
         // Lặp qua từng LineRenderer để cập nhật trạng thái
         foreach (LineRenderer Laser in lasers)
@@ -63,7 +85,12 @@ public class HouvlLaserTest : MonoBehaviour
                 if (hit.collider.CompareTag("Player"))
                 {
                     //hit.collider.GetComponent<HS_HittedObject>().TakeDamage(damageOverTime * Time.deltaTime);
-                    Debug.Log("Laser va cham Player");
+                    if (!m_IsReceiverDamageLaser)
+                    {
+                        hit.collider.GetComponent<PlayerHeal>().ReducePlayerHeal((int)damageOverTime);
+                        m_IsReceiverDamageLaser = true;
+                        Debug.Log($"Laser va cham Player : {damageOverTime}");
+                    }
                 }
             }
             else
@@ -79,13 +106,10 @@ public class HouvlLaserTest : MonoBehaviour
                         AllPs.Stop();
                         AllPs.Play();
                     }
-                    
-
                 }
                 Length[0] = MainTextureLength * Vector3.Distance(transform.position, EndPos);
                 Length[2] = NoiseTextureLength * Vector3.Distance(transform.position, EndPos);
             }
-
             // Bảo đảm Laser hiển thị nếu chưa được bật
             if (!Laser.enabled && !LaserSaver)
             {
@@ -94,7 +118,6 @@ public class HouvlLaserTest : MonoBehaviour
             }
         }
     }
-
     public void DisablePrepare()
     {
         // Vô hiệu hóa tất cả các LineRenderer
@@ -120,14 +143,19 @@ public class HouvlLaserTest : MonoBehaviour
     {
         if (value != null)
         {
-            //if (m_WormBoss != null)
+            if (m_WormBoss != null)
 
-            //{
-            //    if (value is (int currentAttackIndex, List<WormAttackData> attackDataList))
-            //    {
-            //        m_DamageCurrent = attackDataList[currentAttackIndex].CalculateDamage(m_WormBoss);
-            //    }
-            //}
+            {
+                if (value is (int currentAttackIndex, List<WormAttackData> attackDataList))
+                {
+                    if (attackDataList[currentAttackIndex].animationName.Equals(m_AnimationNamePhase1) 
+                        || attackDataList[currentAttackIndex].animationName.Equals(m_AnimationNamePhase2))
+                    {
+                        damageOverTime = attackDataList[currentAttackIndex].CalculateDamage(m_WormBoss);
+                    }
+                    
+                }
+            }
 
         }
     }
