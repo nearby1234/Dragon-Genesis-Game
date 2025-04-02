@@ -225,7 +225,6 @@ public class BlackKnightBoss : BaseBoss<BlackKnightBoss,ENEMYSTATE>
 
     public IEnumerator WaitFinishAttack()
     {
-        Debug.Log($"{AttackList[currentAttackIndex]} : {animator.GetCurrentAnimatorStateInfo(0).normalizedTime}");
         yield return new WaitUntil(() => animator.GetCurrentAnimatorStateInfo(0).IsName(AttackList[currentAttackIndex]));
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
         RequestStateTransition(ENEMYSTATE.RUN);

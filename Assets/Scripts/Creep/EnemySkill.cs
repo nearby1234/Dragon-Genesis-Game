@@ -31,7 +31,6 @@ public class EnemySkill : MonoBehaviour
             fxSpawn[index].transform.SetPositionAndRotation(m_SpawnEffect.position, m_SpawnEffect.rotation);
             PlayEffect(index);
         }
-        else Debug.Log("Miss FireFX");
     }
     private void PlayEffect(int index)
     {
@@ -59,14 +58,10 @@ public class EnemySkill : MonoBehaviour
 
     public void HandleParticleCollision(GameObject fxObj, GameObject other, List<ParticleCollisionEvent> collisionEvents)
     {
-        Debug.Log($"Particle System '{fxObj.name}' collided with '{other.name}'. count collision events: {collisionEvents.Count}");
         if(other.CompareTag("Player"))
         {
             other.GetComponent<PlayerHeal>().ReducePlayerHeal((int)m_damageFireBall * collisionEvents.Count);
-            Debug.Log("m_damageFireBall " + m_damageFireBall);
-            
         }
-        
     }
 
     private void ReceiverBossDamageFireBall(object value)

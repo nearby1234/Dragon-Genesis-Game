@@ -11,6 +11,8 @@ public enum ListenType
     BOSS_UPDATE_HEAL_VALUE,
     BOSS_STATE_CURRENT,
     BOSS_SENDER_DAMAGED,
+    PLAYER_PRESS_BUTTON_J,
+    PLAYER_IS_COLLISION,
 }
 
 public enum CalculatorButtonState

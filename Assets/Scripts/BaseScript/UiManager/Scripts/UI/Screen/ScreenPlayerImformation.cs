@@ -18,8 +18,8 @@ public class ScreenPlayerImformation: BaseScreen
     private float m_ManaValueUpdate;
     private float m_StaminaValueUpdate;
 
-  
-    private void OnEnable()
+
+    private void Start()
     {
         if (ListenerManager.HasInstance)
         {
@@ -27,7 +27,7 @@ public class ScreenPlayerImformation: BaseScreen
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
         }
     }
-    private void OnDisable()
+    private void OnDestroy()
     {
         if (ListenerManager.HasInstance)
         {
@@ -35,6 +35,7 @@ public class ScreenPlayerImformation: BaseScreen
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
         }
     }
+  
     private void Update()
     {
         m_HealValueTxt.text = $"{m_HealValueMax} / {(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)}";
@@ -62,6 +63,7 @@ public class ScreenPlayerImformation: BaseScreen
             {
                 m_HealBarValue.Initialize((float)playerHeal);
                 m_HealValueMax = playerHeal;
+                Debug.Log("m_HealValueMax " + m_HealValueMax);
                 m_HealValueUpdate = playerHeal;
             }
         }

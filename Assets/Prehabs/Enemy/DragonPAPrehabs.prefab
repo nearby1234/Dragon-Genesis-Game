@@ -1600,7 +1600,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7765746994098836329
 Transform:
   m_ObjectHideFlags: 0
@@ -1752,6 +1752,8 @@ MonoBehaviour:
   fxSpawn:
   - {fileID: 3740677744978802216}
   m_ParticleHandler: {fileID: 0}
+  m_WormBoss: {fileID: 0}
+  m_damageFireBall: 10
 --- !u!1 &6913474751924144068
 GameObject:
   m_ObjectHideFlags: 0

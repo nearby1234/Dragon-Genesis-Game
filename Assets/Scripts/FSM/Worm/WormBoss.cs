@@ -16,6 +16,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public bool idleGraceActive = false;
     public bool IsRageState = false;
     public bool isShowHealbarBoss = false;
+    private bool isShowWinPopup = false;
     public WORMSTATE CurrenState => currentState;
 
 
@@ -85,7 +86,17 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             {
                 UIManager.Instance.ShowScreen<ScreenHealBarBoss>();
                 isShowHealbarBoss = true;
-            }    
+            }  
+            if(currentState.Equals(WORMSTATE.DIE))
+            {
+                if (!isShowWinPopup)
+                {
+                  
+                    StartCoroutine(DelayShowWinPopup());
+                    isShowWinPopup = true;
+                }
+            }
+           
         }
         
         
@@ -271,6 +282,15 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         yield return new WaitForSeconds(timer);
         m_SkinnedMeshRenderer.material = m_DefaultMaterial;
+    }
+
+    private IEnumerator DelayShowWinPopup()
+    {
+        yield return new WaitForSeconds(3f);
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<WinPopup>();
+        }
     }
 
    

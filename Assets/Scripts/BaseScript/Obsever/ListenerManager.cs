@@ -6,6 +6,10 @@ public class ListenerManager : BaseManager<ListenerManager>
 {
     private Dictionary<ListenType, ListenerGroup> listeners = new Dictionary<ListenType, ListenerGroup>();
 
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     public void BroadCast(ListenType eventType, object value = null)
     {
         if (listeners.ContainsKey(eventType) && listeners[eventType] != null) 

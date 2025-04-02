@@ -89,7 +89,6 @@ public class Laser : MonoBehaviour
                     {
                         hit.collider.GetComponent<PlayerHeal>().ReducePlayerHeal((int)damageOverTime);
                         m_IsReceiverDamageLaser = true;
-                        Debug.Log($"Laser va cham Player : {damageOverTime}");
                     }
                 }
             }

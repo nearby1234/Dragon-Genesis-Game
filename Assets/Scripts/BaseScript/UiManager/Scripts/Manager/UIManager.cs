@@ -31,13 +31,10 @@ public class UIManager : BaseManager<UIManager>
 
     protected override void Awake()
     {
+        base.Awake();
         ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
     }
-    private void Start()
-    {
-       
-    }
-
+  
 
     #region Screen
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T: BaseScreen
@@ -259,6 +256,26 @@ public class UIManager : BaseManager<UIManager>
         popupScr.Init();
         return popupScr;
     }
+
+    public void HidePopup<T>() where T : BasePopup
+    {
+        string namePopup = typeof(T).Name;
+        if (popups.ContainsKey(namePopup))
+        {
+            BasePopup popupScr = popups[namePopup];
+            if (popupScr != null && !popupScr.IsHide)
+            {
+                popupScr.Hide();
+
+                // Nếu popup hiện tại đang là popup vừa ẩn thì reset curPopup
+                if (curPopup == popupScr)
+                {
+                    curPopup = null;
+                }
+            }
+        }
+    }
+
 
     public void HideAllPopups()
     {

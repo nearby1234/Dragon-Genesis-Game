@@ -25,6 +25,7 @@ public class PlayerManager : MonoBehaviour
     [SerializeField] private PlayerStatSO m_PlayerStatSO;
     public PlayerStatSO PlayerStatSO => m_PlayerStatSO;
 
+    private bool m_IsShowLosePopup = false;
 
     private void Awake()
     {
@@ -45,6 +46,12 @@ public class PlayerManager : MonoBehaviour
     {
         if (playerHeal.GetPlayerDeath())
         {
+            if(!m_IsShowLosePopup)
+            {
+                StartCoroutine(DelayShowLosePopup());
+                m_IsShowLosePopup = true;
+            }
+           
             playerDamage.DegreeEventClickMouse();
             StartCoroutine(DelayHideAnimator());
             return;
@@ -98,5 +105,14 @@ public class PlayerManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         playerAnim.GetAnimator().enabled = false;
+    }
+    private IEnumerator DelayShowLosePopup()
+    {
+        yield return new WaitForSeconds(3f);
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<LosePopup>();
+        }
+
     }
 }

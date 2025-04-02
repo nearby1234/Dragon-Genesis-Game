@@ -17,7 +17,6 @@ public class WalkState : BaseState<BlackKnightBoss, ENEMYSTATE>
     {
         if (boss.IsMoveWayPoint())
         {
-            Debug.Log(boss.IsMoveWayPoint());
             boss.RequestStateTransition(ENEMYSTATE.IDLE);
         }
         else if (boss.PlayerInRange())

@@ -46,14 +46,14 @@ public class PlayerHeal : MonoBehaviour
         m_IsDamaging = false;
     }   
     
-    private void ReceiverHealValue(object value)
-    {
-        if(value != null)
-        {
-            if(value is PlayerStatSO playerStatSO)
-            {
-                m_PlayerHeal = playerStatSO.m_PlayerHeal;
-            }
-        }
-    }
+    //private void ReceiverHealValue(object value)
+    //{
+    //    if(value != null)
+    //    {
+    //        if(value is PlayerStatSO playerStatSO)
+    //        {
+    //            m_PlayerHeal = playerStatSO.m_PlayerHeal;
+    //        }
+    //    }
+    //}
 }
