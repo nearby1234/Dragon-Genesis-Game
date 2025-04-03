@@ -30,6 +30,19 @@ public class WeaponCollision : MonoBehaviour
             if (enemyHeal != null)
             {
                 enemyHeal.ReducePlayerHealth(damage);
+                if(EffectManager.HasInstance)
+                {
+                   
+                    Vector3 closepoint = other.ClosestPoint(other.transform.position);
+                    GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
+
+                    textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
+                    if (damageText != null)
+                    {
+                        damageText.ChangeTextDamage(damage, closepoint);
+                    }
+                }
+                GameManager.Instance.ShakeCamera();
             }
         }
         else if (other.gameObject.CompareTag("Boss"))
@@ -37,6 +50,17 @@ public class WeaponCollision : MonoBehaviour
             if (other.TryGetComponent<WormBoss>(out var wormBoss))
             {
                 wormBoss.GetDamage(damage);
+                if (EffectManager.HasInstance)
+                {
+                    Vector3 closepoint = other.ClosestPoint(other.transform.position);
+                    GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
+                    textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
+                    if (damageText != null)
+                    {
+                        damageText.ChangeTextDamage(damage, closepoint);
+                    }
+                }
+                GameManager.Instance.ShakeCamera();
             }
         }
 

@@ -1529,6 +1529,7 @@ GameObject:
   - component: {fileID: 247066328539002933}
   - component: {fileID: 4918789733641030235}
   - component: {fileID: 4792436146617176569}
+  - component: {fileID: 8293846201125512179}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -2021,6 +2022,18 @@ MonoBehaviour:
   iKSwitch: {fileID: 3449156959390216869}
   handEffector: {fileID: 5047184379486299730}
   hand: 0
+--- !u!114 &8293846201125512179
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b378272ca2cf774abd4187102c7a5f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2474478872923664440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6314,7 +6327,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
   m_IsTakeDamaged: 0
-  m_timer: 0.5
+  m_timer: 0.2
 --- !u!1001 &800387386774036834
 PrefabInstance:
   m_ObjectHideFlags: 0

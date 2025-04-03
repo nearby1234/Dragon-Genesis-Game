@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
@@ -23,6 +24,7 @@ public class PlayerManager : MonoBehaviour
 
     [Header("Player Stat")]
     [SerializeField] private PlayerStatSO m_PlayerStatSO;
+   
     public PlayerStatSO PlayerStatSO => m_PlayerStatSO;
 
     private bool m_IsShowLosePopup = false;
@@ -74,6 +76,7 @@ public class PlayerManager : MonoBehaviour
     {
         m_PlayerState = playerState;
     }
+    
     private void CacheComponents()
     {
         controller = GetComponent<CharacterController>();
@@ -115,4 +118,5 @@ public class PlayerManager : MonoBehaviour
         }
 
     }
+
 }

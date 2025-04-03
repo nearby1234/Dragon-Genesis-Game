@@ -63,7 +63,6 @@ public class ScreenPlayerImformation: BaseScreen
             {
                 m_HealBarValue.Initialize((float)playerHeal);
                 m_HealValueMax = playerHeal;
-                Debug.Log("m_HealValueMax " + m_HealValueMax);
                 m_HealValueUpdate = playerHeal;
             }
         }

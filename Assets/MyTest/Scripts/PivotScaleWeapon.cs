@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.AI.Navigation.Samples;
 using UnityEditor.iOS.Xcode;
@@ -40,6 +41,9 @@ public class PivotScaleWeapon : MonoBehaviour
     private const string AttackCastingAnimationClip = "Great Sword Casting_attack_IK";
 
     [SerializeField] private int m_EnergyWeaponDamage;
+    private int m_Damage = 10;
+    
+    public int EnergyWeaponDamage => m_EnergyWeaponDamage;
 
     private void Awake()
     {
@@ -93,25 +97,7 @@ public class PivotScaleWeapon : MonoBehaviour
             StartCoroutine(SmoothRotateToCameraDirection(0.3f));
         }
     }
-    private void OnChildTriggerEnter(TriggerData data)
-    {
-        if (data != null)
-        {
-            data.Collider.TryGetComponent<WormBoss>(out var wormBoss);
-            wormBoss.GetDamage(m_EnergyWeaponDamage);
-            Vector3 pointCol = data.Collider.ClosestPoint(data.ChildPos);
-            if (m_Explosion != null)
-            {
-                m_Explosion.gameObject.transform.position = pointCol;
-                m_Explosion.gameObject.SetActive(true);
-                if (!m_Explosion.isPlaying)
-                {
-                    m_Explosion.Play();
-                }
-                StartCoroutine(TurnOffExplosion());
-            }
-        }
-    }
+
     public void ScaleAndAdjust(Vector3 newScale)
     {
         // Lưu vị trí world hiện tại của điểm cầm (có tính rotation hiện tại)
@@ -134,11 +120,12 @@ public class PivotScaleWeapon : MonoBehaviour
         // Điều chỉnh lại vị trí của đối tượng để điểm cầm không dịch chuyển
         m_TranformEnergyWeapon.transform.position += delta;
     }
-    public void AeSetupEffect()
+    public void AeSetupEffect(Vector3 position)
     {
         if (m_Explosion != null)
         {
             m_Explosion.gameObject.SetActive(true);
+            m_Explosion.transform.position = position;
             if (!m_Explosion.isPlaying)
             {
                 m_Explosion.Play();
@@ -156,7 +143,7 @@ public class PivotScaleWeapon : MonoBehaviour
     {
         if (m_Cirlcle != null)
         {
-           
+
             m_Cirlcle.gameObject.SetActive(true);
             StartCoroutine(FadeAlphaCoroutine(0.5f));
         }
@@ -174,7 +161,7 @@ public class PivotScaleWeapon : MonoBehaviour
         float timer = 0f;
         while (true)
         {
-           
+
             // Chỉ tăng timer khi nhấn phím N
             if (!Input.GetKey(KeyCode.O))
             {
@@ -188,6 +175,10 @@ public class PivotScaleWeapon : MonoBehaviour
             if (newLevelIndex > m_CurrentIndex)
             {
                 m_CurrentIndex = newLevelIndex;
+
+                m_EnergyWeaponDamage = (int)(m_Damage * (1f + m_CurrentIndex * 0.2f));
+                Debug.Log("m_EnergyWeaponDamage : " + m_EnergyWeaponDamage);
+
                 // Setup hiệu ứng (shockwave, energy) mỗi khi nâng cấp level
 
                 //m_EnergyWeaponMesh.enabled = true;
@@ -208,7 +199,7 @@ public class PivotScaleWeapon : MonoBehaviour
         }
     }
 
-    private IEnumerator TurnOffExplosion()
+    public IEnumerator TurnOffExplosion()
     {
         yield return new WaitForSeconds(1f);
         m_Explosion.gameObject.SetActive(false);
@@ -250,15 +241,28 @@ public class PivotScaleWeapon : MonoBehaviour
     }
     private void ResetScale()
     {
+        m_TranformEnergyWeapon.gameObject.SetActive(false);
         m_CurrentIndex = 0;
         m_TranformEnergyWeapon.transform.localScale = Vector3.one;
         m_TranformEnergyWeapon.transform.localPosition = Vector3.zero;
-        m_TranformEnergyWeapon.gameObject.SetActive(false);
         //m_EnergyWeaponMesh.enabled = false;
         SetupShockWave(m_ShockWave, false);
         SetupShockWave(m_Trial, false);
         SetupEnergy(m_Energy, false);
     }
+
+    private void UpdateDamaged(int index)
+    {
+        switch (index)
+        {
+            case 1:
+                {
+                    
+                }
+                break;
+        }
+    }
+
     #region SETUP EFFECT 
     private void SetupShockWave(ParticleSystem particleSystem, bool turn)
     {
@@ -308,7 +312,7 @@ public class PivotScaleWeapon : MonoBehaviour
 
         }
     }
-   
+
     private IEnumerator FadeAlphaCoroutine(float duration)
     {
         float elapsed = 0f;
