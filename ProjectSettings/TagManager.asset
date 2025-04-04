@@ -9,6 +9,7 @@ TagManager:
   - Ground
   - Effect
   - Boss
+  - NPC
   layers:
   - Default
   - TransparentFX
@@ -21,7 +22,7 @@ TagManager:
   - Boss
   - Laser
   - Player
-  - 
+  - NPC
   - 
   - 
   - 

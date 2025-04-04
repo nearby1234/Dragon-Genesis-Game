@@ -28,6 +28,7 @@ public class PlayerManager : MonoBehaviour
     public PlayerStatSO PlayerStatSO => m_PlayerStatSO;
 
     private bool m_IsShowLosePopup = false;
+    private bool m_IsTalkingNPC;
 
     private void Awake()
     {
@@ -40,7 +41,18 @@ public class PlayerManager : MonoBehaviour
     void Start()
     {
         ChangeStatePlayer(PlayerState.idle);
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.PLAYER_IS_TALKING_NPC,ReceiverValueIsTalkingNPC);
+        }
        
+    }
+    private void OnDisable()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_IS_TALKING_NPC, ReceiverValueIsTalkingNPC);
+        }
     }
 
     // Update is called once per frame
@@ -58,6 +70,7 @@ public class PlayerManager : MonoBehaviour
             StartCoroutine(DelayHideAnimator());
             return;
         }
+        if (m_IsTalkingNPC) return;
         switch (m_PlayerState)
         {
             case PlayerState.idle:
@@ -68,10 +81,7 @@ public class PlayerManager : MonoBehaviour
                 break;
         }
     }
-    private void OnDisable()
-    {
-        
-    }
+  
     public void ChangeStatePlayer(PlayerState playerState)
     {
         m_PlayerState = playerState;
@@ -91,13 +101,10 @@ public class PlayerManager : MonoBehaviour
     }
     private void HandleIdleState()
     {
-
         playerMove.PlayerMovement();
         playerJump.PlayerJumpUp();
         //playerCamera.RotationPlayer();
         playerCasting.Casting();
-        
-
     }
     private void HandleAttackState()
     {
@@ -116,7 +123,16 @@ public class PlayerManager : MonoBehaviour
         {
             UIManager.Instance.ShowPopup<LosePopup>();
         }
-
+    }
+    private void ReceiverValueIsTalkingNPC(object value)
+    {
+        if(value != null)
+        {
+            if(value is bool isTalking)
+            {
+                m_IsTalkingNPC = isTalking;
+            }
+        }
     }
 
 }

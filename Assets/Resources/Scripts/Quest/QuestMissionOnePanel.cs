@@ -1,0 +1,127 @@
+﻿using Febucci.UI;
+using TMPro;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class QuestMissionOnePanel : BasePopup
+{
+    [SerializeField] private GameObject m_QuestMissionBar;
+    [SerializeField] private GameObject m_QuestMissionBarElse;
+    [SerializeField] private Button m_Button;
+    [SerializeField] private Button m_ButtonExit;
+    [SerializeField] private TextMeshProUGUI m_ContentMission;
+    [SerializeField] private TextMeshProUGUI m_ContentMissionElse;
+    [SerializeField] private TextMeshProUGUI m_TitleMission;
+    private QuestData m_QuestDataMissionOne;
+    private PlayerDialog m_PlayerDialog;
+    private TypewriterByCharacter TypewriterByCharacter;
+    private bool m_HasShownContent;
+    private bool m_HasShownAlternative;
+    private bool m_HasAcceptMission;
+
+    private void Awake()
+    {
+        m_PlayerDialog = GameObject.Find("Player").GetComponent<PlayerDialog>();
+        TypewriterByCharacter = m_ContentMission.GetComponent<TypewriterByCharacter>();
+    }
+
+    private void Start()
+    {
+        m_Button.gameObject.SetActive(false);
+        m_QuestDataMissionOne = DataManager.Instance.GetData<QuestData, QuestType>(QuestType.MainQuest);
+        m_QuestDataMissionOne.isAcceptMission = false;
+       
+        m_Button.onClick.AddListener(OnClickAcceptButton);
+        m_ButtonExit.onClick.AddListener(OnButtonExit);
+        TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
+    }
+    private void Update()
+    {
+        ShowContentMission();
+    }
+    //Sau khi text chạy hết
+    private void OnFinishedText()
+    {
+        m_Button.gameObject.SetActive(true);
+    }
+    private void OnClickAcceptButton()
+    {
+        m_HasAcceptMission = true;
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_HAS_ACCEPT_QUEST, m_HasAcceptMission);
+        }    
+        if (QuestManager.HasInstance)
+        {
+            QuestManager.Instance.AcceptQuest(m_QuestDataMissionOne);
+            if(GameManager.HasInstance)
+            {
+                GameObject npc = GameManager.Instance.GetNPC("Abe");
+                m_QuestDataMissionOne.QuestGiver = npc;
+            }
+            m_PlayerDialog.SetIsTalkingNPC(false);
+        }
+        if (CameraManager.HasInstance)
+        {
+            CinemachineVirtualCameraBase cameraBase = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
+            if (cameraBase != null)
+            {
+                cameraBase.Priority = 8;
+            }
+            this.Hide();
+        }
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+        }
+    }
+    private void OnButtonExit()
+    {
+        m_PlayerDialog.SetIsTalkingNPC(false);
+        if (CameraManager.HasInstance)
+        {
+            CinemachineVirtualCameraBase cameraBase = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
+            if (cameraBase != null)
+            {
+                cameraBase.Priority = 8;
+            }
+            this.Hide();
+        }
+    }   
+    private void ShowContentMission()
+    {
+        if (m_QuestDataMissionOne != null)
+        {
+            if (!m_QuestDataMissionOne.isAcceptMission && !m_PlayerDialog.HasAcceptQuest )
+            {
+                if(!m_HasShownContent)
+                {
+                    ShowInitialMissionContent();
+                }
+            }
+            else
+            {
+                if(!m_HasShownAlternative)
+                {
+                    ShowAlternativeContent();
+                }
+            }
+        }
+    }
+    private void ShowInitialMissionContent()
+    {
+        m_TitleMission.text = m_QuestDataMissionOne.questName;
+        m_ContentMission.text = m_QuestDataMissionOne.description;
+        m_QuestMissionBar.SetActive(true);
+        m_HasShownContent = true;
+    }
+    private void ShowAlternativeContent()
+    {
+        m_QuestMissionBar.SetActive(false);
+        m_ContentMissionElse.text = m_QuestDataMissionOne.descriptionElse;
+        m_QuestMissionBarElse.SetActive(true);
+        m_HasShownAlternative = true;
+    }
+}

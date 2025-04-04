@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9122ffe465b8bde4488f7932d036dd39, type: 3}
+  m_Name: QuestMissionOne
+  m_EditorClassIdentifier: 
+  questType: 0
+  questID: 001
+  questName: "L\u1EDDi Ti\xEAn Tri"
+  QuestGiver: {fileID: 0}
+  description: "<speed=3><B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>H\u1EE1i
+    chi\u1EBFn binh \u0111\u01B0\u1EE3c \u0111\u1ECBnh m\u1EC7nh l\u1EF1a ch\u1ECDn,
+    ta \u0111\xE3 ch\u1EDD \u0111\u1EE3i ng\xE0y n\xE0y t\u1EEB l\xE2u. B\xF3ng t\u1ED1i
+    \u0111ang d\u1EA7n bao ph\u1EE7 v\xF9ng \u0111\u1EA5t n\xE0y, v\xE0 ch\u1EC9
+    c\xF3 ng\u01B0\u01A1i m\u1EDBi c\xF3 th\u1EC3 ng\u0103n ch\u1EB7n th\u1EA3m h\u1ECDa
+    s\u1EAFp \u0111\u1EBFn.\n\nL\u1EAFng nghe l\u1EDDi ti\xEAn tri c\u1EE7a ta: Khi
+    l\u1EEDa t\xE0n tr\xEAn \u0111\u1EC9nh n\xFAi v\xE0 s\xF3ng \u0111en nu\u1ED1t
+    ch\u1EEDng b\u1EDD c\xE1t, m\u1ED9t v\u1ECB anh h\xF9ng s\u1EBD \u0111\u1EE9ng
+    l\xEAn, mang theo \xE1nh s\xE1ng ph\xE1 tan b\xF3ng t\u1ED1i.\n\nH\xE3y c\u1EA7m
+    l\u1EA5y <B><color=#FF0000>Quy\u1EC3n Tr\u1EE5c Kh\u1EDFi Nguy\xEAn</color></B>
+    , \u0111\xE2y l\xE0 ch\xECa kh\xF3a m\u1EDF ra con \u0111\u01B0\u1EDDng ph\xEDa
+    tr\u01B0\u1EDBc. H\xE0nh tr\xECnh c\u1EE7a ng\u01B0\u01A1i m\u1EDBi ch\u1EC9
+    b\u1EAFt \u0111\u1EA7u, Long Chi\u1EBFn. H\xE3y chu\u1EA9n b\u1ECB tinh th\u1EA7n</i>"
+  descriptionElse: "<speed=0.5><B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>B\u1EA3o
+    v\u1EADt ta \u0111\xE3 \u0111\u01B0a cho ng\u01B0\u01A1i , h\xE3y t\u1EADn d\u1EE5ng
+    n\xF3 \u0111\u1EC3 c\u1EE9u l\u1EA5y s\u1EF1 y\xEAn b\xECnh cho b\u1ED9 l\u1EA1c
+    c\u1EE7a ch\xFAng ta .</i>"
+  m_TextColor: {r: 1, g: 0, b: 0, a: 0}
+  isAcceptMission: 1
+  isCompleteMission: 0
+  bonus:
+    experience: 0
+    gold: 0
+    items:
+    - itemID: 
+      itemName: 
+      quantity: 0
+      icon: {fileID: 21300000, guid: 4a596ab6dc5dcd140b05b97f1ff5dccd, type: 3}

@@ -13,6 +13,8 @@ public enum ListenType
     BOSS_SENDER_DAMAGED,
     PLAYER_PRESS_BUTTON_J,
     PLAYER_IS_COLLISION,
+    PLAYER_IS_TALKING_NPC,
+    PLAYER_HAS_ACCEPT_QUEST,
 }
 
 public enum CalculatorButtonState

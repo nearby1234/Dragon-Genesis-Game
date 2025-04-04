@@ -1,13 +1,29 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
-public class QuestManager : MonoBehaviour
+
+public class QuestManager : BaseManager<QuestManager>
 {
-    private QuestData currentQuest;
+    [SerializeField] private QuestData currentQuest;
+    public QuestData CurrentQuest => currentQuest;
+    public List<QuestData> questList;
+
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+    private void Start()
+    {
+        
+    }
     public void AcceptQuest(QuestData quest)
     {
-        if(currentQuest != null)
+        if(quest != null)
         {
             currentQuest = quest;
+            quest.isAcceptMission = true;
+            questList.Add(quest);
+            
             Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
             //UIManager.Instance.ShowScreen<QuestScreen>(currentQuest);
         }
@@ -28,6 +44,7 @@ public class QuestManager : MonoBehaviour
             //UIManager.Instance.ShowNotify<QuestNotify>(currentQuest);
         }
     }
+   
     private void GrantReward(QuestBonus reward)
     {
         Debug.Log($"Cấp {reward.experience} kinh nghiệm, {reward.gold} vàng.");

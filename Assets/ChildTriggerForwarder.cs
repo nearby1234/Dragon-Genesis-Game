@@ -23,7 +23,7 @@ public class ChildTriggerForwarder : MonoBehaviour
                 if (!m_IsEnergyTakeDamaged)
                 {
                     wormBoss.GetDamage(pivotScaleWeapon.EnergyWeaponDamage);
-                    GameManager.Instance.ShakeCamera();
+                    CameraManager.Instance.ShakeCamera();
                     m_IsEnergyTakeDamaged = true;
                     Vector3 closePoint = other.ClosestPoint(other.transform.position);
                     if(EffectManager.HasInstance)
@@ -49,7 +49,7 @@ public class ChildTriggerForwarder : MonoBehaviour
                 if (!m_IsEnergyTakeDamaged)
                 {
                     enemyHeal.ReducePlayerHealth(pivotScaleWeapon.EnergyWeaponDamage);
-                    GameManager.Instance.ShakeCamera();
+                    CameraManager.Instance.ShakeCamera();
                     m_IsEnergyTakeDamaged = true;
                     Vector3 closePoint = other.ClosestPoint(other.transform.position);
                     if (EffectManager.HasInstance)

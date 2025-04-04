@@ -42,7 +42,7 @@ public class WeaponCollision : MonoBehaviour
                         damageText.ChangeTextDamage(damage, closepoint);
                     }
                 }
-                GameManager.Instance.ShakeCamera();
+                CameraManager.Instance.ShakeCamera();
             }
         }
         else if (other.gameObject.CompareTag("Boss"))
@@ -60,7 +60,7 @@ public class WeaponCollision : MonoBehaviour
                         damageText.ChangeTextDamage(damage, closepoint);
                     }
                 }
-                GameManager.Instance.ShakeCamera();
+                CameraManager.Instance.ShakeCamera();
             }
         }
 
