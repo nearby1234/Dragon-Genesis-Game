@@ -36,6 +36,11 @@ MonoBehaviour:
   m_TextColor: {r: 1, g: 0, b: 0, a: 0}
   isAcceptMission: 1
   isCompleteMission: 0
+  ItemMission:
+  - itemID: 0001
+    itemName: "Quy\u1EC3n Tr\u1EE5c Kh\u1EDFi Nguy\xEAn"
+    quantity: 1
+    icon: {fileID: 21300000, guid: 142150c215477474e96bcae72bf965de, type: 3}
   bonus:
     experience: 0
     gold: 0

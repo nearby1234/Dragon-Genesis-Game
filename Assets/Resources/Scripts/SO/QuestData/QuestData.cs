@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Scriptable Object/Quest/Quest Data")]
@@ -15,6 +16,8 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
     public Color m_TextColor;
     public bool isAcceptMission;
     public bool isCompleteMission;
+
+    public List<QuestItem> ItemMission;
 
     public QuestBonus bonus;
 

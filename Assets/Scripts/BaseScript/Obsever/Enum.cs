@@ -15,6 +15,7 @@ public enum ListenType
     PLAYER_IS_COLLISION,
     PLAYER_IS_TALKING_NPC,
     PLAYER_HAS_ACCEPT_QUEST,
+    UI_POPUP_SCROLLMAGIC_CLICK_EXIT_BTN,
 }
 
 public enum CalculatorButtonState

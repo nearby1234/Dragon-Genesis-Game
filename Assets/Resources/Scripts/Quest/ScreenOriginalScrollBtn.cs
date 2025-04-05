@@ -5,6 +5,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
 {
     private RectTransform m_RectTransform;
     private Button button;
+    private bool m_PopupScrollMagicIsClickExitBtn;
     [SerializeField] private Vector3 m_Offset;
 
     private void Awake()
@@ -16,13 +17,16 @@ public class ScreenOriginalScrollBtn : BaseScreen
     {
         m_RectTransform.anchoredPosition3D = m_Offset;
         button.onClick.AddListener(OnClickButtonShowPopupScrollView);
+        
     }
+   
     private void OnClickButtonShowPopupScrollView()
     {
-        if(UIManager.HasInstance)
+        if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupScrollMagic>();
         }
         this.Hide();
     }
+  
 }
