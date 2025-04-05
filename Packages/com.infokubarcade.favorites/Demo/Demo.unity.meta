@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 91d56deea0bd2734389e2bd744d10a20
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/Demo/Demo.unity
+  uploadId: 641969

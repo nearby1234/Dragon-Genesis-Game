@@ -13,17 +13,8 @@ public class PlayerDialog : MonoBehaviour
     public bool HasAcceptQuest
     {
         get => m_HasAcceptQuest;
-        set
-        {
-            m_HasAcceptQuest = value;
-            //if (ListenerManager.HasInstance)
-            //{
-            //    ListenerManager.Instance.BroadCast(ListenType.PLAYER_HAS_ACCEPT_QUEST, m_HasAcceptQuest);
-            //}
-        }
+        set => m_HasAcceptQuest = value;
     }
-
-
     [SerializeField] private float m_Distance;
 
     //Property để quản lý trạng thái và broadcast sự thay đổi
@@ -48,7 +39,10 @@ public class PlayerDialog : MonoBehaviour
         {
             m_IsPressButtonJ = true;
             SetIsTalkingNPC(true);
-
+            if(PlayerManager.HasInstance)
+            {
+                PlayerManager.instance.isInteractingWithUI = true;
+            }
         }
         if (DistanceWithNPC() <= m_Distance)
         {
@@ -68,17 +62,12 @@ public class PlayerDialog : MonoBehaviour
                 {
                     UIManager.Instance.HidePopup<DialobGuidePopup>();
                     UIManager.Instance.ShowPopup<QuestMissionOnePanel>();
-
-
                 }
                 // Reset biến sau khi đã xử lý
                 m_IsPressButtonJ = false;
             }
         }
-        else
-        {
-            m_IsCollisionNpc = false;
-        }
+        else m_IsCollisionNpc = false;
     }
     public void SetIsTalkingNPC(bool result)
     {
@@ -92,7 +81,6 @@ public class PlayerDialog : MonoBehaviour
         }
         return Mathf.Infinity;
     }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("NPC"))
@@ -103,7 +91,7 @@ public class PlayerDialog : MonoBehaviour
             {
                 if(data.isAcceptMission)
                 {
-                    //HasAcceptQuest = true;
+                    HasAcceptQuest = true;
                 }
             }
 

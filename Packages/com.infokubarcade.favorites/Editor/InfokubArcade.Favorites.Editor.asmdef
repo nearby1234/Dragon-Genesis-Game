@@ -1,0 +1,16 @@
+{
+    "name": "InfokubArcade.Favorites.Editor",
+    "rootNamespace": "InfokubArcade.Favorites",
+    "references": [],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

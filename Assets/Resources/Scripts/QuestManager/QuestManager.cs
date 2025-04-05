@@ -48,7 +48,7 @@ public class QuestManager : BaseManager<QuestManager>
     private void GrantReward(QuestBonus reward)
     {
         Debug.Log($"Cấp {reward.experience} kinh nghiệm, {reward.gold} vàng.");
-        foreach (var item in reward.items)
+        foreach (var item in reward.itemsReward)
         {
             Debug.Log($"Nhận vật phẩm: {item.itemName} x{item.quantity}");
             // Thêm logic để thêm vật phẩm vào kho của người chơi

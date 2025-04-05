@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 2774474787056284544}
   - component: {fileID: 4511185520450127558}
   m_Layer: 0
-  m_Name: Button
+  m_Name: AcceptBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1460,7 +1460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_QuestMissionBar: {fileID: 6868794214086407573}
   m_QuestMissionBarElse: {fileID: 8688986352652405669}
-  m_Button: {fileID: 4511185520450127558}
+  m_ButtonAccept: {fileID: 4511185520450127558}
   m_ButtonExit: {fileID: 4526288749466035941}
   m_ContentMission: {fileID: 7492415742603920374}
   m_ContentMissionElse: {fileID: 869555393617438416}

@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 88302aa0f5f574e4b8fdce1e5f23ec47
+TextScriptImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/Editor/Tools/Icons/Licence.txt
+  uploadId: 641969

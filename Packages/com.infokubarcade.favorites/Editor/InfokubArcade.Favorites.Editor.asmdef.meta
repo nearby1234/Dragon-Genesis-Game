@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 4729290b3612292488b05bdef491e6ab
+AssemblyDefinitionImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/Editor/InfokubArcade.Favorites.Editor.asmdef
+  uploadId: 641969

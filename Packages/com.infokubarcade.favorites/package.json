@@ -1,0 +1,8 @@
+{
+  "name": "com.infokubarcade.favorites",
+  "version": "1.0.0",
+  "displayName": "Infokub Arcade - Favorites",
+  "type": "tool",
+  "description": "Get a better workspace with this tiny tool.\nAdd your favorites Scene and load them in one click.\n\nYou can also create Prefabs in your favorites directories with one button.\nMake your gamedev life easier !",
+  "unity": "2021.3"
+}

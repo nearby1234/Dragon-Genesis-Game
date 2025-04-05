@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: f1b92f488d982fe4386d00efde199b94
+PackageManifestImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/package.json
+  uploadId: 641969

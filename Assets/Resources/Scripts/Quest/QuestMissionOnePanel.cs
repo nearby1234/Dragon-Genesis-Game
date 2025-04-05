@@ -9,7 +9,7 @@ public class QuestMissionOnePanel : BasePopup
 {
     [SerializeField] private GameObject m_QuestMissionBar;
     [SerializeField] private GameObject m_QuestMissionBarElse;
-    [SerializeField] private Button m_Button;
+    [SerializeField] private Button m_ButtonAccept;
     [SerializeField] private Button m_ButtonExit;
     [SerializeField] private TextMeshProUGUI m_ContentMission;
     [SerializeField] private TextMeshProUGUI m_ContentMissionElse;
@@ -29,22 +29,23 @@ public class QuestMissionOnePanel : BasePopup
 
     private void Start()
     {
-        m_Button.gameObject.SetActive(false);
+        m_ButtonAccept.gameObject.SetActive(false);
         m_QuestDataMissionOne = DataManager.Instance.GetData<QuestData, QuestType>(QuestType.MainQuest);
         m_QuestDataMissionOne.isAcceptMission = false;
        
-        m_Button.onClick.AddListener(OnClickAcceptButton);
+        m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
+        ShowContentMission();
     }
     private void Update()
     {
-        ShowContentMission();
+       
     }
     //Sau khi text chạy hết
-    private void OnFinishedText()
+    private void OnFinishedText() // API của package Text Animator
     {
-        m_Button.gameObject.SetActive(true);
+        m_ButtonAccept.gameObject.SetActive(true);
     }
     private void OnClickAcceptButton()
     {
@@ -75,6 +76,10 @@ public class QuestMissionOnePanel : BasePopup
         if(UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+        }
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false;
         }
     }
     private void OnButtonExit()

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8f99370482b1ec9419b3ff3060af4873
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/Editor/ToolsSettings.asset
+  uploadId: 641969

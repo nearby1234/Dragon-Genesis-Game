@@ -14,10 +14,7 @@ public class GameManager : BaseManager<GameManager>
     protected override void Awake()
     {
         base.Awake();
-        m_Player = GameObject.Find("Player");
         GetChildNPC();
-
-
     }
     private void GetChildNPC()
     {

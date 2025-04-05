@@ -7,7 +7,6 @@ public class NPCRotation : MonoBehaviour
     public float rotationSpeed = 3f; // T?c ?? xoay
     private Transform player;
     private bool shouldRotate = false;
-    private bool m_IsPlayerCollison;
     private bool m_PlayerHasAcceptMission;
     [SerializeField] private Canvas m_IconQuestionMark;
 
@@ -32,7 +31,6 @@ public class NPCRotation : MonoBehaviour
         {
             player = other.transform;
             shouldRotate = true;
-            m_IsPlayerCollison = true;
 
             if (UIManager.HasInstance)
             {
@@ -43,7 +41,6 @@ public class NPCRotation : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         shouldRotate = false;
-        m_IsPlayerCollison = false;
         if (UIManager.HasInstance)
         {
             UIManager.Instance.HidePopup<DialobGuidePopup>();

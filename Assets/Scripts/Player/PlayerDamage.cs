@@ -14,12 +14,10 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int m_PlayerDamage;
 
     private Animator playerAnimator; // Animator của player
-    private PlayerMove playerMove;   // Tham chiếu đến script PlayerMove
 
     void Start()
     {
         playerAnimator = PlayerManager.instance.playerAnim.GetAnimator();
-        playerMove = GetComponent<PlayerMove>();
 
         // Khởi tạo danh sách animation hash
         m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
@@ -44,8 +42,6 @@ public class PlayerDamage : MonoBehaviour
     {
         m_IsPressRightMouse = true;
 
-        // Vô hiệu hóa di chuyển khi bắt đầu attack
-        //playerMove.canMove = false;
 
         // Nếu animation Heavy Attack chưa đang chạy thì play nó
         if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
@@ -88,5 +84,14 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.canceled -= OnCancelAttackRightMouse;
         m_ButtonAttackRightMouse.Disable();
     }
+    public void RegisterEventAttack()
+    {
+        m_ButtonAttackLeftMouse.performed += OnPerformedAttackLeftMouse;
+        m_ButtonAttackLeftMouse.canceled += OnCancelAttackLeftMouse;
+        m_ButtonAttackLeftMouse.Enable();
+        m_ButtonAttackRightMouse.performed += OnPerformedAttackRightMouse;
+        m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
+        m_ButtonAttackRightMouse.Enable();
+    }    
     public int GetPlayerDamage() => m_PlayerDamage;
 }

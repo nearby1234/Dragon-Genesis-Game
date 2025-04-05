@@ -2,7 +2,7 @@ using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour
+public class PlayerManager : BaseManager<PlayerManager>
 {
     public enum PlayerState
     {
@@ -29,9 +29,11 @@ public class PlayerManager : MonoBehaviour
 
     private bool m_IsShowLosePopup = false;
     private bool m_IsTalkingNPC;
+    public bool isInteractingWithUI;
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         if (instance == null) instance = this;
         else Destroy(gameObject);
 
@@ -45,7 +47,6 @@ public class PlayerManager : MonoBehaviour
         {
             ListenerManager.Instance.Register(ListenType.PLAYER_IS_TALKING_NPC,ReceiverValueIsTalkingNPC);
         }
-       
     }
     private void OnDisable()
     {
@@ -54,7 +55,6 @@ public class PlayerManager : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_IS_TALKING_NPC, ReceiverValueIsTalkingNPC);
         }
     }
-
     // Update is called once per frame
     void Update()
     {
@@ -65,10 +65,26 @@ public class PlayerManager : MonoBehaviour
                 StartCoroutine(DelayShowLosePopup());
                 m_IsShowLosePopup = true;
             }
-           
             playerDamage.DegreeEventClickMouse();
             StartCoroutine(DelayHideAnimator());
             return;
+        }
+        if (isInteractingWithUI)
+        {
+            playerDamage.DegreeEventClickMouse();
+            if(CameraManager.HasInstance)
+            {
+                CameraManager.Instance.SetActiveInputAxisController(false);
+            }
+            return;
+        }
+        else
+        {
+            playerDamage.RegisterEventAttack();
+            if (CameraManager.HasInstance)
+            {
+                CameraManager.Instance.SetActiveInputAxisController(true);
+            }
         }
         if (m_IsTalkingNPC) return;
         switch (m_PlayerState)

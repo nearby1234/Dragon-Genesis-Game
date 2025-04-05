@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.infokubarcade.favorites": {
+      "version": "file:com.infokubarcade.favorites",
+      "depth": 0,
+      "source": "embedded",
+      "dependencies": {}
+    },
     "com.lunawolfstudios.scriptablesheets": {
       "version": "file:com.lunawolfstudios.scriptablesheets",
       "depth": 0,

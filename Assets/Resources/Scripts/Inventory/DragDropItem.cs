@@ -9,13 +9,18 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private RectTransform rectTransform;
     private Image image;  // Image component chứa sprite của item
     private Vector2 originalPosition;
-
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         image = GetComponent<Image>(); // Giả sử Image nằm trên cùng GameObject này
         originalPosition = rectTransform.anchoredPosition;
+
+        // Kiểm tra xem các thành phần cần thiết có tồn tại không
+        if (rectTransform == null || canvasGroup == null || image == null)
+        {
+            Debug.LogError("Missing required components on DragDropItem.");
+        }
     }
 
     // Khi bắt đầu kéo, cho phép raycast xuyên qua đối tượng
@@ -62,18 +67,12 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 // Nếu Box đích đã có sprite (tức là Item B đã có sprite) → hoán đổi sprite
                 if (targetSprite != null)
                 {
-                    image.sprite = targetSprite;
-                    SetAlphaColor(0f, image);
-                    targetImage.sprite = draggedSprite;
-                    SetAlphaColor(1f, targetImage);
+                    SwapSprites(targetImage, draggedSprite, targetSprite);
                 }
                 else
                 {
                     // Nếu Box đích trống → chuyển sprite từ item đang kéo sang Box đích
-                    targetImage.sprite = draggedSprite;
-                    SetAlphaColor(1f, targetImage);
-                    image.sprite = null;
-                    SetAlphaColor(0f, image);
+                    MoveSpriteToTarget(targetImage, draggedSprite);
                 }
             }
             // Sau khi đổi sprite, reset vị trí của đối tượng kéo về vị trí ban đầu (vì chúng ta không di chuyển GameObject)
@@ -85,7 +84,21 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             rectTransform.anchoredPosition = originalPosition;
         }
     }
-    private void SetAlphaColor(float alpha,Image image)
+    private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)
+    {
+        image.sprite = targetSprite;
+        SetAlphaColor(0f, image);
+        targetImage.sprite = draggedSprite;
+        SetAlphaColor(1f, targetImage);
+    }
+    private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
+    {
+        targetImage.sprite = draggedSprite;
+        SetAlphaColor(1f, targetImage);
+        image.sprite = null;
+        SetAlphaColor(0f, image);
+    }
+    private void SetAlphaColor(float alpha, Image image)
     {
         if (image == null) return;
 
@@ -93,4 +106,5 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         temp.a = alpha;
         image.color = temp;
     }
+
 }

@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 7ce1f6f7218d60a4ab530e0139e05471
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 262848
+  packageName: My favorite tool
+  packageVersion: 2.0.0
+  assetPath: Packages/com.infokubarcade.favorites/Editor/SceneViewpointWindow.cs
+  uploadId: 641969

@@ -5,7 +5,6 @@ public class ScreenOriginalScrollBtn : BaseScreen
 {
     private RectTransform m_RectTransform;
     private Button button;
-    private bool m_PopupScrollMagicIsClickExitBtn;
     [SerializeField] private Vector3 m_Offset;
 
     private void Awake()
@@ -25,6 +24,10 @@ public class ScreenOriginalScrollBtn : BaseScreen
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupScrollMagic>();
+        }
+        if(PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = true;
         }
         this.Hide();
     }
