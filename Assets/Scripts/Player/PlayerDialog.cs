@@ -10,12 +10,13 @@ public class PlayerDialog : MonoBehaviour
     [SerializeField] private bool m_IsCollisionNpc;
     [SerializeField] private bool m_IsTalkingNPC;
     [SerializeField] private bool m_HasAcceptQuest;
+    [SerializeField] private float m_Distance;
     public bool HasAcceptQuest
     {
         get => m_HasAcceptQuest;
         set => m_HasAcceptQuest = value;
     }
-    [SerializeField] private float m_Distance;
+  
 
     //Property để quản lý trạng thái và broadcast sự thay đổi
     public bool IsTalkingNPC
@@ -23,51 +24,71 @@ public class PlayerDialog : MonoBehaviour
         get => m_IsTalkingNPC;
         set
         {
-            // Chỉ broadcast khi giá trị thực sự thay đổi
-            m_IsTalkingNPC = value;
-            // Gửi sự kiện luôn khi trạng thái thay đổi
-            if (ListenerManager.HasInstance)
+            if (m_IsTalkingNPC != value)
             {
-                ListenerManager.Instance.BroadCast(ListenType.PLAYER_IS_TALKING_NPC, m_IsTalkingNPC);
+                m_IsTalkingNPC = value;
+                OnIsTalkingNPCChanged();
             }
         }
     }
 
     private void Update()
     {
+        HandleInput();
+        CheckNPCDistance();
+    }
+    private void HandleInput()
+    {
         if (Input.GetKeyDown(KeyCode.J))
         {
             m_IsPressButtonJ = true;
             SetIsTalkingNPC(true);
-            if(PlayerManager.HasInstance)
+            if (PlayerManager.HasInstance)
             {
                 PlayerManager.instance.isInteractingWithUI = true;
             }
         }
+    }
+    private void CheckNPCDistance()
+    {
         if (DistanceWithNPC() <= m_Distance)
         {
             m_IsCollisionNpc = true;
 
             if (m_IsPressButtonJ && m_IsCollisionNpc)
             {
-                if (CameraManager.HasInstance)
-                {
-                    CinemachineVirtualCameraBase camera = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
-                    if (camera != null)
-                    {
-                        camera.Priority = 15;
-                    }
-                }
-                if (UIManager.HasInstance)
-                {
-                    UIManager.Instance.HidePopup<DialobGuidePopup>();
-                    UIManager.Instance.ShowPopup<QuestMissionOnePanel>();
-                }
-                // Reset biến sau khi đã xử lý
+                HandleNPCInteraction();
                 m_IsPressButtonJ = false;
             }
         }
-        else m_IsCollisionNpc = false;
+        else
+        {
+            m_IsCollisionNpc = false;
+        }
+    }
+    private void HandleNPCInteraction()
+    {
+        if (CameraManager.HasInstance)
+        {
+            var camera = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
+            if (camera != null)
+            {
+                camera.Priority = 15;
+            }
+        }
+
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.HidePopup<DialobGuidePopup>();
+            UIManager.Instance.ShowPopup<QuestMissionOnePanel>();
+        }
+    }
+    private void OnIsTalkingNPCChanged()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_IS_TALKING_NPC, m_IsTalkingNPC);
+        }
     }
     public void SetIsTalkingNPC(bool result)
     {
@@ -86,15 +107,11 @@ public class PlayerDialog : MonoBehaviour
         if (other.CompareTag("NPC"))
         {
             npcObject = other.gameObject;
-            QuestData data = QuestManager.Instance.CurrentQuest;
-            if(data.name == other.name)
+            var data = QuestManager.Instance?.CurrentQuest;
+            if (data != null && data.name == other.name && data.isAcceptMission)
             {
-                if(data.isAcceptMission)
-                {
-                    HasAcceptQuest = true;
-                }
+                HasAcceptQuest = true;
             }
-
         }
     }
 
