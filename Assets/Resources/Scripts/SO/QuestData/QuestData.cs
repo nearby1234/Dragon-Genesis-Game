@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
@@ -17,9 +18,8 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
     public bool isAcceptMission;
     public bool isCompleteMission;
 
+    [SerializeReference]
     public List<QuestItem> ItemMission;
 
     public QuestBonus bonus;
-
-
 }

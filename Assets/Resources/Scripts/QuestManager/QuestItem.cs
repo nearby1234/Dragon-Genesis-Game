@@ -1,3 +1,4 @@
+using Sirenix.OdinInspector;
 using UnityEngine;
 
 public enum TYPEITEM
@@ -19,4 +20,10 @@ public class QuestItem
     public int completionCount;
     public Sprite icon;
     public TYPEITEM typeItem;
+
+    // Ch? hi?n khi là ITEM_USE
+    [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
+    [BoxGroup("Item Use Stats")]
+    public float percentIncrease;
+
 }
