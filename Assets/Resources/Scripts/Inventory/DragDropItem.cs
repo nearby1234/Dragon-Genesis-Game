@@ -10,6 +10,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private RectTransform rectTransform;
     private Image image;  // Image component chứa sprite của item
     private TextMeshProUGUI textMeshPro;  // Image component chứa sprite của item
+    private InventorySlot inventorySlot;  // Image component chứa sprite của item
     private Vector2 originalPosition;
     private void Awake()
     {
@@ -17,6 +18,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         canvasGroup = GetComponent<CanvasGroup>();
         image = GetComponent<Image>(); // Giả sử Image nằm trên cùng GameObject này
         textMeshPro = GetComponentInChildren<TextMeshProUGUI>(); // Giả sử TextMeshProUGUI nằm trong con của GameObject này
+        inventorySlot = GetComponent<InventorySlot>(); // Giả sử InventorySlot nằm trên cùng GameObject này
         //originalPosition = rectTransform.anchoredPosition;
 
 
@@ -64,6 +66,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             // Giả sử mỗi Box luôn có sẵn một GameObject item (với Image) làm con của Box.
             Image targetImage = targetSlot.GetComponent<Image>();
             TextMeshProUGUI text = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
+            InventorySlot slot = targetSlot.GetComponent<InventorySlot>();
             if (targetImage != null && text != null)
             {
                 Sprite draggedSprite = image.sprite;
@@ -76,12 +79,15 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 {
                     SwapSprites(targetImage, draggedSprite, targetSprite);
                     SwapText(targetText, draggedText, text);
+                    SwapCurrentItem(slot);
                 }
                 else
                 {
                     // Nếu Box đích trống → chuyển sprite từ item đang kéo sang Box đích
                     MoveSpriteToTarget(targetImage, draggedSprite);
                     MoveTextToTarget(text, draggedText);
+                    MoveCurrentItemToTarget(slot);
+
                 }
             }
             // Sau khi đổi sprite, reset vị trí của đối tượng kéo về vị trí ban đầu (vì chúng ta không di chuyển GameObject)
@@ -100,10 +106,16 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         targetImage.sprite = draggedSprite;
         SetAlphaColor(1f, targetImage);
     }
-    private void SwapText(string TargetText, string draggedText , TextMeshProUGUI TargetTextMesh)
+    private void SwapText(string TargetText, string draggedText, TextMeshProUGUI TargetTextMesh)
     {
         textMeshPro.text = TargetText;
         TargetTextMesh.text = draggedText;
+    }
+    private void SwapCurrentItem(InventorySlot targetSlot)
+    {
+        QuestItem temp = inventorySlot.m_CurrentItem;
+        inventorySlot.m_CurrentItem = targetSlot.m_CurrentItem;
+        targetSlot.m_CurrentItem = temp;
     }
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
     {
@@ -118,7 +130,13 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         textMeshPro.enabled = false;
         targetTextMesh.text = draggedText;
         targetTextMesh.enabled = true;
-    } 
+    }
+    private void MoveCurrentItemToTarget(InventorySlot targetSlot)
+    {
+        targetSlot.m_CurrentItem = inventorySlot.m_CurrentItem;
+        inventorySlot.m_CurrentItem = null; // Đặt lại item đang kéo về null
+        inventorySlot.ClearItem(); // Xóa item trong Box hiện tại
+    }
     private void SetAlphaColor(float alpha, Image image)
     {
         if (image == null) return;

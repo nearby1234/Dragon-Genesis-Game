@@ -134,6 +134,7 @@ public class PopupScrollMagic : BasePopup
                             if (UIManager.HasInstance)
                             {
                                 UIManager.Instance.ShowScreen<ScreenIconInventory>();
+                                UIManager.Instance.ShowScreen<ScreenBox>();
                             }
                         }
                         // Hủy đối tượng sau khi tween hoàn thành

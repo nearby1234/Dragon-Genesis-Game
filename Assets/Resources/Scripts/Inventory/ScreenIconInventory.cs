@@ -33,6 +33,10 @@ public class ScreenIconInventory : BaseScreen
         {
             UIManager.Instance.ShowPopup<PopupInventory>();
         }
-        
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = true;
+        }
+
     }
 }

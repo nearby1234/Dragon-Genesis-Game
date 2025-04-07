@@ -138,16 +138,13 @@ public class PopupInventory : BasePopup
             {
                 if (slot.IsEmpty)
                 {
-                    slot.SetItemSprite(questItem.icon);
-                    slot.UpdateCountText(questItem.count);
+                    slot.SetItemSprite(questItem);
                     slot.IsEmpty = false;
                     break; // Khi đã tìm được slot trống, chuyển sang QuestItem tiếp theo
                 }
             }
         }
     }
-
-
     private void OnClickExitBtn()
     {
         this.Hide();
