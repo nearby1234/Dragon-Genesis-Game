@@ -18,10 +18,11 @@ public class QuestItem
     public int count;
     public int requestCount;
     public int completionCount;
+    [PreviewField(70, ObjectFieldAlignment.Left)]
     public Sprite icon;
     public TYPEITEM typeItem;
 
-    // Ch? hi?n khi l� ITEM_USE
+    // Chỉ hiện khi là ITEM_USE
     [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
     [BoxGroup("Item Use Stats")]
     public float percentIncrease;
