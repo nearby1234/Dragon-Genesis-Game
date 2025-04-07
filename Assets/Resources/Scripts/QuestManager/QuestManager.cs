@@ -7,6 +7,9 @@ public class QuestManager : BaseManager<QuestManager>
     [SerializeField] private QuestData currentQuest;
     public QuestData CurrentQuest => currentQuest;
     public List<QuestData> questList;
+    public  string m_QuestItemPrefabPath = "Prefabs/UI/Quest/ItemMission/ItemMissionImg";
+    public  string m_QuestRewardItemPrefabPath = "Prefabs/UI/Quest/ItemReward/ItemRewardImg";
+    public  string m_DOItemPrefabPath = "Prefabs/Inventory/DoSpite/DoSpite";
 
     protected override void Awake()
     {
@@ -14,7 +17,13 @@ public class QuestManager : BaseManager<QuestManager>
     }
     private void Start()
     {
-        
+        foreach (var quest in questList)
+        {
+            foreach (var item in quest.ItemMission)
+            {
+               item.completionCount = 0;
+            }
+        }
     }
     public void AcceptQuest(QuestData quest)
     {
@@ -50,7 +59,7 @@ public class QuestManager : BaseManager<QuestManager>
         Debug.Log($"Cấp {reward.experience} kinh nghiệm, {reward.gold} vàng.");
         foreach (var item in reward.itemsReward)
         {
-            Debug.Log($"Nhận vật phẩm: {item.itemName} x{item.quantity}");
+            Debug.Log($"Nhận vật phẩm: {item.itemName} x{item.count}");
             // Thêm logic để thêm vật phẩm vào kho của người chơi
         }
     }

@@ -1,53 +1,177 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupInventory : BasePopup
 {
-    [SerializeField] private int m_CountBox;
-    [SerializeField] private GameObject m_BoxInventory;
+    [SerializeField] private int m_CountBox = 10;
+    [SerializeField] private Vector2 m_Offset;
+    [SerializeField] private RectTransform m_Rectranform;
     [SerializeField] private Button m_ExitBtn;
     [SerializeField] private TextMeshProUGUI m_MoneyTxt;
-    [SerializeField] private Transform m_InventoryPanel;
-    [SerializeField] private List<Sprite> m_ImageIconList = new();
-    [SerializeField] private List<InventorySlot> listBoxInventory = new();
-    
-  
-    private const string m_BoxImgPath = "Prefabs/Inventory/BoxImg";
+    [SerializeField] private Transform m_InventoryBoxPanel;
+    [SerializeField] private Transform m_InventoryItemPanel;
+    [SerializeField] private List<QuestItem> m_ImageIconList = new();
+
+    // Danh sách lưu trữ box (là GameObject) và các slot item (là InventorySlot)
+    [SerializeField] private List<GameObject> listBoxInventory = new();
+    [SerializeField] private List<InventorySlot> listItemInventory = new();
+
+    // Đường dẫn Prefab
+    private const string m_BoxImgPath = "Prefabs/Inventory/BoxItem/Box";
+    private const string m_ItemImgPath = "Prefabs/Inventory/Item/ItemImg";
+
+    // Prefab được load từ Resources
+    private GameObject m_BoxInventoryPrefab;
+    private GameObject m_ItemInventoryPrefab;
 
     private void Awake()
     {
-        m_BoxInventory = Resources.Load<GameObject>(m_BoxImgPath);
-        InitBoxInventory();
-    }
-    private void Start()
-    {
-        AddItems(m_ImageIconList);
-    }
-
-
-    private void InitBoxInventory()
-    {
-        for (int i = 0; i < m_CountBox; i++)
+        // Load các prefab từ Resources
+        m_BoxInventoryPrefab = Resources.Load<GameObject>(m_BoxImgPath);
+        m_ItemInventoryPrefab = Resources.Load<GameObject>(m_ItemImgPath);
+        m_Rectranform = GetComponent<RectTransform>();
+        if (m_BoxInventoryPrefab != null)
         {
-            GameObject box = Instantiate(m_BoxInventory, m_InventoryPanel);
-            box.name = $"{box.name}-{i}";
-            InventorySlot canvasGroup = box.GetComponentInChildren<InventorySlot>();
-            canvasGroup.name = $"{canvasGroup.name}-{i}";
-            listBoxInventory.Add(canvasGroup);
+            InitInventoryBoxes();
+        }
+        else
+        {
+            Debug.LogError("Không load được prefab BoxInventory tại: " + m_BoxImgPath);
+        }
+
+        if (m_ItemInventoryPrefab != null)
+        {
+            InitInventoryItems();
+        }
+        else
+        {
+            Debug.LogError("Không load được prefab ItemInventory tại: " + m_ItemImgPath);
         }
     }
 
-    private void AddItems(List<Sprite> sprites)
+    private void Start()
     {
-        for (int i = 0; i < sprites.Count; i++)
+        // Đánh dấu player đang tương tác với UI
+        if (PlayerManager.HasInstance)
         {
-            if (i < listBoxInventory.Count) // ??m b?o kh�ng v??t qu� s? l??ng � trong listBoxInventory
+            PlayerManager.instance.isInteractingWithUI = true;
+        }
+
+        if (m_ExitBtn != null)
+        {
+            m_ExitBtn.onClick.AddListener(OnClickExitBtn);
+        }
+        else
+        {
+            Debug.LogWarning("Không gán được Button Exit!");
+        }
+
+        // Đăng ký sự kiện nhận danh sách item reward
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
+        }
+        m_Rectranform.anchoredPosition = m_Offset;
+
+        // Thêm các item reward vào các slot trống của inventory
+        AddItems(m_ImageIconList, listItemInventory);
+    }
+
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
+        }
+    }
+
+    /// <summary>
+    /// Khởi tạo Box Inventory – danh sách chứa các box (GameObject) trên panel box.
+    /// </summary>
+    private void InitInventoryBoxes()
+    {
+        for (int i = 0; i < m_CountBox; i++)
+        {
+            GameObject box = Instantiate(m_BoxInventoryPrefab, m_InventoryBoxPanel);
+            box.name = $"{m_BoxInventoryPrefab.name}-{i}";
+            listBoxInventory.Add(box);
+        }
+    }
+
+    /// <summary>
+    /// Khởi tạo Item Inventory – danh sách chứa các slot (InventorySlot) trên panel item.
+    /// </summary>
+    private void InitInventoryItems()
+    {
+        for (int i = 0; i < m_CountBox; i++)
+        {
+            GameObject itemGO = Instantiate(m_ItemInventoryPrefab, m_InventoryItemPanel);
+            itemGO.name = $"{m_ItemInventoryPrefab.name}-{i}";
+            InventorySlot slot = itemGO.GetComponent<InventorySlot>();
+            if (slot != null)
             {
-                listBoxInventory[i].SetItemSprite(sprites[i]);
+                listItemInventory.Add(slot);
+            }
+            else
+            {
+                Debug.LogWarning("Prefab ItemInventory thiếu thành phần InventorySlot: " + itemGO.name);
             }
         }
     }
 
+    /// <summary>
+    /// Gán các icon (QuestItem) cho các InventorySlot trống.
+    /// </summary>
+    /// <param name="listIcon">Danh sách các QuestItem cần hiển thị</param>
+    /// <param name="itemInventory">Danh sách các slot của inventory</param>
+    private void AddItems(List<QuestItem> listIcon, List<InventorySlot> itemInventory)
+    {
+        foreach (QuestItem questItem in listIcon)
+        {
+            if(questItem.typeItem.Equals(TYPEITEM.ITEM_MISSION))
+            {
+                continue;
+            }    
+            foreach (InventorySlot slot in itemInventory)
+            {
+                if (slot.IsEmpty)
+                {
+                    slot.SetItemSprite(questItem.icon);
+                    slot.UpdateCountText(questItem.count);
+                    slot.IsEmpty = false;
+                    break; // Khi đã tìm được slot trống, chuyển sang QuestItem tiếp theo
+                }
+            }
+        }
+    }
+
+
+    private void OnClickExitBtn()
+    {
+        this.Hide();
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false;
+        }
+    }
+
+    /// <summary>
+    /// Hàm nhận danh sách QuestItem (reward) từ hệ thống sự kiện.
+    /// </summary>
+    /// <param name="value">Đối tượng chứa danh sách QuestItem</param>
+    private void ReceiverListItemReward(object value)
+    {
+        if (value is List<QuestItem> listItem)
+        {
+            foreach (var item in listItem)
+            {
+                if (item != null)
+                {
+                    m_ImageIconList.Add(item);
+                }
+            }
+        }
+    }
 }

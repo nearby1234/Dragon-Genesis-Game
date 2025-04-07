@@ -187,7 +187,7 @@ public class UIManager : BaseManager<UIManager>
         {
             var curName = curPopup.GetType().Name;
             if (curName.Equals(namePopup))
-            {
+            {   
                 result = curPopup;
             }
             else
@@ -233,6 +233,7 @@ public class UIManager : BaseManager<UIManager>
         {
             curPopup = result;
             result.transform.SetAsLastSibling();
+            Debug.Log("curPopup: " + curPopup.name);
             result.Show(data);
         }
     }

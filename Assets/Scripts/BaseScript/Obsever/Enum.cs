@@ -16,6 +16,7 @@ public enum ListenType
     PLAYER_IS_TALKING_NPC,
     PLAYER_HAS_ACCEPT_QUEST,
     UI_POPUP_SCROLLMAGIC_CLICK_EXIT_BTN,
+    UI_SEND_LIST_ITEM_REWARD,
 }
 
 public enum CalculatorButtonState

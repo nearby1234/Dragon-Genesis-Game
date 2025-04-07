@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: QuestMissionOne
   m_EditorClassIdentifier: 
   questType: 0
-  questID: 001
+  questID: MainQuest01
   questName: "L\u1EDDi Ti\xEAn Tri"
   QuestGiver: {fileID: 0}
   description: "<speed=3><B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>H\u1EE1i
@@ -39,7 +39,9 @@ MonoBehaviour:
   ItemMission:
   - itemID: ItemMission01
     itemName: "Quy\u1EC3n Tr\u1EE5c Kh\u1EDFi Nguy\xEAn"
-    quantity: 1
+    Count: 0
+    requestCount: 1
+    completionCount: 1
     icon: {fileID: 21300000, guid: 142150c215477474e96bcae72bf965de, type: 3}
   bonus:
     experience: 0
@@ -47,9 +49,13 @@ MonoBehaviour:
     itemsReward:
     - itemID: ItemsReward01
       itemName: "T\xFAi \u0111\u1ED3"
-      quantity: 1
+      Count: 1
+      requestCount: 0
+      completionCount: 0
       icon: {fileID: 21300000, guid: 7e354c612ad17d4489b94e3488ef0cba, type: 3}
     - itemID: ItemsReward02
       itemName: "B\xECnh M\xE1u Nh\u1ECF"
-      quantity: 1
+      Count: 1
+      requestCount: 0
+      completionCount: 0
       icon: {fileID: 21300000, guid: 231a85bf7bcfb0847b84e0cd112250a2, type: 3}

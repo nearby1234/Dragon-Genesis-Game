@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -8,13 +9,16 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
     private Image image;  // Image component chứa sprite của item
+    private TextMeshProUGUI textMeshPro;  // Image component chứa sprite của item
     private Vector2 originalPosition;
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         canvasGroup = GetComponent<CanvasGroup>();
         image = GetComponent<Image>(); // Giả sử Image nằm trên cùng GameObject này
-        originalPosition = rectTransform.anchoredPosition;
+        textMeshPro = GetComponentInChildren<TextMeshProUGUI>(); // Giả sử TextMeshProUGUI nằm trong con của GameObject này
+        //originalPosition = rectTransform.anchoredPosition;
+
 
         // Kiểm tra xem các thành phần cần thiết có tồn tại không
         if (rectTransform == null || canvasGroup == null || image == null)
@@ -27,6 +31,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public void OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = false;
+        originalPosition = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
     }
 
     // Khi kéo, cập nhật vị trí (visual feedback) của đối tượng đang kéo
@@ -45,38 +50,42 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         InventorySlot targetSlot = null;
         if (eventData.pointerEnter != null)
         {
-            // Cố gắng tìm InventorySlot ở con hoặc parent của đối tượng mà pointer trỏ vào.
-            targetSlot = eventData.pointerEnter.GetComponentInChildren<InventorySlot>() ??
-                  eventData.pointerEnter.GetComponentInParent<InventorySlot>();
+            targetSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
+
         }
         else
         {
-            Debug.Log("PointerEnter is null.");
+            rectTransform.anchoredPosition = originalPosition;
         }
 
         if (targetSlot != null)
         {
             // Lấy Image component của item trong Box đích.
             // Giả sử mỗi Box luôn có sẵn một GameObject item (với Image) làm con của Box.
-            Image targetImage = targetSlot.GetComponentInChildren<Image>();
-            if (targetImage != null)
+            Image targetImage = targetSlot.GetComponent<Image>();
+            TextMeshProUGUI text = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
+            if (targetImage != null && text != null)
             {
                 Sprite draggedSprite = image.sprite;
                 Sprite targetSprite = targetImage.sprite;
+                string targetText = text.text; // Lấy text của item trong Box đích
+                string draggedText = textMeshPro.text; // Lấy text của item đang kéo
 
                 // Nếu Box đích đã có sprite (tức là Item B đã có sprite) → hoán đổi sprite
                 if (targetSprite != null)
                 {
                     SwapSprites(targetImage, draggedSprite, targetSprite);
+                    SwapText(targetText, draggedText, text);
                 }
                 else
                 {
                     // Nếu Box đích trống → chuyển sprite từ item đang kéo sang Box đích
                     MoveSpriteToTarget(targetImage, draggedSprite);
+                    MoveTextToTarget(text, draggedText);
                 }
             }
             // Sau khi đổi sprite, reset vị trí của đối tượng kéo về vị trí ban đầu (vì chúng ta không di chuyển GameObject)
-            rectTransform.anchoredPosition = Vector2.zero;
+            rectTransform.anchoredPosition = originalPosition;
         }
         else
         {
@@ -87,9 +96,14 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)
     {
         image.sprite = targetSprite;
-        SetAlphaColor(0f, image);
+        SetAlphaColor(1f, image);
         targetImage.sprite = draggedSprite;
         SetAlphaColor(1f, targetImage);
+    }
+    private void SwapText(string TargetText, string draggedText , TextMeshProUGUI TargetTextMesh)
+    {
+        textMeshPro.text = TargetText;
+        TargetTextMesh.text = draggedText;
     }
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
     {
@@ -98,6 +112,13 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         image.sprite = null;
         SetAlphaColor(0f, image);
     }
+    private void MoveTextToTarget(TextMeshProUGUI targetTextMesh, string draggedText)
+    {
+        textMeshPro.text = targetTextMesh.text;
+        textMeshPro.enabled = false;
+        targetTextMesh.text = draggedText;
+        targetTextMesh.enabled = true;
+    } 
     private void SetAlphaColor(float alpha, Image image)
     {
         if (image == null) return;

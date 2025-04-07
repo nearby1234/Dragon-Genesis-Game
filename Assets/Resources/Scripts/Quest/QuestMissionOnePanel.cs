@@ -20,6 +20,7 @@ public class QuestMissionOnePanel : BasePopup
     private bool m_HasShownContent;
     private bool m_HasShownAlternative;
     private bool m_HasAcceptMission;
+    private const string m_QuestID = "MainQuest01";
 
     private void Awake()
     {
@@ -37,10 +38,6 @@ public class QuestMissionOnePanel : BasePopup
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
         ShowContentMission();
-    }
-    private void Update()
-    {
-       
     }
     //Sau khi text chạy hết
     private void OnFinishedText() // API của package Text Animator
@@ -80,6 +77,10 @@ public class QuestMissionOnePanel : BasePopup
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = false;
+        }
+        if(m_QuestDataMissionOne != null && m_QuestDataMissionOne.questID.Equals(m_QuestID))
+        {
+            m_QuestDataMissionOne.ItemMission[0].completionCount = 1;
         }
     }
     private void OnButtonExit()
