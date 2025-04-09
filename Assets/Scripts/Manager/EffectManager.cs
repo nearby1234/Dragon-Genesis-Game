@@ -23,11 +23,10 @@ public class EffectManager : BaseManager<EffectManager>
             if (pref.name.Equals(name))
             {
                 return pref;
-            }else
-            {
-                Debug.Log($"{name} does not exist");
             }
         }
+        // Chỉ in thông báo lỗi sau khi không tìm thấy bất kỳ prefab nào khớp với tên
+        Debug.Log($"{name} does not exist");
         return null;
     }
 }

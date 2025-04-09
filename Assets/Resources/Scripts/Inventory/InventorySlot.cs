@@ -1,5 +1,11 @@
-﻿using TMPro;
+﻿using DG.Tweening;
+using Sirenix.OdinInspector;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [System.Serializable]
@@ -10,7 +16,10 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private bool m_IsEmpty = true;
     [SerializeField] private Image m_IconImage;
     [SerializeField] private TextMeshProUGUI m_CountTxt;
-    public QuestItem m_CurrentItem;
+    [SerializeField] private InputAction m_ButtonPress;
+    [InlineEditor]
+    public QuestItemSO m_CurrentItem;
+    private Queue<GameObject> m_ItemPool = new Queue<GameObject>();
     public bool IsEmpty
     {
         get => m_IsEmpty;
@@ -27,13 +36,23 @@ public class InventorySlot : MonoBehaviour
             m_CountTxt = GetComponentInChildren<TextMeshProUGUI>();
         }
     }
-    public void SetItemSprite(QuestItem sprite)
+    private void Start()
+    {
+        m_ButtonPress.Enable();
+        m_ButtonPress.performed += OnPerformPressButton;
+    }
+    private void OnDestroy()
+    {
+        m_ButtonPress.performed -= OnPerformPressButton;
+        m_ButtonPress.Disable();
+    }
+    public void SetItemSprite(QuestItemSO sprite)
     {
         if (sprite == null) return;
         m_CurrentItem = sprite; // Cập nhật biến lưu trữ item hiện tại
-        m_IconImage.sprite = sprite.icon;
+        m_IconImage.sprite = sprite.questItemData.icon;
         SetAlphaColor(1f);
-        UpdateCountText(sprite.count);
+        UpdateCountText(sprite.questItemData.count);
     }
     public void ClearItem()
     {
@@ -53,5 +72,118 @@ public class InventorySlot : MonoBehaviour
     {
         m_CountTxt.enabled = true;
         m_CountTxt.text = count.ToString();
+    }
+    private void OnPerformPressButton(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            switch (m_CurrentItem.questItemData.typeItem)
+            {
+                case TYPEITEM.ITEM_USE:
+                    {
+                        // kiểm tra xem item có thể sử dụng hay không
+                        CheckCountItem();
+                        UseItem();
+                    }
+                    // Thực hiện hành động cho ITEM_MISSION
+                    Debug.Log("Thực hiện hành động cho ITEM_MISSION");
+                    break;
+                case TYPEITEM.ITEM_EQUIP:
+                    // Thực hiện hành động cho ITEM_EQUIP
+                    Debug.Log("Thực hiện hành động cho ITEM_EQUIP");
+                    break;
+                case TYPEITEM.ITEM_COLLECT:
+                    // Thực hiện hành động cho ITEM_COLLECT
+                    Debug.Log("Thực hiện hành động cho ITEM_COLLECT");
+                    break;
+                default:
+                    Debug.Log("Không có hành động nào được xác định cho loại item này.");
+                    break;
+            }
+        }
+    }
+    private void CheckCountItem()
+    {
+
+        // Kiểm tra xem item có thể sử dụng hay không
+        if (m_CurrentItem.questItemData.count > 0)
+        {
+            // Giảm số lượng item
+            m_CurrentItem.questItemData.count--;
+            UpdateCountText(m_CurrentItem.questItemData.count);
+            // Thực hiện hành động sử dụng item
+        }
+        else
+        {
+            Debug.Log("Không đủ số lượng item để sử dụng.");
+        }
+    }
+    private void UseItem()
+    {
+        switch (m_CurrentItem.questItemData.itemUse)
+        {
+            case ITEMUSE.ITEM_USE_HEAL:
+                if (ListenerManager.HasInstance)
+                {
+                    Debug.Log("Thực hiện hành động hồi phục");
+                    ListenerManager.Instance.BroadCast(ListenType.ITEM_USE_DATA_IS_HEAL, m_CurrentItem.questItemData.percentIncrease);
+                }
+                if (EffectManager.HasInstance)
+                {
+                    GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha bạn muốn
+                }
+                break;
+        }
+    }
+    private GameObject GetPooledItem(string effectName, Transform parent)
+    {
+        GameObject item = null;
+
+        if (m_ItemPool.Count > 0)
+        {
+            item = m_ItemPool.Dequeue();
+            item.SetActive(true);
+        }
+        else if (EffectManager.HasInstance)
+        {
+            GameObject prefab = EffectManager.Instance.GetPrefabs(effectName);
+            if (prefab != null)
+            {
+                item = Instantiate(prefab, parent);
+            }
+        }
+
+        if (item != null)
+        {
+            // Reset lại trạng thái transform
+            item.transform.SetParent(parent);
+            item.transform.localPosition = Vector3.zero;
+            item.transform.localScale = Vector3.one;
+
+            // Nếu là ParticleSystem thì play và tự động return về pool sau khi hoàn thành
+            ParticleSystem ps = item.GetComponent<ParticleSystem>();
+            if (ps != null)
+            {
+                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.Play();
+                StartCoroutine(ReturnToPoolAfterPlay(ps, item));
+            }
+        }
+
+        return item;
+    }
+    private IEnumerator ReturnToPoolAfterPlay(ParticleSystem ps, GameObject item)
+    {
+        yield return new WaitUntil(() => !ps.IsAlive(true));
+        ReturnPooledItem(item);
+    }
+    private void ReturnPooledItem(GameObject item)
+    {
+       if(item != null)
+        {
+            item.SetActive(false);
+            item.transform.SetParent(null); // Đặt lại parent về null hoặc về một đối tượng khác nếu cần
+            m_ItemPool.Enqueue(item);
+        }
     }
 }

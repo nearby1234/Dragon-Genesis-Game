@@ -18,7 +18,8 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
     public bool isAcceptMission;
     public bool isCompleteMission;
 
-    public List<QuestItem> ItemMission;
+    [InlineEditor]
+    public List<QuestItemSO> ItemMission;
 
     public QuestBonus bonus;
 }

@@ -17,6 +17,7 @@ public enum ListenType
     PLAYER_HAS_ACCEPT_QUEST,
     UI_POPUP_SCROLLMAGIC_CLICK_EXIT_BTN,
     UI_SEND_LIST_ITEM_REWARD,
+    ITEM_USE_DATA_IS_HEAL,
 }
 
 public enum CalculatorButtonState

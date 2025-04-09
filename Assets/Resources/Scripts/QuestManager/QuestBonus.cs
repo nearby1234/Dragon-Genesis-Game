@@ -7,5 +7,6 @@ public class QuestBonus
 {
     public int experience;
     public int gold;
-    public List<QuestItem> itemsReward;
+    [InlineEditor]
+    public List<QuestItemSO> itemsReward;
 }

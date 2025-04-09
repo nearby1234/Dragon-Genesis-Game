@@ -10,20 +10,19 @@ using UnityEngine.VFX;
 public class PivotScaleWeapon : MonoBehaviour
 {
     // Định nghĩa offset ban đầu từ pivot (điểm cầm) theo không gian local của đối tượng con
-    public Vector3 handleLocalOffset = new(0f, -0.5f, 0f);
-    public Transform m_TranformEnergyWeapon;
-    public Transform m_Sword;
-    public MeshFilter m_CurrentMeshFilter;
-    public MeshFilter m_BeforMeshFilter;
+    [SerializeField] private Vector3 handleLocalOffset = new(0f, -0.5f, 0f);
+    [SerializeField] private Transform m_TranformEnergyWeapon;
+    [SerializeField] private Transform m_Sword;
+    [SerializeField] private MeshFilter m_CurrentMeshFilter;
+    [SerializeField] private MeshFilter m_BeforMeshFilter;
     //public MeshRenderer m_EnergyWeaponMesh;
 
-    public ParticleSystem m_Cirlcle;
-    public ParticleSystem m_ShockWave;
-    public ParticleSystem m_Trial;
-    public ParticleSystem m_aura;
-    public ParticleSystem m_Explosion;
-    public VisualEffect m_Energy;
-    public Animator animator;
+    [SerializeField] private ParticleSystem m_Cirlcle;
+    [SerializeField] private ParticleSystem m_ShockWave;
+    [SerializeField] private ParticleSystem m_Trial;
+    [SerializeField] private ParticleSystem m_AuraPS;
+    [SerializeField] private VisualEffect m_Energy;
+    [SerializeField] private Animator animator;
 
     private Vector3 initialScale;
 
@@ -67,33 +66,32 @@ public class PivotScaleWeapon : MonoBehaviour
 
     private void Update()
     {
-        //// Ví dụ: tăng giảm scale theo thời gian sử dụng PingPong
-        //float scaleFactor = 1f + Mathf.PingPong(Time.time * 0.5f, 1f);
-        //ScaleAndAdjust(initialScale * scaleFactor);
-
-        //ScaleWhenPressButton();
-        //ScaleWithTimer();
-
+        HandleInput();
+    }
+    private void HandleInput()
+    {
         if (Input.GetKeyDown(KeyCode.O))
         {
             // Reset và bắt đầu coroutine
             //ResetScale();
-            if (m_aura != null)
+            if (m_AuraPS != null)
             {
-                m_aura.gameObject.SetActive(true);
-                m_aura.Play();
-                animator.Play(AttackAnimationClip);
-                animator.SetTrigger("IsPress");
-
-
+                m_AuraPS.gameObject.SetActive(true);
+                m_AuraPS.Play();
             }
+            animator.Play(AttackAnimationClip);
+            animator.SetTrigger("IsPress");
+
             scalingCoroutine = StartCoroutine(ScaleCoroutine());
         }
         if (Input.GetKeyUp(KeyCode.O))
         {
             animator.SetBool("IsPressN", false);
             setupScaleDefault = StartCoroutine(SetupScaleDefault());
-            m_aura.gameObject.SetActive(false);
+            if (m_AuraPS != null)
+            {
+                m_AuraPS.gameObject.SetActive(false);
+            }
             StartCoroutine(SmoothRotateToCameraDirection(0.3f));
         }
     }
@@ -119,25 +117,6 @@ public class PivotScaleWeapon : MonoBehaviour
 
         // Điều chỉnh lại vị trí của đối tượng để điểm cầm không dịch chuyển
         m_TranformEnergyWeapon.transform.position += delta;
-    }
-    public void AeSetupEffect(Vector3 position)
-    {
-        if (m_Explosion != null)
-        {
-            m_Explosion.gameObject.SetActive(true);
-            m_Explosion.transform.position = position;
-            if (!m_Explosion.isPlaying)
-            {
-                m_Explosion.Play();
-            }
-        }
-    }
-    public void AeStopEffect()
-    {
-        if (m_Explosion != null)
-        {
-            m_Explosion.gameObject.SetActive(false);
-        }
     }
     public void AeStartFade()
     {
@@ -199,11 +178,6 @@ public class PivotScaleWeapon : MonoBehaviour
         }
     }
 
-    public IEnumerator TurnOffExplosion()
-    {
-        yield return new WaitForSeconds(1f);
-        m_Explosion.gameObject.SetActive(false);
-    }
     private IEnumerator SetupScaleDefault()
     {
         //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
@@ -249,18 +223,6 @@ public class PivotScaleWeapon : MonoBehaviour
         SetupShockWave(m_ShockWave, false);
         SetupShockWave(m_Trial, false);
         SetupEnergy(m_Energy, false);
-    }
-
-    private void UpdateDamaged(int index)
-    {
-        switch (index)
-        {
-            case 1:
-                {
-                    
-                }
-                break;
-        }
     }
 
     #region SETUP EFFECT 

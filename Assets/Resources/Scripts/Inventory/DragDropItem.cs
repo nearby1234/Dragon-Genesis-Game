@@ -113,7 +113,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
     private void SwapCurrentItem(InventorySlot targetSlot)
     {
-        QuestItem temp = inventorySlot.m_CurrentItem;
+        QuestItemSO temp = inventorySlot.m_CurrentItem;
         inventorySlot.m_CurrentItem = targetSlot.m_CurrentItem;
         targetSlot.m_CurrentItem = temp;
     }

@@ -16,8 +16,6 @@ public class PlayerDialog : MonoBehaviour
         get => m_HasAcceptQuest;
         set => m_HasAcceptQuest = value;
     }
-  
-
     //Property để quản lý trạng thái và broadcast sự thay đổi
     public bool IsTalkingNPC
     {

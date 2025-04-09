@@ -8,7 +8,7 @@ public class NPCRotation : MonoBehaviour
     private Transform player;
     private bool shouldRotate = false;
     private bool m_PlayerHasAcceptMission;
-    [SerializeField] private Canvas m_IconQuestionMark;
+    [SerializeField] private GameObject m_IconQuestionMark;
 
 
     private void Start()

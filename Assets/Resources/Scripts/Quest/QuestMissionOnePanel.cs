@@ -80,7 +80,7 @@ public class QuestMissionOnePanel : BasePopup
         }
         if(m_QuestDataMissionOne != null && m_QuestDataMissionOne.questID.Equals(m_QuestID))
         {
-            m_QuestDataMissionOne.ItemMission[0].completionCount = 1;
+            m_QuestDataMissionOne.ItemMission[0].questItemData.completionCount = 1;
         }
     }
     private void OnButtonExit()

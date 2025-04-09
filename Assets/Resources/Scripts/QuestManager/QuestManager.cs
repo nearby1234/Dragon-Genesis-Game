@@ -21,7 +21,7 @@ public class QuestManager : BaseManager<QuestManager>
         {
             foreach (var item in quest.ItemMission)
             {
-               item.completionCount = 0;
+               item.questItemData.completionCount = 0;
             }
         }
     }
@@ -59,8 +59,8 @@ public class QuestManager : BaseManager<QuestManager>
         Debug.Log($"Cấp {reward.experience} kinh nghiệm, {reward.gold} vàng.");
         foreach (var item in reward.itemsReward)
         {
-            Debug.Log($"Nhận vật phẩm: {item.itemName} x{item.count}");
-            // Thêm logic để thêm vật phẩm vào kho của người chơi
+            Debug.Log($"Nhận vật phẩm: {item.questItemData.itemName} x{item.questItemData.count}");
+            //// Thêm logic để thêm vật phẩm vào kho của người chơi
         }
     }
 }

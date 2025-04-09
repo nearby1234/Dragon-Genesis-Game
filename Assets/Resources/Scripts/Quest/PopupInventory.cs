@@ -12,7 +12,7 @@ public class PopupInventory : BasePopup
     [SerializeField] private TextMeshProUGUI m_MoneyTxt;
     [SerializeField] private Transform m_InventoryBoxPanel;
     [SerializeField] private Transform m_InventoryItemPanel;
-    [SerializeField] private List<QuestItem> m_ImageIconList = new();
+    [SerializeField] private List<QuestItemSO> m_ImageIconList = new();
 
     // Danh sách lưu trữ box (là GameObject) và các slot item (là InventorySlot)
     [SerializeField] private List<GameObject> listBoxInventory = new();
@@ -126,11 +126,11 @@ public class PopupInventory : BasePopup
     /// </summary>
     /// <param name="listIcon">Danh sách các QuestItem cần hiển thị</param>
     /// <param name="itemInventory">Danh sách các slot của inventory</param>
-    private void AddItems(List<QuestItem> listIcon, List<InventorySlot> itemInventory)
+    private void AddItems(List<QuestItemSO> listIcon, List<InventorySlot> itemInventory)
     {
-        foreach (QuestItem questItem in listIcon)
+        foreach (var questItem in listIcon)
         {
-            if(questItem.typeItem.Equals(TYPEITEM.ITEM_MISSION))
+            if(questItem.questItemData.typeItem.Equals(TYPEITEM.ITEM_MISSION))
             {
                 continue;
             }    
@@ -160,7 +160,7 @@ public class PopupInventory : BasePopup
     /// <param name="value">Đối tượng chứa danh sách QuestItem</param>
     private void ReceiverListItemReward(object value)
     {
-        if (value is List<QuestItem> listItem)
+        if (value is List<QuestItemSO> listItem)
         {
             foreach (var item in listItem)
             {
