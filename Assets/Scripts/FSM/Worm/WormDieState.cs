@@ -1,6 +1,4 @@
-using Mono.Cecil.Cil;
 using System.Collections;
-using UnityEditor.iOS.Xcode;
 using UnityEngine;
 
 public class WormDieState : BaseState<WormBoss, WORMSTATE>

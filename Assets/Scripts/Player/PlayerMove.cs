@@ -14,7 +14,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float m_CurrentSpeed;    // Tốc độ di chuyển hiện tại được cập nhật theo trạng thái
     [SerializeField] private float smoothTime = 0.1f;
     [SerializeField] private bool IsPressLeftShift;
-    [SerializeField] private bool isMove;
+    //[SerializeField] private bool isMove;
     [SerializeField] private bool m_IsPressButtonSwap = false; // Toggle tốc độ khi nhấn nút R
 
     [Header("Button Settings")]
@@ -60,12 +60,12 @@ public class PlayerMove : MonoBehaviour
 
         if (inputVector.magnitude != 0)
         {
-            isMove = true;
+            //isMove = true;
             PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", true);
         }
         else
         {
-            isMove = false;
+            //isMove = false;
             PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", false);
         }
 
@@ -139,7 +139,7 @@ public class PlayerMove : MonoBehaviour
     private void OnLeftShiftPerformed(InputAction.CallbackContext context)
     {
         IsPressLeftShift = true;
-        isMove = true;
+        //isMove = true;
     }
 
     private void OnLeftShiftCancel(InputAction.CallbackContext context)

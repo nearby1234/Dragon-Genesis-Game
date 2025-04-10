@@ -13,7 +13,7 @@ public class PlayerJump : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
 
     [SerializeField] private InputAction m_ButtonSpace;
-    [SerializeField] private bool m_IsPressSpace;
+    //[SerializeField] private bool m_IsPressSpace;
 
     [SerializeField] private int maxJumpCount = 2;
     private int jumpCount = 0;
@@ -34,7 +34,7 @@ public class PlayerJump : MonoBehaviour
 
     private void OnPerformedSpace(InputAction.CallbackContext context)
     {
-        m_IsPressSpace = true;
+        //m_IsPressSpace = true;
 
         // Cập nhật trạng thái mặt đất ngay khi nhận input
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
@@ -56,7 +56,7 @@ public class PlayerJump : MonoBehaviour
 
     private void OnCancelSpace(InputAction.CallbackContext context)
     {
-        m_IsPressSpace = false;
+        //m_IsPressSpace = false;
     }
 
     public void PlayerJumpUp()

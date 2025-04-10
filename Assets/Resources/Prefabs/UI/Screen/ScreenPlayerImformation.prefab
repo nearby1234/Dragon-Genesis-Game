@@ -510,7 +510,7 @@ GameObject:
   - component: {fileID: 4764309369927816923}
   - component: {fileID: 8515283384071691398}
   m_Layer: 0
-  m_Name: Image
+  m_Name: experienceBarImg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -533,7 +533,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 157.33138, y: -67.18568}
+  m_AnchoredPosition: {x: 168.4, y: -77.8}
   m_SizeDelta: {x: 233.4766, y: 80.0883}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &4764309369927816923
@@ -660,7 +660,7 @@ GameObject:
   - component: {fileID: 4386753290677331716}
   - component: {fileID: 1356907070926303009}
   m_Layer: 0
-  m_Name: q
+  m_Name: experienceSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -828,6 +828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1184f01b00069a4781b9f57c0f8fc8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_ExpBar: {fileID: 1356907070926303009}
   m_LevelTxt: {fileID: 1403550073416987203}
   m_HealValueTxt: {fileID: 6559383463707358928}
   m_ManaValueTxt: {fileID: 1566110088948649876}
@@ -1453,7 +1454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 12, y: -12}
   m_SizeDelta: {x: 317.7, y: 109.510025}
   m_Pivot: {x: 0, y: 1}
 --- !u!222 &2621983222912704471

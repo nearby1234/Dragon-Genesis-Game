@@ -43,6 +43,10 @@ public class EnemyHeal : MonoBehaviour
         // Nếu máu giảm về 0 hoặc dưới 0, gọi Die() và thoát ngay
         if (m_EnemyHeal <= 0)
         {
+            if (EffectManager.HasInstance)
+            {
+                EffectManager.Instance.ExpOrbEffectSpawner.SpawnOrbs(transform.position, 5);
+            }
             Die();
             return;
         }

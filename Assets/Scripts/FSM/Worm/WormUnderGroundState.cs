@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 
 public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
 {
-    private bool isLocated;
+    //private bool isLocated;
     private Coroutine waitUnderground;
     private Coroutine resetIdleGrace;
 
@@ -69,7 +69,7 @@ public class WormUndergroundState : BaseState<WormBoss, WORMSTATE>
         // Di chuyển boss đến vị trí của player cộng offset (vị trí xuất hiện dynamic)
         Vector3 targetPos = boss.m_Player.transform.position + offset;
         boss.NavMeshAgent.Warp(targetPos);
-        isLocated = true;
+        //isLocated = true;
         while (true)
         {
             boss.Rotation(); // Xoay boss về phía player

@@ -47,8 +47,9 @@ public class EnemySkill : MonoBehaviour
 
     public void SetupBlackHole()
     {
-        m_ParticleHandler.Cast();
         m_ParticleHandler.gameObject.SetActive(true);
+        m_ParticleHandler.Cast();
+        
     }
     public IEnumerator StopFireBall(int index)
     {

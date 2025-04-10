@@ -17,7 +17,7 @@ public class HouvlLaserTest : MonoBehaviour
     private Vector4 Length = new Vector4(1, 1, 1, 1);
 
     private bool LaserSaver = false;
-    private bool UpdateSaver = false;
+    //private bool UpdateSaver = false;
 
     private ParticleSystem[] Effects;
     private ParticleSystem[] Hit;
@@ -105,7 +105,7 @@ public class HouvlLaserTest : MonoBehaviour
                 Laser.enabled = false;
             }
         }
-        UpdateSaver = true;
+        //UpdateSaver = true;
         if (Effects != null)
         {
             foreach (var AllPs in Effects)

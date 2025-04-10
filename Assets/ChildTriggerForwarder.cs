@@ -1,7 +1,6 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEditor.iOS.Xcode;
 
 public class ChildTriggerForwarder : MonoBehaviour
 {

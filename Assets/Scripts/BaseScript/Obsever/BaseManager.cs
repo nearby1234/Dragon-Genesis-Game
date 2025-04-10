@@ -12,7 +12,7 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
         {
             if(instance == null)
             {
-                instance = Object.FindObjectOfType<T>();
+                instance = Object.FindFirstObjectByType<T>();
                 if(instance == null)
                 {
                     Debug.LogError($"No {typeof(T).Name} Singleton Instance");

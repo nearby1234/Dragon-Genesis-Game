@@ -10,6 +10,7 @@ TagManager:
   - Effect
   - Boss
   - NPC
+  - PAT
   layers:
   - Default
   - TransparentFX
@@ -23,7 +24,7 @@ TagManager:
   - Laser
   - Player
   - NPC
-  - 
+  - PAT
   - 
   - 
   - 

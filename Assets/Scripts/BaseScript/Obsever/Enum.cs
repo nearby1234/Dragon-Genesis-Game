@@ -18,6 +18,8 @@ public enum ListenType
     UI_POPUP_SCROLLMAGIC_CLICK_EXIT_BTN,
     UI_SEND_LIST_ITEM_REWARD,
     ITEM_USE_DATA_IS_HEAL,
+    UI_SEND_SCREEN_SLIDER_EXP,
+    UI_SEND_VALUE_EXP_TO_SLIDER,
 }
 
 public enum CalculatorButtonState

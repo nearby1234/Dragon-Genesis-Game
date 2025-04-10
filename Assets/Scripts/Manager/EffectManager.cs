@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class EffectManager : BaseManager<EffectManager>
 {
+    [SerializeField] private ExpOrbEffectSpawner expOrbEffectSpawner;
+    public ExpOrbEffectSpawner ExpOrbEffectSpawner => expOrbEffectSpawner;
     [SerializeField] private List<GameObject> effects = new();
     private const string path = "Prefabs/Effect";
 
@@ -14,6 +16,7 @@ public class EffectManager : BaseManager<EffectManager>
         {
             effects.Add(pref);
         }
+        expOrbEffectSpawner = GetComponent<ExpOrbEffectSpawner>();
     }
 
     public GameObject GetPrefabs(string name)

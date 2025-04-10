@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UIManager : BaseManager<UIManager>
 {
+    [SerializeField] private SpawnObjectVFX m_SpawnObjectVFX;
+    public SpawnObjectVFX SpawnObjectVFXPrefab => m_SpawnObjectVFX;
+
     public GameObject cScreen, cPopup, cNotify;
 
     private Dictionary<string, BaseScreen> screens = new Dictionary<string, BaseScreen>();
@@ -33,6 +36,7 @@ public class UIManager : BaseManager<UIManager>
     {
         base.Awake();
         ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+        m_SpawnObjectVFX = GetComponentInChildren<SpawnObjectVFX>();
     }
   
 

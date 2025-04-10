@@ -6,8 +6,8 @@ public class PlayerDamage : MonoBehaviour
 {
     [SerializeField] private InputAction m_ButtonAttackLeftMouse;
     [SerializeField] private InputAction m_ButtonAttackRightMouse;
-    [SerializeField] private bool m_IsPressLeftMouse;
-    [SerializeField] private bool m_IsPressRightMouse;
+    //[SerializeField] private bool m_IsPressLeftMouse;
+    //[SerializeField] private bool m_IsPressRightMouse;
     [SerializeField] private string[] m_AttackNameAnim; // Danh sách tên animation
     [SerializeField] private int[] m_AttackAnimStringToHash; // Mã hash animation
     [SerializeField] private int m_AttackAnimIndex = 0; // Chỉ số animation hiện tại
@@ -36,11 +36,11 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
-        m_IsPressRightMouse = false;
+        //m_IsPressRightMouse = false;
     }
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
-        m_IsPressRightMouse = true;
+        //m_IsPressRightMouse = true;
 
 
         // Nếu animation Heavy Attack chưa đang chạy thì play nó
@@ -52,7 +52,7 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
-        m_IsPressLeftMouse = true;
+        //m_IsPressLeftMouse = true;
 
         // Nếu animation attack hiện tại vẫn chưa hoàn thành, bỏ qua việc kích hoạt lại attack
         if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f &&
@@ -73,7 +73,7 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
     {
-        m_IsPressLeftMouse = false;
+        //m_IsPressLeftMouse = false;
     }
     public void DegreeEventClickMouse()
     {

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.AI.Navigation.Samples;
-using UnityEditor.iOS.Xcode;
+﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.VFX;
 
 public class PivotScaleWeapon : MonoBehaviour

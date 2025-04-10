@@ -70,7 +70,8 @@ public class InventorySlot : MonoBehaviour
     }
     private void UpdateCountText(int count)
     {
-        m_CountTxt.enabled = true;
+        m_CountTxt.color = new Color(1, 1, 1, 0); // Đặt màu chữ thành trắng
+        //m_CountTxt.enabled = true;
         m_CountTxt.text = count.ToString();
     }
     private void OnPerformPressButton(InputAction.CallbackContext context)
@@ -131,6 +132,7 @@ public class InventorySlot : MonoBehaviour
                 if (EffectManager.HasInstance)
                 {
                     GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha bạn muốn
+                    
                 }
                 break;
         }
@@ -162,9 +164,9 @@ public class InventorySlot : MonoBehaviour
 
             // Nếu là ParticleSystem thì play và tự động return về pool sau khi hoàn thành
             ParticleSystem ps = item.GetComponent<ParticleSystem>();
-            if (ps != null)
+            if (ps != null && ps.isPlaying)
             {
-                ps.Stop(true, ParticleSystemStopBehavior.StopEmittingAndClear);
+                ps.Stop();
                 ps.Play();
                 StartCoroutine(ReturnToPoolAfterPlay(ps, item));
             }

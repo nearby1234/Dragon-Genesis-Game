@@ -46,6 +46,7 @@ public class EnemyController : MonoBehaviour
             agent.isStopped = true;
             animator.SetBool("Attack",false);
             animator.SetBool("IsDetec", false);
+           
             return;
         }
         randomNavMeshMovement.EnemyMoveTarget();

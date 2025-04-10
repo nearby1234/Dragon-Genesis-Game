@@ -1,9 +1,11 @@
 using Microlight.MicroBar;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ScreenPlayerImformation: BaseScreen
 {
+    [SerializeField] private Slider m_ExpBar;
     [SerializeField] private TextMeshProUGUI m_LevelTxt;
     [SerializeField] private TextMeshProUGUI m_HealValueTxt;
     [SerializeField] private TextMeshProUGUI m_ManaValueTxt;
@@ -25,6 +27,7 @@ public class ScreenPlayerImformation: BaseScreen
         {
             ListenerManager.Instance.Register(ListenType.SEND_HEAL_VALUE, ReceiverPlayerHealValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
+            ListenerManager.Instance.BroadCast(ListenType.UI_SEND_SCREEN_SLIDER_EXP, m_ExpBar);
         }
     }
     private void OnDestroy()
