@@ -39055,7 +39055,7 @@ GameObject:
   - component: {fileID: 2801501505124197854}
   - component: {fileID: 2803206162290785222}
   m_Layer: 0
-  m_Name: Lvl up
+  m_Name: Lvl up(Dup)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

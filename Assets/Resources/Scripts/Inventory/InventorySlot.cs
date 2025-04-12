@@ -16,6 +16,8 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private bool m_IsEmpty = true;
     [SerializeField] private Image m_IconImage;
     [SerializeField] private TextMeshProUGUI m_CountTxt;
+    [SerializeField] private Slider m_Slider;
+    [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InputAction m_ButtonPress;
     [InlineEditor]
     public QuestItemSO m_CurrentItem;
@@ -35,16 +37,22 @@ public class InventorySlot : MonoBehaviour
         {
             m_CountTxt = GetComponentInChildren<TextMeshProUGUI>();
         }
+        m_Slider = GetComponentInChildren<Slider>();
+        canvasGroup = m_Slider.GetComponent<CanvasGroup>();
+
+
     }
     private void Start()
     {
         m_ButtonPress.Enable();
         m_ButtonPress.performed += OnPerformPressButton;
+        //SetStateSliderCoolDownTime(false);
     }
     private void OnDestroy()
     {
         m_ButtonPress.performed -= OnPerformPressButton;
         m_ButtonPress.Disable();
+       
     }
     public void SetItemSprite(QuestItemSO sprite)
     {
@@ -70,7 +78,7 @@ public class InventorySlot : MonoBehaviour
     }
     private void UpdateCountText(int count)
     {
-        m_CountTxt.color = new Color(1, 1, 1, 0); // Đặt màu chữ thành trắng
+        m_CountTxt.color = new Color(1, 1, 1, 1); // Đặt màu chữ thành trắng
         //m_CountTxt.enabled = true;
         m_CountTxt.text = count.ToString();
     }
@@ -131,11 +139,38 @@ public class InventorySlot : MonoBehaviour
                 }
                 if (EffectManager.HasInstance)
                 {
-                    GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha bạn muốn
-                    
+                    GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha
+                    CooldownTime(m_CurrentItem.questItemData.timeCoolDown);
                 }
                 break;
         }
+    }
+    private void CooldownTime(float time)
+    {
+        SetStateSliderCoolDownTime(true);
+        m_Slider.value = 0;
+        m_Slider.DOValue(1, time).OnComplete(() =>
+        {
+            SetStateSliderCoolDownTime(false);
+        });
+    }
+    private void SetStateSliderCoolDownTime(bool isActive)
+    {
+
+        if (isActive)
+        {
+            canvasGroup.alpha = 1f;
+            canvasGroup.interactable = true;
+            canvasGroup.blocksRaycasts = true;
+        }
+        else
+        {
+            canvasGroup.alpha = 0f;
+            canvasGroup.interactable = false;
+            canvasGroup.blocksRaycasts = false;
+        }
+
+
     }
     private GameObject GetPooledItem(string effectName, Transform parent)
     {
@@ -143,37 +178,42 @@ public class InventorySlot : MonoBehaviour
 
         if (m_ItemPool.Count > 0)
         {
+            // Lấy object từ pool nếu có
             item = m_ItemPool.Dequeue();
             item.SetActive(true);
         }
-        else if (EffectManager.HasInstance)
+        else
         {
-            GameObject prefab = EffectManager.Instance.GetPrefabs(effectName);
-            if (prefab != null)
+            // Nếu pool rỗng thì mới instantiate
+            if (EffectManager.HasInstance)
             {
-                item = Instantiate(prefab, parent);
+                GameObject prefab = EffectManager.Instance.GetPrefabs(effectName);
+                if (prefab != null)
+                {
+                    item = Instantiate(prefab, parent);
+                }
             }
         }
 
         if (item != null)
         {
-            // Reset lại trạng thái transform
+            // Reset lại trạng thái transform cho dù item lấy từ pool hay vừa được instantiate
             item.transform.SetParent(parent);
             item.transform.localPosition = Vector3.zero;
             item.transform.localScale = Vector3.one;
 
-            // Nếu là ParticleSystem thì play và tự động return về pool sau khi hoàn thành
+            // Đối với ParticleSystem, đảm bảo thực hiện reset và play
             ParticleSystem ps = item.GetComponent<ParticleSystem>();
-            if (ps != null && ps.isPlaying)
+            if (ps != null)
             {
                 ps.Stop();
+                ps.Clear();
                 ps.Play();
-                StartCoroutine(ReturnToPoolAfterPlay(ps, item));
             }
         }
-
         return item;
     }
+
     private IEnumerator ReturnToPoolAfterPlay(ParticleSystem ps, GameObject item)
     {
         yield return new WaitUntil(() => !ps.IsAlive(true));

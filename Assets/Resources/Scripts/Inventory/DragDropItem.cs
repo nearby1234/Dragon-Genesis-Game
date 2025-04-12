@@ -52,6 +52,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         InventorySlot targetSlot = null;
         if (eventData.pointerEnter != null)
         {
+            Debug.Log("Pointer Enter: " + eventData.pointerEnter.name);
             targetSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
 
         }
@@ -130,6 +131,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         textMeshPro.enabled = false;
         targetTextMesh.text = draggedText;
         targetTextMesh.enabled = true;
+        targetTextMesh.color = new Color(1, 1, 1, 1); // Đặt màu chữ thành trắng
     }
     private void MoveCurrentItemToTarget(InventorySlot targetSlot)
     {

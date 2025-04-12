@@ -29,6 +29,7 @@ public class ScreenPlayerImformation: BaseScreen
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
             ListenerManager.Instance.BroadCast(ListenType.UI_SEND_SCREEN_SLIDER_EXP, m_ExpBar);
         }
+        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
     }
     private void OnDestroy()
     {
@@ -42,6 +43,9 @@ public class ScreenPlayerImformation: BaseScreen
     private void Update()
     {
         m_HealValueTxt.text = $"{m_HealValueMax} / {(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)}";
+        m_ExpBar.value = PlayerLevelManager.Instance.DisPlayExp;
+        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        m_LevelTxt.text = PlayerLevelManager.Instance.CurrentLevel.ToString();
     }
 
     public override void Show(object data)

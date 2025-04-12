@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Scriptable Object/Quest/Quest Data")]
 public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
 {
+    [InlineEditor]
     public QuestType Key => questType;
     public QuestType questType;
     public string questID;
@@ -20,6 +21,5 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
 
     [InlineEditor]
     public List<QuestItemSO> ItemMission;
-
     public QuestBonus bonus;
 }

@@ -15,6 +15,11 @@ public class GameManager : BaseManager<GameManager>
     {
         base.Awake();
         GetChildNPC();
+#if UNITY_EDITOR
+        Debug.unityLogger.logEnabled = true;
+#else
+        Debug.unityLogger.logEnabled = false;   
+#endif
     }
     private void GetChildNPC()
     {

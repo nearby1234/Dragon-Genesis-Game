@@ -36,6 +36,9 @@ public class QuestItem
     public float percentIncrease;
     [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
     [BoxGroup("Item Use Stats")]
+    public float timeCoolDown;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
+    [BoxGroup("Item Use Stats")]
     public ITEMUSE itemUse;
 
 }

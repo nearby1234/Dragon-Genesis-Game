@@ -7,12 +7,12 @@ using UnityEngine.UI;
 
 public class SpawnObjectVFX : MonoBehaviour
 {
-    [SerializeField] private int m_ValueExp;
     [SerializeField] private float m_Speed;
     [SerializeField] private GameObject m_ParentTranformObj;
     [SerializeField] private GameObject m_SpawnVFXPrefab;
     [SerializeField] private Slider m_UiTarget;
     [SerializeField] private RectTransform sliderRectTransform;
+    [SerializeField] private Animator animator;
     [SerializeField] private Canvas mainCanvas; // Canvas chính đang chứa UI
     [SerializeField] private Camera uiCamera;  // Camera dùng cho canvas (nếu sử dụng Render Mode Screen Space - Camera)
     [SerializeField] private int m_PoolSize = 10;
@@ -89,10 +89,12 @@ public class SpawnObjectVFX : MonoBehaviour
             .SetEase(Ease.InBack)
             .OnComplete(() =>
             {
-                if(ListenerManager.HasInstance)
+                if(PlayerLevelManager.HasInstance)
                 {
-                    ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_EXP_TO_SLIDER, m_ValueExp);
+                    PlayerLevelManager.Instance.AddExp(PlayerLevelManager.Instance.ExpOrbValue);
                 }
+                animator.Play("Fade");
+
                 ReturnObjectToPool(rectTransform);
             });
     }
@@ -114,5 +116,6 @@ public class SpawnObjectVFX : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
         sliderRectTransform = m_UiTarget.GetComponent<RectTransform>();
+        animator = m_UiTarget.GetComponentInParent<Animator>();
     }
 }

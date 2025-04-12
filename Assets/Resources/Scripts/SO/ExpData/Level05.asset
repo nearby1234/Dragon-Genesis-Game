@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1a0a1f640fa343a4d9b46bc76143dc1b, type: 3}
-  m_Name: Level9
+  m_Name: Level05
   m_EditorClassIdentifier: 
-  level: 9
-  CurrentExp: 1652
-  expNeedLvup: 431
-  totalExp: 2083
+  level: 5
+  CurrentExp: 537
+  expNeedLvup: 208
+  totalExp: 745
