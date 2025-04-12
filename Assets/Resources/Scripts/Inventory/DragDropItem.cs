@@ -34,12 +34,21 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         canvasGroup.blocksRaycasts = false;
         originalPosition = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
+        }
+
     }
 
     // Khi kéo, cập nhật vị trí (visual feedback) của đối tượng đang kéo
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta;
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
+        }
     }
 
     // Khi kết thúc kéo, thực hiện việc đổi sprite theo yêu cầu
@@ -98,6 +107,10 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         {
             // Nếu không thả vào Box hợp lệ, đặt lại vị trí ban đầu của item đang kéo.
             rectTransform.anchoredPosition = originalPosition;
+        }
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false; // Đặt trạng thái không tương tác với UI
         }
     }
     private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)

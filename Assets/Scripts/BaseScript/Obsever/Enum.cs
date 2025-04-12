@@ -20,6 +20,7 @@ public enum ListenType
     ITEM_USE_DATA_IS_HEAL,
     UI_SEND_SCREEN_SLIDER_EXP,
     UI_SEND_VALUE_EXP_TO_SLIDER,
+    UI_SEND_CANVASMAIN,
 }
 
 public enum CalculatorButtonState

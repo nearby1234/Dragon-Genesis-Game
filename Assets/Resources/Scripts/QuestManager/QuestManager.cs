@@ -19,12 +19,8 @@ public class QuestManager : BaseManager<QuestManager>
     protected override void Awake()
     {
         base.Awake();
-        if (currentQuest != null)
-        {
-            // Clone currentQuest để tránh thay đổi asset gốc
-            currentQuest = Instantiate(currentQuest);
-        }
-        BackupInitialCountItems();
+       
+        //BackupInitialCountItems();
     }
     private void Start()
     {
@@ -78,23 +74,23 @@ public class QuestManager : BaseManager<QuestManager>
         }
     }
    
-    private void BackupInitialCountItems()
-    {
-        if (currentQuest == null)
-        {
-            Debug.LogWarning("Không tìm thấy current quest để backup item count.");
-            return;
-        }
-        // Giả sử mỗi item có tên (itemName) dùng làm key
-        foreach (var item in currentQuest.bonus.itemsReward)
-        {
-            string key = item.questItemData.itemName;
-            if (!initialItemCounts.ContainsKey(key))
-            {
-                initialItemCounts[key] = item.questItemData.count;
-            }
-        }
-    }
+    //private void BackupInitialCountItems()
+    //{
+    //    if (currentQuest == null)
+    //    {
+    //        Debug.LogWarning("Không tìm thấy current quest để backup item count.");
+    //        return;
+    //    }
+    //    // Giả sử mỗi item có tên (itemName) dùng làm key
+    //    foreach (var item in currentQuest.bonus.itemsReward)
+    //    {
+    //        string key = item.questItemData.itemName;
+    //        if (!initialItemCounts.ContainsKey(key))
+    //        {
+    //            initialItemCounts[key] = item.questItemData.count;
+    //        }
+    //    }
+    //}
     private void ResetItemCounts()
     {
         if (currentQuest == null)

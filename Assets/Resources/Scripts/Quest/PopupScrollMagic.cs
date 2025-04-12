@@ -133,7 +133,7 @@ public class PopupScrollMagic : BasePopup
             {
                 rectTransform.DOAnchorPos(TWEEN_TARGET_POS, TWEEN_DURATION).SetEase(Ease.OutBack).onComplete += () =>
                 {
-                    if (m_CurrentQuestData.questID == "MainQuest01" && UIManager.HasInstance)
+                    if (m_CurrentQuestData.questID == "-QuestMissionOne" && UIManager.HasInstance)
                     {
                         UIManager.Instance.ShowScreen<ScreenIconInventory>();
                         UIManager.Instance.ShowScreen<ScreenBox>();

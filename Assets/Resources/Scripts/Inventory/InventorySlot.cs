@@ -1,17 +1,17 @@
 ﻿using DG.Tweening;
 using Sirenix.OdinInspector;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 [System.Serializable]
 [RequireComponent(typeof(CanvasGroup))]
 [RequireComponent(typeof(DragDropItem))]
-public class InventorySlot : MonoBehaviour
+public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private bool m_IsEmpty = true;
     [SerializeField] private Image m_IconImage;
@@ -19,6 +19,7 @@ public class InventorySlot : MonoBehaviour
     [SerializeField] private Slider m_Slider;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InputAction m_ButtonPress;
+    private bool isTooltipShown = false;
     [InlineEditor]
     public QuestItemSO m_CurrentItem;
     private Queue<GameObject> m_ItemPool = new Queue<GameObject>();
@@ -39,8 +40,6 @@ public class InventorySlot : MonoBehaviour
         }
         m_Slider = GetComponentInChildren<Slider>();
         canvasGroup = m_Slider.GetComponent<CanvasGroup>();
-
-
     }
     private void Start()
     {
@@ -52,7 +51,6 @@ public class InventorySlot : MonoBehaviour
     {
         m_ButtonPress.performed -= OnPerformPressButton;
         m_ButtonPress.Disable();
-       
     }
     public void SetItemSprite(QuestItemSO sprite)
     {
@@ -113,7 +111,6 @@ public class InventorySlot : MonoBehaviour
     }
     private void CheckCountItem()
     {
-
         // Kiểm tra xem item có thể sử dụng hay không
         if (m_CurrentItem.questItemData.count > 0)
         {
@@ -156,7 +153,6 @@ public class InventorySlot : MonoBehaviour
     }
     private void SetStateSliderCoolDownTime(bool isActive)
     {
-
         if (isActive)
         {
             canvasGroup.alpha = 1f;
@@ -169,8 +165,6 @@ public class InventorySlot : MonoBehaviour
             canvasGroup.interactable = false;
             canvasGroup.blocksRaycasts = false;
         }
-
-
     }
     private GameObject GetPooledItem(string effectName, Transform parent)
     {
@@ -221,11 +215,28 @@ public class InventorySlot : MonoBehaviour
     }
     private void ReturnPooledItem(GameObject item)
     {
-       if(item != null)
+        if (item != null)
         {
             item.SetActive(false);
             item.transform.SetParent(null); // Đặt lại parent về null hoặc về một đối tượng khác nếu cần
             m_ItemPool.Enqueue(item);
         }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+       if(m_CurrentItem == null) return;
+        string itemName = m_CurrentItem.questItemData.itemName;
+        string itemDespri = m_CurrentItem.questItemData.ItemDespri;
+        Sprite sprite = m_CurrentItem.questItemData.icon;
+
+        UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
+        PopupItemToolipPanel.Instance.ShowTooltip(itemName, itemDespri, sprite);
+        //PopupItemToolipPanel.Instance.transform.SetAsLastSibling();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        PopupItemToolipPanel.Instance?.Hide();
     }
 }

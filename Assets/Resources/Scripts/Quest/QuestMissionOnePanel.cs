@@ -20,7 +20,7 @@ public class QuestMissionOnePanel : BasePopup
     private bool m_HasShownContent;
     private bool m_HasShownAlternative;
     private bool m_HasAcceptMission;
-    private const string m_QuestID = "MainQuest01";
+    private const string m_QuestID = "-MainQuest01";
 
     private void Awake()
     {
@@ -31,7 +31,7 @@ public class QuestMissionOnePanel : BasePopup
     private void Start()
     {
         m_ButtonAccept.gameObject.SetActive(false);
-        m_QuestDataMissionOne = DataManager.Instance.GetData<QuestData, QuestType>(QuestType.MainQuest);
+        m_QuestDataMissionOne = DataManager.Instance.GetClonedData<QuestData, QuestType>(QuestType.MainQuest);
         m_QuestDataMissionOne.isAcceptMission = false;
        
         m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);
@@ -54,7 +54,14 @@ public class QuestMissionOnePanel : BasePopup
         if (QuestManager.HasInstance)
         {
             QuestManager.Instance.AcceptQuest(m_QuestDataMissionOne);
-            if(GameManager.HasInstance)
+            foreach(var item in m_QuestDataMissionOne.ItemMission)
+            {
+                if (item.questItemData.itemID.Equals("-ScrollGenesis"))
+                {
+                    item.questItemData.completionCount = 1;
+                }
+            }
+            if (GameManager.HasInstance)
             {
                 GameObject npc = GameManager.Instance.GetNPC("Abe");
                 m_QuestDataMissionOne.QuestGiver = npc;

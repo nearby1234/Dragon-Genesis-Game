@@ -36,6 +36,7 @@ public class UIManager : BaseManager<UIManager>
     {
         base.Awake();
         ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+        //ShowPopup<PopupItemToolipPanel>();
         m_SpawnObjectVFX = GetComponentInChildren<SpawnObjectVFX>();
     }
   

@@ -1,6 +1,7 @@
 using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerManager : BaseManager<PlayerManager>
 {
@@ -69,7 +70,7 @@ public class PlayerManager : BaseManager<PlayerManager>
             StartCoroutine(DelayHideAnimator());
             return;
         }
-        if (isInteractingWithUI)
+        if (EventSystem.current.IsPointerOverGameObject())
         {
             playerDamage.DegreeEventClickMouse();
             if(CameraManager.HasInstance)

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Bag
   m_EditorClassIdentifier: 
   questItemData:
-    itemID: 
+    itemID: -Bag
     itemName: "T\xFAi \u0110\u1ED3"
     count: 1
     requestCount: 0
@@ -21,4 +21,7 @@ MonoBehaviour:
     icon: {fileID: 21300000, guid: 7e354c612ad17d4489b94e3488ef0cba, type: 3}
     typeItem: 1
     percentIncrease: 0
+    timeCoolDown: 0
     itemUse: 0
+    ItemDespri: 
+  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":97176},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\"}"

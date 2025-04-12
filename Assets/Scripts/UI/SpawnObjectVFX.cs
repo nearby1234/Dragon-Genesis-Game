@@ -29,7 +29,8 @@ public class SpawnObjectVFX : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UI_SEND_SCREEN_SLIDER_EXP, ReceiverValueTransformSLider);
-           
+            ListenerManager.Instance.BroadCast(ListenType.UI_SEND_CANVASMAIN, mainCanvas);
+
         }
         StartCoroutine(DelayGetRectTransform());
         InitPoolVFX();

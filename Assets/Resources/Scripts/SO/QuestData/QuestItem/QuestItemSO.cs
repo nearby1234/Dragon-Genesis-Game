@@ -3,8 +3,30 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Quest Item", menuName = "Scriptable Object/Quest/Quest Data/Quest Item")]
 [System.Serializable]
-public class QuestItemSO : ScriptableObject
+public class QuestItemSO : ScriptableObject, IResettableSO
 {
-    // Dùng để chứa dữ liệu của QuestItem
     public QuestItem questItemData;
+
+    [SerializeField, HideInInspector] 
+    private string _backupJson;
+
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        questItemData.itemID = "-" + this.name;
+    }
+#endif
+
+    public void BackupData()
+    {
+        _backupJson = JsonUtility.ToJson(questItemData);
+    }
+
+    public void RestoreData()
+    {
+        if (!string.IsNullOrEmpty(_backupJson))
+        {
+            JsonUtility.FromJsonOverwrite(_backupJson, questItemData);
+        }
+    }
 }

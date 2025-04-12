@@ -1,8 +1,8 @@
-using Sirenix.OdinInspector;
+﻿using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 [System.Serializable]
-[CreateAssetMenu(fileName = "NewQuest", menuName = "Scriptable Object/Quest/Quest Data")]
+[CreateAssetMenu(fileName = "NewQuest", menuName = "Scriptable Object/Quest/Quest Data/Quest Mission")]
 public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
 {
     [InlineEditor]
@@ -22,4 +22,11 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>
     [InlineEditor]
     public List<QuestItemSO> ItemMission;
     public QuestBonus bonus;
+#if UNITY_EDITOR
+    private void OnValidate()
+    {
+        // Tự động cập nhật questID bằng cách thêm dấu gạch ngang trước tên của asset.
+        questID = "-"+this.name;
+    }
+#endif
 }

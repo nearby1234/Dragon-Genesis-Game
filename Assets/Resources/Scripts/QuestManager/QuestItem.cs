@@ -40,5 +40,10 @@ public class QuestItem
     [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
     [BoxGroup("Item Use Stats")]
     public ITEMUSE itemUse;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]
+    [BoxGroup("Item Use Stats")]
+    [TextArea(3, 10)]
+    public string ItemDespri;
+
 
 }
