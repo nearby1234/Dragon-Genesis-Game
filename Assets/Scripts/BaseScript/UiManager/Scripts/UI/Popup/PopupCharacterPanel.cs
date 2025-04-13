@@ -98,7 +98,6 @@ public class PopupCharacterPanel : BasePopup
         {
             if (item.name.Equals(name))
             {
-                Debug.Log(item.name);
                 return item;
             }
             else
@@ -191,7 +190,6 @@ public class PopupCharacterPanel : BasePopup
     {
         if (m_PointCurrentValue <= 0)
         {
-            Debug.Log("Không còn điểm nào để cộng");
             return;
         }
         item.UpdateCurrentPoint();

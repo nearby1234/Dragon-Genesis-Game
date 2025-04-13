@@ -8012,11 +8012,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 1
---- !u!4 &414398689 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 2435557599390095818, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-  m_PrefabInstance: {fileID: 6749667123753669639}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &428303982 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7855577534021383252, guid: 84b21cd9c885ed4489cd82a8d1e76404, type: 3}
@@ -21799,11 +21794,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 906269954}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1567575024 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 6488397239238719387, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-  m_PrefabInstance: {fileID: 6749667123753669639}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1571112386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -29708,54 +29698,14 @@ PrefabInstance:
       propertyPath: m_FreeLookCamera
       value: 
       objectReference: {fileID: 444358654977463806}
-    - target: {fileID: 2079011301511152358, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_PlusHealValue
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2996836134097865059, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4245044671385147647, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: WeaponManager
       value: 
       objectReference: {fileID: 976260440}
-    - target: {fileID: 4918789733641030235, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_Explosion
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 4918789733641030235, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: swordTransform
-      value: 
-      objectReference: {fileID: 414398689}
-    - target: {fileID: 4918789733641030235, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: energyWeaponTransform
-      value: 
-      objectReference: {fileID: 1567575024}
-    - target: {fileID: 5623786171425516840, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5649861220501701284, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6488397239238719387, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6488397239238719387, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6488397239238719387, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6604923220764969394, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -185.47
@@ -29796,26 +29746,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6873567481054794363, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_PlusDamageValue
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 7925306411499190376, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: impulseSource
       value: 
       objectReference: {fileID: 1723113380}
-    - target: {fileID: 8293846201125512179, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_Distance
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8433494335056789097, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8433494335056789097, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_IsTrigger
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -13,8 +13,11 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float m_SpeedMove = 5f;  // Tốc độ cơ bản khi di chuyển
     [SerializeField] private float m_CurrentSpeed;    // Tốc độ di chuyển hiện tại được cập nhật theo trạng thái
     [SerializeField] private float smoothTime = 0.1f;
+    [SerializeField] private float m_Time;
+    [SerializeField] private float m_TimeRegen;
     [SerializeField] private bool IsPressLeftShift;
-    //[SerializeField] private bool isMove;
+    [SerializeField] private bool m_IsRegen;
+    [SerializeField] private bool m_StaminaFull;
     [SerializeField] private bool m_IsPressButtonSwap = false; // Toggle tốc độ khi nhấn nút R
 
     [Header("Button Settings")]
@@ -45,6 +48,21 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.Enable();
         m_ButtonLeftShift.performed += OnLeftShiftPerformed;
         m_ButtonLeftShift.canceled += OnLeftShiftCancel;
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.PLAYER_FULL_STAMINA, UpdatePlayerStaminaState);
+        }
+    }
+    private void Update()
+    {
+        if (m_ButtonLeftShift.IsPressed())
+        {
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_PRESS_LEFT_SHIFT);
+            }
+        }
+        SetTimerRegen();
     }
 
     private void OnDestroy()
@@ -52,32 +70,44 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.performed -= OnLeftShiftPerformed;
         m_ButtonLeftShift.canceled -= OnLeftShiftCancel;
         m_ButtonLeftShift.Disable();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_FULL_STAMINA, UpdatePlayerStaminaState);
+        }
     }
     public void PlayerMovement()
     {
-        if (!canMove)
-            return;
+        if (!canMove) return;
 
-        if (inputVector.magnitude != 0)
+        bool isMoving = inputVector.magnitude > Mathf.Epsilon;
+        PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", isMoving);
+
+        smoothInputVector = isMoving
+            ? Vector2.Lerp(smoothInputVector, inputVector, Time.deltaTime / smoothTime)
+            : Vector2.zero;
+
+        UpdateSpeedAndBlendTree();
+
+        if (smoothInputVector.magnitude > Mathf.Epsilon)
         {
-            //isMove = true;
-            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", true);
+            UpdateAnimatorParameters();
         }
         else
         {
-            //isMove = false;
-            PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", false);
+            ResetAnimatorParameters();
         }
 
-        if (inputVector.magnitude > Mathf.Epsilon)
-        {
-            smoothInputVector = Vector2.Lerp(smoothInputVector, inputVector, Time.deltaTime / smoothTime);
-        }
-        else
-        {
-            smoothInputVector = Vector2.zero;
-        }
+        velocity = (transform.forward * smoothInputVector.y + transform.right * smoothInputVector.x).normalized;
 
+        if (isMoving)
+        {
+            RotateTowardsCamera();
+            characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity);
+        }
+    }
+
+    private void UpdateSpeedAndBlendTree()
+    {
         float maxSpeed = m_WalkSpeed;
 
         if (Input.GetKeyDown(m_ButtonSwap))
@@ -103,34 +133,29 @@ public class PlayerMove : MonoBehaviour
 
         smoothInputVector = Vector2.ClampMagnitude(smoothInputVector, maxSpeed);
         m_SpeedBlendTree = smoothInputVector.magnitude;
-
-        if (smoothInputVector.magnitude > Mathf.Epsilon)
-        {
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("MoveX", smoothInputVector.x, 0.2f, Time.deltaTime);
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("MoveY", smoothInputVector.y, 0.2f, Time.deltaTime);
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("Speed", m_SpeedBlendTree, 0.2f, Time.deltaTime);
-        }
-        else
-        {
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("MoveX", 0);
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("MoveY", 0);
-            PlayerManager.instance.playerAnim.GetAnimator().SetFloat("Speed", 0);
-        }
-
-        velocity = (transform.forward * smoothInputVector.y + transform.right * smoothInputVector.x).normalized;
-
-        if (inputVector.magnitude > Mathf.Epsilon)
-        {
-            // Lấy góc yaw (trục Y) của camera
-            float targetYAngle = mainCamera.transform.rotation.eulerAngles.y;
-            Quaternion targetRotation = Quaternion.Euler(0, targetYAngle, 0);
-            // Xoay player mượt dần về hướng camera
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
-            characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity);
-        }
     }
 
-    
+    private void UpdateAnimatorParameters()
+    {
+        var animator = PlayerManager.instance.playerAnim.GetAnimator();
+        animator.SetFloat("MoveX", smoothInputVector.x, 0.2f, Time.deltaTime);
+        animator.SetFloat("MoveY", smoothInputVector.y, 0.2f, Time.deltaTime);
+        animator.SetFloat("Speed", m_SpeedBlendTree, 0.2f, Time.deltaTime);
+    }
+    private void ResetAnimatorParameters()
+    {
+        var animator = PlayerManager.instance.playerAnim.GetAnimator();
+        animator.SetFloat("MoveX", 0);
+        animator.SetFloat("MoveY", 0);
+        animator.SetFloat("Speed", 0);
+    }
+    private void RotateTowardsCamera()
+    {
+        float targetYAngle = mainCamera.transform.rotation.eulerAngles.y;
+        Quaternion targetRotation = Quaternion.Euler(0, targetYAngle, 0);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
+    }
+
     private void OnMove(InputValue value)
     {
         inputVector = value.Get<Vector2>();
@@ -139,22 +164,54 @@ public class PlayerMove : MonoBehaviour
     private void OnLeftShiftPerformed(InputAction.CallbackContext context)
     {
         IsPressLeftShift = true;
-        //isMove = true;
     }
 
     private void OnLeftShiftCancel(InputAction.CallbackContext context)
     {
         IsPressLeftShift = false;
     }
-   
+
     public void ChangeIsCanMove(int move) // animation event
     {
-        if(move == 0)
+         canMove = move == 1;
+    }
+    private void SetTimerRegen()
+    {
+        if (!IsPressLeftShift)
         {
-            canMove = false;
-        }else if(move == 1)
+            if (m_StaminaFull)
+            {
+                ResetRegenTimer();
+                return;
+            }
+
+            m_Time += Time.deltaTime;
+            if (m_Time >= m_TimeRegen)
+            {
+                m_Time = m_TimeRegen;
+                m_IsRegen = true;
+
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.PLAYER_REGEN_STAMINA, m_IsRegen);
+                }
+            }
+        }
+        else
         {
-            canMove = true;
+            ResetRegenTimer();
+        }
+    }
+    private void ResetRegenTimer()
+    {
+        m_Time = 0;
+        m_IsRegen = false;
+    }
+    private void UpdatePlayerStaminaState(object value)
+    {
+        if (value is bool staminaState)
+        {
+            m_StaminaFull = staminaState;
         }
     }
 

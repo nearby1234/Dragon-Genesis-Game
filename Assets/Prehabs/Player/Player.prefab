@@ -1530,6 +1530,7 @@ GameObject:
   - component: {fileID: 4918789733641030235}
   - component: {fileID: 4792436146617176569}
   - component: {fileID: 8293846201125512179}
+  - component: {fileID: 1937622636465723835}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -1669,8 +1670,11 @@ MonoBehaviour:
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
   smoothTime: 0.1
+  m_Time: 0
+  m_TimeRegen: 5
   IsPressLeftShift: 0
-  isMove: 0
+  m_IsRegen: 0
+  m_StaminaFull: 0
   m_IsPressButtonSwap: 1
   m_ButtonLeftShift:
     m_Name: Button Left Shift
@@ -1683,7 +1687,7 @@ MonoBehaviour:
     - m_Name: 
       m_Id: da29f93f-20c1-447b-b81f-486a7cdb70e4
       m_Path: <Keyboard>/leftShift
-      m_Interactions: 
+      m_Interactions: Hold
       m_Processors: 
       m_Groups: 
       m_Action: Button Left Shift
@@ -1734,7 +1738,6 @@ MonoBehaviour:
       m_Action: Button Space
       m_Flags: 0
     m_Flags: 0
-  m_IsPressSpace: 0
   maxJumpCount: 2
 --- !u!114 &6545003383383865181
 MonoBehaviour:
@@ -1759,6 +1762,7 @@ MonoBehaviour:
   effectSpawn: {fileID: 0}
   m_PlayerState: 0
   m_PlayerStatSO: {fileID: 11400000, guid: 416aece4576b91146904393a73a36101, type: 2}
+  isInteractingWithUI: 0
 --- !u!114 &307520791741602282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1818,8 +1822,6 @@ MonoBehaviour:
       m_Action: Button Attack Right Mouse
       m_Flags: 0
     m_Flags: 0
-  m_IsPressLeftMouse: 0
-  m_IsPressRightMouse: 0
   m_AttackNameAnim:
   - Attack3C1
   - Attack3C2
@@ -1827,6 +1829,8 @@ MonoBehaviour:
   m_AttackAnimStringToHash: 
   m_AttackAnimIndex: 0
   m_PlayerDamage: 10
+  m_PlayerDamageBase: 0
+  m_PlusDamageValue: 2
 --- !u!114 &801735765996393815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1873,7 +1877,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03f0ec64cd0cdef469e05e45b1188ac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlayerHeal: 0
+  m_PlayerCurrentHeal: 0
+  m_PlayerHealBase: 0
+  m_PlusHealValue: 10
+  m_PlayerMaxHeal: 0
   m_IsPlayerDeath: 0
   m_IsDamaging: 0
 --- !u!114 &3210564381004821764
@@ -1906,6 +1913,7 @@ MonoBehaviour:
       m_Action: Dodge
       m_Flags: 0
     m_Flags: 0
+  isDodging: 0
 --- !u!54 &7139644548150101457
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1948,7 +1956,7 @@ CapsuleCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
@@ -2002,8 +2010,7 @@ MonoBehaviour:
   m_Cirlcle: {fileID: 6866801603793599423}
   m_ShockWave: {fileID: 3179341278332378744}
   m_Trial: {fileID: 3631226256595908447}
-  m_aura: {fileID: 3438775680984576367}
-  m_Explosion: {fileID: 0}
+  m_AuraPS: {fileID: 0}
   m_Energy: {fileID: 9109949656060125385}
   animator: {fileID: 0}
   m_EnergyWeaponDamage: 10
@@ -2034,6 +2041,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b378272ca2cf774abd4187102c7a5f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_IsPressButtonJ: 0
+  m_IsCollisionNpc: 0
+  m_IsTalkingNPC: 0
+  m_HasAcceptQuest: 0
+  m_Distance: 3
+--- !u!114 &1937622636465723835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2473598755384956896}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d48ed5a760b04c74d92671b18e3cf753, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_MaxStamina: 0
+  m_CurrentStamina: 0
+  m_StaminaBase: 0
+  m_StaminaRegenRate: 10
+  m_StaminaDrainRate: 10
+  m_StaminaFull: 0
+  m_StaminaConsumptionPercent: 0.15
 --- !u!1 &2474478872923664440
 GameObject:
   m_ObjectHideFlags: 0
@@ -6165,11 +6196,6 @@ PrefabInstance:
 --- !u!198 &3179341278332378744 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 3227777643576560027, guid: ae261ff71e3c44c4596957dfe89aa761, type: 3}
-  m_PrefabInstance: {fileID: 59695400036653027}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &3438775680984576367 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3417362288699418252, guid: ae261ff71e3c44c4596957dfe89aa761, type: 3}
   m_PrefabInstance: {fileID: 59695400036653027}
   m_PrefabAsset: {fileID: 0}
 --- !u!198 &3631226256595908447 stripped
