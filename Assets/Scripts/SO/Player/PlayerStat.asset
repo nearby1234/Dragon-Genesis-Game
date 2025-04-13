@@ -15,3 +15,5 @@ MonoBehaviour:
   m_PlayerHeal: 100
   m_PlayerMana: 100
   m_PlayerStamina: 100
+  m_PlayerDamage: 20
+  m_PlayerArmor: 5

@@ -9,9 +9,20 @@ using System.Collections;
 public class PlayerLevelManager : BaseManager<PlayerLevelManager>
 {
     [SerializeField] private int currentLevel = 1;
-    public int CurrentLevel => currentLevel;
+    public int CurrentLevel
+    {
+        get => currentLevel;
+        set
+        {
+            currentLevel = value;
+            if(ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_LEVEL, currentLevel); // Gửi thông báo đến UI về cấp độ hiện tại
+            }
+        }
+    }    
     [SerializeField] private int currentExp = 0;
-    [SerializeField] private int expNextLevel;
+    //[SerializeField] private int expNextLevel;
     [SerializeField] private GameObject m_LevelUpFx;
     [SerializeField] private ParticleSystem m_LevelUpFxinstan;
     public int CurrentExp => currentExp;
@@ -43,12 +54,12 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
     {
         LoadExpTable();
         m_CurrentLevelUp = m_ListlevelUp[0];
-        expNextLevel = m_CurrentLevelUp.expNeedLvup;
+        //expNextLevel = m_CurrentLevelUp.expNeedLvup;
         m_LevelUpFx = EffectManager.Instance.GetPrefabs("Lvlup"); // Prefab dạng GameObject
     }
     private void Update()
     {
-        expNextLevel = m_CurrentLevelUp.expNeedLvup;
+        //expNextLevel = m_CurrentLevelUp.expNeedLvup;
     }
 
     public void AddExp(int amount)
@@ -85,7 +96,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
             currentExp -= m_CurrentLevelUp.expNeedLvup;
             m_DisPlayExp = currentExp;
 
-            currentLevel++;
+            CurrentLevel++;
             if (currentLevel < m_ListlevelUp.Count)
             {
                 m_CurrentLevelUp = m_ListlevelUp[currentLevel - 1];

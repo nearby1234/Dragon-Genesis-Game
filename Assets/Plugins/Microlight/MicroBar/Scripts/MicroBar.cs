@@ -162,10 +162,10 @@ namespace Microlight.MicroBar
                     CurrentValue = newHP;
                     break;
                 case MaxHealthCalculation.FollowIncrease:
-                    if(change > 0)
-                    {
-                        CurrentValue += change;
-                    }
+                    //if(change > 0)
+                    //{
+                    //    CurrentValue += change;
+                    //}
                     break;
                 case MaxHealthCalculation.Proportional:
                     // Don't allow current HP to go lower than 0

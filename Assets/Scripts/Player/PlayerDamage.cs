@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -12,12 +14,21 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int[] m_AttackAnimStringToHash; // Mã hash animation
     [SerializeField] private int m_AttackAnimIndex = 0; // Chỉ số animation hiện tại
     [SerializeField] private int m_PlayerDamage;
+    [SerializeField] private int m_PlayerDamageBase; // Giá trị damage cơ bản
+    [SerializeField] private int m_PlusDamageValue;
 
     private Animator playerAnimator; // Animator của player
 
     void Start()
     {
         playerAnimator = PlayerManager.instance.playerAnim.GetAnimator();
+        m_PlayerDamageBase = PlayerManager.instance.PlayerStatSO.m_PlayerDamage;
+        m_PlayerDamage = m_PlayerDamageBase; // Khởi tạo player damage với giá trị cơ bản
+
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_DAMAGE_VALUE, m_PlayerDamage);
+        }
 
         // Khởi tạo danh sách animation hash
         m_AttackAnimStringToHash = new int[m_AttackNameAnim.Length];
@@ -33,6 +44,18 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.Enable();
         m_ButtonAttackRightMouse.performed += OnPerformedAttackRightMouse;
         m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
+
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+        }
     }
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
@@ -92,6 +115,18 @@ public class PlayerDamage : MonoBehaviour
         m_ButtonAttackRightMouse.performed += OnPerformedAttackRightMouse;
         m_ButtonAttackRightMouse.canceled += OnCancelAttackRightMouse;
         m_ButtonAttackRightMouse.Enable();
-    }    
+    }
     public int GetPlayerDamage() => m_PlayerDamage;
+    private void ReceiverPoint(object value)
+    {
+        if (value is StatPointUpdateData data && data.StatName == "StrengthStatsTxt")
+        {
+            m_PlayerDamage = m_PlayerDamageBase + (data.Point * m_PlusDamageValue);
+
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_DAMAGE_VALUE, m_PlayerDamage);
+            }
+        }
+    }
 }

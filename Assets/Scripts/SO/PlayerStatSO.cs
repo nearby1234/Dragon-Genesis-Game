@@ -6,4 +6,6 @@ public class PlayerStatSO : ScriptableObject
     public int m_PlayerHeal;
     public int m_PlayerMana;
     public int m_PlayerStamina;
+    public int m_PlayerDamage;
+    public int m_PlayerArmor;
 }

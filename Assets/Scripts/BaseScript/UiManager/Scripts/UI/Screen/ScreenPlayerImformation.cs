@@ -42,48 +42,25 @@ public class ScreenPlayerImformation: BaseScreen
   
     private void Update()
     {
-        m_HealValueTxt.text = $"{m_HealValueMax} / {(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)}";
+        m_HealValueTxt.text = $"{m_HealValueUpdate} / {m_HealValueMax} ";
         m_ExpBar.value = PlayerLevelManager.Instance.DisPlayExp;
         m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
         m_LevelTxt.text = PlayerLevelManager.Instance.CurrentLevel.ToString();
     }
-
-    public override void Show(object data)
-    {
-        base.Show(data);
-    }
-
-    public override void Hide()
-    {
-        base.Hide();
-    }
-    public override void Init()
-    {
-        base.Init();
-    }
-
     public void ReceiverPlayerHealValue(object value)
     {
-        if (value != null)
+        if (value != null && value is int maxHeal)
         {
-            if (value is int playerHeal)
-            {
-                m_HealBarValue.Initialize((float)playerHeal);
-                m_HealValueMax = playerHeal;
-                m_HealValueUpdate = playerHeal;
-            }
+            m_HealBarValue.Initialize(maxHeal); // Thiết lập max cho thanh
+            m_HealValueMax = maxHeal;
         }
     }
     private void UpdatePlayerHealValue(object value)
     {
-        if (value != null)
+        if (value != null && value is int currentHeal)
         {
-            if (value is int playerHeal)
-            {
-                m_HealBarValue.UpdateBar((float)playerHeal);
-                m_HealValueUpdate = playerHeal;
-
-            }
+            m_HealBarValue.UpdateBar(currentHeal);
+            m_HealValueUpdate = currentHeal;
         }
     }
 }

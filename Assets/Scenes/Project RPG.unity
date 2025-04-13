@@ -26021,7 +26021,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   currentExp: 0
-  expNextLevel: 0
   m_LevelUpFx: {fileID: 0}
   m_LevelUpFxinstan: {fileID: 0}
   expLerpSpeed: 200
@@ -29709,6 +29708,10 @@ PrefabInstance:
       propertyPath: m_FreeLookCamera
       value: 
       objectReference: {fileID: 444358654977463806}
+    - target: {fileID: 2079011301511152358, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_PlusHealValue
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 2473598755384956896, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Name
       value: Player
@@ -29792,6 +29795,10 @@ PrefabInstance:
     - target: {fileID: 6604923220764969394, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6873567481054794363, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_PlusDamageValue
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7925306411499190376, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: impulseSource
