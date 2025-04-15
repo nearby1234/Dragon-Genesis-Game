@@ -1,26 +1,43 @@
+using System.Collections;
+using UnityEditor.Experimental;
 using UnityEngine;
 using UnityEngine.SearchService;
+using static UnityEngine.ParticleSystem;
 
 public class PlayerStamina : MonoBehaviour
 {
     [SerializeField] private float m_MaxStamina; // Maximum stamina
     [SerializeField] private float m_CurrentStamina; // Current stamina
     [SerializeField] private float m_StaminaBase; // Base stamina
+    [SerializeField] private float m_PlusStaminaValue; // Additional stamina value
     [SerializeField] private float m_StaminaRegenRate; // Stamina regeneration rate
     [SerializeField] private float m_StaminaDrainRate; // Stamina drain rate when sprinting
     [SerializeField] private bool m_StaminaFull; // Check if stamina is full
-    [SerializeField] private float m_StaminaConsumptionPercent;// Stamina consumption percentage for dodge
+    [SerializeField] private float m_RegenDelay; // Delay before stamina starts regenerating
+    [SerializeField] private float m_PlayerMoveConsumption; // Player movement consumption
+    [SerializeField] private float m_PlayerDodgeConsumption; // Player dodge consumption
+    [SerializeField] private GameObject m_effectStamina; // Stamina effect prefab
 
+    private Coroutine regenCoroutine;
     private void Start()
     {
         m_StaminaBase = PlayerManager.instance.PlayerStatSO.m_PlayerStamina;
         m_MaxStamina = m_StaminaBase;
         m_CurrentStamina = m_MaxStamina; // Initialize current stamina to max stamina
+
+        if (m_effectStamina == null && EffectManager.HasInstance)
+        {
+            GameObject staminaPrefab = EffectManager.Instance.GetPrefabs("Stamina");
+            m_effectStamina = Instantiate(staminaPrefab, this.transform); // Set parent ngay lúc Instantiate
+            m_effectStamina.SetActive(false); // Tắt hiệu ứng ngay sau khi tạo
+        }
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.PLAYER_PRESS_LEFT_SHIFT, UpdatePlayerPressLeftShift);
-            ListenerManager.Instance.Register(ListenType.PLAYER_REGEN_STAMINA, RegenStamina);
             ListenerManager.Instance.Register(ListenType.PLAYER_PRESS_V_DODGE, ReceiverStateDodge);
+            ListenerManager.Instance.Register(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, ReceiverPlayerMoveConsumption);
+            ListenerManager.Instance.Register(ListenType.PLAYER_DODGE_STAMINA_CONSUMPTION, ReceiverPlayerDodgeConsumption);
+            ListenerManager.Instance.Register(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_STAMINA_VALUE, m_MaxStamina);
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
         }
@@ -28,23 +45,107 @@ public class PlayerStamina : MonoBehaviour
     private void Update()
     {
         StaminaFull();
+        SendEventStaminaEmpty();
+        CalcuMoveStaminaConsumption();
+        CalcuDodgeStaminaConsumption();
     }
     private void OnDestroy()
     {
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.PLAYER_PRESS_LEFT_SHIFT, UpdatePlayerPressLeftShift);
-            ListenerManager.Instance.Unregister(ListenType.PLAYER_REGEN_STAMINA, RegenStamina);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_PRESS_V_DODGE, ReceiverStateDodge);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, ReceiverPlayerMoveConsumption);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_DODGE_STAMINA_CONSUMPTION, ReceiverPlayerDodgeConsumption);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
         }
+    }
+
+    /// <summary>
+    /// Gọi hàm này khi có tiêu hao stamina (ví dụ: dodge, sprint,…)
+    /// </summary>
+    public void StopRegen()
+    {
+        if (regenCoroutine != null)
+        {
+            StopCoroutine(regenCoroutine);
+            regenCoroutine = null;
+        }
+    }
+    /// <summary>
+    /// Gọi khi người chơi ngừng tiêu hao stamina để bắt đầu hồi phục sau delay.
+    /// </summary>
+    public void StartRegen()
+    {
+        // Nếu coroutine đang chạy thì không cần bắt đầu lại
+        if (regenCoroutine == null)
+        {
+            regenCoroutine = StartCoroutine(RegenCoroutine());
+        }
+    }
+    /// <summary>
+    /// Hàm tiêu hao stamina, ví dụ dodge tiêu hao một phần % của max stamina.
+    /// </summary>
+    /// <param name="percentConsumption">Phần trăm tiêu hao (0-1)</param>
+    public void ConsumeStamina(float percentConsumption)
+    {
+        StopRegen();  // Dừng hồi phục khi tiêu hao mới xảy ra
+        float amount = m_MaxStamina * percentConsumption;
+        m_CurrentStamina -= amount;
+        m_CurrentStamina = Mathf.Max(0f, m_CurrentStamina);
+        // Thông báo cập nhật stamina
+        // ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
+    }
+
+    private IEnumerator RegenCoroutine()
+    {
+
+        // Đợi delay trước khi hồi phục
+        yield return new WaitForSeconds(m_RegenDelay);
+        ParticleSystem particle = m_effectStamina.GetComponent<ParticleSystem>();
+
+        if (m_CurrentStamina < m_MaxStamina)
+        {
+            if (particle != null)
+            {
+                m_effectStamina.SetActive(true);
+                particle.Play();
+            }
+            while (m_CurrentStamina < m_MaxStamina)
+            {
+                m_CurrentStamina += m_StaminaRegenRate * Time.deltaTime;
+
+
+                m_CurrentStamina = Mathf.Min(m_CurrentStamina, m_MaxStamina);
+                //Broadcast giá trị mới nếu cần
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
+                }
+                yield return null;
+                if (m_CurrentStamina >= m_MaxStamina)
+                {
+                    if (particle != null)
+                    {
+                        particle.Stop();
+                    }
+                    break;
+                }
+            }
+        }
+        regenCoroutine = null;
     }
 
     private void UpdatePlayerPressLeftShift(object value)
     {
-        m_CurrentStamina -= Time.deltaTime * m_StaminaDrainRate;
-        if (ListenerManager.HasInstance)
+        if (value is float percentConsumption)
         {
-            ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
+            ConsumeStamina(percentConsumption);
+            StartRegen();
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
+            }
         }
     }
     private void StaminaFull()
@@ -62,34 +163,81 @@ public class PlayerStamina : MonoBehaviour
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_FULL_STAMINA, m_StaminaFull);
         }
     }
-    private void RegenStamina(object value)
+    private void SendEventStaminaEmpty()
     {
-        if (value is bool isRegen)
+        if (m_CurrentStamina <= 0)
         {
-            if (isRegen)
+            m_StaminaFull = false;
+            if (ListenerManager.HasInstance)
             {
-                m_CurrentStamina += Time.deltaTime * m_StaminaRegenRate;
-                m_CurrentStamina = Mathf.Min(m_CurrentStamina, m_MaxStamina); // Ensure stamina does not exceed max
-                if (ListenerManager.HasInstance)
-                {
-                    ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
-                }
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_STAMINA_EMPTY, m_StaminaFull);
             }
         }
     }
     private void ReceiverStateDodge(object value)
     {
-        if (value is bool isDodge)
+        if (value is float percentConsumption)
         {
-            if (isDodge)
+            ConsumeStamina(percentConsumption);
+            StartRegen();
+            if (ListenerManager.HasInstance)
             {
-                float m_StaminaConsumption = m_MaxStamina * m_StaminaConsumptionPercent;
-                m_CurrentStamina -= m_StaminaConsumption;
-                if (ListenerManager.HasInstance)
-                {
-                    ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
-                }
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
             }
         }
     }
+    private void ReceiverPlayerMoveConsumption(object value)
+    {
+        if (value is float percentConsumption)
+        {
+            m_PlayerMoveConsumption = percentConsumption;
+        }
+    }
+    private void ReceiverPlayerDodgeConsumption(object value)
+    {
+        if (value is float percentConsumption)
+        {
+            m_PlayerDodgeConsumption = percentConsumption;
+        }
+    }
+    private void CalcuMoveStaminaConsumption()
+    {
+        float amount = m_MaxStamina * m_PlayerMoveConsumption;
+        // Nếu current stamina đủ để move, thì move được (false – không cạn)
+        // Nếu m_CurrentStamina < amount, thì không đủ và là stamina cạn (true)
+        bool isStaminaEmpty = m_CurrentStamina < amount;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_MOVE_STOP, isStaminaEmpty);
+        }
+
+    }
+    private void CalcuDodgeStaminaConsumption()
+    {
+        float amount = m_MaxStamina * m_PlayerDodgeConsumption;
+        // Nếu current stamina đủ để dodge, thì dodge được (false – không cạn)
+        // Nếu m_CurrentStamina < amount, thì không đủ và là stamina cạn (true)
+        bool dodgeNotPossible = m_CurrentStamina < amount;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_DODGE_STOP, dodgeNotPossible);
+        }
+    }
+    private void ReceiverPoint(object value)
+    {
+        if (value is StatPointUpdateData data && data.StatName == "StaminaStatsTxt")
+        {
+            // Cập nhật max heal mới dựa trên điểm stat
+            int newMax = (int)m_StaminaBase + (data.Point * (int)m_PlusStaminaValue);
+            m_MaxStamina = newMax;
+
+            
+            if (ListenerManager.HasInstance)
+            {
+                // Cập nhật max stamina mới tới UI
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_STAMINA_VALUE, m_MaxStamina);
+            }
+        }
+    }
+
 }

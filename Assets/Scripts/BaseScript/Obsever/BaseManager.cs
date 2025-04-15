@@ -5,15 +5,18 @@ using UnityEngine;
 public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
 {
     private static T instance;
+    private static bool isInitialized = false;
 
     public static T Instance
     {
         get
         {
-            if(instance == null)
+            if (!isInitialized)
             {
-                instance = Object.FindFirstObjectByType<T>();
-                if(instance == null)
+                instance = FindFirstObjectByType<T>();
+                isInitialized = true;
+
+                if (instance == null)
                 {
                     Debug.LogError($"No {typeof(T).Name} Singleton Instance");
                 }
@@ -22,33 +25,30 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
         }
     }
 
-    public static bool HasInstance
-    {
-        get
-        {
-            return (instance != null);
-        }
-    }
+    public static bool HasInstance => instance != null;
 
     protected virtual void Awake()
     {
-        CheckInstance();
+        if (CheckInstance())
+        {
+            isInitialized = true;
+        }
     }
 
     protected bool CheckInstance()
     {
-        if(instance == null)
+        if (instance == null)
         {
             instance = (T)this;
-            DontDestroyOnLoad(this);
+            DontDestroyOnLoad(this.gameObject);
             return true;
         }
-        else if(instance == this)
+        else if (instance == this)
         {
             return true;
         }
 
-        Object.Destroy(this.gameObject);
+        Destroy(this.gameObject);
         return false;
     }
 }

@@ -51,6 +51,7 @@ public class PlayerHeal : MonoBehaviour
 
         if (m_PlayerCurrentHeal <= 0)
         {
+            m_PlayerCurrentHeal = 0; // Đảm bảo current heal không âm
             m_IsPlayerDeath = true;
             PlayerManager.instance.playerAnim.GetAnimator().Play("Death");
         }
@@ -76,7 +77,7 @@ public class PlayerHeal : MonoBehaviour
     {
         if (value != null && value is float valuePercent)
         {
-            m_PlayerCurrentHeal += (int)(m_PlayerCurrentHeal * valuePercent);
+            m_PlayerCurrentHeal += (int)(m_PlayerMaxHeal * valuePercent);
             // Không cho current heal vượt quá max heal
             m_PlayerCurrentHeal = Mathf.Min(m_PlayerCurrentHeal, m_PlayerMaxHeal);
             UpdateHealUI(); // gửi UI sau khi hồi máu

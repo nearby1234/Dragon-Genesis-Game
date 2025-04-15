@@ -1,4 +1,5 @@
-﻿using UnityEditor;
+﻿using Sirenix.OdinInspector;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,21 +14,24 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float m_SpeedMove = 5f;  // Tốc độ cơ bản khi di chuyển
     [SerializeField] private float m_CurrentSpeed;    // Tốc độ di chuyển hiện tại được cập nhật theo trạng thái
     [SerializeField] private float smoothTime = 0.1f;
-    [SerializeField] private float m_Time;
-    [SerializeField] private float m_TimeRegen;
+
+    // Tỉ lệ tiêu hao stamina khi di chuyển, sử dụng Odin để trigger thay đổi ngay trong Play Mode
+    [OnValueChanged("OnStaminaPercentChanged", true)]
+    [SerializeField] private float StaminaConsumptionPercent;
+    private float previousPercent; // Giá trị cũ, để so sánh
+
     [SerializeField] private bool IsPressLeftShift;
-    [SerializeField] private bool m_IsRegen;
-    [SerializeField] private bool m_StaminaFull;
-    [SerializeField] private bool m_IsPressButtonSwap = false; // Toggle tốc độ khi nhấn nút R
+    // Nút Swap (R) chuyển sang chế độ đi bộ (tốc độ thấp) - toggle
+    [SerializeField] private bool m_IsPressButtonSwap = false;
 
     [Header("Button Settings")]
     [SerializeField] private InputAction m_ButtonLeftShift;
-    [SerializeField] private KeyCode m_ButtonSwap = KeyCode.R; // Nút chuyển đổi tốc độ (R)
+    [SerializeField] private KeyCode m_ButtonSwap = KeyCode.R; // Nút chuyển đổi chế độ (R)
 
     [Header("Blend Tree Stats")]
-    [SerializeField] private float m_WalkSpeed = 0.3f;
-    [SerializeField] private float m_JoggingSpeed = 0.6f;
-    [SerializeField] private float m_RunSpeed = 1.0f;
+    [SerializeField] private float m_WalkSpeed = 0.3f;      // Giới hạn tốc độ khi ở chế độ đi bộ
+    [SerializeField] private float m_JoggingSpeed = 0.6f;     // Giới hạn tốc độ khi jogging (stamina cạn)
+    [SerializeField] private float m_RunSpeed = 1.0f;         // Giới hạn tốc độ khi chạy nhanh
     [SerializeField] private float m_SpeedBlendTree;
 
     [Header("Rotation Settings")]
@@ -35,7 +39,10 @@ public class PlayerMove : MonoBehaviour
 
     private Camera mainCamera;
 
+    // Cho phép di chuyển hay không (có thể dùng để freeze khi cần)
     public bool canMove = true;
+    // Biến theo dõi: nếu true -> stamina cạn, không cho chạy được
+    private bool isStaminaEmpty;
 
     private void Awake()
     {
@@ -48,21 +55,34 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.Enable();
         m_ButtonLeftShift.performed += OnLeftShiftPerformed;
         m_ButtonLeftShift.canceled += OnLeftShiftCancel;
-        if(ListenerManager.HasInstance)
+
+        // Lưu lại giá trị ban đầu cho stamina percent
+        previousPercent = StaminaConsumptionPercent;
+        // Gửi sự kiện khởi tạo ban đầu
+        BroadCastStaminaPercent();
+
+        if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Register(ListenType.PLAYER_FULL_STAMINA, UpdatePlayerStaminaState);
+            ListenerManager.Instance.Register(ListenType.PLAYER_MOVE_STOP, ReceiverStateMove);
         }
     }
+
     private void Update()
     {
+        // Toggle chế độ Swap (đi bộ) khi nhấn phím Swap (R)
+        if (Input.GetKeyDown(m_ButtonSwap))
+        {
+            m_IsPressButtonSwap = !m_IsPressButtonSwap;
+        }
+
+        // Nếu nhấn LeftShift, gửi sự kiện cập nhật (nếu cần hiển thị UI thông tin)
         if (m_ButtonLeftShift.IsPressed())
         {
             if (ListenerManager.HasInstance)
             {
-                ListenerManager.Instance.BroadCast(ListenType.PLAYER_PRESS_LEFT_SHIFT);
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_PRESS_LEFT_SHIFT, StaminaConsumptionPercent);
             }
         }
-        SetTimerRegen();
     }
 
     private void OnDestroy()
@@ -70,11 +90,13 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.performed -= OnLeftShiftPerformed;
         m_ButtonLeftShift.canceled -= OnLeftShiftCancel;
         m_ButtonLeftShift.Disable();
+
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Unregister(ListenType.PLAYER_FULL_STAMINA, UpdatePlayerStaminaState);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_MOVE_STOP, ReceiverStateMove);
         }
     }
+
     public void PlayerMovement()
     {
         if (!canMove) return;
@@ -105,30 +127,39 @@ public class PlayerMove : MonoBehaviour
             characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity);
         }
     }
-
     private void UpdateSpeedAndBlendTree()
     {
-        float maxSpeed = m_WalkSpeed;
-
-        if (Input.GetKeyDown(m_ButtonSwap))
-        {
-            m_IsPressButtonSwap = !m_IsPressButtonSwap;
-        }
+        float maxSpeed;
 
         if (m_IsPressButtonSwap)
         {
-            m_CurrentSpeed = m_SpeedMove + 2f;
-            maxSpeed = m_JoggingSpeed;
+            // Nếu bật chế độ swap → chuyển sang đi bộ (tốc độ thấp)
+            m_CurrentSpeed = m_SpeedMove;
+            maxSpeed = m_WalkSpeed;
         }
         else
         {
-            m_CurrentSpeed = m_SpeedMove;
-        }
-
-        if (m_IsPressButtonSwap && IsPressLeftShift)
-        {
-            m_CurrentSpeed = m_SpeedMove + 4f;
-            maxSpeed = m_RunSpeed;
+            if (IsPressLeftShift)
+            {
+                if (!isStaminaEmpty)
+                {
+                    // Stamina đủ: cho phép chạy nhanh
+                    m_CurrentSpeed = m_SpeedMove + 4f;
+                    maxSpeed = m_RunSpeed;
+                }
+                else
+                {
+                    // Stamina cạn: chỉ tăng nhẹ (jogging)
+                    m_CurrentSpeed = m_SpeedMove + 2f;
+                    maxSpeed = m_JoggingSpeed;
+                }
+            }
+            else
+            {
+                // Không nhấn LeftShift → tốc độ cơ bản (với blend tree có thể dựa vào jogging speed)
+                m_CurrentSpeed = m_SpeedMove + 2f;
+                maxSpeed = m_JoggingSpeed;
+            }
         }
 
         smoothInputVector = Vector2.ClampMagnitude(smoothInputVector, maxSpeed);
@@ -142,6 +173,7 @@ public class PlayerMove : MonoBehaviour
         animator.SetFloat("MoveY", smoothInputVector.y, 0.2f, Time.deltaTime);
         animator.SetFloat("Speed", m_SpeedBlendTree, 0.2f, Time.deltaTime);
     }
+
     private void ResetAnimatorParameters()
     {
         var animator = PlayerManager.instance.playerAnim.GetAnimator();
@@ -149,6 +181,7 @@ public class PlayerMove : MonoBehaviour
         animator.SetFloat("MoveY", 0);
         animator.SetFloat("Speed", 0);
     }
+
     private void RotateTowardsCamera()
     {
         float targetYAngle = mainCamera.transform.rotation.eulerAngles.y;
@@ -171,48 +204,33 @@ public class PlayerMove : MonoBehaviour
         IsPressLeftShift = false;
     }
 
-    public void ChangeIsCanMove(int move) // animation event
+    public void ChangeIsCanMove(int move) // Được gọi bởi animation event
     {
-         canMove = move == 1;
+        canMove = (move == 1);
     }
-    private void SetTimerRegen()
-    {
-        if (!IsPressLeftShift)
-        {
-            if (m_StaminaFull)
-            {
-                ResetRegenTimer();
-                return;
-            }
 
-            m_Time += Time.deltaTime;
-            if (m_Time >= m_TimeRegen)
-            {
-                m_Time = m_TimeRegen;
-                m_IsRegen = true;
-
-                if (ListenerManager.HasInstance)
-                {
-                    ListenerManager.Instance.BroadCast(ListenType.PLAYER_REGEN_STAMINA, m_IsRegen);
-                }
-            }
-        }
-        else
-        {
-            ResetRegenTimer();
-        }
-    }
-    private void ResetRegenTimer()
+    // Sử dụng Odin để gọi khi giá trị của StaminaConsumptionPercent thay đổi
+    private void OnStaminaPercentChanged()
     {
-        m_Time = 0;
-        m_IsRegen = false;
-    }
-    private void UpdatePlayerStaminaState(object value)
-    {
-        if (value is bool staminaState)
+        if (!Mathf.Approximately(previousPercent, StaminaConsumptionPercent))
         {
-            m_StaminaFull = staminaState;
+            previousPercent = StaminaConsumptionPercent;
+            BroadCastStaminaPercent();
         }
     }
 
+    private void BroadCastStaminaPercent()
+    {
+        ListenerManager.Instance?.BroadCast(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, StaminaConsumptionPercent);
+    }
+
+    // Khi nhận được sự kiện liên quan đến trạng thái stamina từ hệ thống (ví dụ hàm tính tiêu hao stamina)
+    private void ReceiverStateMove(object value)
+    {
+        if (value is bool empty)
+        {
+            // Nếu empty == true → stamina cạn
+            isStaminaEmpty = empty;
+        }
+    }
 }

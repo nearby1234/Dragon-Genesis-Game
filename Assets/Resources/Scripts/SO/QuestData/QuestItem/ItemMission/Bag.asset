@@ -24,4 +24,4 @@ MonoBehaviour:
     timeCoolDown: 0
     itemUse: 0
     ItemDespri: 
-  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":97132},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\"}"
+  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":101106},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\"}"

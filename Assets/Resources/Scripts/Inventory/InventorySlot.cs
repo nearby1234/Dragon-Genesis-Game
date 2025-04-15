@@ -131,12 +131,24 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             case ITEMUSE.ITEM_USE_HEAL:
                 if (ListenerManager.HasInstance)
                 {
-                    Debug.Log("Thực hiện hành động hồi phục");
+                    Debug.Log("Thực hiện hành động hồi phục ITEM_USE_HEAL  ");
                     ListenerManager.Instance.BroadCast(ListenType.ITEM_USE_DATA_IS_HEAL, m_CurrentItem.questItemData.percentIncrease);
                 }
                 if (EffectManager.HasInstance)
                 {
                     GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha
+                    CooldownTime(m_CurrentItem.questItemData.timeCoolDown);
+                }
+                break;
+            case ITEMUSE.ITEM_USE_MANA:
+                if (ListenerManager.HasInstance)
+                {
+                    Debug.Log("Thực hiện hành động hồi phục ITEM_USE_MANA");
+                    ListenerManager.Instance.BroadCast(ListenType.ITEM_USE_DATA_IS_MANA, m_CurrentItem.questItemData.percentIncrease);
+                }
+                if (EffectManager.HasInstance)
+                {
+                    GameObject mana = GetPooledItem("Mana", PlayerManager.instance.transform); // hoặc transform cha
                     CooldownTime(m_CurrentItem.questItemData.timeCoolDown);
                 }
                 break;

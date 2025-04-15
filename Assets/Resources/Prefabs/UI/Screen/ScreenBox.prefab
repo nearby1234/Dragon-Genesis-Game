@@ -108,6 +108,8 @@ MonoBehaviour:
   m_IsEmpty: 1
   m_IconImage: {fileID: 0}
   m_CountTxt: {fileID: 0}
+  m_Slider: {fileID: 0}
+  canvasGroup: {fileID: 0}
   m_ButtonPress:
     m_Name: Button Press
     m_Type: 0
@@ -1347,6 +1349,8 @@ MonoBehaviour:
   m_IsEmpty: 1
   m_IconImage: {fileID: 0}
   m_CountTxt: {fileID: 0}
+  m_Slider: {fileID: 0}
+  canvasGroup: {fileID: 0}
   m_ButtonPress:
     m_Name: Button Press
     m_Type: 0
@@ -1354,7 +1358,15 @@ MonoBehaviour:
     m_Id: 09475b18-596f-4aba-9ea1-3f3ae1e7138f
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: b88fea42-45e2-4d2e-9a21-d92439ae74b7
+      m_Path: <Keyboard>/3
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
     m_Flags: 0
   m_CurrentItem: {fileID: 0}
 --- !u!114 &4236341962323407487
@@ -1903,6 +1915,8 @@ MonoBehaviour:
   m_IsEmpty: 1
   m_IconImage: {fileID: 0}
   m_CountTxt: {fileID: 0}
+  m_Slider: {fileID: 0}
+  canvasGroup: {fileID: 0}
   m_ButtonPress:
     m_Name: Button Press
     m_Type: 0
@@ -1910,7 +1924,15 @@ MonoBehaviour:
     m_Id: f182743d-a710-4be8-879d-5c4e7cae1e6f
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: e0889153-8938-40d3-a977-470bd2979718
+      m_Path: <Keyboard>/4
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
     m_Flags: 0
   m_CurrentItem: {fileID: 0}
 --- !u!114 &9039803800566661515
@@ -2291,6 +2313,8 @@ MonoBehaviour:
   m_IsEmpty: 1
   m_IconImage: {fileID: 0}
   m_CountTxt: {fileID: 0}
+  m_Slider: {fileID: 0}
+  canvasGroup: {fileID: 0}
   m_ButtonPress:
     m_Name: Button Press
     m_Type: 0
@@ -2298,7 +2322,15 @@ MonoBehaviour:
     m_Id: 60ce3069-3f96-440b-b444-b473c38c1374
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 4bb73a28-8ac1-40e3-8b17-80913293890c
+      m_Path: <Keyboard>/2
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
     m_Flags: 0
   m_CurrentItem: {fileID: 0}
 --- !u!114 &8012982595316080369

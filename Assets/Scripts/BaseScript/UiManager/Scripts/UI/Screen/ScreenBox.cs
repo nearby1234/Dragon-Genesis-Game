@@ -14,9 +14,5 @@ public class ScreenBox : BaseScreen
         rectTransform.anchoredPosition = m_Offset;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+   
 }

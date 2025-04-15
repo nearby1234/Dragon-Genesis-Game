@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.VFX;
 
 public class PivotScaleWeapon : MonoBehaviour
@@ -18,6 +19,7 @@ public class PivotScaleWeapon : MonoBehaviour
     [SerializeField] private ParticleSystem m_AuraPS;
     [SerializeField] private VisualEffect m_Energy;
     [SerializeField] private Animator animator;
+    //[SerializeField] private ChildTriggerForwarder m_ChildTriggerForwarder;
 
     private Vector3 initialScale;
 
@@ -35,9 +37,15 @@ public class PivotScaleWeapon : MonoBehaviour
     private const string AttackCastingAnimationClip = "Great Sword Casting_attack_IK";
 
     [SerializeField] private int m_EnergyWeaponDamage;
-    private int m_Damage = 10;
-    
     public int EnergyWeaponDamage => m_EnergyWeaponDamage;
+    [SerializeField] private float m_EnergyWeaponConsumption; // Tỉ lệ tiêu hao năng lượng
+    [SerializeField] private float m_IncreasePercentagePerIndex;
+    [SerializeField] private bool m_IsManaEmpty;
+
+    private int m_Damage;
+    private float m_ManaMax;
+
+
 
     private void Awake()
     {
@@ -57,18 +65,52 @@ public class PivotScaleWeapon : MonoBehaviour
         // Lưu lại scale ban đầu
         initialScale = m_TranformEnergyWeapon.transform.localScale;
         m_CurrentMeshFilter.mesh = m_BeforMeshFilter.mesh;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.PLAYER_SEND_DAMAGE_VALUE, ReceiverPlayerDamage);
+            ListenerManager.Instance.Register(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerMana);
+            ListenerManager.Instance.Register(ListenType.PLAYER_MANA_EMPTY, ReceiverStateMove);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_DAMAGE_VALUE, ReceiverPlayerDamage);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerMana);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_MANA_EMPTY, ReceiverStateMove);
+        }
     }
 
     private void Update()
     {
         HandleInput();
     }
+
+    //public void GetChildTriggerForwarder(ChildTriggerForwarder childTriggerForwarder)
+    //{
+    //    m_ChildTriggerForwarder = childTriggerForwarder;
+    //}    
+        
     private void HandleInput()
     {
+        // Khi nhấn phím O
         if (Input.GetKeyDown(KeyCode.O))
         {
-            // Reset và bắt đầu coroutine
-            //ResetScale();
+            // Gửi sự kiện "PLAYER_SKILL_KEYDOWN" để kiểm tra mana cần thiết.
+            if (ListenerManager.HasInstance)
+            {
+                // Bạn có thể gửi dữ liệu bổ sung nếu cần, ví dụ, yêu cầu mức tiêu hao mana cho skill.
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SKILL_KEYDOWN, null);
+            }
+            // Sau khi broadcast, flag m_IsManaEmpty sẽ được cập nhật từ PlayerMana (thông qua ReceiverStateMove).
+            if (m_IsManaEmpty)
+            {
+                Debug.Log("Không đủ mana để thi triển skill");
+                return; // Không thi triển nếu mana không đủ.
+            }
+
+            // Nếu đủ mana, thực hiện các hiệu ứng và thi triển skill.
             if (m_AuraPS != null)
             {
                 m_AuraPS.gameObject.SetActive(true);
@@ -76,12 +118,14 @@ public class PivotScaleWeapon : MonoBehaviour
             }
             animator.Play(AttackAnimationClip);
             animator.SetTrigger("IsPress");
-
             scalingCoroutine = StartCoroutine(ScaleCoroutine());
         }
         if (Input.GetKeyUp(KeyCode.O))
         {
             animator.SetBool("IsPressN", false);
+            // Khi thả phím thì tính toán tiêu hao mana và gửi dữ liệu cho PlayerMana
+            ManaConsumption(m_ManaMax, m_CurrentIndex);
+            //m_ChildTriggerForwarder.ResetSwing();
             setupScaleDefault = StartCoroutine(SetupScaleDefault());
             if (m_AuraPS != null)
             {
@@ -90,6 +134,7 @@ public class PivotScaleWeapon : MonoBehaviour
             StartCoroutine(SmoothRotateToCameraDirection(0.3f));
         }
     }
+
 
     public void ScaleAndAdjust(Vector3 newScale)
     {
@@ -101,11 +146,6 @@ public class PivotScaleWeapon : MonoBehaviour
 
         // Sau khi scale, tính vị trí world mới của điểm cầm
         Vector3 newHandleWorldPos = m_TranformEnergyWeapon.transform.TransformPoint(handleLocalOffset);
-
-        // worldPos = position + rotation × (localOffset × scale)
-        //Có nghĩa là: chuyển đổi localOffset (đã nhân với scale)
-        //từ không gian local sang không gian world bằng cách áp dụng rotation,
-        //sau đó cộng với vị trí world của đối tượng để có được vị trí world thực sự của điểm đó.
 
         // Tính delta hiệu chỉnh
         Vector3 delta = currentHandleWorldPos - newHandleWorldPos;
@@ -135,7 +175,6 @@ public class PivotScaleWeapon : MonoBehaviour
         float timer = 0f;
         while (true)
         {
-
             // Chỉ tăng timer khi nhấn phím N
             if (!Input.GetKey(KeyCode.O))
             {
@@ -150,8 +189,9 @@ public class PivotScaleWeapon : MonoBehaviour
             {
                 m_CurrentIndex = newLevelIndex;
 
-                m_EnergyWeaponDamage = (int)(m_Damage * (1f + m_CurrentIndex * 0.2f));
-                Debug.Log("m_EnergyWeaponDamage : " + m_EnergyWeaponDamage);
+                m_EnergyWeaponDamage = (int)(m_Damage * (1f + m_CurrentIndex * m_IncreasePercentagePerIndex));
+                // Tính toán năng lượng tiêu hao và gửi sự kiện
+                
 
                 // Setup hiệu ứng (shockwave, energy) mỗi khi nâng cấp level
 
@@ -170,7 +210,9 @@ public class PivotScaleWeapon : MonoBehaviour
                 }
             }
             yield return null;
+           
         }
+
     }
 
     private IEnumerator SetupScaleDefault()
@@ -289,4 +331,35 @@ public class PivotScaleWeapon : MonoBehaviour
         }
     }
     #endregion
+    private void ReceiverPlayerDamage(object value)
+    {
+        if (value is int damage)
+        {
+            m_Damage = damage;
+        }
+    }
+    private void ReceiverPlayerMana(object value)
+    {
+        if (value is float manaMax)
+        {
+            m_ManaMax = manaMax;
+        }
+    }
+
+    private void ManaConsumption(float manaMax , int index)
+    {
+        m_EnergyWeaponConsumption = manaMax * (index * m_IncreasePercentagePerIndex);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_SKILL_CONSUMPTION_MANA, m_EnergyWeaponConsumption);
+        }
+    }
+    private void ReceiverStateMove(object value)
+    {
+        if (value is bool isStaminaEmpty)
+        {
+            // Nếu empty == true → stamina cạn
+            m_IsManaEmpty = isStaminaEmpty;
+        }
+    }
 }

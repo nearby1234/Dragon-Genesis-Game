@@ -3,9 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScreenPlayerImformation: BaseScreen
+public class ScreenPlayerImformation : BaseScreen
 {
     [SerializeField] private Slider m_ExpBar;
+    [SerializeField] private Button m_CharacterStatsBtn;
     [SerializeField] private TextMeshProUGUI m_LevelTxt;
     [SerializeField] private TextMeshProUGUI m_HealValueTxt;
     [SerializeField] private TextMeshProUGUI m_ManaValueTxt;
@@ -23,17 +24,53 @@ public class ScreenPlayerImformation: BaseScreen
 
     private void Start()
     {
+        RegisterListeners();
+        Initialized();
+    }
+    private void OnDestroy()
+    {
+        UnRegisterListeners();
+    }
+    private void Update()
+    {
+        UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
+        UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
+        UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
+        //m_HealValueTxt.text = $"{m_HealValueUpdate} / {m_HealValueMax} ";
+        //m_StaminaValueTxt.text = $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ";
+        UpdateValue();
+    }
+    private void Initialized()
+    {
+        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        m_CharacterStatsBtn.onClick.AddListener(() =>
+        {
+            if (UIManager.HasInstance)
+            {
+                UIManager.Instance.ShowPopup<PopupCharacterPanel>();
+            }
+        });
+    }
+    private void UpdateValue()
+    {
+        m_ExpBar.value = PlayerLevelManager.Instance.DisPlayExp;
+        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        m_LevelTxt.text = PlayerLevelManager.Instance.CurrentLevel.ToString();
+    }
+    private void RegisterListeners()
+    {
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.SEND_HEAL_VALUE, ReceiverPlayerHealValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_STAMINA_VALUE, ReceiverPlayerStaminaValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdatePlayerStaminaValue);
+            ListenerManager.Instance.Register(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
+            ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdatePlayerManaValue);
             ListenerManager.Instance.BroadCast(ListenType.UI_SEND_SCREEN_SLIDER_EXP, m_ExpBar);
         }
-        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
     }
-    private void OnDestroy()
+    private void UnRegisterListeners()
     {
         if (ListenerManager.HasInstance)
         {
@@ -41,16 +78,9 @@ public class ScreenPlayerImformation: BaseScreen
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_HEAL_VALUE, UpdatePlayerHealValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_STAMINA_VALUE, ReceiverPlayerStaminaValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdatePlayerStaminaValue);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdatePlayerManaValue);
         }
-    }
-  
-    private void Update()
-    {
-        m_HealValueTxt.text = $"{m_HealValueUpdate} / {m_HealValueMax} ";
-        m_StaminaValueTxt.text = $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ";
-        m_ExpBar.value = PlayerLevelManager.Instance.DisPlayExp;
-        m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
-        m_LevelTxt.text = PlayerLevelManager.Instance.CurrentLevel.ToString();
     }
     public void ReceiverPlayerHealValue(object value)
     {
@@ -80,8 +110,28 @@ public class ScreenPlayerImformation: BaseScreen
     {
         if (value != null && value is float currentStamina)
         {
-            m_StaminaBarValue.UpdateBar(currentStamina,true);
+            m_StaminaBarValue.UpdateBar(currentStamina, true);
             m_StaminaValueUpdate = currentStamina;
         }
+    }
+    private void ReceiverPlayerManaValue(object value)
+    {
+        if(value != null && value is float maxMana)
+        {
+            m_ManaBarValue.Initialize(maxMana); // Thiết lập max cho thanh
+            m_ManaValueMax = maxMana;
+        }
+    }
+    private void UpdatePlayerManaValue(object value)
+    {
+        if(value != null && value is float currentMana)
+        {
+            m_ManaBarValue.UpdateBar(currentMana);
+            m_ManaValueUpdate = currentMana;
+        }
+    }
+    private void UpdateText(TextMeshProUGUI textMeshProUGUI, string content)
+    {
+        textMeshProUGUI.text = content;
     }
 }
