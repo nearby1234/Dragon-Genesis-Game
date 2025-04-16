@@ -16,7 +16,7 @@ MonoBehaviour:
   questID: -QuestMissionOne
   questName: "L\u1EDDi Ti\xEAn Tri"
   QuestGiver: {fileID: 0}
-  description: "<speed=3><B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>H\u1EE1i
+  description: "<speed=4>{Fade}<B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>H\u1EE1i
     chi\u1EBFn binh \u0111\u01B0\u1EE3c \u0111\u1ECBnh m\u1EC7nh l\u1EF1a ch\u1ECDn,
     ta \u0111\xE3 ch\u1EDD \u0111\u1EE3i ng\xE0y n\xE0y t\u1EEB l\xE2u. B\xF3ng t\u1ED1i
     \u0111ang d\u1EA7n bao ph\u1EE7 v\xF9ng \u0111\u1EA5t n\xE0y, v\xE0 ch\u1EC9
@@ -28,7 +28,7 @@ MonoBehaviour:
     l\u1EA5y <B><color=#FF0000>Quy\u1EC3n Tr\u1EE5c Kh\u1EDFi Nguy\xEAn</color></B>
     , \u0111\xE2y l\xE0 ch\xECa kh\xF3a m\u1EDF ra con \u0111\u01B0\u1EDDng ph\xEDa
     tr\u01B0\u1EDBc. H\xE0nh tr\xECnh c\u1EE7a ng\u01B0\u01A1i m\u1EDBi ch\u1EC9
-    b\u1EAFt \u0111\u1EA7u, Long Chi\u1EBFn. H\xE3y chu\u1EA9n b\u1ECB tinh th\u1EA7n</i></Fade>"
+    b\u1EAFt \u0111\u1EA7u, Long Chi\u1EBFn. H\xE3y chu\u1EA9n b\u1ECB tinh th\u1EA7n</i>"
   descriptionElse: "<speed=0.5><B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>B\u1EA3o
     v\u1EADt ta \u0111\xE3 \u0111\u01B0a cho ng\u01B0\u01A1i , h\xE3y t\u1EADn d\u1EE5ng
     n\xF3 \u0111\u1EC3 c\u1EE9u l\u1EA5y s\u1EF1 y\xEAn b\xECnh cho b\u1ED9 l\u1EA1c

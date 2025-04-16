@@ -1,4 +1,5 @@
 ﻿using Febucci.UI;
+using Sirenix.OdinInspector;
 using TMPro;
 using Unity.Cinemachine;
 using Unity.VisualScripting;
@@ -14,11 +15,12 @@ public class QuestMissionOnePanel : BasePopup
     [SerializeField] private TextMeshProUGUI m_ContentMission;
     [SerializeField] private TextMeshProUGUI m_ContentMissionElse;
     [SerializeField] private TextMeshProUGUI m_TitleMission;
-    private QuestData m_QuestDataMissionOne;
+    [InlineEditor]
+    [SerializeField] private QuestData m_QuestDataMissionOne;
     private PlayerDialog m_PlayerDialog;
     private TypewriterByCharacter TypewriterByCharacter;
     private bool m_HasShownContent;
-    private bool m_HasShownAlternative;
+    [SerializeField] private bool m_HasShownAlternative;
     private bool m_HasAcceptMission;
     private const string m_QuestID = "-MainQuest01";
 
@@ -37,6 +39,10 @@ public class QuestMissionOnePanel : BasePopup
         m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
+        ShowContentMission();
+    }
+    private void Update()
+    {
         ShowContentMission();
     }
     //Sau khi text chạy hết

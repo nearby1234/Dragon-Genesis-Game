@@ -1,14 +1,15 @@
 ﻿using DG.Tweening;
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PopupScrollMagic : BasePopup
 {
+    [SerializeField] private Animator m_Animator;
     [SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_RewardBtn;
+    [SerializeField] private Button m_NextMisstionBtn;
     [SerializeField] private Transform m_RewardItemParentObject;
     [SerializeField] private Transform m_MisionItemParentObject;
     [SerializeField] private TextMeshProUGUI m_TitleText;
@@ -18,18 +19,17 @@ public class PopupScrollMagic : BasePopup
     [SerializeField] private QuestData m_CurrentQuestData;
     private readonly string QUEST_ITEM_PREFAB_PATH = QuestManager.Instance.m_QuestItemPrefabPath;
     private readonly string QUEST_REWARD_ITEM_PREFAB_PATH = QuestManager.Instance.m_QuestRewardItemPrefabPath;
-    private readonly string DO_ITEM_PREFAB_PATH = QuestManager.Instance.m_DOItemPrefabPath;
-    private readonly Vector2 TWEEN_TARGET_POS = new(-240f, -300f);
-    private const float TWEEN_DURATION = 2f;
-
 
     private void Awake()
     {
+        m_Animator = GetComponent<Animator>();
         m_CurrentQuestData = QuestManager.Instance?.CurrentQuest;
     }
 
     private void Start()
     {
+        m_Animator.Play("MoveOutSide");
+
         if (m_ExitBtn != null)
         {
             m_ExitBtn.onClick.AddListener(OnClickBtnExitScrollView);
@@ -41,7 +41,8 @@ public class PopupScrollMagic : BasePopup
 
         if (m_RewardBtn != null)
         {
-            m_RewardBtn.onClick.AddListener(GetSpriteItemReward);
+            // Khi nhận click, chỉ gửi sự kiện thông báo nhận phần thưởng qua QuestManager
+            m_RewardBtn.onClick.AddListener(OnRewardBtnClick);
         }
         else
         {
@@ -63,6 +64,7 @@ public class PopupScrollMagic : BasePopup
         GetListItem(m_MissionItemObjectList, m_CurrentQuestData.ItemMission);
         InitItemObject(m_MissionItemObjectList, QUEST_ITEM_PREFAB_PATH, m_MisionItemParentObject, true);
     }
+
     public void OnClickBtnExitScrollView()
     {
         this.Hide();
@@ -75,10 +77,12 @@ public class PopupScrollMagic : BasePopup
             PlayerManager.instance.isInteractingWithUI = false;
         }
     }
+
     private void GetListItem(List<QuestItemSO> questItems, List<QuestItemSO> questDatas)
     {
         questItems.AddRange(questDatas);
     }
+
     private void InitItemObject(List<QuestItemSO> questItems, string path, Transform parentTransform, bool isItemMission)
     {
         GameObject prefab = Resources.Load<GameObject>(path);
@@ -93,14 +97,12 @@ public class PopupScrollMagic : BasePopup
             GameObject itemObj = Instantiate(prefab, parentTransform);
             if (itemObj != null)
             {
-                // Safely get the Image component
                 Image image = itemObj.GetComponent<Image>();
                 if (image != null)
                 {
                     image.sprite = item.questItemData.icon;
                 }
 
-                // Safely get the TextMeshProUGUI component from children
                 TextMeshProUGUI text = itemObj.GetComponentInChildren<TextMeshProUGUI>();
                 if (text != null)
                 {
@@ -112,44 +114,17 @@ public class PopupScrollMagic : BasePopup
         }
     }
 
-    private void GetSpriteItemReward()
+    // Phương thức chỉ gửi sự kiện thông báo đã bấm nút nhận phần thưởng
+    private void OnRewardBtnClick()
     {
-        GameObject prefab = Resources.Load<GameObject>(DO_ITEM_PREFAB_PATH);
-        if (prefab == null)
-        {
-            Debug.LogError("Failed to load prefab for reward items.");
-            return;
-        }
+        // Gọi xử lý nhận phần thưởng từ QuestManager (Controller)
+        QuestManager.Instance.GrantReward(m_CurrentQuestData.bonus);
 
-        foreach (var item in m_RewardItemObjectList)
-        {
-            GameObject itemObj = Instantiate(prefab, m_RewardItemParentObject);
-            if (itemObj.TryGetComponent<Image>(out Image image))
-            {
-                image.sprite = item.questItemData.icon;
-            }
-
-            if (itemObj.TryGetComponent<RectTransform>(out RectTransform rectTransform))
-            {
-                rectTransform.DOAnchorPos(TWEEN_TARGET_POS, TWEEN_DURATION).SetEase(Ease.OutBack).onComplete += () =>
-                {
-                    if (m_CurrentQuestData.questID == "-QuestMissionOne" && UIManager.HasInstance)
-                    {
-                        UIManager.Instance.ShowScreen<ScreenIconInventory>();
-                        UIManager.Instance.ShowScreen<ScreenBox>();
-                    }
-                    Destroy(itemObj);
-                };
-            }
-        }
-
+        // Update UI của Popup: disable button và thay đổi màu như logic ban đầu
         m_RewardBtn.interactable = false;
         if (m_RewardBtn.TryGetComponent<Image>(out Image buttonImage))
         {
             buttonImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         }
-
-        m_CurrentQuestData.isCompleteMission = true;
-        ListenerManager.Instance?.BroadCast(ListenType.UI_SEND_LIST_ITEM_REWARD, m_RewardItemObjectList);
     }
 }
