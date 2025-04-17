@@ -19,7 +19,7 @@ public class QuestManager : BaseManager<QuestManager>
     private readonly Vector2 TWEEN_TARGET_POS = new Vector2(-400f, -490f);
     private const float TWEEN_DURATION = 2f;
 
-    private Dictionary<string, int> initialItemCounts = new Dictionary<string, int>();
+    private Dictionary<string, int> initialItemCounts = new();
 
     protected override void Awake()
     {
@@ -45,6 +45,10 @@ public class QuestManager : BaseManager<QuestManager>
         {
             currentQuest = quest;
             quest.isAcceptMission = true;
+            if (questList.Contains(quest))
+            {
+                return;
+            }
             questList.Add(quest);
             Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
             //UIManager.Instance.ShowScreen<QuestScreen>(currentQuest);
@@ -52,6 +56,29 @@ public class QuestManager : BaseManager<QuestManager>
         else
         {
             Debug.LogWarning("Chưa gán QuestData cho nhiệm vụ.");
+        }
+    }
+
+    public void NextQuest()
+    {
+        if (currentQuest.isCompleteMission)
+        {
+            for (int i = 0; i < questList.Count; i++)
+            {
+                if (questList[i].questID == currentQuest.questID)
+                {
+                    currentQuest = questList[i + 1];
+                    if(currentQuest == null)
+                    {
+                        Debug.LogWarning("Không tìm thấy nhiệm vụ tiếp theo.");
+                        return;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Nhiệm vụ {currentQuest.name} chưa hoàn thành.");
         }
     }
 

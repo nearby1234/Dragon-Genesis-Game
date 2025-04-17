@@ -18,7 +18,7 @@ public class Loading : MonoBehaviour
     private IEnumerator LoadScene()
     {
         yield return null;
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("Project RPG");
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("ProjectRPG");
         asyncOperation.allowSceneActivation = false;
 
         while (!asyncOperation.isDone)

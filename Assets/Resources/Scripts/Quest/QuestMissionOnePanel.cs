@@ -33,7 +33,7 @@ public class QuestMissionOnePanel : BasePopup
     private void Start()
     {
         m_ButtonAccept.gameObject.SetActive(false);
-        m_QuestDataMissionOne = DataManager.Instance.GetClonedData<QuestData, QuestType>(QuestType.MainQuest);
+        m_QuestDataMissionOne = DataManager.Instance.GetQuestDataByID("-QuestMissionOne");
         m_QuestDataMissionOne.isAcceptMission = false;
        
         m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);

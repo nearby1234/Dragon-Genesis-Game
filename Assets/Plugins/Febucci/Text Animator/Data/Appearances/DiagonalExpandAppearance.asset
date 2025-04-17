@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: DiagonalExpandAppearance
   m_EditorClassIdentifier: 
   tagID: diagexp
-  baseDuration: 0.5
+  baseDuration: 5
   diagonalFromBttmLeft: 0

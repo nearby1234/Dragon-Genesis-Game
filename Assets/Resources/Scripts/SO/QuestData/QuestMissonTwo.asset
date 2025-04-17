@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9122ffe465b8bde4488f7932d036dd39, type: 3}
+  m_Name: QuestMissonTwo
+  m_EditorClassIdentifier: 
+  questType: 1
+  questID: -QuestMissonTwo
+  questName: "D\u1EA5u ch\xE2n c\u1EE7a H\u1EAFc Ng\u01B0u"
+  QuestGiver: {fileID: 0}
+  description: "<color=#FF0000>H\u1EAFc Ng\u01B0u Ma V\u01B0\u01A1ng</color> \u0111\xE3
+    b\u1EAFt \u0111\u1EA7u \u0111\u1EB7t ch\xE2n l\xEAn v\xF9ng \u0111\u1EA5t. H\xE3y
+    ti\xEAu di\u1EC7t nh\u1EEFng qu\xE1i v\u1EADt<color=#0040FF> D\u01A1i B\xF3ng
+    \u0110\xEAm</color> \u0111\u1EA7u ti\xEAn \u0111\u1EC3 thu th\u1EADp th\xF4ng
+    tin v\u1EC1 h\u1EAFn."
+  descriptionElse: 
+  m_TextColor: {r: 0, g: 0.24858952, b: 1, a: 0}
+  isAcceptMission: 0
+  isCompleteMission: 0
+  ItemMission: []
+  bonus:
+    experience: 0
+    gold: 0
+    itemsReward: []
+  _backupJson: 

@@ -34,8 +34,8 @@ MonoBehaviour:
     n\xF3 \u0111\u1EC3 c\u1EE9u l\u1EA5y s\u1EF1 y\xEAn b\xECnh cho b\u1ED9 l\u1EA1c
     c\u1EE7a ch\xFAng ta .</i>"
   m_TextColor: {r: 1, g: 0, b: 0, a: 0}
-  isAcceptMission: 1
-  isCompleteMission: 1
+  isAcceptMission: 0
+  isCompleteMission: 0
   ItemMission:
   - {fileID: 11400000, guid: 93558970cb0a38a40af5b6866d47b47e, type: 2}
   bonus:
@@ -45,3 +45,5 @@ MonoBehaviour:
     - {fileID: 11400000, guid: 9975d48058810e44d8c3b88ab65adb69, type: 2}
     - {fileID: 11400000, guid: 10cf13527f2d3b34f9b6207ff25783ba, type: 2}
     - {fileID: 11400000, guid: 697bfcfb10a16a840ac33a2e62ba8ee5, type: 2}
+    - {fileID: 11400000, guid: 49af5ad324443a54b810ebb5e5749eee, type: 2}
+  _backupJson: 

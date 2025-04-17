@@ -105,7 +105,7 @@ public class DataManager : BaseManager<DataManager>
 
     /// <summary>
     /// Trả về bản clone của asset được lấy qua GetData.
-    /// Điều này giúp bạn tránh sửa đổi asset gốc trong runtime.
+    /// Điều này giúp tránh sửa đổi asset gốc trong runtime.
     /// Ví dụ: DataManager.Instance.GetClonedData<QuestData, QuestType>(QuestType.MainQuest)
     /// </summary>
     public T GetClonedData<T, TEnum>(TEnum key) where T : ScriptableObject, IEnumKeyed<TEnum> where TEnum : Enum

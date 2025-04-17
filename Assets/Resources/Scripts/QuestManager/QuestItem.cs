@@ -8,6 +8,7 @@ public enum TYPEITEM
     ITEM_USE,
     ITEM_EQUIP,
     ITEM_COLLECT,
+    ITEM_EXP,
 }
 public enum ITEMUSE
 {
@@ -44,6 +45,10 @@ public class QuestItem
     [BoxGroup("Item Use Stats")]
     [TextArea(3, 10)]
     public string ItemDespri;
+
+    [ShowIf("@typeItem == TYPEITEM.ITEM_EXP")]
+    [BoxGroup("Item Use Stats")]
+    public int CountExp;
 
 
 }

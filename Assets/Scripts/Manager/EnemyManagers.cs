@@ -1,25 +1,11 @@
 ﻿using UnityEngine;
 
-public class EnemyManagers : MonoBehaviour
+public class EnemyManagers : BaseManager<EnemyManagers>
 {
     public static EnemyManagers instance;
     [SerializeField] private Transform m_ParentSpawnEnemyPool;
     [SerializeField] private SpawnEnemyPool[] spawnEnemyPool;
     
-   
-    
-    private void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-        
-    }
     private void Start()
     {
         GetChildSpawnPool();

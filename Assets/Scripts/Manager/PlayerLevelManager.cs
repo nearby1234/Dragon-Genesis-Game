@@ -38,14 +38,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
     public ListLevelUp CurrentLevelUp => m_CurrentLevelUp;
     private const string levelUpPath = "Scripts/SO/ExpData";
    
-
-    //private int m_OrbCount = 0; // Số lượng orb đã thu thập
-    //public int OrbCount
-    //{
-    //    get => m_OrbCount;
-    //    set => m_OrbCount = value;
-    //}
-    private int m_ExpOrbValue = 20; // Giá trị exp của orb
+    [SerializeField] private int m_ExpOrbValue = 20; // Giá trị exp của orb
     public int ExpOrbValue => m_ExpOrbValue; // Giá trị exp của orb
 
     //[SerializeField] private UnityEvent onLevelUp;
@@ -57,11 +50,6 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
         //expNextLevel = m_CurrentLevelUp.expNeedLvup;
         m_LevelUpFx = EffectManager.Instance.GetPrefabs("Lvlup"); // Prefab dạng GameObject
     }
-    private void Update()
-    {
-        //expNextLevel = m_CurrentLevelUp.expNeedLvup;
-    }
-
     public void AddExp(int amount)
     {
         currentExp += amount;

@@ -43,21 +43,33 @@ public class SpawnObjectVFX : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.UI_SEND_SCREEN_SLIDER_EXP, ReceiverValueTransformSLider);
         }
     }
-    public GameObject GetObjectFormPool()
+    public GameObject GetObjectFormPool(int countExpOrb)  // Gọi hàm này khi muốn tạo exp move lên slider exp
     {
         if (poolVfx.Count > 0)
         {
-            GameObject vfx = poolVfx.Dequeue();
-            RectTransform rectTransform = vfx.GetComponent<RectTransform>();
-            vfx.SetActive(true);
-            MoveSLiderUI(rectTransform);
-            return vfx;
+            for (int i = 0; i < countExpOrb; i++)
+            {
+                if (poolVfx.Count > 0)
+                {
+                    GameObject vfx = poolVfx.Dequeue();
+                    RectTransform rectTransform = vfx.GetComponent<RectTransform>();
+                    vfx.SetActive(true);
+                    MoveSLiderUI(rectTransform);
+                    return vfx;
+                }
+            }
+            //GameObject vfx = poolVfx.Dequeue();
+            //RectTransform rectTransform = vfx.GetComponent<RectTransform>();
+            //vfx.SetActive(true);
+            //MoveSLiderUI(rectTransform);
+            //return vfx;
         }
         else
         {
             GameObject vfx = Instantiate(m_SpawnVFXPrefab, m_ParentTranformObj.transform);
             return vfx;
         }
+        return null;
     }
     public void ReturnObjectToPool(RectTransform rectTransform)
     {

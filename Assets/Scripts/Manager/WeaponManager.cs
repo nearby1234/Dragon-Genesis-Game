@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class WeaponManager : MonoBehaviour
+public class WeaponManager : BaseManager<WeaponManager>
 {
     public Transform rightHand;  // Transform của tay phải của nhân vật
     public Transform weaponParent; // Đối tượng cha chứa vũ khí

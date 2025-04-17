@@ -106,9 +106,13 @@ public class PopupScrollMagic : BasePopup
                 TextMeshProUGUI text = itemObj.GetComponentInChildren<TextMeshProUGUI>();
                 if (text != null)
                 {
+                    string displayText = item.questItemData.typeItem == TYPEITEM.ITEM_EXP
+                         ? $"{item.questItemData.CountExp}"
+                         : $"{item.questItemData.count}";
+
                     text.text = isItemMission
                         ? $"{item.questItemData.itemName} {item.questItemData.completionCount}/{item.questItemData.requestCount}"
-                        : $"{item.questItemData.itemName} x {item.questItemData.count}";
+                        : $"{item.questItemData.itemName} x {displayText}";
                 }
             }
         }
