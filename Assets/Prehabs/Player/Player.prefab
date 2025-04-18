@@ -5499,7 +5499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7912646097252322957
 Transform:
   m_ObjectHideFlags: 0
@@ -5508,7 +5508,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1164828770242174425}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -185.47, y: 0.0022115707, z: -26.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5702,7 +5702,7 @@ MonoBehaviour:
       m_Action: Button Left Shift
       m_Flags: 0
     m_Flags: 0
-  m_ButtonSwap: 114
+  m_ButtonSwap: 98
   m_WalkSpeed: 0.3
   m_JoggingSpeed: 0.6
   m_RunSpeed: 1
@@ -5942,6 +5942,7 @@ MonoBehaviour:
   m_MaxStamina: 0
   m_CurrentStamina: 0
   m_StaminaBase: 0
+  m_PlusStaminaValue: 5
   m_StaminaRegenRate: 10
   m_StaminaDrainRate: 10
   m_StaminaFull: 0
@@ -5964,6 +5965,7 @@ MonoBehaviour:
   m_MaxMana: 0
   m_CurrentMana: 0
   m_ManaBase: 0
+  m_PlusHealValue: 5
 --- !u!114 &7990349908563691109
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -90,7 +90,6 @@ public class QuestManager : BaseManager<QuestManager>
     /// <param name="reward">Đối tượng QuestBonus chứa thông tin phần thưởng</param>
     public void GrantReward(QuestBonus reward)
     {
-        Debug.Log($"Cấp {reward.experience} kinh nghiệm, {reward.gold} vàng.");
 
         // Load prefab của phần thưởng
         GameObject prefab = Resources.Load<GameObject>(m_DOItemPrefabPath);

@@ -67,13 +67,25 @@ public class ScreenLoadingPanel : BaseScreen
         // 7. Khi tween hoàn tất mới activate scene
         yield return finishTween.WaitForCompletion();
         asyncOp.allowSceneActivation = true;
-        
-        if (GameManager.HasInstance)
+        canvasGroup.DOFade(0, 1f).OnComplete(() =>
         {
-            GameManager.Instance.GameState = GAMESTATE.START;
-        }
-        canvasGroup.DOFade(0, 1f);
-
-
+            if (GameManager.HasInstance)
+            {
+                GAMESTATE gameState = GameManager.Instance.GameState;
+                gameState = GAMESTATE.START;
+                if (gameState == GAMESTATE.START)
+                {
+                    if (UIManager.HasInstance)
+                    {
+                        UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
+                    }
+                    if (AudioManager.HasInstance)
+                    {
+                        Debug.Log("Play BGM");
+                        AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK");
+                    }
+                }
+            }
+        });
     }
 }

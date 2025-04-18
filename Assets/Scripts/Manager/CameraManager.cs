@@ -6,6 +6,8 @@ public class CameraManager : BaseManager<CameraManager>
 {
     [SerializeField] private List<GameObject> cameras = new();
     [SerializeField] private Camera m_PATCamera;
+    [SerializeField] private CinemachineVirtualCameraBase m_FreelookCamera;
+    [SerializeField] private CinemachineOrbitalFollow orbitalFollow;
     [SerializeField] private CinemachineImpulseSource cinemachineImpulseSource;
     [SerializeField] private CinemachineInputAxisController inputAxisController;
 
@@ -16,6 +18,11 @@ public class CameraManager : BaseManager<CameraManager>
         cinemachineImpulseSource = GetComponentInChildren<CinemachineImpulseSource>();
         GetTypeObjectInList<CinemachineInputAxisController>();
         m_PATCamera = GetObject("PATCamera").GetComponent<Camera>();
+        orbitalFollow = m_FreelookCamera.GetComponent<CinemachineOrbitalFollow>();
+        orbitalFollow.HorizontalAxis.Value = 85;
+        orbitalFollow.VerticalAxis.Value = 25;
+
+
     }
     private void Start()
     {
@@ -24,7 +31,7 @@ public class CameraManager : BaseManager<CameraManager>
             ListenerManager.Instance.BroadCast(ListenType.CAMERA_SEND_VALUE, m_PATCamera);
         }
     }
-  
+
     public void SetActiveInputAxisController(bool value)
     {
         if (inputAxisController != null)

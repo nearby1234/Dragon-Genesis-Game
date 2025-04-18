@@ -76,7 +76,7 @@ public class ScreenMenuPanel : BaseScreen
 
 
         m_TextCanvasGroup.DOFade(1f, fadeDuration);
-           
+
         int lastCharIndex = -1;
         // 3. Đồng thời, bắt đầu tween maxVisibleCharacters từ 0 đến totalCharacters trong typingDuration
         DOTween.To(() => textAnimator.maxVisibleCharacters,
@@ -90,10 +90,10 @@ public class ScreenMenuPanel : BaseScreen
             if (currentChar != lastCharIndex)
             {
                 lastCharIndex = currentChar;
-               if(AudioManager.HasInstance)
+                if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("TextSound");
-                }    
+                }
             }
         })
         .OnComplete(() =>
@@ -103,6 +103,8 @@ public class ScreenMenuPanel : BaseScreen
                 if (AudioManager.HasInstance)
                 {
                     m_ListButtonCanvasGroup.DOFade(1f, 0.5f);
+                    m_ListButtonCanvasGroup.interactable = true;
+                    m_ListButtonCanvasGroup.blocksRaycasts = true;
                     AudioManager.Instance.PlaySE("SwordSound");
                     AudioManager.Instance.PlayBGM("Forest_FULL_TRACK");
                 }
@@ -126,11 +128,17 @@ public class ScreenMenuPanel : BaseScreen
     }
     private void OnClickStartButton()
     {
-        // Hiện loading ngay
-        if (UIManager.HasInstance)
-            UIManager.Instance.ShowScreen<ScreenLoadingPanel>();
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
+        m_ListButtonCanvasGroup.DOFade(0f, 1f)
+          .OnComplete(() =>
+          {
+              m_ListButtonCanvasGroup.interactable = false;
+              m_ListButtonCanvasGroup.blocksRaycasts = false;
+          });
 
-        // Fade menu ra
         canvasGroup.DOFade(0f, 1f)
             .OnComplete(() =>
             {
@@ -140,5 +148,13 @@ public class ScreenMenuPanel : BaseScreen
 
                 // Hoặc: DOTween.Kill("ShinyTextLoop");
             });
+
+        // Hiện loading ngay
+        if (UIManager.HasInstance)
+            UIManager.Instance.ShowScreen<ScreenLoadingPanel>();
+
+        // Fade menu ra
+
+
     }
 }

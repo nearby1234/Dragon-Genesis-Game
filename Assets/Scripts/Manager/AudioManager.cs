@@ -13,6 +13,10 @@ public class AudioManager : BaseManager<AudioManager>
 
     //Is the background music fading out?
     private bool isFadeOut = false;
+    private float fadeInSpeedRate;
+    private bool isFadeIn = false;
+    private float targetVolume = 1f; // volume cuối cùng bạn muốn đạt tới
+
 
     //Separate audio sources for BGM and SE
     public AudioSource AttachBGMSource;
@@ -89,36 +93,52 @@ public class AudioManager : BaseManager<AudioManager>
         else if (AttachBGMSource.clip.name != bgmName)
         {
             nextBGMName = bgmName;
-            //FadeOutBGM(fadeSpeedRate);
+            FadeOutBGM(1f, 0.5f);
         }
 
     }
 
-    public void FadeOutBGM(float fadeSpeedRate /*= CONST.BGM_FADE_SPEED_RATE_LOW*/)
+    public void FadeOutBGM(float fadeOutSpeed, float fadeInSpeed = 1f)
     {
-        bgmFadeSpeedRate = fadeSpeedRate;
+        bgmFadeSpeedRate = fadeOutSpeed;
+        fadeInSpeedRate = fadeInSpeed;
+        // lưu lại volume hiện tại để target
+        targetVolume = AttachBGMSource.volume;
         isFadeOut = true;
     }
 
     private void Update()
     {
-        if (!isFadeOut)
+        // xử lý fade‑out
+        if (isFadeOut)
         {
-            return;
+            AttachBGMSource.volume -= Time.deltaTime * bgmFadeSpeedRate;
+            if (AttachBGMSource.volume <= 0f)
+            {
+                AttachBGMSource.Stop();
+                isFadeOut = false;
+
+                if (!string.IsNullOrEmpty(nextBGMName))
+                {
+                    // gán clip mới và play
+                    AttachBGMSource.clip = bgmDic[nextBGMName];
+                    AttachBGMSource.Play();
+                    // bắt đầu fade‑in
+                    AttachBGMSource.volume = 0f;
+                    isFadeIn = true;
+                }
+            }
+            return;  // ưu tiên fade‑out trước
         }
 
-        //Gradually lower the volume, and when the volume reaches 0
-        //return the volume and play the next song
-        AttachBGMSource.volume -= Time.deltaTime * bgmFadeSpeedRate;
-        if (AttachBGMSource.volume <= 0)
+        // xử lý fade‑in
+        if (isFadeIn)
         {
-            AttachBGMSource.Stop();
-            //AttachBGMSource.volume = ObscuredPrefs.GetFloat(CONST.BGM_VOLUME_KEY, CONST.BGM_VOLUME_DEFAULT);
-            isFadeOut = false;
-
-            if (!string.IsNullOrEmpty(nextBGMName))
+            AttachBGMSource.volume += Time.deltaTime * fadeInSpeedRate;
+            if (AttachBGMSource.volume >= targetVolume)
             {
-                PlayBGM(nextBGMName);
+                AttachBGMSource.volume = targetVolume;
+                isFadeIn = false;
             }
         }
     }
