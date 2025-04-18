@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: ToolsSettings
   m_EditorClassIdentifier: 
   favoriteScenes: []
-  favoriteScenesInfos: []
+  favoriteScenesInfos:
+  - guid: 99c9720ab356a0642a771bea13969a05
   prefabDirectories: []
   prefabDirectoriesInfos:
   - guid: e6abc45dc080dbd438997ee681a8433d

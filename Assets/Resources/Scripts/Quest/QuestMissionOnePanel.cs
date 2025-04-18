@@ -67,11 +67,11 @@ public class QuestMissionOnePanel : BasePopup
                     item.questItemData.completionCount = 1;
                 }
             }
-            if (GameManager.HasInstance)
-            {
-                GameObject npc = GameManager.Instance.GetNPC("Abe");
-                m_QuestDataMissionOne.QuestGiver = npc;
-            }
+            //if (GameManager.HasInstance)
+            //{
+            //    GameObject npc = GameManager.Instance.GetNPC("Abe");
+            //    m_QuestDataMissionOne.QuestGiver = npc;
+            //}
             m_PlayerDialog.SetIsTalkingNPC(false);
         }
         if (CameraManager.HasInstance)

@@ -41,7 +41,10 @@ public enum ListenType
     UI_SEND_VALUE_EXP_TO_SLIDER,
     UI_SEND_CANVASMAIN,
     UI_SEND_VALUE_LEVEL,
-    
+    CAMERA_SEND_VALUE,
+    MENU_BTN_START_CLICK,
+
+
 }
 
 public enum CalculatorButtonState

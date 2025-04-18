@@ -43,6 +43,9 @@ public class ScreenPlayerImformation : BaseScreen
     private void Initialized()
     {
         m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
+        UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
+        UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
         m_CharacterStatsBtn.onClick.AddListener(() =>
         {
             if (UIManager.HasInstance)
@@ -53,6 +56,7 @@ public class ScreenPlayerImformation : BaseScreen
     }
     private void UpdateValue()
     {
+        if(PlayerLevelManager.Instance == null) return;
         m_ExpBar.value = PlayerLevelManager.Instance.DisPlayExp;
         m_ExpBar.maxValue = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
         m_LevelTxt.text = PlayerLevelManager.Instance.CurrentLevel.ToString();

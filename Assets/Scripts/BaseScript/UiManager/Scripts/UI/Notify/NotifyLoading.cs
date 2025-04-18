@@ -10,7 +10,7 @@ public class NotifyLoading : BaseNotify
 {
     public TextMeshProUGUI tmpLoading;
     public Slider slProgress;
-    private string loadingText = "Loading";
+    private string loadingText = "ScreenLoadingPanel";
 
     public override void Hide()
     {

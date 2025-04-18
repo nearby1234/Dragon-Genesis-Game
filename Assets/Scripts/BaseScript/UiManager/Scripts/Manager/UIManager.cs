@@ -35,10 +35,33 @@ public class UIManager : BaseManager<UIManager>
     protected override void Awake()
     {
         base.Awake();
-        ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+      
         m_SpawnObjectVFX = GetComponentInChildren<SpawnObjectVFX>();
     }
-  
+    private void Start()
+    {
+        if (GameManager.HasInstance)
+        {
+            if (GameManager.Instance.GameState == GAMESTATE.MENULOADING)
+            {
+                ShowScreen<ScreenMenuPanel>();
+                return;
+            }
+        }
+        ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+    }
+    private void Update()
+    {
+        if (GameManager.HasInstance)
+        {
+            if(GameManager.Instance.GameState == GAMESTATE.START && !GameManager.Instance.m_IsPlaying)
+            {
+                ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
+                GameManager.Instance.m_IsPlaying = true;
+            }
+        }
+    }
+
 
     #region Screen
     public void ShowScreen<T>(object data = null, bool forceShowData = false) where T: BaseScreen

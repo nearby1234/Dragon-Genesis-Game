@@ -24,7 +24,6 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
     [SerializeField] private int currentExp = 0;
     //[SerializeField] private int expNextLevel;
     [SerializeField] private GameObject m_LevelUpFx;
-    [SerializeField] private ParticleSystem m_LevelUpFxinstan;
     public int CurrentExp => currentExp;
     private float m_DisPlayExp;
     public float DisPlayExp => m_DisPlayExp; // giá trị exp hiển thị trên UI
@@ -43,10 +42,15 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
 
     //[SerializeField] private UnityEvent onLevelUp;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        LoadExpTable();
+        if (m_ListlevelUp.Count > 0)
+            m_CurrentLevelUp = m_ListlevelUp[0];
+    }
     private void Start()
     {
-        LoadExpTable();
-        m_CurrentLevelUp = m_ListlevelUp[0];
         //expNextLevel = m_CurrentLevelUp.expNeedLvup;
         m_LevelUpFx = EffectManager.Instance.GetPrefabs("Lvlup"); // Prefab dạng GameObject
     }

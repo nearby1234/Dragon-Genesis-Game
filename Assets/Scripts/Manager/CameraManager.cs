@@ -5,6 +5,7 @@ using UnityEngine;
 public class CameraManager : BaseManager<CameraManager>
 {
     [SerializeField] private List<GameObject> cameras = new();
+    [SerializeField] private Camera m_PATCamera;
     [SerializeField] private CinemachineImpulseSource cinemachineImpulseSource;
     [SerializeField] private CinemachineInputAxisController inputAxisController;
 
@@ -14,7 +15,16 @@ public class CameraManager : BaseManager<CameraManager>
         FindChildObject();
         cinemachineImpulseSource = GetComponentInChildren<CinemachineImpulseSource>();
         GetTypeObjectInList<CinemachineInputAxisController>();
+        m_PATCamera = GetObject("PATCamera").GetComponent<Camera>();
     }
+    private void Start()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.CAMERA_SEND_VALUE, m_PATCamera);
+        }
+    }
+  
     public void SetActiveInputAxisController(bool value)
     {
         if (inputAxisController != null)
@@ -32,7 +42,7 @@ public class CameraManager : BaseManager<CameraManager>
     {
         cinemachineImpulseSource.GenerateImpulse();
     }
-    private GameObject GetObject(string name)
+    public GameObject GetObject(string name)
     {
         foreach (GameObject tranform in cameras)
         {
