@@ -7,7 +7,6 @@ public class ChildTriggerForwarder : MonoBehaviour
 {
     #region Serialized Fields and References
     [SerializeField] private CinemachineImpulseSource impulseSource;
-    [SerializeField] private bool isEnergyTakeDamaged = false;
     [SerializeField] private GameObject damageTextPrefab;
     [SerializeField] private GameObject explosionPrefab;
     #endregion
@@ -130,13 +129,5 @@ public class ChildTriggerForwarder : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Resets the damage flag after a delay so that the energy weapon can apply damage again.
-    /// </summary>
-    private IEnumerator ResetEnergyDamageFlag()
-    {
-        yield return new WaitForSeconds(1f);
-        isEnergyTakeDamaged = false;
-    }
     #endregion
 }

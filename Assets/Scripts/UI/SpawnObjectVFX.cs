@@ -19,7 +19,6 @@ public class SpawnObjectVFX : MonoBehaviour
     [SerializeField] private Camera uiCamera;  // Camera dùng cho canvas (nếu sử dụng Render Mode Screen Space - Camera)
     [SerializeField] private int m_PoolSize = 10;
     [SerializeField] private Queue<GameObject> poolVfx = new();
-    [SerializeField] private bool m_IsInitUiCamera = false; // Kiểm tra xem camera đã được khởi tạo chưa
     [ShowInInspector, ReadOnly]
     private List<GameObject> vfxPoolList => new(poolVfx);
 

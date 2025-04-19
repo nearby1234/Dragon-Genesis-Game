@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -7,7 +8,9 @@ public class CameraManager : BaseManager<CameraManager>
     [SerializeField] private List<GameObject> cameras = new();
     [SerializeField] private Camera m_PATCamera;
     [SerializeField] private CinemachineVirtualCameraBase m_FreelookCamera;
+    [SerializeField] private CinemachineVirtualCameraBase m_StartCamera;
     [SerializeField] private CinemachineOrbitalFollow orbitalFollow;
+    [SerializeField] private bool m_IsRotatePlayer;
     [SerializeField] private CinemachineImpulseSource cinemachineImpulseSource;
     [SerializeField] private CinemachineInputAxisController inputAxisController;
 
@@ -19,10 +22,7 @@ public class CameraManager : BaseManager<CameraManager>
         GetTypeObjectInList<CinemachineInputAxisController>();
         m_PATCamera = GetObject("PATCamera").GetComponent<Camera>();
         orbitalFollow = m_FreelookCamera.GetComponent<CinemachineOrbitalFollow>();
-        orbitalFollow.HorizontalAxis.Value = 85;
-        orbitalFollow.VerticalAxis.Value = 25;
-
-
+        
     }
     private void Start()
     {
@@ -30,6 +30,7 @@ public class CameraManager : BaseManager<CameraManager>
         {
             ListenerManager.Instance.BroadCast(ListenType.CAMERA_SEND_VALUE, m_PATCamera);
         }
+       StartCoroutine(DelayCamera());
     }
 
     public void SetActiveInputAxisController(bool value)
@@ -79,5 +80,12 @@ public class CameraManager : BaseManager<CameraManager>
         }
         return default;
     }
+    IEnumerator DelayCamera()
+    {
+        yield return new WaitForSeconds(1f);
+        m_StartCamera.Priority = 10;
+        orbitalFollow.HorizontalAxis.Value = 85;
+        orbitalFollow.VerticalAxis.Value = 25;
+    }    
 
 }

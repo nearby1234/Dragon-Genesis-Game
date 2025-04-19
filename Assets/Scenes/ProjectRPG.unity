@@ -29708,7 +29708,9 @@ MonoBehaviour:
   cameras: []
   m_PATCamera: {fileID: 0}
   m_FreelookCamera: {fileID: 444358654977463806}
+  m_StartCamera: {fileID: 966917330}
   orbitalFollow: {fileID: 0}
+  m_IsRotatePlayer: 0
   cinemachineImpulseSource: {fileID: 0}
   inputAxisController: {fileID: 0}
 --- !u!1 &1738721649
@@ -29836,7 +29838,6 @@ MonoBehaviour:
   m_PatCanvas: {fileID: 0}
   uiCamera: {fileID: 305422651}
   m_PoolSize: 10
-  m_IsInitUiCamera: 0
 --- !u!1001 &1751781550
 PrefabInstance:
   m_ObjectHideFlags: 0

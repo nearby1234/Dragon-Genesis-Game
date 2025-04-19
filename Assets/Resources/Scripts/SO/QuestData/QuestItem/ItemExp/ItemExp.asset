@@ -25,4 +25,4 @@ MonoBehaviour:
     itemUse: 0
     ItemDespri: 
     CountExp: 100
-  _backupJson: "{\"itemID\":\"-ItemExp\",\"itemName\":\"Kinh Nghi\u1EC7m\",\"count\":0,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52578},\"typeItem\":5,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":100}"
+  _backupJson: "{\"itemID\":\"-ItemExp\",\"itemName\":\"Kinh Nghi\u1EC7m\",\"count\":0,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52648},\"typeItem\":5,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":100}"

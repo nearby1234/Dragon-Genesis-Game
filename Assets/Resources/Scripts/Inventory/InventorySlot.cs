@@ -19,7 +19,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private Slider m_Slider;
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InputAction m_ButtonPress;
-    private bool isTooltipShown = false;
     [InlineEditor]
     public QuestItemSO m_CurrentItem;
     private Queue<GameObject> m_ItemPool = new Queue<GameObject>();
