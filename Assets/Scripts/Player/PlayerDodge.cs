@@ -119,4 +119,18 @@ public class PlayerDodge : MonoBehaviour
             isStaminaEmpty = empty;
         }
     }
+    public void DodgeSound()
+    {
+        if (AudioManager.HasInstance )
+        {
+            AudioManager.Instance.PlaySE("DodgeSound");
+        }
+    }
+    public void DodgeGroundSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("RunSound");
+        }
+    }
 }

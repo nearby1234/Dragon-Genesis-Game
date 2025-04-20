@@ -26,4 +26,4 @@ MonoBehaviour:
     ItemDespri: 
     CountExp: 0
   _backupJson: "{\"itemID\":\"-ScrollGenesis\",\"itemName\":\"Quy\u1EC3n Tr\u1EE5c
-    Kh\u1EDFi Nguy\xEAn\",\"count\":0,\"requestCount\":1,\"completionCount\":0,\"icon\":{\"instanceID\":55580},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0}"
+    Kh\u1EDFi Nguy\xEAn\",\"count\":0,\"requestCount\":1,\"completionCount\":0,\"icon\":{\"instanceID\":55602},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0}"

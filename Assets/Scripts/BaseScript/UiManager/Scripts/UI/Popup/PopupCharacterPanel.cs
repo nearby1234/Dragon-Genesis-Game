@@ -13,6 +13,7 @@ public class PopupCharacterPanel : BasePopup
     [SerializeField] private int m_PointDefaultValue = 0;
     [SerializeField] private int m_PointCurrentValue;
     [SerializeField] private Button m_ExitBtn;
+    [SerializeField] private Button m_GearBtn;
     [SerializeField] private List<TextMeshProUGUI> m_CharacterStatsTxt;
     private int m_HealValueMax; // giá trị máu tối đa (cập nhật khi cộng điểm stat)
     private int m_HealValueCurrent; // giá trị máu hiện tại (cập nhật realtime khi nhận sát thương/hồi máu)
@@ -70,15 +71,14 @@ public class PopupCharacterPanel : BasePopup
     }
     private void InitializeUI()
     {
-        if (m_ExitBtn == null)
+        if (m_ExitBtn != null)
         {
-            Debug.LogError("m_ExitBtn is not assigned in the Inspector!");
+            m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
         }
-        else
+        if(m_GearBtn != null)
         {
-            m_ExitBtn.onClick.AddListener(OnExitButton);
+            m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         }
-
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
         m_PointTxt.text = $"Points: {m_PointDefaultValue}";
     }
@@ -234,6 +234,30 @@ public class PopupCharacterPanel : BasePopup
         if (statText != null)
         {
             statText.text = text;
+        }
+    }
+    private void HandlerClickSoundFx(Action action)
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+            action?.Invoke();
+        }
+    }
+    private void HandlerExitSoundFx(Action action)
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+            action?.Invoke();
+        }
+    }
+
+    private void OnClickGearButton()
+    {
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
         }
     }
 }

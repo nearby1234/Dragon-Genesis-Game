@@ -110,6 +110,10 @@ public class PlayerStamina : MonoBehaviour
             {
                 m_effectStamina.SetActive(true);
                 particle.Play();
+                if(AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlayLoopSE("RegenSound");
+                }
             }
             while (m_CurrentStamina < m_MaxStamina)
             {
@@ -128,6 +132,10 @@ public class PlayerStamina : MonoBehaviour
                     if (particle != null)
                     {
                         particle.Stop();
+                        if (AudioManager.HasInstance)
+                        {
+                            AudioManager.Instance.StopLoopSE();
+                        }
                     }
                     break;
                 }

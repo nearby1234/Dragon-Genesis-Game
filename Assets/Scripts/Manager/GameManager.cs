@@ -31,8 +31,6 @@ public class GameManager : BaseManager<GameManager>
         }
     }
 
-
-
     protected override void Awake()
     {
         base.Awake();

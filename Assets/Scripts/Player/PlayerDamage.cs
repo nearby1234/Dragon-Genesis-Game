@@ -129,4 +129,11 @@ public class PlayerDamage : MonoBehaviour
             }
         }
     }
+    public void SwordFlashSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("SwordFlashSound");
+        }
+    }
 }

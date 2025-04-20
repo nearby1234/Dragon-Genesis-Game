@@ -15,10 +15,6 @@ public class ScreenLoadingPanel : BaseScreen
     {
         StartCoroutine(LoadScene());
     }
-    private void OnDestroy()
-    {
-    }
-
     public IEnumerator LoadScene()
     {
         // 1. Bắt đầu load async (chưa allow activate)
@@ -67,23 +63,24 @@ public class ScreenLoadingPanel : BaseScreen
         // 7. Khi tween hoàn tất mới activate scene
         yield return finishTween.WaitForCompletion();
         asyncOp.allowSceneActivation = true;
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK",true);
+        }
         canvasGroup.DOFade(0, 1f).OnComplete(() =>
         {
             if (GameManager.HasInstance)
             {
-                GAMESTATE gameState = GameManager.Instance.GameState;
-                gameState = GAMESTATE.START;
-                if (gameState == GAMESTATE.START)
+                // Gán trực tiếp vào property của GameManager
+                GameManager.Instance.GameState = GAMESTATE.START;
+
+                // Bây giờ mới check, và do đúng là START nên sẽ vào block
+                if (GameManager.Instance.GameState == GAMESTATE.START)
                 {
                     if (UIManager.HasInstance)
-                    {
                         UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
-                    }
-                    if (AudioManager.HasInstance)
-                    {
-                        Debug.Log("Play BGM");
-                        AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK");
-                    }
+
+                    
                 }
             }
         });

@@ -1210,7 +1210,7 @@ MonoBehaviour:
   fadeDuration: 1
   m_StartBtn: {fileID: 5038864334219600433}
   m_SettingBtn: {fileID: 8314477431768384936}
-  m_ExitBtn: {fileID: 1021515505396004336}
+  m_ExitGameBtn: {fileID: 1021515505396004336}
   videoPlayer: {fileID: 5686083579196224890}
   videoFileName: Video/DragonGenesisBG.mp4
 --- !u!225 &923128730008235976

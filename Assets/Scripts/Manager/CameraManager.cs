@@ -30,7 +30,7 @@ public class CameraManager : BaseManager<CameraManager>
         {
             ListenerManager.Instance.BroadCast(ListenType.CAMERA_SEND_VALUE, m_PATCamera);
         }
-       StartCoroutine(DelayCamera());
+        StartCoroutine(DelayCamera());
     }
 
     public void SetActiveInputAxisController(bool value)
@@ -86,6 +86,6 @@ public class CameraManager : BaseManager<CameraManager>
         m_StartCamera.Priority = 10;
         orbitalFollow.HorizontalAxis.Value = 85;
         orbitalFollow.VerticalAxis.Value = 25;
-    }    
+    }
 
 }

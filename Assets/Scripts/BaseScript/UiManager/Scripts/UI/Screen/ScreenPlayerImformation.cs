@@ -52,6 +52,10 @@ public class ScreenPlayerImformation : BaseScreen
             {
                 UIManager.Instance.ShowPopup<PopupCharacterPanel>();
             }
+            if(AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ClickSound");
+            }               
         });
     }
     private void UpdateValue()

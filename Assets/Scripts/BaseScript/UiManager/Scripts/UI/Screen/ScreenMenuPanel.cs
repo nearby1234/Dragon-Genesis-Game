@@ -1,6 +1,7 @@
 using DG.Tweening;
 using Febucci.UI;
 using System.Collections;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Video;
@@ -18,6 +19,7 @@ public class ScreenMenuPanel : BaseScreen
     [SerializeField] private CanvasGroup m_TextCanvasGroup; // Đảm bảo rằng bạn đã gán CanvasGroup trong Inspector
     [SerializeField] private CanvasGroup m_ListButtonCanvasGroup; // Đảm bảo rằng bạn đã gán CanvasGroup trong Inspector
 
+    [Header("Timings")]
     // Thời gian chờ trước khi bắt đầu hiệu ứng đánh chữ
     [SerializeField] private float delayBeforeTyping = 1f;
     // Thời gian để tween maxVisibleCharacters từ 0 đến giá trị cuối
@@ -30,55 +32,69 @@ public class ScreenMenuPanel : BaseScreen
     [Header("Button UI")]
     [SerializeField] private Button m_StartBtn;
     [SerializeField] private Button m_SettingBtn;
-    [SerializeField] private Button m_ExitBtn;
+    [SerializeField] private Button m_ExitGameBtn;
     private Sequence _shinyLoop;
 
     [Header("Video UI")]
     public VideoPlayer videoPlayer;
     public string videoFileName = "Video/DragonGenesisBG.mp4";
 
+    private const float BUTTON_FADE_DURATION = 0.5f;
+    private const float SWORD_MOVE_DURATION = 0.2f;
     private void Awake()
     {
-        if (videoPlayer == null)
-        {
-            videoPlayer = GetComponent<VideoPlayer>();
-        }
+        videoPlayer = videoPlayer != null ? videoPlayer : GetComponent<VideoPlayer>();
     }
 
     private void Start()
     {
-        string path = System.IO.Path.Combine(Application.streamingAssetsPath, videoFileName);
-        videoPlayer.url = path;
-        videoPlayer.Play();
-
-        // Đảm bảo canvas ban đầu đang ẩn (alpha = 0)
-        m_TextCanvasGroup.alpha = 0f;
-        // Ở chế độ nền (chưa hiện), thiết lập text và đặt maxVisibleCharacters = 0
-        textAnimator.SetText("LONG KHỞI");
-        textAnimator.maxVisibleCharacters = 0;
-        // Đặt vị trí của m_ShinyText ở bên trái
-        m_ShinyText.transform.position = m_LeftPos.transform.position;
+        InitializeVideoPlayer();
+        InitializeUI();
 
         // Bắt đầu chuỗi hiệu ứng
         StartCoroutine(PlaySequence());
-        m_StartBtn.onClick.AddListener(OnClickStartButton);
+        m_StartBtn.onClick.AddListener(() => HandleButtonClick( OnClickStartButton));
+        m_SettingBtn.onClick.AddListener(()=>HandleButtonClick( OnClickSettingButton));
+        m_ExitGameBtn.onClick.AddListener(() => HandleButtonClick(OnClickExitGameButton));
     }
     private void OnDestroy()
     {
         DOTween.KillAll(); // hoặc DOTween.Kill(m_ShinyText.transform);
     }
+    private void InitializeVideoPlayer()
+    {
+        string path = System.IO.Path.Combine(Application.streamingAssetsPath, videoFileName);
+        videoPlayer.url = path;
+        videoPlayer.Play();
+    }
+    private void InitializeUI()
+    {
+        m_TextCanvasGroup.alpha = 0f;
+        textAnimator.SetText("LONG KHỞI");
+        textAnimator.maxVisibleCharacters = 0;
+        m_ShinyText.transform.position = m_LeftPos.transform.position;
+    }
 
 
     IEnumerator PlaySequence()
     {
-        // 1. Chờ 3 giây (delay khi canvas vẫn ẩn)
         yield return new WaitForSeconds(delayBeforeTyping);
-
 
         m_TextCanvasGroup.DOFade(1f, fadeDuration);
 
+        AnimateTextTyping(() =>
+        {
+            AnimateSword(() =>
+            {
+                ShowButtons();
+                ShinyText();
+            });
+        });
+    }
+    private void AnimateTextTyping(TweenCallback onComplete)
+    {
         int lastCharIndex = -1;
-        // 3. Đồng thời, bắt đầu tween maxVisibleCharacters từ 0 đến totalCharacters trong typingDuration
+
         DOTween.To(() => textAnimator.maxVisibleCharacters,
             x => textAnimator.maxVisibleCharacters = x,
             totalCharacters,
@@ -90,27 +106,32 @@ public class ScreenMenuPanel : BaseScreen
             if (currentChar != lastCharIndex)
             {
                 lastCharIndex = currentChar;
-                if (AudioManager.HasInstance)
-                {
-                    AudioManager.Instance.PlaySE("TextSound");
-                }
+                AudioManager.Instance?.PlaySE("TextSound");
             }
         })
-        .OnComplete(() =>
-        {
-            m_Sword.GetComponent<RectTransform>().DOAnchorPos(m_SwordPos, 0.2f).SetEase(Ease.Linear).OnComplete(() =>
+        .OnComplete(onComplete);
+    }
+    private void AnimateSword(TweenCallback onComplete)
+    {
+        m_Sword.GetComponent<RectTransform>()
+            .DOAnchorPos(m_SwordPos, SWORD_MOVE_DURATION)
+            .SetEase(Ease.Linear)
+            .OnComplete(() =>
             {
-                if (AudioManager.HasInstance)
+                if(AudioManager.HasInstance)
                 {
-                    m_ListButtonCanvasGroup.DOFade(1f, 0.5f);
-                    m_ListButtonCanvasGroup.interactable = true;
-                    m_ListButtonCanvasGroup.blocksRaycasts = true;
                     AudioManager.Instance.PlaySE("SwordSound");
                     AudioManager.Instance.PlayBGM("Forest_FULL_TRACK");
                 }
+              
+                onComplete?.Invoke();
             });
-            ShinyText();
-        });
+    }
+    private void ShowButtons()
+    {
+        m_ListButtonCanvasGroup.DOFade(1f, BUTTON_FADE_DURATION);
+        m_ListButtonCanvasGroup.interactable = true;
+        m_ListButtonCanvasGroup.blocksRaycasts = true;
     }
     private void ShinyText()
     {
@@ -126,35 +147,51 @@ public class ScreenMenuPanel : BaseScreen
             // 2) Gán ID cho dễ kill
             .SetId("ShinyTextLoop");
     }
-    private void OnClickStartButton()
+    private void HandleButtonClick(System.Action action)
     {
-        if (AudioManager.HasInstance)
+        if(AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ClickSound");
-        }
+        }    
+           
+        action?.Invoke();
+    }
+    private void OnClickStartButton()
+    {
         m_ListButtonCanvasGroup.DOFade(0f, 1f)
-          .OnComplete(() =>
-          {
-              m_ListButtonCanvasGroup.interactable = false;
-              m_ListButtonCanvasGroup.blocksRaycasts = false;
-          });
+             .OnComplete(() =>
+             {
+                 m_ListButtonCanvasGroup.interactable = false;
+                 m_ListButtonCanvasGroup.blocksRaycasts = false;
+             });
 
         canvasGroup.DOFade(0f, 1f)
             .OnComplete(() =>
             {
-                // 3) Dừng chính xác sequence ShinyText
-                if (_shinyLoop != null && _shinyLoop.IsActive())
-                    _shinyLoop.Kill();
-
-                // Hoặc: DOTween.Kill("ShinyTextLoop");
+                _shinyLoop?.Kill();
             });
 
-        // Hiện loading ngay
-        if (UIManager.HasInstance)
+        if(UIManager.HasInstance)
+        {
             UIManager.Instance.ShowScreen<ScreenLoadingPanel>();
-
-        // Fade menu ra
-
-
+        }    
+        
+    }
+    private void OnClickSettingButton()
+    {
+        
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
+        }
+    }
+    private void OnClickExitGameButton()
+    {
+       
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

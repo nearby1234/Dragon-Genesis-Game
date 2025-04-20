@@ -2,27 +2,25 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class AudioManager : BaseManager<AudioManager>
 {
-    private float bgmFadeSpeedRate;/* = CONST.BGM_FADE_SPEED_RATE_HIGH;*/
-
-    //Next BGM name, SE name
-    private string nextBGMName;
-    private string nextSEName;
-
-    //Is the background music fading out?
+    // Fade control
+    private float bgmFadeOutRate;
+    private float bgmFadeInRate;
+    private float targetVolume = 1f;
     private bool isFadeOut = false;
-    private float fadeInSpeedRate;
     private bool isFadeIn = false;
-    private float targetVolume = 1f; // volume cuối cùng bạn muốn đạt tới
+    private string nextBGMName;
 
-
-    //Separate audio sources for BGM and SE
+    // Audio sources
     public AudioSource AttachBGMSource;
     public AudioSource AttachSESource;
+    public AudioSource loopSESource;
+    public AudioSource FootstepSource;
 
-    //Keep All Audio
+    // Loaded clips
     [ShowInInspector]
     private Dictionary<string, AudioClip> bgmDic = new();
     [ShowInInspector]
@@ -31,110 +29,130 @@ public class AudioManager : BaseManager<AudioManager>
     protected override void Awake()
     {
         base.Awake();
-        //Load all SE & BGM files from resource folder
-        //bgmDic = new Dictionary<string, AudioClip>();
-        //seDic = new Dictionary<string, AudioClip>();
-
-        object[] bgmList = Resources.LoadAll("Audio/BGM");
-        object[] seList = Resources.LoadAll("Audio/SE");
-
-        foreach (AudioClip bgm in bgmList)
-        {
-            bgmDic[bgm.name] = bgm;
-        }
-        foreach (AudioClip se in seList)
-        {
-            seDic[se.name] = se;
-        }
+        // Load all clips from Resources
+        foreach (var clip in Resources.LoadAll<AudioClip>("Audio/BGM"))
+            bgmDic[clip.name] = clip;
+        foreach (var clip in Resources.LoadAll<AudioClip>("Audio/SE"))
+            seDic[clip.name] = clip;
     }
 
-    private void Start()
-    {
-        //AttachBGMSource.volume = ObscuredPrefs.GetFloat(CONST.BGM_VOLUME_KEY, CONST.BGM_VOLUME_DEFAULT);
-        //AttachSESource.volume = ObscuredPrefs.GetFloat(CONST.SE_VOLUME_KEY, CONST.SE_VOLUME_DEFAULT);
-        //AttachBGMSource.mute = ObscuredPrefs.GetBool(CONST.BGM_MUTE_KEY, CONST.BGM_MUTE_DEFAULT);
-        //AttachSESource.mute = ObscuredPrefs.GetBool(CONST.SE_MUTE_KEY, CONST.SE_MUTE_DEFAULT);
-    }
-
-    public void PlaySE(string seName, float delay = 0.0f)
+    public void PlaySE(string seName, float delay = 0f)
     {
         if (!seDic.ContainsKey(seName))
         {
-            Debug.Log(seName + "There is no SE named");
+            Debug.LogWarning($"SE not found: {seName}");
             return;
         }
-
+        nextBGMName = "";
         nextSEName = seName;
-        Invoke("DelayPlaySE", delay);
+        Invoke(nameof(DelayPlaySE), delay);
     }
 
+    private string nextSEName;
     private void DelayPlaySE()
     {
-        AttachSESource.PlayOneShot(seDic[nextSEName] as AudioClip);
+        AudioClip clip = seDic[nextSEName];
+        if (AttachSESource.loop)
+        {
+            // loop: gán clip chính, gọi Play()
+            AttachSESource.clip = clip;
+            AttachSESource.Play();
+        }
+        else
+        {
+            // one-shot: PlayOneShot bình thường
+            AttachSESource.PlayOneShot(clip);
+        }
     }
-
-    public void PlayBGM(string bgmName/*, float fadeSpeedRate = CONST.BGM_FADE_SPEED_RATE_HIGH*/)
+    /// <summary>
+    /// Plays or fades to BGM. If force==true, immediately stops and plays.
+    /// </summary>
+    public void PlayBGM(string bgmName, bool force = false)
     {
         if (!bgmDic.ContainsKey(bgmName))
         {
-            Debug.Log(bgmName + "There is no BGM named");
+            Debug.LogWarning($"BGM not found: {bgmName}");
+            return;
+        }
+        bool sameClip = AttachBGMSource.clip != null && AttachBGMSource.clip.name == bgmName;
+
+        if (force)
+        {
+            // Force restart
+            AttachBGMSource.Stop();
+            isFadeOut = isFadeIn = false;
+            AttachBGMSource.clip = bgmDic[bgmName];
+            AttachBGMSource.Play();
             return;
         }
 
-        //If BGM is not currently playing, play it as is
         if (!AttachBGMSource.isPlaying)
         {
-            nextBGMName = "";
-            AttachBGMSource.clip = bgmDic[bgmName] as AudioClip;
+            // No music playing -> play immediately
+            AttachBGMSource.clip = bgmDic[bgmName];
             AttachBGMSource.Play();
+            nextBGMName = "";
         }
-        //When a different BGM is playing, fade out the BGM that is playing before playing the next one.
-        //Ignore when the same BGM is playing
-        else if (AttachBGMSource.clip.name != bgmName)
+        else if (!sameClip)
         {
+            // Different music playing -> fade out then play
             nextBGMName = bgmName;
             FadeOutBGM(1f, 0.5f);
         }
-
+        // else: same clip already playing -> do nothing
     }
 
     public void FadeOutBGM(float fadeOutSpeed, float fadeInSpeed = 1f)
     {
-        bgmFadeSpeedRate = fadeOutSpeed;
-        fadeInSpeedRate = fadeInSpeed;
-        // lưu lại volume hiện tại để target
+        bgmFadeOutRate = fadeOutSpeed;
+        bgmFadeInRate = fadeInSpeed;
         targetVolume = AttachBGMSource.volume;
         isFadeOut = true;
+    }
+    public void PlayLoopSE(string name, float volume = 1f)
+    {
+        if (seDic.TryGetValue(name, out AudioClip clip))
+        {
+            if (loopSESource.isPlaying && loopSESource.clip == clip)
+                return;
+
+            loopSESource.clip = clip;
+            loopSESource.volume = volume;
+            loopSESource.loop = true;
+            loopSESource.Play();
+        }
+    }
+
+    public void StopLoopSE()
+    {
+        if (loopSESource.isPlaying)
+        {
+            loopSESource.Stop();
+        }
     }
 
     private void Update()
     {
-        // xử lý fade‑out
         if (isFadeOut)
         {
-            AttachBGMSource.volume -= Time.deltaTime * bgmFadeSpeedRate;
+            AttachBGMSource.volume -= Time.deltaTime * bgmFadeOutRate;
             if (AttachBGMSource.volume <= 0f)
             {
                 AttachBGMSource.Stop();
                 isFadeOut = false;
-
                 if (!string.IsNullOrEmpty(nextBGMName))
                 {
-                    // gán clip mới và play
                     AttachBGMSource.clip = bgmDic[nextBGMName];
                     AttachBGMSource.Play();
-                    // bắt đầu fade‑in
                     AttachBGMSource.volume = 0f;
                     isFadeIn = true;
                 }
             }
-            return;  // ưu tiên fade‑out trước
+            return;
         }
-
-        // xử lý fade‑in
         if (isFadeIn)
         {
-            AttachBGMSource.volume += Time.deltaTime * fadeInSpeedRate;
+            AttachBGMSource.volume += Time.deltaTime * bgmFadeInRate;
             if (AttachBGMSource.volume >= targetVolume)
             {
                 AttachBGMSource.volume = targetVolume;
@@ -143,27 +161,24 @@ public class AudioManager : BaseManager<AudioManager>
         }
     }
 
-    //public void ChangeBGMVolume(float BGMVolume)
-    //{
-    //    AttachBGMSource.volume = BGMVolume;
-    //    ObscuredPrefs.SetFloat(CONST.BGM_VOLUME_KEY, BGMVolume);
-    //}
 
-    //public void ChangeSEVolume(float SEVolume)
-    //{
-    //    AttachSESource.volume = SEVolume;
-    //    ObscuredPrefs.SetFloat(CONST.SE_VOLUME_KEY, SEVolume);
-    //}
+    public void PlayPlayerSound(string footstepSE, float volume = 1f)
+    {
+        if (!seDic.ContainsKey(footstepSE)) return;
 
-    //public void MuteBGM(bool isMute)
-    //{
-    //    AttachBGMSource.mute = isMute;
-    //    ObscuredPrefs.SetBool(CONST.BGM_MUTE_KEY, isMute);
-    //}
+        FootstepSource.volume = Mathf.Clamp01(volume); // gán trực tiếp volume
+        FootstepSource.PlayOneShot(seDic[footstepSE]);
+    }
 
-    //public void MuteSE(bool isMute)
-    //{
-    //    AttachSESource.mute = isMute;
-    //    ObscuredPrefs.SetBool(CONST.SE_MUTE_KEY, isMute);
-    //}
+
+    public void SetPlayerVolume(float volume)
+    {
+        var mixerGroup = FootstepSource.outputAudioMixerGroup;
+        if (mixerGroup != null ? mixerGroup.audioMixer : null != null)
+        {
+            float linear = Mathf.Clamp(volume, 0.0001f, 1f);
+            float dB = Mathf.Log10(linear) * 20f;
+            mixerGroup.audioMixer.SetFloat("FootstepVolume", dB);
+        }
+    }
 }

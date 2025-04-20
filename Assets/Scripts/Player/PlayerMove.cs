@@ -3,12 +3,21 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+public enum MOVESTATE
+{
+    DEFAULT = 0,
+    WALKING,
+    RUNNING,
+    JOGGING
+}
 public class PlayerMove : MonoBehaviour
 {
     [Header("Movement Data")]
     [SerializeField] private Vector2 inputVector;
     [SerializeField] private Vector2 smoothInputVector;
     [SerializeField] private Vector3 velocity;
+    [SerializeField] private MOVESTATE moveState;
     public Vector3 Velocity => velocity;
     [SerializeField] private CharacterController characterController;
     [SerializeField] private float m_SpeedMove = 5f;  // Tốc độ cơ bản khi di chuyển
@@ -96,7 +105,6 @@ public class PlayerMove : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_MOVE_STOP, ReceiverStateMove);
         }
     }
-
     public void PlayerMovement()
     {
         if (!canMove) return;
@@ -119,12 +127,26 @@ public class PlayerMove : MonoBehaviour
             ResetAnimatorParameters();
         }
 
-        velocity = (transform.forward * smoothInputVector.y + transform.right * smoothInputVector.x).normalized;
+        Vector3 camForward = mainCamera.transform.forward;
+        Vector3 camRight = mainCamera.transform.right;
+
+        camForward.y = 0f;
+        camRight.y = 0f;
+
+        camForward.Normalize();
+        camRight.Normalize();
+
+        Vector3 moveDir = camForward * smoothInputVector.y + camRight * smoothInputVector.x;
+        velocity = moveDir;
+        // Lấy input
+
+
 
         if (isMoving)
         {
             RotateTowardsCamera();
-            characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity);
+            characterController.Move(m_CurrentSpeed * Time.deltaTime * velocity.normalized);
+
         }
     }
     private void UpdateSpeedAndBlendTree()
@@ -164,14 +186,33 @@ public class PlayerMove : MonoBehaviour
 
         smoothInputVector = Vector2.ClampMagnitude(smoothInputVector, maxSpeed);
         m_SpeedBlendTree = smoothInputVector.magnitude;
+        // Cập nhật moveState tương ứng
+        if (m_IsPressButtonSwap)
+        {
+            moveState = MOVESTATE.WALKING;
+        }
+        else if (IsPressLeftShift && !isStaminaEmpty)
+        {
+            moveState = MOVESTATE.RUNNING;
+        }
+        else if (!IsPressLeftShift || isStaminaEmpty)
+        {
+            moveState = MOVESTATE.JOGGING;
+        }
+        else
+        {
+            moveState = MOVESTATE.DEFAULT;
+        }
     }
 
     private void UpdateAnimatorParameters()
     {
+        Vector2 dir = smoothInputVector.normalized;
+        float speed = smoothInputVector.magnitude;
         var animator = PlayerManager.instance.playerAnim.GetAnimator();
-        animator.SetFloat("MoveX", smoothInputVector.x, 0.2f, Time.deltaTime);
-        animator.SetFloat("MoveY", smoothInputVector.y, 0.2f, Time.deltaTime);
-        animator.SetFloat("Speed", m_SpeedBlendTree, 0.2f, Time.deltaTime);
+        animator.SetFloat("MoveX", dir.x, 0f, 0f);
+        animator.SetFloat("MoveY", dir.y, 0f, 0f);
+        animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
     }
 
     private void ResetAnimatorParameters()
@@ -233,4 +274,21 @@ public class PlayerMove : MonoBehaviour
             isStaminaEmpty = empty;
         }
     }
+    public void MoveSound()
+    {
+        if (AudioManager.HasInstance && moveState == MOVESTATE.JOGGING)
+        {
+            AudioManager.Instance.PlayPlayerSound("MoveSound", 0.3f);
+        }
+    }
+
+    public void RunningSound()
+    {
+        if (AudioManager.HasInstance && moveState == MOVESTATE.RUNNING)
+        {
+            Debug.Log("[RUN] Play RunSound at volume 0.5");
+            AudioManager.Instance.PlayPlayerSound("RunSound", 0.5f);
+        }
+    }
+
 }

@@ -26,6 +26,6 @@ MonoBehaviour:
     ItemDespri: "Khi s\u1EED d\u1EE5ng s\u1EBD t\u0103ng m\xE1u t\u01B0\u01A1ng \u1EE9ng
       30% m\xE1u t\u1ED1i \u0111a."
     CountExp: 0
-  _backupJson: "{\"itemID\":\"-SmallBottleHeal\",\"itemName\":\"B\xECnh M\xE1u Nh\u1ECF\",\"count\":5,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55582},\"typeItem\":2,\"percentIncrease\":0.30000001192092898,\"timeCoolDown\":0.5,\"itemUse\":1,\"ItemDespri\":\"Khi
+  _backupJson: "{\"itemID\":\"-SmallBottleHeal\",\"itemName\":\"B\xECnh M\xE1u Nh\u1ECF\",\"count\":5,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55604},\"typeItem\":2,\"percentIncrease\":0.30000001192092898,\"timeCoolDown\":0.5,\"itemUse\":1,\"ItemDespri\":\"Khi
     s\u1EED d\u1EE5ng s\u1EBD t\u0103ng m\xE1u t\u01B0\u01A1ng \u1EE9ng 30% m\xE1u
     t\u1ED1i \u0111a.\",\"CountExp\":0}"
