@@ -12,20 +12,15 @@ public class SpawnObjectVFX : MonoBehaviour
     [SerializeField] private GameObject m_ParentTranformObj;
     [SerializeField] private GameObject m_SpawnVFXPrefab;
     [SerializeField] private Slider m_UiTarget;
-    [SerializeField] private RectTransform sliderRectTransform;
     [SerializeField] private Animator animator;
     [SerializeField] private Canvas mainCanvas; // Canvas chính đang chứa UI
     [SerializeField] private Canvas m_PatCanvas; // Slider exp trong canvas chính
     [SerializeField] private Camera uiCamera;  // Camera dùng cho canvas (nếu sử dụng Render Mode Screen Space - Camera)
     [SerializeField] private int m_PoolSize = 10;
     [SerializeField] private Queue<GameObject> poolVfx = new();
+    [SerializeField] private RectTransform sliderRectTransform;
     [ShowInInspector, ReadOnly]
     private List<GameObject> vfxPoolList => new(poolVfx);
-
-    private void Awake()
-    {
-        //SceneManager.sceneLoaded += OnSceneLoaded;
-    }
 
     private void Start()
     {
@@ -39,7 +34,6 @@ public class SpawnObjectVFX : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.CAMERA_SEND_VALUE, ReceiverCamera);
             ListenerManager.Instance.BroadCast(ListenType.UI_SEND_CANVASMAIN, mainCanvas);
         }
-
         InitPoolVFX();
         StartCoroutine(DelayGetRectTransform());
     }
@@ -112,7 +106,7 @@ public class SpawnObjectVFX : MonoBehaviour
     private void MoveSLiderUI(RectTransform rectTransform)
     {
         Vector2 sliderRectPos = TranslatePosition();
-        Debug.Log("sliderRectPos" + sliderRectPos);
+
         rectTransform.DOAnchorPos(sliderRectPos, m_Speed)
             .SetEase(Ease.InBack)
             .OnComplete(() =>
@@ -127,7 +121,7 @@ public class SpawnObjectVFX : MonoBehaviour
             });
     }
 
-    private Vector2 TranslatePosition()
+    public Vector2 TranslatePosition()
     {
         // Lấy tọa độ world của slider
         Vector3 worldPos = sliderRectTransform.position;
@@ -155,7 +149,7 @@ public class SpawnObjectVFX : MonoBehaviour
         }
 
         // 3. Lúc này đã có thể lấy RectTransform an toàn
-        sliderRectTransform = m_UiTarget.GetComponent<RectTransform>();
+        //sliderRectTransform = m_UiTarget.GetComponent<RectTransform>();
 
         // 4. Nếu có Animator trong parent, lấy luôn (kèm null-check)
         if (m_UiTarget.GetComponentInParent<Animator>() != null)

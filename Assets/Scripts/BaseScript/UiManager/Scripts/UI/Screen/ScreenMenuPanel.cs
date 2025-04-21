@@ -37,7 +37,7 @@ public class ScreenMenuPanel : BaseScreen
 
     [Header("Video UI")]
     public VideoPlayer videoPlayer;
-    public string videoFileName = "Video/DragonGenesisBG.mp4";
+    public string videoFileName = "Video/MainVideo.mp4";
 
     private const float BUTTON_FADE_DURATION = 0.5f;
     private const float SWORD_MOVE_DURATION = 0.2f;

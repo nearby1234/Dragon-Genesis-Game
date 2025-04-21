@@ -33,7 +33,7 @@ public class QuestMissionOnePanel : BasePopup
     private void Start()
     {
         m_ButtonAccept.gameObject.SetActive(false);
-        m_QuestDataMissionOne = DataManager.Instance.GetQuestDataByID("-QuestMissionOne");
+        m_QuestDataMissionOne = DataManager.Instance.GetDataByID<QuestData,QuestType>("-QuestMissionOne");
         m_QuestDataMissionOne.isAcceptMission = false;
        
         m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);
@@ -52,6 +52,10 @@ public class QuestMissionOnePanel : BasePopup
     }
     private void OnClickAcceptButton()
     {
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
         m_HasAcceptMission = true;
         if(ListenerManager.HasInstance)
         {
@@ -98,6 +102,10 @@ public class QuestMissionOnePanel : BasePopup
     }
     private void OnButtonExit()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
         m_PlayerDialog.SetIsTalkingNPC(false);
         if (CameraManager.HasInstance)
         {

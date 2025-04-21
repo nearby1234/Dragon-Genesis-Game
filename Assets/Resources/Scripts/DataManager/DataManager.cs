@@ -82,14 +82,18 @@ public class DataManager : BaseManager<DataManager>
     //    Debug.Log("🔄 Data Restored to Original State!");
     //}
 
-
-
-    /// <summary>
-    /// Truy xuất asset theo kiểu T và giá trị khóa kiểu TEnum.
-    /// Ví dụ: BaseDataSingleton.Instance.GetData<CharacterData, CharacterType>(CharacterType.Warrior)
-    /// </summary>
-    /// 
-    public T GetData<T,TEnum>(TEnum key) where T : ScriptableObject , IEnumKeyed<TEnum> where TEnum : Enum
+    public T GetClonedData<T, TEnum>(TEnum key) where T : ScriptableObject, IEnumKeyed<TEnum> where TEnum : Enum
+    {
+        T asset = GetData<T, TEnum>(key);
+        if (asset != null)
+        {
+            // Clone bằng Instantiate
+            T clone = Instantiate(asset);
+            return clone;
+        }
+        return null;
+    }
+    private T GetData<T,TEnum>(TEnum key) where T : ScriptableObject , IEnumKeyed<TEnum> where TEnum : Enum
     {
         Type assetType = typeof(T);
         if(enumDataDictionary.TryGetValue(assetType,out Dictionary<Enum,ScriptableObject> subDict))
@@ -103,40 +107,37 @@ public class DataManager : BaseManager<DataManager>
         return null;
     }
 
-    /// <summary>
-    /// Trả về bản clone của asset được lấy qua GetData.
-    /// Điều này giúp tránh sửa đổi asset gốc trong runtime.
-    /// Ví dụ: DataManager.Instance.GetClonedData<QuestData, QuestType>(QuestType.MainQuest)
-    /// </summary>
-    public T GetClonedData<T, TEnum>(TEnum key) where T : ScriptableObject, IEnumKeyed<TEnum> where TEnum : Enum
+    public T GetDataByID<T, Tenum>(string questID) where T : ScriptableObject, IEnumKeyed<Tenum> where Tenum : Enum
     {
-        T asset = GetData<T, TEnum>(key);
-        if (asset != null)
-        {
-            // Clone bằng Instantiate
-            T clone = Instantiate(asset);
-            return clone;
-        }
-        return null;
-    }
+        Type assetType = typeof(T);
 
-    public QuestData GetQuestDataByID(string questID)
-    {
-        // Duyệt qua dictionary của DataManager để tìm QuestData có questID tương ứng.
-        foreach (var dict in enumDataDictionary.Values)
+        if (enumDataDictionary.TryGetValue(assetType, out Dictionary<Enum, ScriptableObject> subDict))
         {
-            foreach (var asset in dict.Values)
+            //  Chỉ lấy FieldInfo một lần
+            var idField = assetType.GetField("questID") ?? assetType.GetField("itemID");
+            if (idField == null)
             {
-                QuestData quest = asset as QuestData;
-                if (quest != null && quest.questID.Equals(questID))
+                Debug.LogWarning($"⚠️ Không tìm thấy trường 'questID' hoặc 'itemID' trong {assetType.Name}");
+                return null;
+            }
+
+            foreach (var item in subDict.Values)
+            {
+                if (item is T itemAsset)
                 {
-                    return Instantiate(quest);
+                    string idValue = idField.GetValue(itemAsset)?.ToString();
+                    if (string.Equals(idValue, questID, StringComparison.Ordinal))
+                    {
+                        return Instantiate(itemAsset);
+                    }
                 }
             }
         }
-        Debug.LogWarning($"Không tìm thấy QuestData với questID: {questID}");
+
+        Debug.LogWarning($"⚠️ Không tìm thấy {typeof(T).Name} với ID: {questID}");
         return null;
     }
+
 
     public Dictionary<Type,Dictionary<Enum,ScriptableObject>> GetDataDictionary()
     {

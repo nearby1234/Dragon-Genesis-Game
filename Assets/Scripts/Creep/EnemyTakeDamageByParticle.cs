@@ -10,7 +10,7 @@ public class EnemyTakeDamageByParticle : MonoBehaviour
         {
             if (DataManager.HasInstance)
             {
-                EnemyData dragonFireData = DataManager.Instance.GetData<EnemyData, EnemyType>(EnemyType.DragonFire);
+                EnemyData dragonFireData = DataManager.Instance.GetClonedData<EnemyData, EnemyType>(EnemyType.DragonFire);
                 if (dragonFireData != null)
                 {
                     m_FireBallDamage = dragonFireData.m_EffectDamage;

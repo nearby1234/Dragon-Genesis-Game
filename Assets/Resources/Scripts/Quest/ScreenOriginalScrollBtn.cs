@@ -23,7 +23,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
     }
     private void Start()
     {
-        if(image != null)
+        if (image != null)
         {
             image.color = new Color(1f, 1f, 1f, 0f);
         }
@@ -32,14 +32,22 @@ public class ScreenOriginalScrollBtn : BaseScreen
         button.onClick.AddListener(OnClickButtonShowPopupScrollView);
         InitObjDoMove();
     }
-   
     private void OnClickButtonShowPopupScrollView()
     {
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, true);
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
+
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupScrollMagic>();
         }
-        if(PlayerManager.HasInstance)
+        if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = true;
         }
@@ -52,7 +60,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         GameObject obj = Resources.Load<GameObject>(m_DOItemPrefabPath);
         if (obj != null)
         {
-            GameObject prefabs= Instantiate(obj, this.transform);
+            GameObject prefabs = Instantiate(obj, this.transform);
             if (prefabs.TryGetComponent<Image>(out var image))
             {
                 image.sprite = this.image.sprite;
@@ -60,15 +68,32 @@ public class ScreenOriginalScrollBtn : BaseScreen
             if (prefabs.TryGetComponent<RectTransform>(out var rectTransform))
             {
                 rectTransform.anchoredPosition = m_targetPos;
-                rectTransform.DOAnchorPos(new Vector2(0f,0f), 2f).SetEase(Ease.OutBack).onComplete += () =>
+                Sequence sequence = DOTween.Sequence();
+                sequence.AppendCallback(() =>
                 {
-                    rectTransform.DOScale(new Vector3(2f, 2f, 2f), 1f).SetEase(Ease.OutBack).onComplete += () =>
+                    if (AudioManager.HasInstance)
                     {
-                        Destroy(prefabs);
-                        this.image.color = new Color(1f, 1f, 1f, 1f);
-                        textMeshProUGUI.enabled = true;
-                    };
-                };
+                        AudioManager.Instance.PlaySE("WhooshMoveSound");
+                    }
+                });
+                sequence.Append(rectTransform.DOAnchorPos(new Vector2(0f, 0f), 2f).SetEase(Ease.OutBack));
+
+                sequence.AppendCallback(() =>
+                {
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE("WhooshScaleSound");
+                    }
+                   
+                });
+
+                sequence.Append(rectTransform.DOScale(new Vector3(2f, 2f, 2f), 1f).SetEase(Ease.OutBack));
+                sequence.AppendCallback(() =>
+                {
+                    Destroy(prefabs);
+                    this.image.color = new Color(1f, 1f, 1f, 1f);
+                    textMeshProUGUI.enabled = true;
+                });
             }
         }
     }

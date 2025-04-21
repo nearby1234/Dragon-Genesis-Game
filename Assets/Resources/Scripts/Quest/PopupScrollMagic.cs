@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -23,12 +24,21 @@ public class PopupScrollMagic : BasePopup
     private void Awake()
     {
         m_Animator = GetComponent<Animator>();
-        m_CurrentQuestData = QuestManager.Instance?.CurrentQuest;
+        m_CurrentQuestData = QuestManager.Instance != null ? QuestManager.Instance.CurrentQuest : null;
     }
 
     private void Start()
     {
         m_Animator.Play("MoveOutSide");
+
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ScrollSound");
+        }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, ReceiverPlayAnimMoveScroll);
+        }
 
         if (m_ExitBtn != null)
         {
@@ -64,18 +74,23 @@ public class PopupScrollMagic : BasePopup
         GetListItem(m_MissionItemObjectList, m_CurrentQuestData.ItemMission);
         InitItemObject(m_MissionItemObjectList, QUEST_ITEM_PREFAB_PATH, m_MisionItemParentObject, true);
     }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, ReceiverPlayAnimMoveScroll);
+        }
+    }
 
     public void OnClickBtnExitScrollView()
     {
-        this.Hide();
-        if (UIManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
-            UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+            AudioManager.Instance.PlaySE("ScrollSound");
         }
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = false;
-        }
+        m_Animator.Play("MoveCenter");
+        StartCoroutine(DelayHide());
+
     }
 
     private void GetListItem(List<QuestItemSO> questItems, List<QuestItemSO> questDatas)
@@ -121,6 +136,10 @@ public class PopupScrollMagic : BasePopup
     // Phương thức chỉ gửi sự kiện thông báo đã bấm nút nhận phần thưởng
     private void OnRewardBtnClick()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
         // Gọi xử lý nhận phần thưởng từ QuestManager (Controller)
         QuestManager.Instance.GrantReward(m_CurrentQuestData.bonus);
 
@@ -129,6 +148,35 @@ public class PopupScrollMagic : BasePopup
         if (m_RewardBtn.TryGetComponent<Image>(out Image buttonImage))
         {
             buttonImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
+        }
+    }
+    IEnumerator DelayHide()
+    {
+        yield return new WaitForSeconds(1f);
+        this.Hide();
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+        }
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false;
+        }
+    }
+    private void ReceiverPlayAnimMoveScroll(object value)
+    {
+        if (value is bool IsClick)
+        {
+            if (IsClick)
+            {
+                m_CurrentQuestData.isCompleteMission = true;
+                m_Animator.Play("MoveOutSide");
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ScrollSound");
+                }
+            }
+
         }
     }
 }

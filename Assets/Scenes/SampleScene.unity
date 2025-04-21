@@ -610,6 +610,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
+  _SliderPos: {fileID: 3671298205053726165}
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
@@ -1569,7 +1570,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -6594,12 +6595,12 @@ MonoBehaviour:
   m_ParentTranformObj: {fileID: 8745981791661090998}
   m_SpawnVFXPrefab: {fileID: 0}
   m_UiTarget: {fileID: 0}
-  sliderRectTransform: {fileID: 0}
   animator: {fileID: 0}
   mainCanvas: {fileID: 1007972246}
   m_PatCanvas: {fileID: 8094525902273372389}
   uiCamera: {fileID: 0}
   m_PoolSize: 10
+  sliderRectTransform: {fileID: 0}
 --- !u!1 &4034033362412892024
 GameObject:
   m_ObjectHideFlags: 0

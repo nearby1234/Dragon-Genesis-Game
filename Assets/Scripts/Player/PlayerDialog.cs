@@ -39,6 +39,10 @@ public class PlayerDialog : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
+            if(AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("HoverSound");
+            }
             m_IsPressButtonJ = true;
             SetIsTalkingNPC(true);
             if (PlayerManager.HasInstance)

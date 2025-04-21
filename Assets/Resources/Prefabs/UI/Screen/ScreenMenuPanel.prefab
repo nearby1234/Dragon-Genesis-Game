@@ -1212,7 +1212,7 @@ MonoBehaviour:
   m_SettingBtn: {fileID: 8314477431768384936}
   m_ExitGameBtn: {fileID: 1021515505396004336}
   videoPlayer: {fileID: 5686083579196224890}
-  videoFileName: Video/DragonGenesisBG.mp4
+  videoFileName: Video/MenuVideo.mp4
 --- !u!225 &923128730008235976
 CanvasGroup:
   m_ObjectHideFlags: 0

@@ -3,11 +3,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
+using Unity.VisualScripting;
 
 public class QuestManager : BaseManager<QuestManager>
 {
     [InlineEditor]
     [SerializeField] private QuestData currentQuest;
+    [SerializeField] private SpawnObjectVFX _SliderPos;
     public QuestData CurrentQuest => currentQuest;
     [InlineEditor]
     public List<QuestData> questList;
@@ -16,7 +18,7 @@ public class QuestManager : BaseManager<QuestManager>
     public string m_DOItemPrefabPath = "Prefabs/Inventory/DoSpite/DoSpite";
 
     // Các hằng số tween được định nghĩa lại ở đây để sử dụng trong GrantReward
-    private readonly Vector2 TWEEN_TARGET_POS = new Vector2(-400f, -490f);
+    private readonly Vector2 TWEEN_TARGET_POS = new(-400f, -490f);
     private const float TWEEN_DURATION = 2f;
 
     private Dictionary<string, int> initialItemCounts = new();
@@ -36,9 +38,7 @@ public class QuestManager : BaseManager<QuestManager>
                 item.questItemData.completionCount = 0;
             }
         }
-        // Backup số lượng ban đầu cho các item reward của currentQuest        
     }
-
     public void AcceptQuest(QuestData quest)
     {
         if (quest != null)
@@ -68,7 +68,7 @@ public class QuestManager : BaseManager<QuestManager>
                 if (questList[i].questID == currentQuest.questID)
                 {
                     currentQuest = questList[i + 1];
-                    if(currentQuest == null)
+                    if (currentQuest == null)
                     {
                         Debug.LogWarning("Không tìm thấy nhiệm vụ tiếp theo.");
                         return;
@@ -93,6 +93,7 @@ public class QuestManager : BaseManager<QuestManager>
 
         // Load prefab của phần thưởng
         GameObject prefab = Resources.Load<GameObject>(m_DOItemPrefabPath);
+        Transform rewardParent = UIManager.Instance.cPopup.transform;
         if (prefab == null)
         {
             Debug.LogError("Failed to load prefab for reward items.");
@@ -101,19 +102,8 @@ public class QuestManager : BaseManager<QuestManager>
 
         foreach (var item in reward.itemsReward)
         {
-            // Ở đây, ta khởi tạo object phần thưởng dưới Transform của UIManager (nếu có) để đảm bảo hiển thị đúng UI
-
-            Transform rewardParent;
-            if (UIManager.Instance.CurPopup != null)
-            {
-                rewardParent = UIManager.Instance.CurPopup.transform;
-            }
-            else
-            {
-                rewardParent = UIManager.Instance.cPopup.transform;
-            }
             GameObject itemObj = Instantiate(prefab, rewardParent);
-
+            Vector2 sliderPos = _SliderPos.TranslatePosition();
             if (itemObj.TryGetComponent<Image>(out Image image))
             {
                 image.sprite = item.questItemData.icon;
@@ -121,17 +111,34 @@ public class QuestManager : BaseManager<QuestManager>
 
             if (itemObj.TryGetComponent<RectTransform>(out RectTransform rectTransform))
             {
-                rectTransform.DOAnchorPos(TWEEN_TARGET_POS, TWEEN_DURATION)
-                    .SetEase(Ease.OutBack)
-                    .OnComplete(() =>
-                    {
-                        if (CurrentQuest != null && CurrentQuest.questID == "-QuestMissionOne" && UIManager.HasInstance)
+                if (item.questItemData.typeItem == TYPEITEM.ITEM_EXP)
+                {
+                    rectTransform.DOAnchorPos(sliderPos, TWEEN_DURATION)
+                      .SetEase(Ease.OutBack)
+                      .OnComplete(() =>
+                      {
+                          if (PlayerLevelManager.HasInstance)
+                          {
+                              PlayerLevelManager.Instance.AddExp(item.questItemData.CountExp);
+                          }
+                          Destroy(itemObj);
+                      });
+                }
+                else
+                {
+                    rectTransform.DOAnchorPos(TWEEN_TARGET_POS, TWEEN_DURATION)
+                        .SetEase(Ease.OutBack)
+                        .OnComplete(() =>
                         {
-                            UIManager.Instance.ShowScreen<ScreenIconInventory>();
-                            UIManager.Instance.ShowScreen<ScreenBox>();
-                        }
-                        Destroy(itemObj);
-                    });
+                            if (CurrentQuest != null && CurrentQuest.questID == "-QuestMissionOne" && UIManager.HasInstance)
+                            {
+                                UIManager.Instance.ShowScreen<ScreenIconInventory>();
+                                UIManager.Instance.ShowScreen<ScreenBox>();
+                            }
+                            Destroy(itemObj);
+                        });
+                }
+
             }
         }
 
