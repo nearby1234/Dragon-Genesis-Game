@@ -70,7 +70,7 @@ public class PlayerManager : BaseManager<PlayerManager>
             StartCoroutine(DelayHideAnimator());
             return;
         }
-        if (EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() || isInteractingWithUI)
         {
             playerDamage.DegreeEventClickMouse();
             if(CameraManager.HasInstance)

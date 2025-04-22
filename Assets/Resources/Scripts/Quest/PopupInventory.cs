@@ -121,19 +121,13 @@ public class PopupInventory : BasePopup
         }
     }
 
-    /// <summary>
-    /// Gán các icon (QuestItem) cho các InventorySlot trống.
-    /// </summary>
-    /// <param name="listIcon">Danh sách các QuestItem cần hiển thị</param>
-    /// <param name="itemInventory">Danh sách các slot của inventory</param>
     private void AddItems(List<QuestItemSO> listIcon, List<InventorySlot> itemInventory)
     {
         foreach (var questItem in listIcon)
         {
-            if(questItem.questItemData.typeItem.Equals(TYPEITEM.ITEM_MISSION))
-            {
+            var type = questItem.questItemData.typeItem;
+            if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
                 continue;
-            }    
             foreach (InventorySlot slot in itemInventory)
             {
                 if (slot.IsEmpty)
