@@ -22,9 +22,10 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
         }
     }    
     [SerializeField] private int currentExp = 0;
-    //[SerializeField] private int expNextLevel;
+    [SerializeField] private int expNextLevel;
     [SerializeField] private GameObject m_LevelUpFx;
     public int CurrentExp => currentExp;
+    public int ExpNextLevel => expNextLevel; // giá trị exp cần để lên cấp tiếp theo
     private float m_DisPlayExp;
     public float DisPlayExp => m_DisPlayExp; // giá trị exp hiển thị trên UI
     private Coroutine expLerpRoutine;
@@ -51,7 +52,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
     }
     private void Start()
     {
-        //expNextLevel = m_CurrentLevelUp.expNeedLvup;
+        expNextLevel = m_CurrentLevelUp.expNeedLvup;
         m_LevelUpFx = EffectManager.Instance.GetPrefabs("Lvlup"); // Prefab dạng GameObject
     }
     public void AddExp(int amount)
@@ -83,7 +84,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
 
     private void CheckLevelUp()
     {
-      if(currentExp>= m_CurrentLevelUp.expNeedLvup)
+      while(currentExp>= m_CurrentLevelUp.expNeedLvup)
         {
             currentExp -= m_CurrentLevelUp.expNeedLvup;
             m_DisPlayExp = currentExp;
@@ -92,13 +93,13 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
             if (currentLevel < m_ListlevelUp.Count)
             {
                 m_CurrentLevelUp = m_ListlevelUp[currentLevel - 1];
-                
             }
             else
             {
                 // Đã đạt đến cấp tối đa
                 currentLevel = m_ListlevelUp.Count;
                 currentExp = 0;
+                break;
             }
             LevelUpFX();
         }

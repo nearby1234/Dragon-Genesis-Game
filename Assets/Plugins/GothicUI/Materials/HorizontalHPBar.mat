@@ -2,20 +2,24 @@
 %TAG !u! tag:unity3d.com,2011:
 --- !u!21 &2100000
 Material:
-  serializedVersion: 6
+  serializedVersion: 8
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: LeftHp
-  m_Shader: {fileID: 4800000, guid: b60d39e2fdb4eb34f839557f23aba3e1, type: 3}
-  m_ShaderKeywords: 
+  m_Name: HorizontalHPBar
+  m_Shader: {fileID: 4800000, guid: 3490a4ec0f6f83a4db42f14b279104e7, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
+  m_ValidKeywords: []
+  m_InvalidKeywords: []
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -40,9 +44,13 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: d550dc6e8a50113498619a4b61221e04, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _MaskTexture:
+        m_Texture: {fileID: 2800000, guid: 019625b7eeec5e84095d13db4bc29f5b, type: 3}
+        m_Scale: {x: 2, y: 1.2}
+        m_Offset: {x: 0, y: -0.1}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -55,27 +63,19 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SecondTex:
-        m_Texture: {fileID: 2800000, guid: 77fcd144dd09c434f8e74802b9c253ac, type: 3}
-        m_Scale: {x: 2.26, y: 3.48}
-        m_Offset: {x: 0, y: 0}
-    - _ThirdTex:
-        m_Texture: {fileID: 2800000, guid: a56e674bcf74dee43bbfaed5f5f33dfa, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
+    m_Ints: []
     m_Floats:
-    - _Brightness: 12.4
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _FadeAreaHeight: 0.137
-    - _FillLevel: 0.664
+    - _FillLevel: 0.368
+    - _FlashesMultiplier: 1.17
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HotLineBrightness: 2.81
-    - _HotLineHeight: 0.0296
+    - _HotLineBrightness: 1
+    - _HotLineHeight: 0.01
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
@@ -84,13 +84,14 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _WavesMultiplier: -0.28
     - _ZWrite: 1
     m_Colors:
-    - _AlphaColor: {r: 1, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _FlashNoiseSize: {r: 1, g: 1, b: 1, a: 1}
     - _HotLineColor: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1, g: 0, b: 0, a: 1}
-    - _Speed1: {r: 1, g: -0.5, b: 0, a: 0}
-    - _Speed2: {r: -2, g: 3, b: 0, a: 0}
-    - _Speed3: {r: 0.1, g: 0.3, b: 0, a: 0}
+    - _NoiseSize: {r: 1, g: 0.1, b: 0.4, a: 0.06}
+    - _NoiseSpeed: {r: 1, g: 1, b: 2, a: 1}
+  m_BuildTextureStacks: []
+  m_AllowLocking: 1

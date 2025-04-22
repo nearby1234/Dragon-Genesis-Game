@@ -13,6 +13,7 @@ public class ScreenPlayerImformation : BaseScreen
     [SerializeField] private TextMeshProUGUI m_HealValueTxt;
     [SerializeField] private TextMeshProUGUI m_ManaValueTxt;
     [SerializeField] private TextMeshProUGUI m_StaminaValueTxt;
+    [SerializeField] private TextMeshProUGUI m_ExpValueTxt;
     [SerializeField] private MicroBar m_HealBarValue;
     [SerializeField] private MicroBar m_ManaBarValue;
     [SerializeField] private MicroBar m_StaminaBarValue;
@@ -22,7 +23,8 @@ public class ScreenPlayerImformation : BaseScreen
     private float m_HealValueUpdate;
     private float m_ManaValueUpdate;
     private float m_StaminaValueUpdate;
-
+    private float m_ExpValueMax;
+    private float m_ExpValueUpdate;
 
     private void Start()
     {
@@ -39,11 +41,12 @@ public class ScreenPlayerImformation : BaseScreen
     }
     private void Update()
     {
+        m_ExpValueMax = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        m_ExpValueUpdate = PlayerLevelManager.Instance.DisPlayExp;
         UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
         UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
         UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
-        //m_HealValueTxt.text = $"{m_HealValueUpdate} / {m_HealValueMax} ";
-        //m_StaminaValueTxt.text = $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ";
+        UpdateText(m_ExpValueTxt, $"{(int)m_ExpValueUpdate} / {m_ExpValueMax} ");
         UpdateValue();
     }
     private void Initialized()
@@ -52,6 +55,10 @@ public class ScreenPlayerImformation : BaseScreen
         UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
         UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
         UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
+        UpdateText(m_ExpValueTxt, $"{(int)m_ExpValueUpdate} / {m_ExpValueMax} ");
+        m_ExpValueMax = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+        m_ExpValueUpdate = PlayerLevelManager.Instance.DisPlayExp;
+
     }
     private void UpdateValue()
     {
@@ -105,48 +112,58 @@ public class ScreenPlayerImformation : BaseScreen
     {
         if (value != null && value is int maxHeal)
         {
-            m_HealBarValue.Initialize(maxHeal); // Thiết lập max cho thanh
             m_HealValueMax = maxHeal;
+            float ratio = m_HealValueUpdate / m_HealValueMax;
+            m_HealBarValue.Initialize(ratio); // Thiết lập max cho thanh
         }
     }
     private void UpdatePlayerHealValue(object value)
     {
         if (value != null && value is int currentHeal)
         {
-            m_HealBarValue.UpdateBar(currentHeal);
             m_HealValueUpdate = currentHeal;
+            float ratio = (float)m_HealValueUpdate / m_HealValueMax;
+            m_HealBarValue.UpdateBar(ratio);
         }
     }
     private void ReceiverPlayerStaminaValue(object value)
     {
         if (value != null && value is float maxStamina)
         {
-            m_StaminaBarValue.Initialize(maxStamina); // Thiết lập max cho thanh
             m_StaminaValueMax = maxStamina;
+            float ratio = m_StaminaValueUpdate / m_StaminaValueMax;
+            m_StaminaBarValue.Initialize(ratio); // Thiết lập max cho thanh
+           
         }
     }
     private void UpdatePlayerStaminaValue(object value)
     {
         if (value != null && value is float currentStamina)
         {
-            m_StaminaBarValue.UpdateBar(currentStamina, true);
             m_StaminaValueUpdate = currentStamina;
+            float ratio = m_StaminaValueUpdate / m_StaminaValueMax;
+            m_StaminaBarValue.UpdateBar(ratio, true);
+            
         }
     }
     private void ReceiverPlayerManaValue(object value)
     {
         if(value != null && value is float maxMana)
         {
-            m_ManaBarValue.Initialize(maxMana); // Thiết lập max cho thanh
             m_ManaValueMax = maxMana;
+            float ratio = m_ManaValueUpdate / m_ManaValueMax;
+            m_ManaBarValue.Initialize(ratio); // Thiết lập max cho thanh
+         
         }
     }
     private void UpdatePlayerManaValue(object value)
     {
         if(value != null && value is float currentMana)
         {
-            m_ManaBarValue.UpdateBar(currentMana);
             m_ManaValueUpdate = currentMana;
+            float ratio = m_ManaValueUpdate / m_ManaValueMax;
+            m_ManaBarValue.UpdateBar(ratio);
+           
         }
     }
     private void UpdateText(TextMeshProUGUI textMeshProUGUI, string content)

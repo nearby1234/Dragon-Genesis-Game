@@ -84,6 +84,7 @@ public class PopupCharacterPanel : BasePopup
             m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         }
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
+        m_PointCurrentValue = m_PointDefaultValue;
         m_PointTxt.text = $"Points: {m_PointDefaultValue}";
     }
     private void InitializeStats()

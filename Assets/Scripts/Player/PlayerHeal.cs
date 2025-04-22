@@ -6,8 +6,8 @@ public class PlayerHeal : MonoBehaviour
     [SerializeField] private int m_PlayerCurrentHeal;
     [SerializeField] private int m_PlayerHealBase; // Giá trị hồi máu cơ bản
     [SerializeField] private int m_PlusHealValue; // Giá trị hồi máu cộng thêm
-    [SerializeField] private int m_PlayerMaxHeal; // Giá trị hồi máu cộng thêm
-    
+    [SerializeField] private int m_PlayerMaxHeal; // Máu tối đa của player
+
     [SerializeField] private bool m_IsPlayerDeath;
     public bool m_IsDamaging = false;
     public int PlayerHealValue
@@ -15,6 +15,7 @@ public class PlayerHeal : MonoBehaviour
         get => m_PlayerCurrentHeal;
         set
         {
+            if (m_PlayerCurrentHeal == value) return;
             m_PlayerCurrentHeal = value;
             UpdateHealUI(); // gửi UI khi set
         }
