@@ -89,6 +89,10 @@ public class PopupScrollMagic : BasePopup
             AudioManager.Instance.PlaySE("ScrollSound");
         }
         m_Animator.Play("MoveCenter");
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
         StartCoroutine(DelayHide());
 
     }

@@ -186,6 +186,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_IconButton: {fileID: 1562595171641080990}
+  m_ButtonPress:
+    m_Name: Button Press
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: fe4ab601-54e7-484e-b80a-008192411074
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: ebe009ea-15fc-4773-b4e1-b27b26820958
+      m_Path: <Keyboard>/i
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
+    m_Flags: 0
   m_IconPosition: {x: -400, y: -490}
 --- !u!1 &9222739103786623123
 GameObject:

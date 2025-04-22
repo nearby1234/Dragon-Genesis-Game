@@ -43,6 +43,10 @@ public class PlayerDialog : MonoBehaviour
             {
                 AudioManager.Instance.PlaySE("HoverSound");
             }
+            if(GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
             m_IsPressButtonJ = true;
             SetIsTalkingNPC(true);
             if (PlayerManager.HasInstance)

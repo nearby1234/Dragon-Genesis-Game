@@ -39,6 +39,10 @@ public class PopupCharacterPanel : BasePopup
     }
     public void OnExitButton()
     {
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
         this.Hide();
     }
     private void RegisterListeners()

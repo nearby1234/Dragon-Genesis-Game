@@ -748,6 +748,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ExpBar: {fileID: 2308494716011827966}
   m_CharacterStatsBtn: {fileID: 7273399703114577299}
+  m_ButtonPress:
+    m_Name: Button Press
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 8f615cf9-da09-422d-8254-d5095521122b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3cd6da6f-ed45-498d-8faf-222d3b51b6ea
+      m_Path: <Keyboard>/u
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
+    m_Flags: 0
   m_LevelTxt: {fileID: 1403550073416987203}
   m_HealValueTxt: {fileID: 6559383463707358928}
   m_ManaValueTxt: {fileID: 1566110088948649876}

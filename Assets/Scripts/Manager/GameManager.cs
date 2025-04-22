@@ -30,6 +30,10 @@ public class GameManager : BaseManager<GameManager>
             m_GameState = value;
         }
     }
+    private void Start()
+    {
+        m_GameState = GAMESTATE.MENULOADING;
+    }
 
     protected override void Awake()
     {
@@ -41,27 +45,16 @@ public class GameManager : BaseManager<GameManager>
         Debug.unityLogger.logEnabled = false;   
 #endif
     }
-    private void Start()
+
+    public void HideCursor()
     {
-        m_GameState = GAMESTATE.MENULOADING;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
-    //private void GetChildNPC()
-    //{
-    //    GameObject[] npcs = GameObject.FindGameObjectsWithTag("NPC");
-    //    foreach (GameObject npc in npcs)
-    //    {
-    //        npcList.Add(npc);
-    //    }
-    //}
-    //public GameObject GetNPC(string npcName)
-    //{
-    //    foreach (GameObject npc in npcList)
-    //    {
-    //        if (npc.name == npcName)
-    //        {
-    //            return npc;
-    //        }
-    //    }
-    //    return null;
-    //}
+    public void ShowCursor()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+    }
+   
 }

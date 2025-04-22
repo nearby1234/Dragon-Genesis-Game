@@ -56,6 +56,10 @@ public class QuestMissionOnePanel : BasePopup
         {
             AudioManager.Instance.PlaySE("ClickSound");
         }
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
         m_HasAcceptMission = true;
         if(ListenerManager.HasInstance)
         {

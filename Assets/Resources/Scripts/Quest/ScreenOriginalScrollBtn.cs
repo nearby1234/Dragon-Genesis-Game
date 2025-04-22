@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Collections;
 using TMPro;
+using UnityEngine.InputSystem;
 
 public class ScreenOriginalScrollBtn : BaseScreen
 {
@@ -13,6 +14,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
     private readonly string m_DOItemPrefabPath = QuestManager.Instance.m_DOItemPrefabPath;
     [SerializeField] private Vector3 m_Offset;
     [SerializeField] private Vector2 m_targetPos;
+    [SerializeField] private InputAction m_ButtonPress;
 
     private void Awake()
     {
@@ -23,16 +25,23 @@ public class ScreenOriginalScrollBtn : BaseScreen
     }
     private void Start()
     {
+        m_ButtonPress.Enable();
+        m_ButtonPress.performed += OnClickButtonShowPopupScrollView;
         if (image != null)
         {
             image.color = new Color(1f, 1f, 1f, 0f);
         }
         textMeshProUGUI.enabled = false;
         m_RectTransform.anchoredPosition3D = m_Offset;
-        button.onClick.AddListener(OnClickButtonShowPopupScrollView);
+        //button.onClick.AddListener(OnClickButtonShowPopupScrollView);
         InitObjDoMove();
     }
-    private void OnClickButtonShowPopupScrollView()
+    private void OnDestroy()
+    {
+        m_ButtonPress.Disable();
+        m_ButtonPress.performed -= OnClickButtonShowPopupScrollView;
+    }
+    private void OnClickButtonShowPopupScrollView(InputAction.CallbackContext callback)
     {
         if(ListenerManager.HasInstance)
         {
@@ -50,6 +59,10 @@ public class ScreenOriginalScrollBtn : BaseScreen
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = true;
+        }
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.ShowCursor();
         }
 
 

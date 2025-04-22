@@ -1,12 +1,14 @@
 using Microlight.MicroBar;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 public class ScreenPlayerImformation : BaseScreen
 {
     [SerializeField] private Slider m_ExpBar;
     [SerializeField] private Button m_CharacterStatsBtn;
+    [SerializeField] private InputAction m_ButtonPress;
     [SerializeField] private TextMeshProUGUI m_LevelTxt;
     [SerializeField] private TextMeshProUGUI m_HealValueTxt;
     [SerializeField] private TextMeshProUGUI m_ManaValueTxt;
@@ -24,11 +26,15 @@ public class ScreenPlayerImformation : BaseScreen
 
     private void Start()
     {
+        m_ButtonPress.Enable();
+        m_ButtonPress.performed += (callback) => OnClickButton();
         RegisterListeners();
         Initialized();
     }
     private void OnDestroy()
     {
+        m_ButtonPress.Disable();
+        m_ButtonPress.performed -= (callback) => OnClickButton();
         UnRegisterListeners();
     }
     private void Update()
@@ -46,17 +52,6 @@ public class ScreenPlayerImformation : BaseScreen
         UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
         UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
         UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
-        m_CharacterStatsBtn.onClick.AddListener(() =>
-        {
-            if (UIManager.HasInstance)
-            {
-                UIManager.Instance.ShowPopup<PopupCharacterPanel>();
-            }
-            if(AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlaySE("ClickSound");
-            }               
-        });
     }
     private void UpdateValue()
     {
@@ -89,6 +84,21 @@ public class ScreenPlayerImformation : BaseScreen
             ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdatePlayerStaminaValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdatePlayerManaValue);
+        }
+    }
+    public void OnClickButton()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupCharacterPanel>();
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
+        if(GameManager.HasInstance)
+        {
+            GameManager.Instance.ShowCursor();
         }
     }
     public void ReceiverPlayerHealValue(object value)

@@ -136,6 +136,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Offset: {x: 0, y: 200, z: 0}
   m_targetPos: {x: 900, y: 200}
+  m_ButtonPress:
+    m_Name: Button Press
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 54cc8d22-5f74-4df3-bb58-36d93ac38d3a
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 3421de98-62e9-4706-b78e-eb651999e172
+      m_Path: <Keyboard>/m
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Button Press
+      m_Flags: 0
+    m_Flags: 0
 --- !u!1 &3814643459912487410
 GameObject:
   m_ObjectHideFlags: 0

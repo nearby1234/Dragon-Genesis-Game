@@ -65,22 +65,18 @@ public class ScreenLoadingPanel : BaseScreen
         asyncOp.allowSceneActivation = true;
         if (AudioManager.HasInstance)
         {
-            AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK",true);
+            AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK", true);
         }
         canvasGroup.DOFade(0, 1f).OnComplete(() =>
         {
             if (GameManager.HasInstance)
             {
-                // Gán trực tiếp vào property của GameManager
                 GameManager.Instance.GameState = GAMESTATE.START;
 
-                // Bây giờ mới check, và do đúng là START nên sẽ vào block
                 if (GameManager.Instance.GameState == GAMESTATE.START)
                 {
-                    if (UIManager.HasInstance)
-                        UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
-
-                    
+                    UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
+                    GameManager.Instance.HideCursor();
                 }
             }
         });
