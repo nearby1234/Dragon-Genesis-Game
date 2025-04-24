@@ -5,8 +5,9 @@ public class PlayerMana : MonoBehaviour
     [SerializeField] private float m_MaxMana; // Maximum mana
     [SerializeField] private float m_CurrentMana; // Current mana
     [SerializeField] private float m_ManaBase; // Base mana
-    [SerializeField] private float m_PlusHealValue; // Additional mana value
+    [SerializeField] private float m_PlusManaValue; // Additional mana value
 
+    public int PlusManaValue => (int)m_PlusManaValue; // Property to access the additional mana value
     private void Start()
     {
         m_ManaBase = PlayerManager.instance.PlayerStatSO.m_PlayerMana;
@@ -97,7 +98,7 @@ public class PlayerMana : MonoBehaviour
         if (value is StatPointUpdateData data && data.StatName == "IntelligentStatsTxt")
         {
             // Cập nhật max heal mới dựa trên điểm stat
-            int newMax =(int) m_ManaBase + (data.Point *(int) m_PlusHealValue);
+            int newMax =(int) m_ManaBase + (data.Point *(int)m_PlusManaValue);
             m_MaxMana = newMax;
 
             

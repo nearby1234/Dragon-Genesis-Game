@@ -76,6 +76,27 @@ public class SpawnObjectVFX : MonoBehaviour
         rectTransform.anchoredPosition = Vector2.zero;
         poolVfx.Enqueue(rectTransform.gameObject);
     }
+    public Vector2 TranslatePosition()
+    {
+        // Lấy tọa độ world của slider
+        Vector3 worldPos = sliderRectTransform.position;
+        // Chuyển world position sang screen position
+        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(uiCamera, worldPos);
+        // Chuyển screen position thành local position theo canvas chính
+        Vector2 canvasLocalPos;
+        RectTransform canvasRect = mainCanvas.GetComponent<RectTransform>();
+        // Nếu canvas có camera (Screen Space - Camera) thì truyền vào, nếu không (Overlay) truyền null
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, uiCamera, out canvasLocalPos);
+        return canvasLocalPos;
+    }
+
+    public void PlayAnimationFade()
+    {
+        if (animator != null)
+        {
+            animator.Play("Fade");
+        }
+    }    
 
     private void InitPoolVFX()
     {
@@ -115,25 +136,13 @@ public class SpawnObjectVFX : MonoBehaviour
                 {
                     PlayerLevelManager.Instance.AddExp(PlayerLevelManager.Instance.ExpOrbValue);
                 }
-                animator.Play("Fade");
+                PlayAnimationFade();
 
                 ReturnObjectToPool(rectTransform);
             });
     }
 
-    public Vector2 TranslatePosition()
-    {
-        // Lấy tọa độ world của slider
-        Vector3 worldPos = sliderRectTransform.position;
-        // Chuyển world position sang screen position
-        Vector2 screenPos = RectTransformUtility.WorldToScreenPoint(uiCamera, worldPos);
-        // Chuyển screen position thành local position theo canvas chính
-        Vector2 canvasLocalPos;
-        RectTransform canvasRect = mainCanvas.GetComponent<RectTransform>();
-        // Nếu canvas có camera (Screen Space - Camera) thì truyền vào, nếu không (Overlay) truyền null
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(canvasRect, screenPos, uiCamera, out canvasLocalPos);
-        return canvasLocalPos;
-    }
+   
     private IEnumerator DelayGetRectTransform()
     {
         // 1. Chờ game state chuyển qua khỏi MENULOADING

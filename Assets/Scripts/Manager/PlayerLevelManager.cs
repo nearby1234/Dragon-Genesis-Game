@@ -8,16 +8,21 @@ using System.Collections;
 
 public class PlayerLevelManager : BaseManager<PlayerLevelManager>
 {
+    private int totalStatPoints = 0;
+    public int TotalStatPoints => totalStatPoints;
     [SerializeField] private int currentLevel = 1;
     public int CurrentLevel
     {
         get => currentLevel;
         set
         {
+            int delta = value - currentLevel;
             currentLevel = value;
-            if(ListenerManager.HasInstance)
+            if (delta > 0)
             {
-                ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_LEVEL, currentLevel); // Gửi thông báo đến UI về cấp độ hiện tại
+                totalStatPoints += 5 * delta;
+                if (ListenerManager.HasInstance)
+                    ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_LEVEL, totalStatPoints);
             }
         }
     }    
@@ -66,6 +71,10 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
 
         expLerpRoutine = StartCoroutine(SmoothExpIncrease());
 
+    }
+    public void UpdateTotalPoint(int valuePoint)
+    {
+        totalStatPoints = valuePoint;
     }
     private IEnumerator SmoothExpIncrease()
     {
@@ -132,4 +141,5 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
             m_ListlevelUp.Add(level);
         }
     }
+    
 }

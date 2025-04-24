@@ -121,6 +121,10 @@ public class QuestManager : BaseManager<QuestManager>
                           {
                               PlayerLevelManager.Instance.AddExp(item.questItemData.CountExp);
                           }
+                          if(UIManager.HasInstance)
+                          {
+                              UIManager.Instance.SpawnObjectVFXPrefab.PlayAnimationFade();
+                          }
                           Destroy(itemObj);
                       });
                 }

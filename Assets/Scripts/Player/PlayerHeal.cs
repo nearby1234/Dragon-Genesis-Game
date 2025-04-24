@@ -20,6 +20,8 @@ public class PlayerHeal : MonoBehaviour
             UpdateHealUI(); // gửi UI khi set
         }
     }
+    public int PlusHealValue => m_PlusHealValue;
+
 
     private void Start()
     {
@@ -89,12 +91,8 @@ public class PlayerHeal : MonoBehaviour
         if (value is StatPointUpdateData data && data.StatName == "HealStatsTxt")
         {
             // Cập nhật max heal mới dựa trên điểm stat
-            int newMax = m_PlayerHealBase + (data.Point * m_PlusHealValue);
-            m_PlayerMaxHeal = newMax;
-
-            // Lưu ý: Nếu người chơi đang có current heal ở mức thấp, bạn có thể giữ nguyên hoặc làm gì đó khác (ví dụ: không tự động hồi đầy)
-            // Nếu bạn muốn current heal không thay đổi, hãy comment dòng sau:
-            // m_PlayerCurrentHeal = newMax;
+            int newMax = m_PlayerHealBase + (data.Point * m_PlusHealValue); // tính toán điểm được cộng
+            m_PlayerMaxHeal = newMax; // gán điểm đã cộng vào player max heal
 
             // Broadcast max heal mới cho UI
             if (ListenerManager.HasInstance)

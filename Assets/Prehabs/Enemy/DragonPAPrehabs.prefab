@@ -1498,6 +1498,7 @@ GameObject:
   - component: {fileID: 1757138461758447002}
   - component: {fileID: 8521786247931329567}
   - component: {fileID: 2580456607748858738}
+  - component: {fileID: 2435425936097312974}
   m_Layer: 7
   m_Name: DragonPanel
   m_TagString: Untagged
@@ -1578,6 +1579,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BatMicroBar: {fileID: 0}
   m_EnemyHeal: {fileID: 0}
+  canvasGroup: {fileID: 0}
+--- !u!225 &2435425936097312974
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6456765522479610722}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6910562150147660841
 GameObject:
   m_ObjectHideFlags: 0
@@ -1600,7 +1614,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7765746994098836329
 Transform:
   m_ObjectHideFlags: 0
@@ -1736,6 +1750,7 @@ MonoBehaviour:
   enemyDetecPlayer: {fileID: 0}
   enemyCollider: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 827a2eb0a66503543a1f5fe3c8f7d6c8, type: 2}
+  batPanel: {fileID: 2580456607748858738}
 --- !u!114 &1721459334361679429
 MonoBehaviour:
   m_ObjectHideFlags: 0

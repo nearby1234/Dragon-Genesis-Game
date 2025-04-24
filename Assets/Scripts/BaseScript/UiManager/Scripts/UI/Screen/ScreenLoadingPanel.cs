@@ -4,16 +4,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.Video;
 
 public class ScreenLoadingPanel : BaseScreen
 {
     [SerializeField] private TextMeshProUGUI m_TxtProgress;
     [SerializeField] private Slider m_ProgressSlider;
     [SerializeField] private Image m_BG;
+    [Header("Video UI")]
+    public VideoPlayer videoPlayer;
+    public string videoFileName = "Video/LoadingVideo.mp4";
 
+    private void Awake()
+    {
+        videoPlayer = videoPlayer != null ? videoPlayer : GetComponent<VideoPlayer>();
+    }
     private void Start()
     {
+        InitializeVideoPlayer();
         StartCoroutine(LoadScene());
+    }
+    private void InitializeVideoPlayer()
+    {
+        string path = System.IO.Path.Combine(Application.streamingAssetsPath, videoFileName);
+        videoPlayer.url = path;
+        videoPlayer.Play();
     }
     public IEnumerator LoadScene()
     {

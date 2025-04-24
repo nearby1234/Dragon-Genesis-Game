@@ -16,6 +16,7 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int m_PlayerDamage;
     [SerializeField] private int m_PlayerDamageBase; // Giá trị damage cơ bản
     [SerializeField] private int m_PlusDamageValue;
+    public int PlusDamageValue => m_PlusDamageValue; // Giá trị damage cộng thêm
 
     private Animator playerAnimator; // Animator của player
 

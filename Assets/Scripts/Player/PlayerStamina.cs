@@ -1,8 +1,5 @@
 using System.Collections;
-using UnityEditor.Experimental;
 using UnityEngine;
-using UnityEngine.SearchService;
-using static UnityEngine.ParticleSystem;
 
 public class PlayerStamina : MonoBehaviour
 {
@@ -19,6 +16,8 @@ public class PlayerStamina : MonoBehaviour
     [SerializeField] private GameObject m_effectStamina; // Stamina effect prefab
 
     private Coroutine regenCoroutine;
+
+    public int PlusStaminaValue => (int)m_PlusStaminaValue; // Property to access the additional stamina value
     private void Start()
     {
         m_StaminaBase = PlayerManager.instance.PlayerStatSO.m_PlayerStamina;

@@ -1698,6 +1698,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   currentExp: 0
+  expNextLevel: 0
   m_LevelUpFx: {fileID: 0}
   expLerpSpeed: 200
   m_ListlevelUp: []

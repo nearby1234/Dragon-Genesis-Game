@@ -5,12 +5,15 @@ public class BatPanel : MonoBehaviour
 {
     [SerializeField] private MicroBar m_BatMicroBar;
     [SerializeField] private EnemyHeal m_EnemyHeal;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     private void Awake()
     {
         m_BatMicroBar = GetComponentInChildren<MicroBar>();
         m_EnemyHeal = GetComponentInParent<EnemyHeal>();
-       
+        canvasGroup = GetComponent<CanvasGroup>();
+
+
     }
     private void Start()
     {
@@ -48,5 +51,12 @@ public class BatPanel : MonoBehaviour
                 m_BatMicroBar.UpdateBar((float)enemyHealValue);
             }
         }
+    }
+    public void HideHeathlyBar()
+    {
+        if (canvasGroup == null) return;
+        canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }

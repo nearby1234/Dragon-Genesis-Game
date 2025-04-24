@@ -14580,6 +14580,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
+  _SliderPos: {fileID: 0}
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
@@ -29325,12 +29326,12 @@ MonoBehaviour:
   m_ParentTranformObj: {fileID: 1002073782}
   m_SpawnVFXPrefab: {fileID: 0}
   m_UiTarget: {fileID: 0}
-  sliderRectTransform: {fileID: 0}
   animator: {fileID: 0}
   mainCanvas: {fileID: 8432376281706481514}
   m_PatCanvas: {fileID: 0}
   uiCamera: {fileID: 305422651}
   m_PoolSize: 10
+  sliderRectTransform: {fileID: 0}
 --- !u!1001 &1751781550
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -30696,6 +30697,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   currentExp: 0
+  expNextLevel: 0
   m_LevelUpFx: {fileID: 0}
   expLerpSpeed: 200
   m_ListlevelUp: []
@@ -35312,6 +35314,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 629249027627202674, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_PlusHealValue
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 629249027627202674, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
+      propertyPath: m_PlusManaValue
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1164828770242174425, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}

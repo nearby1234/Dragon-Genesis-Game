@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private BaseEnemyDetecPlayer enemyDetecPlayer;
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
+    [SerializeField] private BatPanel batPanel;
 
     private void Awake()
     {
@@ -43,6 +44,7 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyHeal.IsEnemyDead())
         {
+            batPanel.HideHeathlyBar();
             agent.isStopped = true;
             animator.SetBool("Attack",false);
             animator.SetBool("IsDetec", false);

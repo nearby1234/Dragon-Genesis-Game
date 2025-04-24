@@ -215,7 +215,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7398994603330103207
 Transform:
   m_ObjectHideFlags: 0
@@ -313,6 +313,7 @@ MonoBehaviour:
   enemyDetecPlayer: {fileID: 0}
   enemyCollider: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
+  batPanel: {fileID: 3743167356461639796}
 --- !u!114 &7183992851952234658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,6 +883,7 @@ GameObject:
   - component: {fileID: 2390252982198438496}
   - component: {fileID: 6207071836093859256}
   - component: {fileID: 3743167356461639796}
+  - component: {fileID: 3370446066503401497}
   m_Layer: 7
   m_Name: BatPanel
   m_TagString: Untagged
@@ -962,6 +964,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_BatMicroBar: {fileID: 0}
   m_EnemyHeal: {fileID: 0}
+  canvasGroup: {fileID: 0}
+--- !u!225 &3370446066503401497
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3262620076953483353}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &4141217858097345960
 GameObject:
   m_ObjectHideFlags: 0
@@ -1176,7 +1191,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.31132078, g: 0.29810435, b: 0.29810435, a: 0.5019608}
+  m_Color: {r: 0.31132078, g: 0.29810435, b: 0.29810435, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1

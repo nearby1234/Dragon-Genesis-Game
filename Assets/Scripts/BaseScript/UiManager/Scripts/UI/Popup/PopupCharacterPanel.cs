@@ -1,6 +1,8 @@
 using Sirenix.OdinInspector;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -14,15 +16,28 @@ public class PopupCharacterPanel : BasePopup
     [SerializeField] private int m_PointCurrentValue;
     [SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_GearBtn;
-    [SerializeField] private List<TextMeshProUGUI> m_CharacterStatsTxt;
+    [SerializeField] private Button m_AcceptBtn;
+    [SerializeField] private Button m_DenyBtn;
+    [SerializeField] private int originalPointBackup;
+    [ShowInInspector]
+    private Dictionary<string, int> originalPointBackupDict = new();
     private int m_HealValueMax; // giá trị máu tối đa (cập nhật khi cộng điểm stat)
     private int m_HealValueCurrent; // giá trị máu hiện tại (cập nhật realtime khi nhận sát thương/hồi máu)
+    private int m_PlusHealValue; // giá trị hồi máu cộng thêm (cập nhật realtime khi cộng điểm stat)
     private int m_ManaValueMax;
     private int m_ManaValueCurrent; // giá trị mana hiện tại (cập nhật realtime khi tiêu hao mana)
+    private int m_PlusManaValue; // giá trị hồi mana cộng thêm (cập nhật realtime khi cộng điểm stat)
     private int m_StaminaValueMax;
     private int m_StaminaValueCurrent; // giá trị thể lực hiện tại (cập nhật realtime khi tiêu hao thể lực)
+    private int m_PlusStaminaValue; // giá trị hồi thể lực cộng thêm (cập nhật realtime khi cộng điểm stat)
+    private int m_PlusDamageValue; // giá trị sát thương cộng thêm (cập nhật realtime khi cộng điểm stat)
+    private int m_DamageValueCurrent; // giá trị sát thương hiện tại (cập nhật realtime khi cộng điểm stat)
     [InlineEditor]
+    [SerializeField] private List<TextMeshProUGUI> m_CharacterStatsTxt;
     [SerializeField] private List<CharacterStatsPoint> m_CharacterStatsPointTxt;
+    [SerializeField] private List<StatConfigSO> statConfigs;
+    private Dictionary<string, StatConfigSO> configMap;
+
     private void Start()
     {
         RegisterListeners();
@@ -39,7 +54,7 @@ public class PopupCharacterPanel : BasePopup
     }
     public void OnExitButton()
     {
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.HideCursor();
         }
@@ -75,54 +90,61 @@ public class PopupCharacterPanel : BasePopup
     }
     private void InitializeUI()
     {
-        if (m_ExitBtn != null)
-        {
-            m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
-        }
-        if(m_GearBtn != null)
-        {
-            m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
-        }
+        InitStatTxt();
+        UpdateValuePoint();
+
+        foreach (var item in m_CharacterStatsPointTxt) originalPointBackupDict[item.name] = item.CurrentPoint;
+
+        m_AcceptBtn.onClick.AddListener(OnAcceptButton);
+        m_DenyBtn.onClick.AddListener(OnDenyButton);
+        if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
+        if (m_GearBtn != null) m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
-        m_PointCurrentValue = m_PointDefaultValue;
-        m_PointTxt.text = $"Points: {m_PointDefaultValue}";
+        //m_PointCurrentValue = PlayerLevelManager.Instance.TotalStatPoints;
+        originalPointBackup = PlayerLevelManager.Instance.TotalStatPoints;
+        m_PointCurrentValue = originalPointBackup;
+        //m_PointTxt.text = $"Points: {m_PointDefaultValue}";
+        if (PlayerManager.HasInstance)
+        {
+            if (PlayerManager.Instance.TryGetComponent<PlayerHeal>(out var playerHeal)) m_PlusHealValue = playerHeal.PlusHealValue;
+            if (PlayerManager.Instance.TryGetComponent<PlayerMana>(out var playerMana)) m_PlusManaValue = playerMana.PlusManaValue;
+            if (PlayerManager.Instance.TryGetComponent<PlayerStamina>(out var playerStamina)) m_PlusStaminaValue = playerStamina.PlusStaminaValue;
+            if (PlayerManager.Instance.TryGetComponent<PlayerDamage>(out var playerDamage)) m_PlusDamageValue = playerDamage.PlusDamageValue;
+        }
     }
     private void InitializeStats()
     {
-        foreach (var item in m_CharacterStatsPointTxt)
+        configMap = statConfigs.ToDictionary(cfg => cfg.statKey, cfg => cfg);
+        if (PlayerManager.HasInstance)
         {
-            item.SetDefaultPoint(0);
-            item.SetMaxPoint(100);
-
-            switch (item.name)
+            foreach (var cfg in statConfigs)
             {
-                case "StrengthStatsTxt":
-                    ConfigureStatPoint(item, "Sức Mạnh");
-                    break;
-                case "HealStatsTxt":
-                    ConfigureStatPoint(item, "Máu");
-                    break;
-                case "IntelligentStatsTxt":
-                    ConfigureStatPoint(item, "Năng Lượng");
-                    break;
-                case "StaminaStatsTxt":
-                    ConfigureStatPoint(item, "Thể Lực");
-                    break;
-                case "AmorStatsTxt":
-                    ConfigureStatPoint(item, "Phòng Ngự");
-                    break;
-                default:
-                    Debug.LogWarning($"Object with name '{item.name}' not found in m_CharacterStatsTxt.");
-                    break;
+                switch (cfg.statKey)
+                {
+                    case "HealStatsTxt": PlayerManager.Instance.TryGetComponent<PlayerHeal>(out var ph); cfg.multiplier = ph?.PlusHealValue ?? 1; break;
+                    case "IntelligentStatsTxt": PlayerManager.Instance.TryGetComponent<PlayerMana>(out var pm); cfg.multiplier = pm?.PlusManaValue ?? 1; break;
+                    case "StaminaStatsTxt": PlayerManager.Instance.TryGetComponent<PlayerStamina>(out var ps); cfg.multiplier = ps?.PlusStaminaValue ?? 1; break;
+                    case "StrengthStatsTxt": PlayerManager.Instance.TryGetComponent<PlayerDamage>(out var pd); cfg.multiplier = pd?.PlusDamageValue ?? 1; break;
+                    default: cfg.multiplier = 1; break;
+                }
+
+                // Set up each stat point component
+                if (configMap.TryGetValue(cfg.statKey, out var _cfg))
+                {
+                    var item = m_CharacterStatsPointTxt.FirstOrDefault(x => x.name == cfg.statKey);
+                    if (item == null) continue;
+
+                    item.SetDefaultPoint(_cfg.defaultPoint);
+                    item.SetMaxPoint(_cfg.maxPoint);
+                    item.SetStatsPointText(_cfg.displayName);
+
+                    // Hook buttons passing statKey
+                    item.PlusBtn.onClick.AddListener(() => UpdatePlusPointsAndStatsText(item, cfg.statKey));
+                    item.MinusBtn.onClick.AddListener(() => UpdateMinusPointsAndStatsText(item, cfg.statKey));
+                }
             }
         }
     }
-    private void ConfigureStatPoint(CharacterStatsPoint item, string statName)
-    {
-        item.SetStatsPointText(statName);
-        item.PlusBtn.onClick.AddListener(() => UpdatePlusPointsAndStatsText(item, statName));
-    }
-
     private void UpdateCharacterLevelText(object value)
     {
         if (value is int level)
@@ -130,44 +152,48 @@ public class PopupCharacterPanel : BasePopup
             m_CharacterLevelTxt.text = $"Level {level}";
         }
     }
-
     private void ReceiverValuePoint(object value)
     {
-        if (value is int )
+        if (value is int pointvalue)
         {
-            // Mỗi lần lên cấp, cộng thêm 5 điểm vào số điểm hiện có
-            m_PointCurrentValue += 5;
+            m_PointCurrentValue = (int)pointvalue;
+            originalPointBackup = m_PointCurrentValue;
+
             UpdateValuePoint();
         }
     }
-    
     private void UpdateValuePoint()
     {
         m_PointTxt.text = $"Điểm : {m_PointCurrentValue}";
     }
-
-    private TextMeshProUGUI GetTextObjectFromList(string name)
-    {
-        return m_CharacterStatsTxt.Find(item => item.name.Equals(name));
-    }
-    private CharacterStatsPoint GetStatsPointObjectFromList(string name)
-    {
-        return m_CharacterStatsPointTxt.Find(item => item.name.Equals(name));
-    }
+    private TextMeshProUGUI GetTextObjectFromList(string key)
+        => m_CharacterStatsTxt.FirstOrDefault(x => x.name == key);
+    private CharacterStatsPoint GetStatsPointObjectFromList(string key)
+        => m_CharacterStatsPointTxt.FirstOrDefault(x => x.name == key);
     private void UpdateDamageValueText(object value)
     {
         if (value is int damageValue)
         {
-            UpdateStatText("DamageTxt", $"Sát Thương: {damageValue}");
+            m_DamageValueCurrent = damageValue;
         }
     }
-    private void UpdatePlusPointsAndStatsText(CharacterStatsPoint item, string name)
+    private void UpdatePlusPointsAndStatsText(CharacterStatsPoint item, string statKey)
     {
         if (m_PointCurrentValue <= 0) return;
-
-        item.UpdateCurrentPoint();
+        item.UpdateCurrentPlusPoint();
         m_PointCurrentValue--;
-        item.UpdateStatsPointText(name);
+        item.UpdateStatsPointText(configMap[statKey].displayName);
+        UpdateStatPreview(statKey);
+        UpdateValuePoint();
+    }
+    private void UpdateMinusPointsAndStatsText(CharacterStatsPoint item, string statKey)
+    {
+        if (item.PendingPoint <= 0 || m_PointCurrentValue >= originalPointBackup) return;
+        item.UpdateCurrentMinusPoint();
+        m_PointCurrentValue++;
+        item.UpdateStatsPointText(configMap[statKey].displayName);
+        UpdateStatPreview(statKey);
+        UpdateValuePoint();
     }
     #region Heal
     // Sự kiện cập nhật current heal realtime
@@ -179,7 +205,6 @@ public class PopupCharacterPanel : BasePopup
             UpdateStatText("HealthTxt", $"Máu: {m_HealValueCurrent} / {m_HealValueMax}");
         }
     }
-
     // Sự kiện cập nhật max heal (khi điểm stat máu được cộng)
     private void ReceiverPlayerHealValue(object value)
     {
@@ -189,23 +214,21 @@ public class PopupCharacterPanel : BasePopup
             UpdateStatText("HealthTxt", $"Máu: {m_HealValueCurrent} / {m_HealValueMax}");
         }
     }
-    #endregion 
-    
-    #region Stamina
+    #endregion
 
-    private void UpdateStaminaValue(object value ,Action<float> action)
+    #region Stamina
+    private void UpdateStaminaValue(object value, Action<float> action)
     {
-        if(value is float staminaValue)
+        if (value is float staminaValue)
         {
             int newValue = (int)(staminaValue);
             action(newValue);
             UpdateStatText("StaminaTxt", $"Thể Lực: {m_StaminaValueCurrent} / {m_StaminaValueMax}");
         }
-    
     }
     private void ReceiverPlayerStaminaValue(object value)
     {
-        UpdateStaminaValue(value,newValue => m_StaminaValueMax = (int)newValue);
+        UpdateStaminaValue(value, newValue => m_StaminaValueMax = (int)newValue);
     }
     private void UpdateStaminaValueCharacterText(object value)
     {
@@ -230,9 +253,7 @@ public class PopupCharacterPanel : BasePopup
     {
         UpdateManaValue(value, newValue => m_ManaValueCurrent = (int)newValue);
     }
-
     #endregion
-
     private void UpdateStatText(string statName, string text)
     {
         var statText = GetTextObjectFromList(statName);
@@ -257,12 +278,88 @@ public class PopupCharacterPanel : BasePopup
             action?.Invoke();
         }
     }
-
     private void OnClickGearButton()
     {
-        if(UIManager.HasInstance)
+        if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
         }
+    }
+    private void OnAcceptButton()
+    {
+        foreach (var statPoint in m_CharacterStatsPointTxt)
+            if (statPoint.PendingPoint > 0) statPoint.ApplyPendingPoints();
+        originalPointBackup = m_PointCurrentValue;
+        PlayerLevelManager.Instance.UpdateTotalPoint(originalPointBackup);
+        InitStatTxt(); UpdateValuePoint();
+    }
+
+    private void OnDenyButton()
+    {
+        foreach (var statPoint in m_CharacterStatsPointTxt.Where(sp => sp.PendingPoint > 0))
+        {
+            statPoint.ResetPendingPoints();
+            m_PointCurrentValue = originalPointBackup;
+            // reset button text
+            var cfg = configMap[statPoint.name];
+            statPoint.UpdateStatsPointText(cfg.displayName);
+        }
+        InitStatTxt(); UpdateValuePoint();
+        // 2) Refresh lại UI dựa trên các giá trị vừa commit
+        InitStatTxt();
+        UpdateValuePoint();
+    }
+    private void UpdateStatPreview(string statKey)
+    {
+        if (!configMap.TryGetValue(statKey, out var cfg))
+        {
+            Debug.LogWarning($"Missing StatConfig for {statKey}");
+            return;
+        }
+        var statPoint = GetStatsPointObjectFromList(statKey);
+        var ui = GetTextObjectFromList(cfg.previewUITextKey);
+        if (statPoint == null || ui == null) return;
+
+        int added = statPoint.PendingPoint;
+        var (current, max) = GetStatValues(statKey);
+        int gain = added * cfg.multiplier;
+        if (statKey == "StrengthStatsTxt")
+        {
+            ui.text = $"{cfg.displayName}: {current} <color=#04FF00>+ {gain}";
+        }
+        else
+        {
+            ui.text = $"{cfg.displayName}: {current} / {max} <color=#04FF00>+{gain}";
+        }
+    }
+
+    private void InitStatTxt()
+    {
+        // reset preview text to current values
+        foreach (var cfg in statConfigs)
+        {
+            var ui = GetTextObjectFromList(cfg.previewUITextKey);
+            var (cur, max) = GetStatValues(cfg.statKey);
+            if (cfg.statKey == "StrengthStatsTxt")
+            {
+                ui.text = $"{cfg.displayName}: {cur}";
+            }
+            else
+            {
+                ui.text = $"{cfg.displayName}: {cur} / {max}";
+            }
+
+        }
+    }
+    private (int current, int max) GetStatValues(string key)
+    {
+        return key switch
+        {
+            "HealStatsTxt" => (m_HealValueCurrent, m_HealValueMax),
+            "IntelligentStatsTxt" => (m_ManaValueCurrent, m_ManaValueMax),
+            "StaminaStatsTxt" => (m_StaminaValueCurrent, m_StaminaValueMax),
+            "StrengthStatsTxt" => (m_DamageValueCurrent, 0), // nếu có max damage, thêm biến tương ứng
+            _ => (0, 0)
+        };
     }
 }
