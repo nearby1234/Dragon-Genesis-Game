@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec93338e03fe989448063926c30b01b3, type: 3}
-  m_Name: Bag
+  m_Name: ItemBat
   m_EditorClassIdentifier: 
   questItemData:
-    itemID: -Bag
-    itemName: "T\xFAi \u0110\u1ED3"
-    count: 1
-    requestCount: 0
+    itemID: -ItemBat
+    itemName: Dark Bat
+    count: 0
+    requestCount: 10
     completionCount: 0
-    icon: {fileID: 21300000, guid: 7e354c612ad17d4489b94e3488ef0cba, type: 3}
-    typeItem: 1
+    icon: {fileID: 21300000, guid: 1bf3f5ff6a982d0448e01fed31651771, type: 3}
+    typeItem: 4
     percentIncrease: 0
     timeCoolDown: 0
     itemUse: 0
     ItemDespri: 
     CountExp: 0
-    creepType: 0
-  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55678},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0}"
+    creepType: 1
+  _backupJson: '{"itemID":"-ItemBat","itemName":"Dark Bat","count":0,"requestCount":10,"completionCount":0,"icon":{"instanceID":55684},"typeItem":4,"percentIncrease":0.0,"timeCoolDown":0.0,"itemUse":0,"ItemDespri":"","CountExp":0,"creepType":1}'

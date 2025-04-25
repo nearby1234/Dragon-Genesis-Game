@@ -14581,6 +14581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
   _SliderPos: {fileID: 0}
+  m_CountNumber: 0
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
@@ -25704,7 +25705,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_PoolSize: 10
   m_EnemyPrehabs: {fileID: 1406040405}
-  m_ActiveEnemiesCount: 5
+  m_ActiveEnemiesCount: 10
 --- !u!4 &1564148680
 Transform:
   m_ObjectHideFlags: 0

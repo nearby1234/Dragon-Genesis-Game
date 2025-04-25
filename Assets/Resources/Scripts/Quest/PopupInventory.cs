@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -137,6 +138,10 @@ public class PopupInventory : BasePopup
                     slot.IsEmpty = false;
                     break; // Khi đã tìm được slot trống, chuyển sang QuestItem tiếp theo
                 }
+                else
+                {
+                    //if(slot.m_CurrentItem)
+                }
             }
         }
     }
@@ -147,7 +152,7 @@ public class PopupInventory : BasePopup
         {
             PlayerManager.instance.isInteractingWithUI = false;
         }
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.HideCursor();
         }
@@ -159,13 +164,33 @@ public class PopupInventory : BasePopup
     /// <param name="value">Đối tượng chứa danh sách QuestItem</param>
     private void ReceiverListItemReward(object value)
     {
-        if (value is List<QuestItemSO> listItem)
+        if (!(value is List<QuestItemSO> newItems)) return;
+        foreach (var newItem in newItems)
         {
-            foreach (var item in listItem)
+            if (newItem == null) continue;
+
+            var existing = m_ImageIconList.FirstOrDefault(x => x.questItemData.itemID == newItem.questItemData.itemID);
+            if (existing != null)
             {
-                if (item != null)
+                existing.questItemData.count += newItem.questItemData.count;
+                var slot = listItemInventory.FirstOrDefault(x => x.m_CurrentItem == existing);
+                if (slot != null)
                 {
-                    m_ImageIconList.Add(item);
+                    slot.UpdateCountText(existing.questItemData.count);
+                }
+            }
+            else
+            {
+                m_ImageIconList.Add(newItem);
+                var slot = listItemInventory.FirstOrDefault(x => x.IsEmpty);
+                if (slot != null)
+                {
+                    slot.SetItemSprite(newItem);
+                    slot.IsEmpty = false;
+                }
+                else
+                {
+                    Debug.LogWarning("Không còn slot trống để add item mới!");
                 }
             }
         }

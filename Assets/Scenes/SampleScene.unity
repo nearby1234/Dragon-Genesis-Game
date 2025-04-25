@@ -611,8 +611,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
   _SliderPos: {fileID: 3671298205053726165}
+  m_CountNumber: 0
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
+  - {fileID: 11400000, guid: 2306e52d5d4288b419ae55a56bf513dc, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
   m_QuestRewardItemPrefabPath: Prefabs/UI/Quest/ItemReward/ItemRewardImg
   m_DOItemPrefabPath: Prefabs/Inventory/DoSpite/DoSpite

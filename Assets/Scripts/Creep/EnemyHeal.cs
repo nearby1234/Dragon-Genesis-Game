@@ -8,6 +8,7 @@ public class EnemyHeal : MonoBehaviour
     public int GetEnemyHeal => m_EnemyHeal;
     [SerializeField] private float m_Timer;
     [SerializeField] private EnemyController m_EnemyController;
+    [SerializeField] private CreepType creepType;
     public EnemyController GetEnemyController => m_EnemyController;
     [SerializeField] private bool m_IsDead;
     private void Awake()
@@ -16,11 +17,13 @@ public class EnemyHeal : MonoBehaviour
     }
     private void Start()
     {
+        creepType = m_EnemyController.GetEnemyStatSO.creepType;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CREEP_SEND_HEAL_VALUE, IniHealValue);
         }
     }
+    
     private void OnDestroy()
     {
         if (ListenerManager.HasInstance)
@@ -33,7 +36,6 @@ public class EnemyHeal : MonoBehaviour
     {
         // Nếu enemy đã chết thì không xử lý
         if (m_IsDead) return;
-
         // Trừ máu
         m_EnemyHeal -= damaged;
         if(ListenerManager.HasInstance)
@@ -46,6 +48,10 @@ public class EnemyHeal : MonoBehaviour
             if (EffectManager.HasInstance)
             {
                 EffectManager.Instance.ExpOrbEffectSpawner.SpawnOrbs(transform.position, 5);
+            }
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.CREEP_IS_DEAD, creepType);
             }
             Die();
             return;

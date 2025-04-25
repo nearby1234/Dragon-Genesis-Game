@@ -137,12 +137,34 @@ public class DataManager : BaseManager<DataManager>
         Debug.LogWarning($"⚠️ Không tìm thấy {typeof(T).Name} với ID: {questID}");
         return null;
     }
+    public List<T> GetAllData<T, TEnum>()
+       where T : ScriptableObject, IEnumKeyed<TEnum>
+       where TEnum : Enum
+    {
+        var result = new List<T>();
+        var assetType = typeof(T);
 
+        if (enumDataDictionary.TryGetValue(assetType, out var subDict))
+        {
+            foreach (var so in subDict.Values)
+            {
+                if (so is T asset)
+                {
+                    // Clone nếu muốn, hoặc xài trực tiếp asset
+                    var clone = Instantiate(asset);
+                    result.Add(clone);
+                }
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"[DataManager] Không tìm thấy data cho type {assetType.Name}");
+        }
 
+        return result;
+    }
     public Dictionary<Type,Dictionary<Enum,ScriptableObject>> GetDataDictionary()
     {
         return enumDataDictionary;
     }
-   
-
 }

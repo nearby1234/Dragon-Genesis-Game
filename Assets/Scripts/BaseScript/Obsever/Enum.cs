@@ -42,10 +42,12 @@ public enum ListenType
     UI_SEND_VALUE_EXP_TO_SLIDER,
     UI_SEND_CANVASMAIN,
     UI_SEND_VALUE_LEVEL,
+    UI_UPDATE_ITEM_MISSION,
     CAMERA_SEND_VALUE,
     MENU_BTN_START_CLICK,
     SE_ICONSCROLLMAGIC_ONCLICK,
     UI_SEND_POS_SLIDER_EXP,
+    QUEST_COMPLETE,
 
 
 }
@@ -62,5 +64,12 @@ public enum UIType
     Screen = 1,
     Popup = 2,
     Notify = 3
+}
+public enum CreepType
+{
+    unknow = 0,
+    BAT,
+    DRAGON,
+    WORM,
 }
 

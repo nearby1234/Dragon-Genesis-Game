@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1104779198956017084}
   - component: {fileID: 6235439726625506897}
   - component: {fileID: 3104610271425598524}
+  - component: {fileID: 2383231222730042025}
+  - component: {fileID: 263770516898631558}
   m_Layer: 0
   m_Name: ConditionAreaPanel
   m_TagString: Untagged
@@ -100,6 +102,31 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 12.5}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!225 &2383231222730042025
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573580936669284306}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &263770516898631558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 573580936669284306}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636f5917f09bc1b4b98a125cb7274087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 2383231222730042025}
 --- !u!1 &684277035213601479
 GameObject:
   m_ObjectHideFlags: 0
@@ -174,7 +201,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 788529151
+    rgba: 16777215
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -869,7 +896,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -0.39282227, y: -0.09979248}
   m_SizeDelta: {x: 1600, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &-452233884916406508
@@ -886,10 +913,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
   m_ExitBtn: {fileID: 426958313798977233}
-  m_RewardBtn: {fileID: 4383055832033906220}
-  m_NextMisstionBtn: {fileID: 2958541032726221013}
-  m_RewardItemParentObject: {fileID: 2262506170662690451}
-  m_MisionItemParentObject: {fileID: 6138355614288340352}
+  m_RewardBtn: {fileID: 8367413497635736166}
+  m_NextMisstionBtn: {fileID: 3235386384549305899}
+  typewriterByCharacter: {fileID: 9005114545338132779}
+  m_RewardItemParentObject: {fileID: 4418829941102727470}
+  m_MisionItemParentObject: {fileID: 263770516898631558}
   m_TitleText: {fileID: 5133273811029052983}
   m_ContentText: {fileID: 4868212799748779998}
   m_RewardItemObjectList: []
@@ -1049,6 +1077,8 @@ GameObject:
   - component: {fileID: 5066776526996403798}
   - component: {fileID: 120652631762626991}
   - component: {fileID: 2958541032726221013}
+  - component: {fileID: 3996577721714126388}
+  - component: {fileID: 3235386384549305899}
   m_Layer: 0
   m_Name: NextMissionBtn
   m_TagString: Untagged
@@ -1158,6 +1188,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &3996577721714126388
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578843038840041773}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &3235386384549305899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3578843038840041773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636f5917f09bc1b4b98a125cb7274087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 3996577721714126388}
 --- !u!1 &4281119318229898762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1599,6 +1654,8 @@ GameObject:
   - component: {fileID: 8275321778755135022}
   - component: {fileID: 1516190572682077207}
   - component: {fileID: 4383055832033906220}
+  - component: {fileID: 2605665370513467515}
+  - component: {fileID: 8367413497635736166}
   m_Layer: 0
   m_Name: RewardBtn
   m_TagString: Untagged
@@ -1708,6 +1765,31 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!225 &2605665370513467515
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7157497201385764048}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &8367413497635736166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7157497201385764048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636f5917f09bc1b4b98a125cb7274087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 2605665370513467515}
 --- !u!1 &7208714170578725561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2006,6 +2088,8 @@ GameObject:
   - component: {fileID: 5523914326056124130}
   - component: {fileID: 2974596235008241209}
   - component: {fileID: 780445137397366305}
+  - component: {fileID: 5147219180122016981}
+  - component: {fileID: 4418829941102727470}
   m_Layer: 0
   m_Name: ContentRewardPanel
   m_TagString: Untagged
@@ -2094,6 +2178,31 @@ MonoBehaviour:
   m_Spacing: {x: 250, y: 52.7}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!225 &5147219180122016981
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8622398004264747844}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &4418829941102727470
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8622398004264747844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 636f5917f09bc1b4b98a125cb7274087, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 5147219180122016981}
 --- !u!1 &8761323372837305418
 GameObject:
   m_ObjectHideFlags: 0

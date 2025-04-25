@@ -4,13 +4,19 @@ using UnityEngine.UI;
 using DG.Tweening;
 using Sirenix.OdinInspector;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class QuestManager : BaseManager<QuestManager>
 {
     [InlineEditor]
     [SerializeField] private QuestData currentQuest;
     [SerializeField] private SpawnObjectVFX _SliderPos;
-    public QuestData CurrentQuest => currentQuest;
+    public int m_CountNumber;
+    public QuestData CurrentQuest
+    {
+        get => currentQuest;
+        set => currentQuest = value;
+    }
     [InlineEditor]
     public List<QuestData> questList;
     public string m_QuestItemPrefabPath = "Prefabs/UI/Quest/ItemMission/ItemMissionImg";
@@ -38,48 +44,62 @@ public class QuestManager : BaseManager<QuestManager>
                 item.questItemData.completionCount = 0;
             }
         }
+
+        questList = DataManager.Instance.GetAllData<QuestData,QuestType>();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CREEP_IS_DEAD,OnEnemyDead);
+        }
     }
-    public void AcceptQuest(QuestData quest)
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CREEP_IS_DEAD, OnEnemyDead);
+        }
+    }
+    public void AcceptQuest(QuestData quest = null)
     {
         if (quest != null)
         {
             currentQuest = quest;
             quest.isAcceptMission = true;
-            if (questList.Contains(quest))
-            {
-                return;
-            }
-            questList.Add(quest);
+            //if (questList.Contains(quest))
+            //{
+            //    return;
+            //}
+            //questList.Add(quest);
             Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
             //UIManager.Instance.ShowScreen<QuestScreen>(currentQuest);
         }
         else
         {
-            Debug.LogWarning("Chưa gán QuestData cho nhiệm vụ.");
+           NextQuest();
+            Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
         }
     }
 
     public void NextQuest()
     {
-        if (currentQuest.isCompleteMission)
+        if (!currentQuest.isCompleteMission)
         {
-            for (int i = 0; i < questList.Count; i++)
-            {
-                if (questList[i].questID == currentQuest.questID)
-                {
-                    currentQuest = questList[i + 1];
-                    if (currentQuest == null)
-                    {
-                        Debug.LogWarning("Không tìm thấy nhiệm vụ tiếp theo.");
-                        return;
-                    }
-                }
-            }
+            Debug.LogWarning($"Nhiệm vụ {currentQuest.questName} chưa hoàn thành.");
+            return;
         }
-        else
+        int index = questList.FindIndex(q => q.questID == currentQuest.questID);
+        
+        if(index < 0)
         {
-            Debug.LogWarning($"Nhiệm vụ {currentQuest.name} chưa hoàn thành.");
+            Debug.LogWarning($"Không tìm thấy nhiệm vụ hiện tại (ID: {currentQuest.questID}) trong questList.");
+            return;
         }
+        if (index +1 >= questList.Count)
+        {
+            Debug.LogWarning("Đã hoàn thành tất cả nhiệm vụ, không có nhiệm vụ tiếp theo.");
+            return;
+        }
+        currentQuest = questList[index +1];
+        Debug.Log($"Chuyển sang nhiệm vụ mới: {currentQuest.questName}");
     }
 
     /// <summary>
@@ -90,7 +110,6 @@ public class QuestManager : BaseManager<QuestManager>
     /// <param name="reward">Đối tượng QuestBonus chứa thông tin phần thưởng</param>
     public void GrantReward(QuestBonus reward)
     {
-
         // Load prefab của phần thưởng
         GameObject prefab = Resources.Load<GameObject>(m_DOItemPrefabPath);
         Transform rewardParent = UIManager.Instance.cPopup.transform;
@@ -114,14 +133,14 @@ public class QuestManager : BaseManager<QuestManager>
                 if (item.questItemData.typeItem == TYPEITEM.ITEM_EXP)
                 {
                     rectTransform.DOAnchorPos(sliderPos, TWEEN_DURATION)
-                      .SetEase(Ease.OutBack)
+                      .SetEase(Ease.InBack)
                       .OnComplete(() =>
                       {
                           if (PlayerLevelManager.HasInstance)
                           {
                               PlayerLevelManager.Instance.AddExp(item.questItemData.CountExp);
                           }
-                          if(UIManager.HasInstance)
+                          if (UIManager.HasInstance)
                           {
                               UIManager.Instance.SpawnObjectVFXPrefab.PlayAnimationFade();
                           }
@@ -131,7 +150,7 @@ public class QuestManager : BaseManager<QuestManager>
                 else
                 {
                     rectTransform.DOAnchorPos(TWEEN_TARGET_POS, TWEEN_DURATION)
-                        .SetEase(Ease.OutBack)
+                        .SetEase(Ease.InBack)
                         .OnComplete(() =>
                         {
                             if (CurrentQuest != null && CurrentQuest.questID == "-QuestMissionOne" && UIManager.HasInstance)
@@ -158,7 +177,7 @@ public class QuestManager : BaseManager<QuestManager>
 
     public void CompleteQuest()
     {
-        if (currentQuest != null)
+        if (currentQuest != null && currentQuest.isCompleteMission)
         {
             Debug.Log("Hoàn thành nhiệm vụ: " + currentQuest.questName);
             // Cấp phần thưởng cho người chơi thông qua GrantReward
@@ -181,6 +200,31 @@ public class QuestManager : BaseManager<QuestManager>
             if (initialItemCounts.ContainsKey(key))
             {
                 item.questItemData.count = initialItemCounts[key];
+            }
+        }
+    }
+    private void OnEnemyDead(object value)
+    {
+        if (value is not CreepType deadType) return;
+        if (currentQuest == null) return;
+
+        var first = currentQuest.ItemMission.FirstOrDefault(x=>x.questItemData.creepType == deadType);
+        //Chỉ tăng khi đúng loại quest đang yêu cầu
+        if (first !=null)
+        {
+            m_CountNumber++;
+            first.questItemData.completionCount = m_CountNumber;
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UI_UPDATE_ITEM_MISSION);
+            }
+            if (m_CountNumber.Equals(first.questItemData.requestCount))
+            {
+               currentQuest.isCompleteMission = true;
+               if(ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.QUEST_COMPLETE, currentQuest.isCompleteMission);
+                }
             }
         }
     }

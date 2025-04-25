@@ -89,7 +89,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
                         AudioManager.Instance.PlaySE("WhooshMoveSound");
                     }
                 });
-                sequence.Append(rectTransform.DOAnchorPos(new Vector2(0f, 0f), 2f).SetEase(Ease.OutBack));
+                sequence.Append(rectTransform.DOAnchorPos(new Vector2(0f, 0f), 2f).SetEase(Ease.InBack));
 
                 sequence.AppendCallback(() =>
                 {

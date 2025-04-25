@@ -12,7 +12,7 @@ public class PopupCharacterPanel : BasePopup
 {
     [SerializeField] private TextMeshProUGUI m_CharacterLevelTxt;
     [SerializeField] private TextMeshProUGUI m_PointTxt;
-    [SerializeField] private int m_PointDefaultValue = 0;
+    //[SerializeField] private int m_PointDefaultValue = 0;
     [SerializeField] private int m_PointCurrentValue;
     [SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_GearBtn;
@@ -100,10 +100,8 @@ public class PopupCharacterPanel : BasePopup
         if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
         if (m_GearBtn != null) m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
-        //m_PointCurrentValue = PlayerLevelManager.Instance.TotalStatPoints;
         originalPointBackup = PlayerLevelManager.Instance.TotalStatPoints;
         m_PointCurrentValue = originalPointBackup;
-        //m_PointTxt.text = $"Points: {m_PointDefaultValue}";
         if (PlayerManager.HasInstance)
         {
             if (PlayerManager.Instance.TryGetComponent<PlayerHeal>(out var playerHeal)) m_PlusHealValue = playerHeal.PlusHealValue;

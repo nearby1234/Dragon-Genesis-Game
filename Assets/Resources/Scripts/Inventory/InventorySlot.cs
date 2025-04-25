@@ -73,7 +73,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         temp.a = alpha;
         m_IconImage.color = temp;
     }
-    private void UpdateCountText(int count)
+    public void UpdateCountText(int count)
     {
         m_CountTxt.color = new Color(1, 1, 1, 1); // Đặt màu chữ thành trắng
         //m_CountTxt.enabled = true;

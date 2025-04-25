@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
     [SerializeField] private BatPanel batPanel;
+    
 
     private void Awake()
     {
@@ -33,6 +34,7 @@ public class EnemyController : MonoBehaviour
         {
             ListenerManager.Instance.BroadCast(ListenType.CREEP_SEND_HEAL_VALUE, (this.gameObject, enemyStatSO));
         }
+       
     }
     void Update()
     {
@@ -44,6 +46,8 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyHeal.IsEnemyDead())
         {
+           
+                
             batPanel.HideHeathlyBar();
             agent.isStopped = true;
             animator.SetBool("Attack",false);

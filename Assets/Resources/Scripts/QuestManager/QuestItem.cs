@@ -49,6 +49,9 @@ public class QuestItem
     [ShowIf("@typeItem == TYPEITEM.ITEM_EXP")]
     [BoxGroup("Item Use Stats")]
     public int CountExp;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_COLLECT")]
+    [BoxGroup("Item Use Stats")]
+    public CreepType creepType;
 
 
 }
