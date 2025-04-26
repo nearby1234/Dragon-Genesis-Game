@@ -8,10 +8,16 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     // Các thành phần cần thiết
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
-    private Image image;  // Image component chứa sprite của item
-    private TextMeshProUGUI textMeshPro;  // Image component chứa sprite của item
-    private InventorySlot inventorySlot;  // Image component chứa sprite của item
-    private Vector2 originalPosition;
+    [SerializeField] private GameObject DragContainer;
+    private Image image;  
+    private TextMeshProUGUI textMeshPro;  
+    private InventorySlot inventorySlot;  
+    private Vector2 originalAnchoredPos;
+    private GameObject OriginalParent;
+    private GameObject placeholder;
+    private int originalSiblingIndex;
+
+    
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -19,6 +25,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         image = GetComponent<Image>(); // Giả sử Image nằm trên cùng GameObject này
         textMeshPro = GetComponentInChildren<TextMeshProUGUI>(); // Giả sử TextMeshProUGUI nằm trong con của GameObject này
         inventorySlot = GetComponent<InventorySlot>(); // Giả sử InventorySlot nằm trên cùng GameObject này
+       
         //originalPosition = rectTransform.anchoredPosition;
 
 
@@ -28,23 +35,38 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             Debug.LogError("Missing required components on DragDropItem.");
         }
     }
-
+    private void Start()
+    {
+        DragContainer = GameObject.Find("DragOverlay");
+    }
     // Khi bắt đầu kéo, cho phép raycast xuyên qua đối tượng
     public void OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = false;
-        originalPosition = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
+        originalAnchoredPos = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
+
+       // ===========================
+        OriginalParent = rectTransform.parent.gameObject;
+        originalSiblingIndex = rectTransform.GetSiblingIndex();
+        if (OriginalParent.name != "InventoryItemPanel")
+        {
+            CreatePlaceholder();
+            if(DragContainer != null)
+            rectTransform.SetParent(DragContainer.transform);
+        }
+       
+        if(eventData != null) 
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
         }
-
     }
 
     // Khi kéo, cập nhật vị trí (visual feedback) của đối tượng đang kéo
     public void OnDrag(PointerEventData eventData)
     {
         rectTransform.anchoredPosition += eventData.delta;
+
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
@@ -63,11 +85,11 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         {
             Debug.Log("Pointer Enter: " + eventData.pointerEnter.name);
             targetSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
-
         }
         else
         {
-            rectTransform.anchoredPosition = originalPosition;
+            rectTransform.anchoredPosition = originalAnchoredPos;
+            rectTransform.SetParent(OriginalParent.transform);
         }
 
         if (targetSlot != null)
@@ -101,17 +123,48 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 }
             }
             // Sau khi đổi sprite, reset vị trí của đối tượng kéo về vị trí ban đầu (vì chúng ta không di chuyển GameObject)
-            rectTransform.anchoredPosition = originalPosition;
+            rectTransform.anchoredPosition = originalAnchoredPos;
+            rectTransform.SetParent(OriginalParent.transform);
         }
         else
         {
             // Nếu không thả vào Box hợp lệ, đặt lại vị trí ban đầu của item đang kéo.
-            rectTransform.anchoredPosition = originalPosition;
+            rectTransform.anchoredPosition = originalAnchoredPos;
+            rectTransform.SetParent(OriginalParent.transform);
+        }
+        if (placeholder != null)
+        {
+            rectTransform.SetParent(OriginalParent.transform);
+            rectTransform.SetSiblingIndex(originalSiblingIndex);
+            Destroy(placeholder);
+            placeholder = null;
+        }
+        else
+        {
+            // Với item của PopupInventory: chỉ reset vị trí
+            rectTransform.anchoredPosition = originalAnchoredPos;
         }
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = false; // Đặt trạng thái không tương tác với UI
         }
+        //Restore raycast block
+    }
+    //Hàm tạo ô clone để giữ vị trí khi drag
+    private void CreatePlaceholder()
+    {
+        // Tạo placeholder ngay trước khi reparent
+        placeholder = new GameObject("Placeholder");
+        placeholder.transform.SetParent(OriginalParent.transform);
+
+        // Copy layout size để giữ chỗ
+        var le = placeholder.AddComponent<LayoutElement>();
+        var rLE = rectTransform.GetComponent<LayoutElement>();
+        le.minHeight = rLE.minHeight;
+        le.minWidth = rLE.minWidth;
+
+        // Đặt vị trí placeholder đúng chỗ item cũ
+        placeholder.transform.SetSiblingIndex(originalSiblingIndex);
     }
     private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)
     {
@@ -127,9 +180,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
     private void SwapCurrentItem(InventorySlot targetSlot)
     {
-        QuestItemSO temp = inventorySlot.m_CurrentItem;
-        inventorySlot.m_CurrentItem = targetSlot.m_CurrentItem;
-        targetSlot.m_CurrentItem = temp;
+        (targetSlot.m_CurrentItem, inventorySlot.m_CurrentItem) = (inventorySlot.m_CurrentItem, targetSlot.m_CurrentItem);
     }
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
     {

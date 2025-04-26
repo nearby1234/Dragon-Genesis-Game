@@ -78,7 +78,7 @@ public class PopupInventory : BasePopup
         m_Rectranform.anchoredPosition = m_Offset;
 
         // Thêm các item reward vào các slot trống của inventory
-        AddItems(m_ImageIconList, listItemInventory);
+        //AddItems(m_ImageIconList, listItemInventory);
     }
 
     private void OnDestroy()
@@ -123,51 +123,14 @@ public class PopupInventory : BasePopup
         }
     }
 
-    private void AddItems(List<QuestItemSO> listIcon, List<InventorySlot> itemInventory)
+    private void AddItems(List<QuestItemSO> listItems)
     {
-        foreach (var questItem in listIcon)
-        {
-            var type = questItem.questItemData.typeItem;
-            if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
-                continue;
-            foreach (InventorySlot slot in itemInventory)
-            {
-                if (slot.IsEmpty)
-                {
-                    slot.SetItemSprite(questItem);
-                    slot.IsEmpty = false;
-                    break; // Khi đã tìm được slot trống, chuyển sang QuestItem tiếp theo
-                }
-                else
-                {
-                    //if(slot.m_CurrentItem)
-                }
-            }
-        }
-    }
-    private void OnClickExitBtn()
-    {
-        this.Hide();
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = false;
-        }
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.HideCursor();
-        }
-    }
-
-    /// <summary>
-    /// Hàm nhận danh sách QuestItem (reward) từ hệ thống sự kiện.
-    /// </summary>
-    /// <param name="value">Đối tượng chứa danh sách QuestItem</param>
-    private void ReceiverListItemReward(object value)
-    {
-        if (!(value is List<QuestItemSO> newItems)) return;
-        foreach (var newItem in newItems)
+        foreach (var newItem in listItems)
         {
             if (newItem == null) continue;
+            var type = newItem.questItemData.typeItem;
+            if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
+                continue;
 
             var existing = m_ImageIconList.FirstOrDefault(x => x.questItemData.itemID == newItem.questItemData.itemID);
             if (existing != null)
@@ -194,5 +157,27 @@ public class PopupInventory : BasePopup
                 }
             }
         }
+    }
+    private void OnClickExitBtn()
+    {
+        this.Hide();
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false;
+        }
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
+    }
+
+    /// <summary>
+    /// Hàm nhận danh sách QuestItem (reward) từ hệ thống sự kiện.
+    /// </summary>
+    /// <param name="value">Đối tượng chứa danh sách QuestItem</param>
+    private void ReceiverListItemReward(object value)
+    {
+        if (value is not List<QuestItemSO> newItems) return;
+        AddItems(newItems);
     }
 }

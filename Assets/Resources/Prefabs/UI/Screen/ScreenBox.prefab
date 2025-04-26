@@ -142,6 +142,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   rectTransform: {fileID: 0}
+  DragContainer: {fileID: 0}
 --- !u!114 &2628599462578124872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1383,6 +1384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   rectTransform: {fileID: 0}
+  DragContainer: {fileID: 0}
 --- !u!114 &6681271065454220613
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1949,6 +1951,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   rectTransform: {fileID: 0}
+  DragContainer: {fileID: 0}
 --- !u!114 &5425154087774632363
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2347,6 +2350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   rectTransform: {fileID: 0}
+  DragContainer: {fileID: 0}
 --- !u!114 &4471420534864312508
 MonoBehaviour:
   m_ObjectHideFlags: 0

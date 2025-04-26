@@ -26,4 +26,4 @@ MonoBehaviour:
     ItemDespri: 
     CountExp: 0
     creepType: 1
-  _backupJson: '{"itemID":"-ItemBat","itemName":"Dark Bat","count":0,"requestCount":10,"completionCount":0,"icon":{"instanceID":55684},"typeItem":4,"percentIncrease":0.0,"timeCoolDown":0.0,"itemUse":0,"ItemDespri":"","CountExp":0,"creepType":1}'
+  _backupJson: '{"itemID":"-ItemBat","itemName":"Dark Bat","count":0,"requestCount":10,"completionCount":0,"icon":{"instanceID":55644},"typeItem":4,"percentIncrease":0.0,"timeCoolDown":0.0,"itemUse":0,"ItemDespri":"","CountExp":0,"creepType":1}'

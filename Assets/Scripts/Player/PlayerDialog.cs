@@ -32,11 +32,14 @@ public class PlayerDialog : MonoBehaviour
 
     private void Update()
     {
-        HandleInput();
         CheckNPCDistance();
+        HandleInput();
+       
     }
     private void HandleInput()
     {
+        if (!m_IsCollisionNpc) return;
+            
         if (Input.GetKeyDown(KeyCode.J))
         {
             if(AudioManager.HasInstance)

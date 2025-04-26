@@ -26,4 +26,4 @@ MonoBehaviour:
     ItemDespri: 
     CountExp: 0
     creepType: 0
-  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55678},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0}"
+  _backupJson: "{\"itemID\":\"-Bag\",\"itemName\":\"T\xFAi \u0110\u1ED3\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55638},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0}"
