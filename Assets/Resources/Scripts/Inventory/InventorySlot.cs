@@ -3,6 +3,7 @@ using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
@@ -21,7 +22,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private InputAction m_ButtonPress;
     [InlineEditor]
     public QuestItemSO m_CurrentItem;
-    private Queue<GameObject> m_ItemPool = new Queue<GameObject>();
+    private Queue<GameObject> m_ItemPool = new();
     public bool IsEmpty
     {
         get => m_IsEmpty;
@@ -45,11 +46,19 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         m_ButtonPress.Enable();
         m_ButtonPress.performed += OnPerformPressButton;
         //SetStateSliderCoolDownTime(false);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ITEM, ReceiverEventUpdateCountItem);
+        }
     }
     private void OnDestroy()
     {
         m_ButtonPress.performed -= OnPerformPressButton;
         m_ButtonPress.Disable();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.UPDATE_COUNT_ITEM, ReceiverEventUpdateCountItem);
+        }
     }
     public void SetItemSprite(QuestItemSO sprite)
     {
@@ -236,7 +245,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-       if(m_CurrentItem == null) return;
+        if (m_CurrentItem == null) return;
         string itemName = m_CurrentItem.questItemData.itemName;
         string itemDespri = m_CurrentItem.questItemData.ItemDespri;
         Sprite sprite = m_CurrentItem.questItemData.icon;
@@ -245,9 +254,23 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         PopupItemToolipPanel.Instance.ShowTooltip(itemName, itemDespri, sprite);
         //PopupItemToolipPanel.Instance.transform.SetAsLastSibling();
     }
-
     public void OnPointerExit(PointerEventData eventData)
     {
         PopupItemToolipPanel.Instance?.Hide();
+    }
+    private void ReceiverEventUpdateCountItem(object value)
+    {
+        if (m_CurrentItem == null) return;
+        if (value is (QuestItemSO existing, int count))
+        {
+            if (existing.questItemData.itemID != m_CurrentItem.questItemData.itemID)
+            {
+                return;
+            }
+            else
+            {
+                UpdateCountText(count);
+            }
+        }
     }
 }

@@ -35,7 +35,6 @@ public class HandleCanvasGroup : MonoBehaviour
         if (!questItemSO.questItemData.typeItem.Equals(TYPEITEM.ITEM_COLLECT)) return;
         foreach (var item in this.items)
         {
-            Debug.Log(this.items);
             TextMeshProUGUI textMeshProUGUI = item.GetComponentInChildren<TextMeshProUGUI>();
             if (textMeshProUGUI != null)
                 textMeshProUGUI.text = $"{questItemSO.questItemData.itemName} {questItemSO.questItemData.completionCount}/{questItemSO.questItemData.requestCount}";

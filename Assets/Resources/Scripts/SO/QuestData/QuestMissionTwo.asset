@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9122ffe465b8bde4488f7932d036dd39, type: 3}
+  m_Name: QuestMissionTwo
+  m_EditorClassIdentifier: 
+  questType: 1
+  questID: -QuestMissionTwo
+  questName: "D\u1EA5u V\u1EBFt B\xF3ng \u0110\xEAm"
+  QuestGiver: {fileID: 0}
+  description: "<speed=6>{Fade}N\u01A1i b\xF3ng t\u1ED1i v\u1EEBa gieo m\xECnh, t\xE0n
+    d\u01B0 \xF4 u\u1EBF v\u1EABn c\xF2n v\u01B0\u01A1ng l\u1EA1i. Nh\u1EEFng s\u1EE3i
+    n\u0103ng l\u01B0\u1EE3ng h\u1EAFc \xE1m m\u1ECFng manh, nh\u01B0 nh\u1EEFng
+    s\u1EE3i t\u01A1 nh\u1EC7n gi\u0103ng kh\u1EAFp v\xF9ng \u0111\u1EA5t.\n\nH\xE3y
+    t\xECm ki\u1EBFm nh\u1EEFng n\u01A1i m\xE0 l\u0169 <color=#003FFF><B>D\u01A1i
+    B\xF3ng \u0110\xEAm</color></B> \u0111\xE3 t\u1EEBng lui t\u1EDBi. \n\nNh\u1EEFng
+    t\xE0n t\xEDch n\xE0y c\xF3 th\u1EC3 d\u1EABn ng\u01B0\u01A1i \u0111\u1EBFn nh\u1EEFng
+    k\u1EBB m\u1EA1nh h\u01A1n, nh\u1EEFng k\u1EBB \u0111i\u1EC1u khi\u1EC3n l\u0169
+    d\u01A1i, nh\u1EEFng m\u1EAFt x\xEDch quan tr\u1ECDng trong qu\xE2n \u0111\u1ED9i
+    c\u1EE7a H\u1EAFc Ng\u01B0u.\n\nH\xE3y l\u1EA7n theo d\u1EA5u v\u1EBFt n\u0103ng
+    l\u01B0\u1EE3ng h\u1EAFc \xE1m. Quy\u1EC3n Tr\u1EE5c s\u1EBD d\u1EABn l\u1ED1i
+    cho ng\u01B0\u01A1i. S\u1EF1 th\u1EADt v\u1EC1 s\u1EE9c m\u1EA1nh c\u1EE7a k\u1EBB
+    th\xF9 \u0111ang ch\u1EDD ng\u01B0\u01A1i kh\xE1m ph\xE1.\n\nM\u1EE5c ti\xEAu
+    hi\u1EC7n t\u1EA1i: T\xECm ki\u1EBFm d\u1EA5u v\u1EBFt v\xE0 ti\xEAu di\u1EC7t
+    <color=#003FFF><B>D\u01A1i B\xF3ng \u0110\xEAm</color></B>"
+  descriptionElse: 
+  m_TextColor: {r: 0, g: 0.24858952, b: 1, a: 0}
+  isAcceptMission: 0
+  isCompleteMission: 0
+  ItemMission:
+  - {fileID: 11400000, guid: 8fa1bdea40308cc4f819cb3ec3401eab, type: 2}
+  bonus:
+    experience: 0
+    gold: 0
+    itemsReward:
+    - {fileID: 11400000, guid: 10cf13527f2d3b34f9b6207ff25783ba, type: 2}
+    - {fileID: 11400000, guid: 697bfcfb10a16a840ac33a2e62ba8ee5, type: 2}
+    - {fileID: 11400000, guid: c4e4103bdb6f6aa4f9506e75ff0f6409, type: 2}
+    - {fileID: 11400000, guid: 43440ccd65463034fbabd165dadeeee9, type: 2}
+    - {fileID: 11400000, guid: 926d2d5304d88ed4eadd99f61e390c69, type: 2}
+  _backupJson: 

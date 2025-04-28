@@ -1465,6 +1465,8 @@ MonoBehaviour:
   m_ContentMission: {fileID: 7492415742603920374}
   m_ContentMissionElse: {fileID: 869555393617438416}
   m_TitleMission: {fileID: 1205867471551163228}
+  m_QuestDataMissionOne: {fileID: 0}
+  m_HasShownAlternative: 0
 --- !u!1 &8331083035836069398
 GameObject:
   m_ObjectHideFlags: 0

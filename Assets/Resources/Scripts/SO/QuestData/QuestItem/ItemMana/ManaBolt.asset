@@ -26,5 +26,7 @@ MonoBehaviour:
     ItemDespri: "H\u1ED3i Ph\u1EE5c 30% N\u0103ng L\u01B0\u1EE3ng t\u1ED1i \u0111a"
     CountExp: 0
     creepType: 0
-  _backupJson: "{\"itemID\":\"-ManaBolt\",\"itemName\":\"B\xECnh Mana Nh\u1ECF\",\"count\":5,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55636},\"typeItem\":2,\"percentIncrease\":0.30000001192092898,\"timeCoolDown\":0.5,\"itemUse\":2,\"ItemDespri\":\"H\u1ED3i
-    Ph\u1EE5c 30% N\u0103ng L\u01B0\u1EE3ng t\u1ED1i \u0111a\",\"CountExp\":0,\"creepType\":0}"
+    TimerSkillCoolDown: 0
+    DespristionSkill: 
+  _backupJson: "{\"itemID\":\"-ManaBolt\",\"itemName\":\"B\xECnh Mana Nh\u1ECF\",\"count\":5,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":55660},\"typeItem\":2,\"percentIncrease\":0.30000001192092898,\"timeCoolDown\":0.5,\"itemUse\":2,\"ItemDespri\":\"H\u1ED3i
+    Ph\u1EE5c 30% N\u0103ng L\u01B0\u1EE3ng t\u1ED1i \u0111a\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\"}"

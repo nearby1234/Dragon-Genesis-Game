@@ -11,7 +11,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
     private Button button;
     private Image image;
     private TextMeshProUGUI textMeshProUGUI;
-    private readonly string m_DOItemPrefabPath = QuestManager.Instance.m_DOItemPrefabPath;
+    private string m_DOItemPrefabPath;
     [SerializeField] private Vector3 m_Offset;
     [SerializeField] private Vector2 m_targetPos;
     [SerializeField] private InputAction m_ButtonPress;
@@ -22,6 +22,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         button = GetComponent<Button>();
         image = GetComponent<Image>();
         textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
+        m_DOItemPrefabPath = QuestManager.Instance.m_DOItemPrefabPath;
     }
     private void Start()
     {
@@ -43,7 +44,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
     }
     private void OnClickButtonShowPopupScrollView(InputAction.CallbackContext callback)
     {
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, true);
         }
@@ -60,7 +61,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         {
             PlayerManager.instance.isInteractingWithUI = true;
         }
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.ShowCursor();
         }
@@ -97,7 +98,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
                     {
                         AudioManager.Instance.PlaySE("WhooshScaleSound");
                     }
-                   
+
                 });
 
                 sequence.Append(rectTransform.DOScale(new Vector3(2f, 2f, 2f), 1f).SetEase(Ease.OutBack));
@@ -108,6 +109,10 @@ public class ScreenOriginalScrollBtn : BaseScreen
                     textMeshProUGUI.enabled = true;
                 });
             }
+        }
+        else
+        {
+            Debug.LogWarning($"không tìm th?y ???ng d?n : {m_DOItemPrefabPath}");
         }
     }
 }

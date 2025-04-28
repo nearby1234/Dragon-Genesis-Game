@@ -356,24 +356,8 @@ MonoBehaviour:
   m_MoneyTxt: {fileID: 6145679624852160790}
   m_InventoryBoxPanel: {fileID: 7331616791518352571}
   m_InventoryItemPanel: {fileID: 5931693292310098488}
+  configSO: {fileID: 11400000, guid: b115f71a7c7688840be0c0f9f060d51d, type: 2}
   m_ImageIconList: []
-  m_ButtonPress:
-    m_Name: Button Press
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 85ecd602-e908-44c1-8876-4e67e0f4de07
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 8b548dbf-dd73-4b46-bc1d-bab8ad5bf8e3
-      m_Path: <Keyboard>/i
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Button Press
-      m_Flags: 0
-    m_Flags: 0
   listBoxInventory: []
   listItemInventory: []
 --- !u!1 &3982885375730314908

@@ -11,6 +11,7 @@ TagManager:
   - Boss
   - NPC
   - PAT
+  - ScreenBox
   layers:
   - Default
   - TransparentFX

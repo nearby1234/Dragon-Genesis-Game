@@ -613,6 +613,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PA_BambooHouse_2
       objectReference: {fileID: 0}
+    - target: {fileID: 2456707949924856698, guid: 4b1e876c867187342ade905889af887e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -8476,13 +8480,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 426896667}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.03925978, z: 0, w: 0.9992291}
-  m_LocalPosition: {x: 28.1, y: 0, z: -109.5}
+  m_LocalRotation: {x: 0.03925546, y: -0.00058240374, z: 0.9991191, w: -0.01482318}
+  m_LocalPosition: {x: -1.6, y: 1, z: -105.23}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 987132186}
-  m_LocalEulerAnglesHint: {x: 0, y: 4.5, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 4.5, z: 181.7}
 --- !u!65 &426896669
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -14581,12 +14585,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
   _SliderPos: {fileID: 0}
-  m_CountNumber: 0
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
   m_QuestRewardItemPrefabPath: Prefabs/UI/Quest/ItemReward/ItemRewardImg
   m_DOItemPrefabPath: Prefabs/Inventory/DoSpite/DoSpite
+  m_CountNumber: 0
 --- !u!1001 &837739429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22654,7 +22658,7 @@ Transform:
   m_GameObject: {fileID: 1315350092}
   serializedVersion: 2
   m_LocalRotation: {x: -8.906049e-10, y: 0.0000000073947577, z: 1.3510693e-16, w: 1}
-  m_LocalPosition: {x: -186.77191, y: 0.0022096634, z: -18.067017}
+  m_LocalPosition: {x: -186.77194, y: 0.0022115707, z: -18.067017}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -32732,6 +32736,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 987132186}
     m_Modifications:
+    - target: {fileID: 1117313103730174125, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1549431047095804266, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
       propertyPath: m_LocalPosition.x
       value: -53.41
@@ -32776,11 +32784,46 @@ PrefabInstance:
       propertyPath: m_Name
       value: PA_Bamboolamp_Set1 (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 6232527201739964655, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
+      propertyPath: ShapeModule.angle
+      value: 9
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1348381677194969370, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2027657942}
   m_SourcePrefab: {fileID: 100100000, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
+--- !u!1 &2027657941 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1348381677194969370, guid: eca7aa4c26c28454bb4dd3ae0b13c487, type: 3}
+  m_PrefabInstance: {fileID: 2027657940}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &2027657942
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2027657941}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Version: 3
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_LightLayerMask: 1
+  m_RenderingLayers: 1
+  m_CustomShadowLayers: 0
+  m_ShadowLayerMask: 1
+  m_ShadowRenderingLayers: 1
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
 --- !u!1001 &2028340536
 PrefabInstance:
   m_ObjectHideFlags: 0

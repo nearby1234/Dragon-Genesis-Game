@@ -168,11 +168,11 @@ RectTransform:
   - {fileID: 4992464916203983414}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -910, y: -490}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &2071443625132176942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,7 +185,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1dfa1b2687894a40a4875f4f9878f9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IconButton: {fileID: 1562595171641080990}
   m_ButtonPress:
     m_Name: Button Press
     m_Type: 0
@@ -203,7 +202,7 @@ MonoBehaviour:
       m_Action: Button Press
       m_Flags: 0
     m_Flags: 0
-  m_IconPosition: {x: -400, y: -490}
+  m_IconPosition: {x: -230, y: 0}
 --- !u!1 &9222739103786623123
 GameObject:
   m_ObjectHideFlags: 0

@@ -9,12 +9,10 @@ public class ScreenIconInventory : BaseScreen
     [SerializeField] private InputAction m_ButtonPress;
     [SerializeField] private Vector2 m_IconPosition;
     private RectTransform m_IconTransform;
-    private Image m_Image;
     
     private void Awake()
     {
         m_IconTransform = GetComponent<RectTransform>();
-        m_Image = GetComponentInChildren<Image>();
     }
     private void Start()
     {

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
+using UnityEngine.InputSystem;
 using UnityEngine.VFX;
 
 public class PivotScaleWeapon : MonoBehaviour
@@ -22,6 +23,7 @@ public class PivotScaleWeapon : MonoBehaviour
     //[SerializeField] private ChildTriggerForwarder m_ChildTriggerForwarder;
 
     private Vector3 initialScale;
+    private InputAction m_ButtonPress;
 
     private Material m_CircleMaterial;
 
@@ -33,8 +35,9 @@ public class PivotScaleWeapon : MonoBehaviour
     private Coroutine scalingCoroutine;
     private Coroutine setupScaleDefault;
 
-    private const string AttackAnimationClip = "Great Sword Casting_IK";
-    private const string AttackCastingAnimationClip = "Great Sword Casting_attack_IK";
+    private const string attackAnimationClip = "Great Sword Casting_IK";
+    private const string attackCastingAnimationClip = "Great Sword Casting_attack_IK";
+    private const string itemSkillID = "-CarriarGreatSwordSkill";
 
     [SerializeField] private int m_EnergyWeaponDamage;
     public int EnergyWeaponDamage => m_EnergyWeaponDamage;
@@ -70,6 +73,7 @@ public class PivotScaleWeapon : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_DAMAGE_VALUE, ReceiverPlayerDamage);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerMana);
             ListenerManager.Instance.Register(ListenType.PLAYER_MANA_EMPTY, ReceiverStateMove);
+            ListenerManager.Instance.Register(ListenType.UI_SEND_BUTTON_PRESS_AND_TYPESKILL, ReceiverEventButtonAndTypeSKill);
         }
     }
     private void OnDestroy()
@@ -79,19 +83,24 @@ public class PivotScaleWeapon : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_DAMAGE_VALUE, ReceiverPlayerDamage);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerMana);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_MANA_EMPTY, ReceiverStateMove);
+            ListenerManager.Instance.Unregister(ListenType.UI_SEND_BUTTON_PRESS_AND_TYPESKILL, ReceiverEventButtonAndTypeSKill);
         }
+        m_ButtonPress.Disable();
+        m_ButtonPress.performed -= OnButtonStarted;
+        m_ButtonPress.canceled -= OnButtonCanceled;
+
     }
 
     private void Update()
     {
-        HandleInput();
+        //HandleInput();
     }
 
     //public void GetChildTriggerForwarder(ChildTriggerForwarder childTriggerForwarder)
     //{
     //    m_ChildTriggerForwarder = childTriggerForwarder;
     //}    
-        
+
     private void HandleInput()
     {
         // Khi nhấn phím O
@@ -116,7 +125,7 @@ public class PivotScaleWeapon : MonoBehaviour
                 m_AuraPS.gameObject.SetActive(true);
                 m_AuraPS.Play();
             }
-            animator.Play(AttackAnimationClip);
+            animator.Play(attackAnimationClip);
             animator.SetTrigger("IsPress");
             scalingCoroutine = StartCoroutine(ScaleCoroutine());
         }
@@ -175,11 +184,11 @@ public class PivotScaleWeapon : MonoBehaviour
         float timer = 0f;
         while (true)
         {
-            // Chỉ tăng timer khi nhấn phím N
-            if (!Input.GetKey(KeyCode.O))
-            {
-                yield break;
-            }
+            //// Chỉ tăng timer khi nhấn phím N
+            //if (!Input.GetKey(KeyCode.O))
+            //{
+            //    yield break;
+            //}
             timer += Time.deltaTime;
             // Tính level mới dựa trên thời gian đã trôi qua (mỗi 'duration' sẽ tăng level)
             int newLevelIndex = Mathf.Clamp((int)(timer / duration), 0, levelFactors.Length - 1);
@@ -191,7 +200,7 @@ public class PivotScaleWeapon : MonoBehaviour
 
                 m_EnergyWeaponDamage = (int)(m_Damage * (1f + m_CurrentIndex * m_IncreasePercentagePerIndex));
                 // Tính toán năng lượng tiêu hao và gửi sự kiện
-                
+
 
                 // Setup hiệu ứng (shockwave, energy) mỗi khi nâng cấp level
 
@@ -210,24 +219,18 @@ public class PivotScaleWeapon : MonoBehaviour
                 }
             }
             yield return null;
-           
         }
-
     }
 
     private IEnumerator SetupScaleDefault()
     {
-        //yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).normalizedTime);
+        // chờ qua state casting
         yield return new WaitUntil(() =>
-        {
-            var info = animator.GetCurrentAnimatorStateInfo(0);
-            return info.IsName(AttackCastingAnimationClip);
-        });
+            animator.GetCurrentAnimatorStateInfo(0).IsName(attackCastingAnimationClip));
         yield return new WaitUntil(() =>
-        {
-            var info = animator.GetCurrentAnimatorStateInfo(0);
-            return (!info.IsName(AttackCastingAnimationClip) || (info.IsName(AttackCastingAnimationClip) && info.normalizedTime >= 1f));
-        });
+            animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
+
+        // Lúc này mới ResetScale
         ResetScale();
     }
     private IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
@@ -329,6 +332,7 @@ public class PivotScaleWeapon : MonoBehaviour
             m_CircleMaterial.SetColor("_BaseColor", currentColor);
             yield return null;
         }
+
     }
     #endregion
     private void ReceiverPlayerDamage(object value)
@@ -346,7 +350,7 @@ public class PivotScaleWeapon : MonoBehaviour
         }
     }
 
-    private void ManaConsumption(float manaMax , int index)
+    private void ManaConsumption(float manaMax, int index)
     {
         m_EnergyWeaponConsumption = manaMax * (index * m_IncreasePercentagePerIndex);
         if (ListenerManager.HasInstance)
@@ -360,6 +364,75 @@ public class PivotScaleWeapon : MonoBehaviour
         {
             // Nếu empty == true → stamina cạn
             m_IsManaEmpty = isStaminaEmpty;
+        }
+    }
+    private void ResetPivotScaleWeapon()
+    {
+        if (scalingCoroutine != null)
+            StopCoroutine(scalingCoroutine);
+        animator.SetBool("IsPressN", false);
+
+        if (m_AuraPS != null)
+        {
+            m_AuraPS.Stop();
+            m_AuraPS.gameObject.SetActive(false);
+        }
+        // Khi thả phím thì tính toán tiêu hao mana và gửi dữ liệu cho PlayerMana
+        ManaConsumption(m_ManaMax, m_CurrentIndex);
+        if (m_CurrentIndex > 0)
+        {
+            Debug.Log($"m_CurrentIndex : {m_CurrentIndex}");
+            setupScaleDefault = StartCoroutine(SetupScaleDefault());
+        }
+        else
+        {
+            ResetScale();
+            animator.Play("Move"); // hoặc tên state Idle của bạn
+        }
+
+        StartCoroutine(SmoothRotateToCameraDirection(0.3f));
+    }
+    private void OnButtonStarted(InputAction.CallbackContext callback)
+    {
+        // Gửi sự kiện "PLAYER_SKILL_KEYDOWN" để kiểm tra mana cần thiết.
+        if (ListenerManager.HasInstance)
+        {
+            // Bạn có thể gửi dữ liệu bổ sung nếu cần, ví dụ, yêu cầu mức tiêu hao mana cho skill.
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_SKILL_KEYDOWN, null);
+        }
+        // Sau khi broadcast, flag m_IsManaEmpty sẽ được cập nhật từ PlayerMana (thông qua ReceiverStateMove).
+        if (m_IsManaEmpty)
+        {
+            Debug.Log("Không đủ mana để thi triển skill");
+            return; // Không thi triển nếu mana không đủ.
+        }
+
+        // Nếu đủ mana, thực hiện các hiệu ứng và thi triển skill.
+        if (m_AuraPS != null)
+        {
+            m_AuraPS.gameObject.SetActive(true);
+            m_AuraPS.Play();
+        }
+        animator.Play(attackAnimationClip);
+        animator.SetTrigger("IsPress");
+        scalingCoroutine = StartCoroutine(ScaleCoroutine());
+    }
+    private void OnButtonCanceled(InputAction.CallbackContext callback)
+    {
+        ResetPivotScaleWeapon();
+    }
+    private void ReceiverEventButtonAndTypeSKill(object value)
+    {
+        if (value is (InputAction button, QuestItemSO itemskill))
+        {
+            if (itemskill.questItemData.itemID.Equals(itemSkillID))
+            {
+                m_ButtonPress = button;
+                m_ButtonPress.Enable();
+                m_ButtonPress.started += OnButtonStarted;
+                m_ButtonPress.canceled += OnButtonCanceled;
+            }
+
         }
     }
 }

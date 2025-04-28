@@ -91,7 +91,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
+    m_Left: 15
     m_Right: 0
     m_Top: 4
     m_Bottom: 0
@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 2383231222730042025}
+  items: []
 --- !u!1 &684277035213601479
 GameObject:
   m_ObjectHideFlags: 0
@@ -201,7 +202,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 16777215
+    rgba: 4294967295
   m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -699,7 +700,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -880.23425, y: -131.90192, z: -317.71655, w: -110.878204}
+  m_margin: {x: -880.23425, y: -143.7511, z: -317.71655, w: -74.19211}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -1213,6 +1214,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 3996577721714126388}
+  items: []
 --- !u!1 &4281119318229898762
 GameObject:
   m_ObjectHideFlags: 0
@@ -1790,6 +1792,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 2605665370513467515}
+  items: []
 --- !u!1 &7208714170578725561
 GameObject:
   m_ObjectHideFlags: 0
@@ -2203,6 +2206,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 5147219180122016981}
+  items: []
 --- !u!1 &8761323372837305418
 GameObject:
   m_ObjectHideFlags: 0

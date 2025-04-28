@@ -5499,7 +5499,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7912646097252322957
 Transform:
   m_ObjectHideFlags: 0
@@ -5678,6 +5678,7 @@ MonoBehaviour:
   inputVector: {x: 0, y: 0}
   smoothInputVector: {x: 0, y: 0}
   velocity: {x: 0, y: 0, z: 0}
+  moveState: 0
   characterController: {fileID: 0}
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
@@ -5965,7 +5966,7 @@ MonoBehaviour:
   m_MaxMana: 0
   m_CurrentMana: 0
   m_ManaBase: 0
-  m_PlusHealValue: 5
+  m_PlusManaValue: 0
 --- !u!114 &7990349908563691109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6012,7 +6013,7 @@ MonoBehaviour:
   m_Cirlcle: {fileID: 6252220678177475981}
   m_ShockWave: {fileID: 1570320312916466234}
   m_Trial: {fileID: 5693287085899810440}
-  m_AuraPS: {fileID: 0}
+  m_AuraPS: {fileID: 7217467954158891482}
   m_Energy: {fileID: 1037329746738939483}
   animator: {fileID: 0}
   m_EnergyWeaponDamage: 10
@@ -89366,6 +89367,11 @@ ParticleSystem:
 --- !u!198 &5693287085899810440 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 5306809667583684214, guid: e4f7677e10d4cea458d8940f1a23e468, type: 3}
+  m_PrefabInstance: {fileID: 479366411212269822}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7217467954158891482 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7101778500048673060, guid: e4f7677e10d4cea458d8940f1a23e468, type: 3}
   m_PrefabInstance: {fileID: 479366411212269822}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7909662916281655370 stripped

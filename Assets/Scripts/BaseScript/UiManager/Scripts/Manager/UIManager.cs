@@ -38,18 +38,6 @@ public class UIManager : BaseManager<UIManager>
       
         m_SpawnObjectVFX = GetComponentInChildren<SpawnObjectVFX>();
     }
-    private void Start()
-    {
-        if (GameManager.HasInstance)
-        {
-            if (GameManager.Instance.GameState == GAMESTATE.MENULOADING)
-            {
-                ShowScreen<ScreenMenuPanel>();
-                return;
-            }
-        }
-        ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
-    }
     private void Update()
     {
         if (GameManager.HasInstance)

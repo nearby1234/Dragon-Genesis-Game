@@ -9,6 +9,8 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: EdgeGlow_02
   m_Shader: {fileID: 4800000, guid: 2e16627037a815949b3318655fe57aa4, type: 3}
+  m_Parent: {fileID: 0}
+  m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 4
@@ -17,6 +19,7 @@ Material:
   m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses: []
+  m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -143,6 +146,7 @@ Material:
     - _Use_Mask: 0
     - _Use_Mask2: 0
     - _WorkflowMode: 1
+    - _XThicknessScaleFactor: 1
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
@@ -158,6 +162,7 @@ Material:
     - _ScaleScrollSpeed: {r: -1.6, g: 6.64, b: 0, a: -0.4}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
+  m_AllowLocking: 1
 --- !u!114 &5455401148254403089
 MonoBehaviour:
   m_ObjectHideFlags: 11

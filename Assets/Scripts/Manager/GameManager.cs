@@ -32,7 +32,7 @@ public class GameManager : BaseManager<GameManager>
     }
     private void Start()
     {
-        m_GameState = GAMESTATE.MENULOADING;
+        StateMenuLoading();
     }
 
     protected override void Awake()
@@ -55,6 +55,14 @@ public class GameManager : BaseManager<GameManager>
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+    }
+    public void StateMenuLoading()
+    {
+        m_GameState = GAMESTATE.MENULOADING;
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowScreen<ScreenMenuPanel>();
+        }
     }
    
 }

@@ -14,6 +14,7 @@ public class PopupInventory : BasePopup
     [SerializeField] private TextMeshProUGUI m_MoneyTxt;
     [SerializeField] private Transform m_InventoryBoxPanel;
     [SerializeField] private Transform m_InventoryItemPanel;
+    [SerializeField] private Config configSO;
     [SerializeField] private List<QuestItemSO> m_ImageIconList = new();
 
     // Danh sách lưu trữ box (là GameObject) và các slot item (là InventorySlot)
@@ -21,8 +22,8 @@ public class PopupInventory : BasePopup
     [SerializeField] private List<InventorySlot> listItemInventory = new();
 
     // Đường dẫn Prefab
-    private const string m_BoxImgPath = "Prefabs/Inventory/BoxItem/Box";
-    private const string m_ItemImgPath = "Prefabs/Inventory/Item/ItemImg";
+    private string m_BoxImgPath;
+    private string m_ItemImgPath;
 
     // Prefab được load từ Resources
     private GameObject m_BoxInventoryPrefab;
@@ -30,31 +31,30 @@ public class PopupInventory : BasePopup
 
     private void Awake()
     {
-        // Load các prefab từ Resources
-        m_BoxInventoryPrefab = Resources.Load<GameObject>(m_BoxImgPath);
-        m_ItemInventoryPrefab = Resources.Load<GameObject>(m_ItemImgPath);
+        if (configSO == null)
+            Debug.LogError("PopupInventory: configSO is null!");
+        else
+            Debug.Log($"PopupInventory: boxPath = '{configSO.m_BoxImgPath}', itemPath = '{configSO.m_ItemImgPath}'");
         m_Rectranform = GetComponent<RectTransform>();
-        if (m_BoxInventoryPrefab != null)
-        {
-            InitInventoryBoxes();
-        }
-        else
-        {
-            Debug.LogError("Không load được prefab BoxInventory tại: " + m_BoxImgPath);
-        }
-
-        if (m_ItemInventoryPrefab != null)
-        {
-            InitInventoryItems();
-        }
-        else
-        {
-            Debug.LogError("Không load được prefab ItemInventory tại: " + m_ItemImgPath);
-        }
+        m_BoxImgPath = configSO.m_BoxImgPath;
+        m_ItemImgPath = configSO.m_ItemImgPath;
     }
 
     private void Start()
     {
+      
+        m_BoxInventoryPrefab = Resources.Load<GameObject>(m_BoxImgPath);
+        if (m_BoxInventoryPrefab == null) Debug.LogWarning($"không tim thầy đường dẫn : {m_BoxImgPath}");
+
+        m_ItemInventoryPrefab = Resources.Load<GameObject>(m_ItemImgPath);
+        if (m_ItemInventoryPrefab == null) Debug.LogWarning($"không tim thầy đường dẫn : {m_ItemImgPath}");
+
+        if (m_BoxInventoryPrefab != null) InitInventoryBoxes();
+        else Debug.LogError("Không load được prefab BoxInventory tại: " + m_BoxImgPath);
+
+        if (m_ItemInventoryPrefab != null) InitInventoryItems();
+        else Debug.LogError("Không load được prefab ItemInventory tại: " + m_ItemImgPath);
+
         // Đánh dấu player đang tương tác với UI
         if (PlayerManager.HasInstance)
         {
@@ -129,18 +129,28 @@ public class PopupInventory : BasePopup
         {
             if (newItem == null) continue;
             var type = newItem.questItemData.typeItem;
-            if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
-                continue;
-
+            //if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
+            //    continue;
+            switch(type)
+            {
+                case TYPEITEM.ITEM_MISSION: 
+                case TYPEITEM.ITEM_EXP:
+                case TYPEITEM.ITEM_SKILL:
+                    continue;
+            }
             var existing = m_ImageIconList.FirstOrDefault(x => x.questItemData.itemID == newItem.questItemData.itemID);
             if (existing != null)
             {
                 existing.questItemData.count += newItem.questItemData.count;
-                var slot = listItemInventory.FirstOrDefault(x => x.m_CurrentItem == existing);
-                if (slot != null)
+                if(ListenerManager.HasInstance)
                 {
-                    slot.UpdateCountText(existing.questItemData.count);
+                    ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ITEM, (existing, existing.questItemData.count));
                 }
+                //var slot = listItemInventory.FirstOrDefault(x => x.m_CurrentItem == existing);
+                //if (slot != null)
+                //{
+                //    slot.UpdateCountText(existing.questItemData.count);
+                //}
             }
             else
             {

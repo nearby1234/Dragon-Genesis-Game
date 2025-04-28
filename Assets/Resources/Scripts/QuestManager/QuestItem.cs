@@ -9,6 +9,7 @@ public enum TYPEITEM
     ITEM_EQUIP,
     ITEM_COLLECT,
     ITEM_EXP,
+    ITEM_SKILL,
 }
 public enum ITEMUSE
 {
@@ -52,6 +53,11 @@ public class QuestItem
     [ShowIf("@typeItem == TYPEITEM.ITEM_COLLECT")]
     [BoxGroup("Item Use Stats")]
     public CreepType creepType;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_SKILL")]
+    [BoxGroup("Item Use Stats")]
+    public float TimerSkillCoolDown;
+    [TextArea(3, 10)]
+    public string DespristionSkill;
 
 
 }
