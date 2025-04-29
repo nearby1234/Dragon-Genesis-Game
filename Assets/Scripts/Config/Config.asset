@@ -22,3 +22,4 @@ MonoBehaviour:
   skillBoxMaterial: {fileID: 2100000, guid: d144d4e4ee2888942a4af971f1b42505, type: 2}
   NameQuestMissionOne: -QuestMissionOne
   NameQuestMissionTwo: -QuestMissionTwo
+  layerIndex: 14

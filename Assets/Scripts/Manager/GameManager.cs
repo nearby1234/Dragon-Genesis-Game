@@ -1,7 +1,3 @@
-using Sirenix.OdinInspector.Editor.Drawers;
-using System.Collections.Generic;
-using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 
 

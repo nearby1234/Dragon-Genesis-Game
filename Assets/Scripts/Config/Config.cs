@@ -24,5 +24,8 @@ public class Config : ScriptableObject
     public  string NameQuestMissionOne = "-QuestMissionOne";
     public  string NameQuestMissionTwo = "-QuestMissionTwo";
 
+    [Header("Layer Index Show PlayerUI")]
+    public int layerIndex;
+
     
 }

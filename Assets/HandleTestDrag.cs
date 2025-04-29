@@ -127,7 +127,7 @@ public class HandleTestDrag : MonoBehaviour
 
     private void SwapCurrentItem(InventorySlot targetSlot)
     {
-        (targetSlot.m_CurrentItem, inventorySlot.m_CurrentItem) = (inventorySlot.m_CurrentItem, targetSlot.m_CurrentItem);
+        (targetSlot.CurrentItem, inventorySlot.CurrentItem) = (inventorySlot.CurrentItem, targetSlot.CurrentItem);
     }
 
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
@@ -148,8 +148,8 @@ public class HandleTestDrag : MonoBehaviour
 
     private void MoveCurrentItemToTarget(InventorySlot targetSlot)
     {
-        targetSlot.m_CurrentItem = inventorySlot.m_CurrentItem;
-        inventorySlot.m_CurrentItem = null;
+        targetSlot.CurrentItem = inventorySlot.CurrentItem;
+        inventorySlot.CurrentItem = null;
         inventorySlot.ClearItem();
     }
 

@@ -1673,6 +1673,7 @@ MonoBehaviour:
   m_EnemyHeal: 0
   m_Timer: 0
   m_EnemyController: {fileID: 0}
+  creepType: 0
   m_IsDead: 0
 --- !u!195 &715805975673094015
 NavMeshAgent:
@@ -2134,7 +2135,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Fire Dragon
+  m_text: "R\u1ED3ng L\u1EEDa"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

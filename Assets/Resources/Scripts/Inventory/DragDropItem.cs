@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System;
+using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
@@ -9,15 +11,18 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private RectTransform rectTransform;
     [SerializeField] private GameObject DragContainer;
-    private Image image;  
-    private TextMeshProUGUI textMeshPro;  
-    private InventorySlot inventorySlot;  
+    private Image image;
+    private TextMeshProUGUI textMeshPro;
+    private InventorySlot inventorySlot;
     private Vector2 originalAnchoredPos;
     private GameObject OriginalParent;
     private GameObject placeholder;
     private int originalSiblingIndex;
 
-    
+    private Dictionary<Type, Action<Component>> handler;
+
+
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -25,7 +30,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         image = GetComponent<Image>(); // Giả sử Image nằm trên cùng GameObject này
         textMeshPro = GetComponentInChildren<TextMeshProUGUI>(); // Giả sử TextMeshProUGUI nằm trong con của GameObject này
         inventorySlot = GetComponent<InventorySlot>(); // Giả sử InventorySlot nằm trên cùng GameObject này
-       
+
         //originalPosition = rectTransform.anchoredPosition;
 
 
@@ -34,6 +39,12 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         {
             Debug.LogError("Missing required components on DragDropItem.");
         }
+
+        handler = new()
+        {
+            {typeof(InventorySlot), comp => HandleA((InventorySlot)comp)},
+            {typeof(ItemEquip), comp => HandleB((ItemEquip)comp)},
+        };
     }
     private void Start()
     {
@@ -45,21 +56,21 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         canvasGroup.blocksRaycasts = false;
         originalAnchoredPos = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
 
-       // ===========================
+        // ===========================
         OriginalParent = rectTransform.parent.gameObject;
         originalSiblingIndex = rectTransform.GetSiblingIndex();
         if (OriginalParent.name != "InventoryItemPanel")
         {
             CreatePlaceholder();
-            if(DragContainer != null)
-            rectTransform.SetParent(DragContainer.transform);
+            if (DragContainer != null)
+                rectTransform.SetParent(DragContainer.transform);
         }
-       
-        if(eventData != null) 
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
-        }
+
+        if (eventData != null)
+            if (PlayerManager.HasInstance)
+            {
+                PlayerManager.instance.isInteractingWithUI = true; // Đặt trạng thái tương tác với UI
+            }
     }
 
     // Khi kéo, cập nhật vị trí (visual feedback) của đối tượng đang kéo
@@ -78,71 +89,25 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         canvasGroup.blocksRaycasts = true;
 
-        // Xác định Box (InventorySlot) mà con trỏ đang hướng tới.
-        // Lưu ý: Đây là GameObject có chứa component InventorySlot.
-        InventorySlot targetSlot = null;
         if (eventData.pointerEnter != null)
         {
-            Debug.Log("Pointer Enter: " + eventData.pointerEnter.name);
-            targetSlot = eventData.pointerEnter.GetComponent<InventorySlot>();
-        }
-        else
-        {
-            rectTransform.anchoredPosition = originalAnchoredPos;
-            rectTransform.SetParent(OriginalParent.transform);
-        }
+            GameObject hoveredObj = eventData.pointerEnter;
 
-        if (targetSlot != null)
-        {
-            // Lấy Image component của item trong Box đích.
-            // Giả sử mỗi Box luôn có sẵn một GameObject item (với Image) làm con của Box.
-            Image targetImage = targetSlot.GetComponent<Image>();
-            TextMeshProUGUI text = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
-            InventorySlot slot = targetSlot.GetComponent<InventorySlot>();
-            if (targetImage != null && text != null)
+            foreach (var kvp in handler)
             {
-                Sprite draggedSprite = image.sprite;
-                Sprite targetSprite = targetImage.sprite;
-                string targetText = text.text; // Lấy text của item trong Box đích
-                string draggedText = textMeshPro.text; // Lấy text của item đang kéo
-
-                // Nếu Box đích đã có sprite (tức là Item B đã có sprite) → hoán đổi sprite
-                if (targetSprite != null)
+                if (hoveredObj.TryGetComponent(kvp.Key, out Component comp))
                 {
-                    SwapSprites(targetImage, draggedSprite, targetSprite);
-                    SwapText(targetText, draggedText, text);
-                    SwapCurrentItem(slot);
-                }
-                else
-                {
-                    // Nếu Box đích trống → chuyển sprite từ item đang kéo sang Box đích
-                    MoveSpriteToTarget(targetImage, draggedSprite);
-                    MoveTextToTarget(text, draggedText);
-                    MoveCurrentItemToTarget(slot);
-
+                    kvp.Value?.Invoke(comp);
+                    return;
                 }
             }
-            // Sau khi đổi sprite, reset vị trí của đối tượng kéo về vị trí ban đầu (vì chúng ta không di chuyển GameObject)
-            rectTransform.anchoredPosition = originalAnchoredPos;
-            rectTransform.SetParent(OriginalParent.transform);
+
+            // Nếu không có component nào khớp trong handler
+            ResetDraggedItemPosition();
         }
         else
         {
-            // Nếu không thả vào Box hợp lệ, đặt lại vị trí ban đầu của item đang kéo.
-            rectTransform.anchoredPosition = originalAnchoredPos;
-            rectTransform.SetParent(OriginalParent.transform);
-        }
-        if (placeholder != null)
-        {
-            rectTransform.SetParent(OriginalParent.transform);
-            rectTransform.SetSiblingIndex(originalSiblingIndex);
-            Destroy(placeholder);
-            placeholder = null;
-        }
-        else
-        {
-            // Với item của PopupInventory: chỉ reset vị trí
-            rectTransform.anchoredPosition = originalAnchoredPos;
+            ResetDraggedItemPosition();
         }
         if (PlayerManager.HasInstance)
         {
@@ -180,7 +145,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
     private void SwapCurrentItem(InventorySlot targetSlot)
     {
-        (targetSlot.m_CurrentItem, inventorySlot.m_CurrentItem) = (inventorySlot.m_CurrentItem, targetSlot.m_CurrentItem);
+        (targetSlot.CurrentItem, inventorySlot.CurrentItem) = (inventorySlot.CurrentItem, targetSlot. CurrentItem);
     }
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
     {
@@ -197,10 +162,10 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         targetTextMesh.enabled = true;
         targetTextMesh.color = new Color(1, 1, 1, 1); // Đặt màu chữ thành trắng
     }
-    private void MoveCurrentItemToTarget(InventorySlot targetSlot)
+    private void MoveCurrentItemToTarget(IItemSlot targetSlot)
     {
-        targetSlot.m_CurrentItem = inventorySlot.m_CurrentItem;
-        inventorySlot.m_CurrentItem = null; // Đặt lại item đang kéo về null
+        targetSlot.CurrentItem = inventorySlot.CurrentItem;
+        inventorySlot.      CurrentItem = null; // Đặt lại item đang kéo về null
         inventorySlot.ClearItem(); // Xóa item trong Box hiện tại
     }
     private void SetAlphaColor(float alpha, Image image)
@@ -210,6 +175,79 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         Color temp = image.color;
         temp.a = alpha;
         image.color = temp;
+    }
+
+    private void HandleA(InventorySlot targetSlot)
+    {
+        if (targetSlot == null)
+        {
+            ResetDraggedItemPosition();
+            return;
+        }
+
+        Debug.Log("Pointer Enter: " + targetSlot.name);
+        Image targetImage = targetSlot.GetComponent<Image>();
+        TextMeshProUGUI targetTextMesh = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
+        //InventorySlot draggedSlot = inventorySlot; // ô chứa item đang kéo
+
+        if (targetImage != null && targetTextMesh != null)
+        {
+            Sprite draggedSprite = image.sprite;
+            Sprite targetSprite = targetImage.sprite;
+            string targetText = targetTextMesh.text;
+            string draggedText = textMeshPro.text;
+
+            if (targetSprite != null)
+            {
+                SwapSprites(targetImage, draggedSprite, targetSprite);
+                SwapText(targetText, draggedText, targetTextMesh);
+                SwapCurrentItem(targetSlot);
+            }
+            else
+            {
+                MoveSpriteToTarget(targetImage, draggedSprite);
+                MoveTextToTarget(targetTextMesh, draggedText);
+                MoveCurrentItemToTarget(targetSlot);
+            }
+        }
+
+        // Reset lại vị trí dragged item và parenting
+        ResetDraggedItemPosition();
+
+        if (placeholder != null)
+        {
+            rectTransform.SetParent(OriginalParent.transform);
+            rectTransform.SetSiblingIndex(originalSiblingIndex);
+            Destroy(placeholder);
+            placeholder = null;
+        }
+        else
+        {
+            rectTransform.anchoredPosition = originalAnchoredPos;
+        }
+    }
+    private void ResetDraggedItemPosition()
+    {
+        rectTransform.anchoredPosition = originalAnchoredPos;
+        rectTransform.SetParent(OriginalParent.transform);
+    }
+
+    private void HandleB(ItemEquip targetSlot)
+    {
+        if (targetSlot == null)
+        {
+            ResetDraggedItemPosition();
+            return;
+        }
+
+        Debug.Log("Pointer Enter: " + targetSlot.name);
+        Image targetImage = targetSlot.GetComponent<Image>();
+        //targetSlot.CurrentItem = inventorySlot.CurrentItem;
+        Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
+        MoveSpriteToTarget(targetImage, draggedSprite);
+        MoveCurrentItemToTarget(targetSlot);
+        ResetDraggedItemPosition();
+
     }
 
 }

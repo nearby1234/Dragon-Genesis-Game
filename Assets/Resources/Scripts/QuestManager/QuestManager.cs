@@ -21,6 +21,7 @@ public class QuestManager : BaseManager<QuestManager>
     public string m_DOItemPrefabPath;
     public const string NameQuestMissionOne = "-QuestMissionOne";
     public const string NameQuestMissionTwo = "-QuestMissionTwo";
+    public const string NameQuestMissionThree = "-QuestMissionThree";
     public int m_CountNumber;
 
     // Các hằng số tween được định nghĩa lại ở đây để sử dụng trong GrantReward

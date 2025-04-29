@@ -28,4 +28,13 @@ MonoBehaviour:
     creepType: 0
     TimerSkillCoolDown: 0
     DespristionSkill: 
-  _backupJson: "{\"itemID\":\"-BookSkill\",\"itemName\":\"S\xE1ch K\u1EF9 N\u0103ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52478},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\"}"
+    typeWeapon: 0
+    m_SwordPrefabs: {fileID: 0}
+    m_SwordMesh: {fileID: 0}
+    DespristionWeapon: 
+    plusStrength: 0
+    plusAgility: 0
+    plusStamina: 0
+    plusHeal: 0
+    plusAmor: 0
+  _backupJson: "{\"itemID\":\"-BookSkill\",\"itemName\":\"S\xE1ch K\u1EF9 N\u0103ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52478},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0}"

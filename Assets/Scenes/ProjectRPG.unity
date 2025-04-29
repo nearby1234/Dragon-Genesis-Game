@@ -14585,6 +14585,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
   _SliderPos: {fileID: 0}
+  configSO: {fileID: 0}
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
@@ -35352,34 +35353,14 @@ PrefabInstance:
       propertyPath: WeaponManager
       value: 
       objectReference: {fileID: 976260440}
-    - target: {fileID: 242744660293143043, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_PlusStaminaValue
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 629249027627202674, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_PlusHealValue
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 629249027627202674, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_PlusManaValue
-      value: 5
-      objectReference: {fileID: 0}
     - target: {fileID: 1164828770242174425, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 1164828770242174425, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4081167356261960878, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: impulseSource
       value: 
       objectReference: {fileID: 1723113380}
-    - target: {fileID: 4081167356261960878, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: explosionPrefab
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 7912646097252322957, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
       propertyPath: m_LocalPosition.x
       value: -964.3
@@ -35432,38 +35413,6 @@ PrefabInstance:
       propertyPath: m_FreeLookCamera
       value: 
       objectReference: {fileID: 444358654977463806}
-    - target: {fileID: 8820423665410141719, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_ButtonSwap
-      value: 98
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: moveInput.m_Name
-      value: Move Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: shiftInput.m_Name
-      value: Shift Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: m_IsPressButtonSwap
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: moveInput.m_SingletonActionBindings.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: moveInput.m_SingletonActionBindings.Array.data[0].m_Id
-      value: a3977c99-df1e-40f6-b370-7b2658b42579
-      objectReference: {fileID: 0}
-    - target: {fileID: 8907671908553931267, guid: 213ca508215e9f34bbf5ee476915471b, type: 3}
-      propertyPath: moveInput.m_SingletonActionBindings.Array.data[0].m_Action
-      value: Move Input
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -16,7 +16,7 @@ MonoBehaviour:
     itemID: -ItemBat
     itemName: "D\u01A1i B\xF3ng \u0110\xEAm"
     count: 0
-    requestCount: 1
+    requestCount: 10
     completionCount: 0
     icon: {fileID: 21300000, guid: 1bf3f5ff6a982d0448e01fed31651771, type: 3}
     typeItem: 4
@@ -28,4 +28,13 @@ MonoBehaviour:
     creepType: 1
     TimerSkillCoolDown: 0
     DespristionSkill: 
-  _backupJson: "{\"itemID\":\"-ItemBat\",\"itemName\":\"D\u01A1i B\xF3ng \u0110\xEAm\",\"count\":0,\"requestCount\":1,\"completionCount\":0,\"icon\":{\"instanceID\":55668},\"typeItem\":4,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":1,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\"}"
+    typeWeapon: 0
+    m_SwordPrefabs: {fileID: 0}
+    m_SwordMesh: {fileID: 0}
+    DespristionWeapon: 
+    plusStrength: 0
+    plusAgility: 0
+    plusStamina: 0
+    plusHeal: 0
+    plusAmor: 0
+  _backupJson: "{\"itemID\":\"-ItemBat\",\"itemName\":\"D\u01A1i B\xF3ng \u0110\xEAm\",\"count\":0,\"requestCount\":10,\"completionCount\":0,\"icon\":{\"instanceID\":55776},\"typeItem\":4,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":1,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0}"

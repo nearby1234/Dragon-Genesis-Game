@@ -28,5 +28,14 @@ MonoBehaviour:
     creepType: 0
     TimerSkillCoolDown: 0
     DespristionSkill: 
+    typeWeapon: 0
+    m_SwordPrefabs: {fileID: 0}
+    m_SwordMesh: {fileID: 0}
+    DespristionWeapon: 
+    plusStrength: 0
+    plusAgility: 0
+    plusStamina: 0
+    plusHeal: 0
+    plusAmor: 0
   _backupJson: "{\"itemID\":\"-ScrollGenesis\",\"itemName\":\"Quy\u1EC3n Tr\u1EE5c
-    Kh\u1EDFi Nguy\xEAn\",\"count\":0,\"requestCount\":1,\"completionCount\":0,\"icon\":{\"instanceID\":55664},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\"}"
+    Kh\u1EDFi Nguy\xEAn\",\"count\":0,\"requestCount\":1,\"completionCount\":0,\"icon\":{\"instanceID\":55772},\"typeItem\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0}"

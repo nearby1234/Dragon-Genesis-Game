@@ -1,6 +1,5 @@
 ﻿using DG.Tweening;
 using Febucci.UI;
-using Mono.Cecil.Cil;
 using Sirenix.OdinInspector;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,6 +30,7 @@ public class PopupScrollMagic : BasePopup
 
     private void Awake()
     {
+        if (typewriterByCharacter != null) typewriterByCharacter.onTextShowed.AddListener(OnFinishWrittingText);
         m_Animator = GetComponent<Animator>();
         m_CurrentQuestData = QuestManager.Instance != null ? QuestManager.Instance.CurrentQuest : null;
     }
@@ -70,7 +70,7 @@ public class PopupScrollMagic : BasePopup
             Debug.LogError("Current quest data is null. Cannot initialize PopupScrollMagic.");
             return;
         }
-        if (typewriterByCharacter != null) typewriterByCharacter.onTextShowed.AddListener(OnFinishWrittingText);
+        
 
         m_TitleText.text = m_CurrentQuestData.questName;
         m_ContentText.text = m_CurrentQuestData.description;
@@ -305,8 +305,13 @@ public class PopupScrollMagic : BasePopup
     private void RefreshUI()
     {
         m_TitleText.text = m_CurrentQuestData.questName;
-        m_ContentText.text = m_CurrentQuestData.description;
-        OnFinishWrittingText();
+        //m_ContentText.text = m_CurrentQuestData.description;
+        if (typewriterByCharacter != null)
+        {
+            // Chạy lại typewriter cho nội dung mới
+            typewriterByCharacter.ShowText(m_CurrentQuestData.description);
+        }
+        //OnFinishWrittingText();
     }
 
     private void ReceiUpdateTextMission(object value)

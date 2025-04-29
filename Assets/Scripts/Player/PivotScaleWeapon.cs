@@ -20,7 +20,7 @@ public class PivotScaleWeapon : MonoBehaviour
     [SerializeField] private ParticleSystem m_AuraPS;
     [SerializeField] private VisualEffect m_Energy;
     [SerializeField] private Animator animator;
-    //[SerializeField] private ChildTriggerForwarder m_ChildTriggerForwarder;
+    [SerializeField] private ChildTriggerForwarder m_ChildTriggerForwarder;
 
     private Vector3 initialScale;
     private InputAction m_ButtonPress;
@@ -85,65 +85,19 @@ public class PivotScaleWeapon : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_MANA_EMPTY, ReceiverStateMove);
             ListenerManager.Instance.Unregister(ListenType.UI_SEND_BUTTON_PRESS_AND_TYPESKILL, ReceiverEventButtonAndTypeSKill);
         }
-        m_ButtonPress.Disable();
-        m_ButtonPress.performed -= OnButtonStarted;
-        m_ButtonPress.canceled -= OnButtonCanceled;
-
-    }
-
-    private void Update()
-    {
-        //HandleInput();
-    }
-
-    //public void GetChildTriggerForwarder(ChildTriggerForwarder childTriggerForwarder)
-    //{
-    //    m_ChildTriggerForwarder = childTriggerForwarder;
-    //}    
-
-    private void HandleInput()
-    {
-        // Khi nhấn phím O
-        if (Input.GetKeyDown(KeyCode.O))
+        if (m_ButtonPress != null)
         {
-            // Gửi sự kiện "PLAYER_SKILL_KEYDOWN" để kiểm tra mana cần thiết.
-            if (ListenerManager.HasInstance)
-            {
-                // Bạn có thể gửi dữ liệu bổ sung nếu cần, ví dụ, yêu cầu mức tiêu hao mana cho skill.
-                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SKILL_KEYDOWN, null);
-            }
-            // Sau khi broadcast, flag m_IsManaEmpty sẽ được cập nhật từ PlayerMana (thông qua ReceiverStateMove).
-            if (m_IsManaEmpty)
-            {
-                Debug.Log("Không đủ mana để thi triển skill");
-                return; // Không thi triển nếu mana không đủ.
-            }
+            m_ButtonPress.started -= OnButtonStarted;
+            m_ButtonPress.canceled -= OnButtonCanceled;
+            m_ButtonPress.Disable();
+            m_ButtonPress = null;
+        }
 
-            // Nếu đủ mana, thực hiện các hiệu ứng và thi triển skill.
-            if (m_AuraPS != null)
-            {
-                m_AuraPS.gameObject.SetActive(true);
-                m_AuraPS.Play();
-            }
-            animator.Play(attackAnimationClip);
-            animator.SetTrigger("IsPress");
-            scalingCoroutine = StartCoroutine(ScaleCoroutine());
-        }
-        if (Input.GetKeyUp(KeyCode.O))
-        {
-            animator.SetBool("IsPressN", false);
-            // Khi thả phím thì tính toán tiêu hao mana và gửi dữ liệu cho PlayerMana
-            ManaConsumption(m_ManaMax, m_CurrentIndex);
-            //m_ChildTriggerForwarder.ResetSwing();
-            setupScaleDefault = StartCoroutine(SetupScaleDefault());
-            if (m_AuraPS != null)
-            {
-                m_AuraPS.gameObject.SetActive(false);
-            }
-            StartCoroutine(SmoothRotateToCameraDirection(0.3f));
-        }
     }
-
+    public void GetChildTriggerForwarder(ChildTriggerForwarder childTriggerForwarder)
+    {
+        m_ChildTriggerForwarder = childTriggerForwarder;
+    }
 
     public void ScaleAndAdjust(Vector3 newScale)
     {
@@ -184,11 +138,6 @@ public class PivotScaleWeapon : MonoBehaviour
         float timer = 0f;
         while (true)
         {
-            //// Chỉ tăng timer khi nhấn phím N
-            //if (!Input.GetKey(KeyCode.O))
-            //{
-            //    yield break;
-            //}
             timer += Time.deltaTime;
             // Tính level mới dựa trên thời gian đã trôi qua (mỗi 'duration' sẽ tăng level)
             int newLevelIndex = Mathf.Clamp((int)(timer / duration), 0, levelFactors.Length - 1);
@@ -232,6 +181,7 @@ public class PivotScaleWeapon : MonoBehaviour
 
         // Lúc này mới ResetScale
         ResetScale();
+        StartCoroutine(m_ChildTriggerForwarder.ResetSwing());
     }
     private IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
     {

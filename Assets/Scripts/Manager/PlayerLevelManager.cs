@@ -131,6 +131,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
         {
             Debug.LogWarning("Không tìm thấy ParticleSystem trong prefab FX!");
         }
+        Destroy(fxInstance, 1f);
     }
 
     private void LoadExpTable()

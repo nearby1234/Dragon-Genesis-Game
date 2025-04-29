@@ -25,7 +25,7 @@ public class ChildTriggerForwarder : MonoBehaviour
             damageTextPrefab = EffectManager.Instance.GetPrefabs("DamageText");
             explosionPrefab = EffectManager.Instance.GetPrefabs("Explosion");
         }
-        //pivotScaleWeapon.GetChildTriggerForwarder(this);
+        pivotScaleWeapon.GetChildTriggerForwarder(this);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -127,6 +127,8 @@ public class ChildTriggerForwarder : MonoBehaviour
             particleSystem.transform.position = position;
             particleSystem.Play();
         }
+        Destroy(effectObject, 1f);
+        
     }
 
     #endregion

@@ -12,7 +12,7 @@ using UnityEngine.UI;
 [System.Serializable]
 [RequireComponent(typeof(CanvasGroup))]
 [RequireComponent(typeof(DragDropItem))]
-public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private bool m_IsEmpty = true;
     [SerializeField] private Image m_IconImage;
@@ -21,13 +21,20 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     [SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private InputAction m_ButtonPress;
     [InlineEditor]
-    public QuestItemSO m_CurrentItem;
+    [SerializeField] private QuestItemSO m_CurrentItem;
     private Queue<GameObject> m_ItemPool = new();
     public bool IsEmpty
     {
         get => m_IsEmpty;
         set => m_IsEmpty = value;
     }
+    public QuestItemSO CurrentItem
+    {
+        get => m_CurrentItem;
+        set => m_CurrentItem = value;
+    } 
+        
+
     private void Awake()
     {
         if (m_IconImage == null)

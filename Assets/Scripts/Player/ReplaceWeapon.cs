@@ -20,14 +20,14 @@ public class ReplaceWeapon : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    //void Update()
+    //{
 
-        if(Input.GetKeyDown(KeyCode.C))
-        {
-            WeaponManager.ChangeWeapon(m_NewWeapon);
-        }    
-    }
+    //    if(Input.GetKeyDown(KeyCode.C))
+    //    {
+    //        WeaponManager.ChangeWeapon(m_NewWeapon);
+    //    }    
+    //}
 
     
 }

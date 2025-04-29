@@ -51,6 +51,7 @@ public enum ListenType
     QUEST_COMPLETE,
     UPDATE_COUNT_ITEM,
     PU_BOXSKILL_SEND_TEXT,
+    SHOWPLAYER_WEAPON_UI,
     
 
 
