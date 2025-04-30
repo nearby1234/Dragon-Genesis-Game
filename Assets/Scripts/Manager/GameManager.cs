@@ -28,7 +28,7 @@ public class GameManager : BaseManager<GameManager>
     }
     private void Start()
     {
-        StateMenuLoading();
+        ShowMenuLoading();
     }
 
     protected override void Awake()
@@ -52,7 +52,7 @@ public class GameManager : BaseManager<GameManager>
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
     }
-    public void StateMenuLoading()
+    public void ShowMenuLoading()
     {
         m_GameState = GAMESTATE.MENULOADING;
         if(UIManager.HasInstance)
@@ -60,5 +60,13 @@ public class GameManager : BaseManager<GameManager>
             UIManager.Instance.ShowScreen<ScreenMenuPanel>();
         }
     }
+    public void ShowBoardPlayerStats()
+    {
+        if(UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupCharacterPanel>();
+            UIManager.Instance.HidePopup<PopupCharacterPanel>();
+        }
+    }    
    
 }

@@ -145,7 +145,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
     private void SwapCurrentItem(InventorySlot targetSlot)
     {
-        (targetSlot.CurrentItem, inventorySlot.CurrentItem) = (inventorySlot.CurrentItem, targetSlot. CurrentItem);
+        (targetSlot.CurrentItem, inventorySlot.CurrentItem) = (inventorySlot.CurrentItem, targetSlot.CurrentItem);
     }
     private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
     {
@@ -165,7 +165,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     private void MoveCurrentItemToTarget(IItemSlot targetSlot)
     {
         targetSlot.CurrentItem = inventorySlot.CurrentItem;
-        inventorySlot.      CurrentItem = null; // Đặt lại item đang kéo về null
+        inventorySlot.CurrentItem = null; // Đặt lại item đang kéo về null
         inventorySlot.ClearItem(); // Xóa item trong Box hiện tại
     }
     private void SetAlphaColor(float alpha, Image image)
@@ -239,15 +239,19 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             ResetDraggedItemPosition();
             return;
         }
-
-        Debug.Log("Pointer Enter: " + targetSlot.name);
-        Image targetImage = targetSlot.GetComponent<Image>();
-        //targetSlot.CurrentItem = inventorySlot.CurrentItem;
-        Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
-        MoveSpriteToTarget(targetImage, draggedSprite);
-        MoveCurrentItemToTarget(targetSlot);
-        ResetDraggedItemPosition();
-
+        if (targetSlot.TypeArmor.Equals(inventorySlot.CurrentItem.questItemData.typeArmor))
+        {
+            Debug.Log("Pointer Enter: " + targetSlot.name);
+            Image targetImage = targetSlot.GetComponent<Image>();
+            //targetSlot.CurrentItem = inventorySlot.CurrentItem;
+            Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
+            MoveSpriteToTarget(targetImage, draggedSprite);
+            MoveCurrentItemToTarget(targetSlot);
+            ResetDraggedItemPosition();
+        }
+        else
+        {
+            ResetDraggedItemPosition();
+        }
     }
-
 }

@@ -5493,6 +5493,7 @@ GameObject:
   - component: {fileID: 8014618874300049882}
   - component: {fileID: 5852996745082802539}
   - component: {fileID: 6061018627243632244}
+  - component: {fileID: 4641486424370243911}
   m_Layer: 10
   m_Name: Player
   m_TagString: Player
@@ -6050,6 +6051,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SpawnSlash: {fileID: 3778251423567933973}
   m_Timer: 0.5
+--- !u!114 &4641486424370243911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164828770242174425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce422ae067dea9b46a8af8c7d4b7a87c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ParentWeapon: {fileID: 5928202429517916627}
+  m_CurrentItem: {fileID: 0}
+  m_CurrentWeapon: {fileID: 6496780008611971864}
+  m_CurrentWeaponMesh: {fileID: 0}
+  m_CurrentWeaponMeshRender: {fileID: 0}
 --- !u!1 &1231408187129756952
 GameObject:
   m_ObjectHideFlags: 0

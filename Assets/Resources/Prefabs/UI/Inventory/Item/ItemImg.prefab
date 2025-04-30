@@ -455,6 +455,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 0}
   rectTransform: {fileID: 0}
+  DragContainer: {fileID: 0}
 --- !u!1 &7414101129911106492
 GameObject:
   m_ObjectHideFlags: 0

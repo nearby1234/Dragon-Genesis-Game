@@ -11,6 +11,7 @@ public enum TYPEITEM
     ITEM_EXP,
     ITEM_SKILL,
     ITEM_WEAPON,
+    ITEM_ARMOR,
 }
 
 public enum TYPEWEAPON
@@ -18,6 +19,19 @@ public enum TYPEWEAPON
     DEFAULT = 0,
     WEAPON_WHITE,
     WEAPON_BLUE,
+}
+public enum TYPEARMOR
+{
+    DEFAULT = 0,
+    ARMOR_CHEST,
+    ARMOR_HEAD,
+    ARMOR_BELT,
+    ARMOR_BOOTS,
+    ARMOR_GLOVES,
+    ARMOR_ARMS,
+    ARMOR_LEGS,
+    ARMOR_SHOULDERS,
+   
 }
 public enum ITEMUSE
 {
@@ -82,6 +96,9 @@ public class QuestItem
     public Mesh m_SwordMesh;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
+    public Material m_SwordMaterial;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    [BoxGroup("Item Use Stats")]
     [TextArea(3, 10)]
     public string DespristionWeapon;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
@@ -99,6 +116,35 @@ public class QuestItem
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
     public int plusAmor;
+
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public TYPEARMOR typeArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public SkinnedMeshRenderer skinnedArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    [TextArea(3, 10)]
+    public string DespristionArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public int plusStrengthArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public int plusAgilityArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public int plusStaminaArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public int plusHealArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public int plusDefendArmor;
+    [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    public string m_NameArmorPrefabs;
 
 
 }

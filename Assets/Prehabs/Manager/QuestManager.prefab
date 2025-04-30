@@ -25,7 +25,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5950014502977280395}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 291.1896, y: -0.0022115707, z: 232.82143}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -46,10 +46,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentQuest: {fileID: 0}
   _SliderPos: {fileID: 0}
-  m_CountNumber: 0
+  configSO: {fileID: 11400000, guid: b115f71a7c7688840be0c0f9f060d51d, type: 2}
   questList:
   - {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
   - {fileID: 11400000, guid: 2306e52d5d4288b419ae55a56bf513dc, type: 2}
   m_QuestItemPrefabPath: Prefabs/UI/Quest/ItemMission/ItemMissionImg
   m_QuestRewardItemPrefabPath: Prefabs/UI/Quest/ItemReward/ItemRewardImg
   m_DOItemPrefabPath: Prefabs/Inventory/DoSpite/DoSpite
+  m_CountNumber: 0
