@@ -252,18 +252,27 @@ public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IP
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (m_CurrentItem == null) return;
-        string itemName = m_CurrentItem.questItemData.itemName;
-        string itemDespri = m_CurrentItem.questItemData.ItemDespri;
-        Sprite sprite = m_CurrentItem.questItemData.icon;
-
-        UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
-        PopupItemToolipPanel.Instance.ShowTooltip(itemName, itemDespri, sprite);
-        //PopupItemToolipPanel.Instance.transform.SetAsLastSibling();
+        // Nếu item chưa được khởi tạo đầy đủ thì không làm gì
+        if (m_CurrentItem == null || m_CurrentItem.questItemData == null)
+            return;
+        Debug.Log($"m_CurrentItem : {m_CurrentItem.questItemData.typeItem}");
+        switch (m_CurrentItem.questItemData.typeItem)
+        {
+            case TYPEITEM.ITEM_USE:
+                ShowItemTypeUSE();
+                break;
+            case TYPEITEM.ITEM_ARMOR:
+                ShowItemTypeARMOR();
+                break;
+            default:
+                Debug.Log($"Không có {m_CurrentItem.questItemData.typeItem}");
+                break;
+        }
     }
     public void OnPointerExit(PointerEventData eventData)
     {
-        PopupItemToolipPanel.Instance?.Hide();
+        if (PopupItemToolipPanel.Instance != null)
+            PopupItemToolipPanel.Instance.Hide();
     }
     private void ReceiverEventUpdateCountItem(object value)
     {
@@ -280,4 +289,19 @@ public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IP
             }
         }
     }
+    public void SetHideText()
+    {
+        m_CountTxt.color = new (1,1,1,0);
+    }
+
+    private void ShowItemTypeUSE()
+    {
+        UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
+        PopupItemToolipPanel.Instance.ShowTooltipItemUSE(m_CurrentItem);
+    }
+    private void ShowItemTypeARMOR()
+    {
+        UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
+        PopupItemToolipPanel.Instance.ShowToolTipItemArmor(m_CurrentItem);
+    }    
 }

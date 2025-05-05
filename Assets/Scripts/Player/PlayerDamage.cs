@@ -127,6 +127,7 @@ public class PlayerDamage : MonoBehaviour
             if (ListenerManager.HasInstance)
             {
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_DAMAGE_VALUE, m_PlayerDamage);
+                Debug.Log($"m_PlayerDamage" + m_PlayerDamage);
             }
         }
     }

@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using Sirenix.OdinInspector;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class UIManager : BaseManager<UIManager>
 {
@@ -9,9 +11,15 @@ public class UIManager : BaseManager<UIManager>
 
     public GameObject cScreen, cPopup, cNotify;
 
+    [ShowInInspector]
     private Dictionary<string, BaseScreen> screens = new Dictionary<string, BaseScreen>();
+    [ShowInInspector]
     private Dictionary<string, BasePopup> popups = new Dictionary<string, BasePopup>();
+    [ShowInInspector]
     private Dictionary<string, BaseNotify> notifies = new Dictionary<string, BaseNotify>();
+
+    [ShowInInspector]
+    private Dictionary<string, StateUi> StateUiDict = new();
 
     private List<string> rmScreens = new List<string>();
     private List<string> rmPopups = new List<string>();
@@ -32,17 +40,19 @@ public class UIManager : BaseManager<UIManager>
     public BasePopup CurPopup => curPopup;
     public BaseNotify CurNotify => curNotify;
 
+    private bool m_isShowCusor;
+
     protected override void Awake()
     {
         base.Awake();
-      
+
         m_SpawnObjectVFX = GetComponentInChildren<SpawnObjectVFX>();
     }
     private void Update()
     {
         if (GameManager.HasInstance)
         {
-            if(GameManager.Instance.GameState == GAMESTATE.START && !GameManager.Instance.m_IsPlaying)
+            if (GameManager.Instance.GameState == GAMESTATE.START && !GameManager.Instance.m_IsPlaying)
             {
                 ShowScreen<ScreenPlayerImformation>(); // muốn show UI nào dùng hàm Show hàm đó
                 GameManager.Instance.m_IsPlaying = true;
@@ -52,12 +62,12 @@ public class UIManager : BaseManager<UIManager>
 
 
     #region Screen
-    public void ShowScreen<T>(object data = null, bool forceShowData = false) where T: BaseScreen
+    public void ShowScreen<T>(object data = null, bool forceShowData = false) where T : BaseScreen
     {
         string nameScreen = typeof(T).Name;
         BaseScreen result = null;
 
-        if(curScreen != null)
+        if (curScreen != null)
         {
             var curName = curScreen.GetType().Name;
             if (curName.Equals(nameScreen))
@@ -70,7 +80,7 @@ public class UIManager : BaseManager<UIManager>
             }
         }
 
-        if(result == null)
+        if (result == null)
         {
             if (!screens.ContainsKey(nameScreen))
             {
@@ -88,7 +98,7 @@ public class UIManager : BaseManager<UIManager>
         }
 
         bool isShow = false;
-        if(result != null)
+        if (result != null)
         {
             if (forceShowData)
             {
@@ -123,7 +133,7 @@ public class UIManager : BaseManager<UIManager>
     {
         string nameScreen = typeof(T).Name;
         GameObject pfScreen = GetUIPrefab(UIType.Screen, nameScreen);
-        if(pfScreen == null || !pfScreen.GetComponent<BaseScreen>())
+        if (pfScreen == null || !pfScreen.GetComponent<BaseScreen>())
         {
             throw new MissingReferenceException("Cant found " + nameScreen + "screen. !!!");
         }
@@ -132,12 +142,12 @@ public class UIManager : BaseManager<UIManager>
         ob.transform.SetParent(this.cScreen.transform);
         ob.transform.localScale = Vector3.one;
         ob.transform.localPosition = Vector3.zero;
-        if(obrectTranform != null)
+        if (obrectTranform != null)
         {
             obrectTranform.anchoredPosition = Vector3.zero;
         }
-        
-        
+
+
 #if UNITY_EDITOR
         ob.name = "SCREEN_" + nameScreen;
 #endif
@@ -161,7 +171,7 @@ public class UIManager : BaseManager<UIManager>
         }
     }
 
-    
+
 
     public T GetExistScreen<T>() where T : BaseScreen
     {
@@ -202,7 +212,7 @@ public class UIManager : BaseManager<UIManager>
         {
             var curName = curPopup.GetType().Name;
             if (curName.Equals(namePopup))
-            {   
+            {
                 result = curPopup;
             }
             else
@@ -243,7 +253,6 @@ public class UIManager : BaseManager<UIManager>
                 }
             }
         }
-
         if (isShow)
         {
             curPopup = result;
@@ -251,6 +260,59 @@ public class UIManager : BaseManager<UIManager>
             Debug.Log("curPopup: " + curPopup.name);
             result.Show(data);
         }
+    }
+
+    public void SetStatePopup<T>(StateUi stateUi) where T : BasePopup, IStateUi
+    {
+        string name = typeof(T).Name;
+        if (popups.ContainsKey(name))
+        {
+            var popup = popups[name].GetComponent<T>();
+            if (popup != null)
+            {
+                popup.SetStateUi(stateUi);
+            }
+            else
+            {
+                Debug.LogWarning($"Không tìm thấy {popup}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"không có {name} trong ditc");
+        }
+    }
+    public T GetComponentbase<T>() where T : BasePopup, IStateUi
+    {
+        string name = typeof(T).Name;
+        if (popups.ContainsKey(name))
+        {
+            var popup = popups[name].GetComponent<T>();
+            return popup;
+        }
+        return null;
+
+    }
+    public StateUi GetStatePopup<T>() where T : BasePopup, IStateUi
+    {
+        string name = typeof(T).Name;
+        if (popups.ContainsKey(name))
+        {
+            var popup = popups[name].GetComponent<T>();
+            if (popup != null)
+            {
+                return popup.GetStateUi();
+            }
+            else
+            {
+                Debug.LogWarning($"Không tìm thấy {popup}");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"không có {name} trong ditc");
+        }
+        return StateUi.defaulted;
     }
 
     private BasePopup GetNewPopup<T>() where T : BasePopup
@@ -291,7 +353,6 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
-
 
     public void HideAllPopups()
     {
@@ -466,7 +527,7 @@ public class UIManager : BaseManager<UIManager>
     {
         GameObject result = null;
         var defaultPath = "";
-        if(result == null)
+        if (result == null)
         {
             switch (t)
             {
@@ -492,4 +553,46 @@ public class UIManager : BaseManager<UIManager>
 
         return result;
     }
+    #region StateDict
+    public void AddStateInDict<T>(T component) where T : IStateUi
+    {
+        string name = component.GetType().Name;
+        StateUi stateUi = component.GetStateUi();
+
+        if (!StateUiDict.ContainsKey(name))
+        {
+            StateUiDict.Add(name, stateUi);
+        }
+        else
+        {
+            Debug.LogWarning($"Đã có {name} trong StateUiDict");
+        }
+    }
+    public void RemoverStateInDict<T>() where T : IStateUi
+    {
+        string name = typeof(T).Name;
+        if (StateUiDict.ContainsKey(name))
+        {
+            StateUiDict.Remove(name);
+        }
+        else
+        {
+            Debug.LogWarning($"Do not remove {name}");
+        }
+    }
+
+    public bool GetObjectInDict<T>() where T : IStateUi
+    {
+        string name = typeof(T).Name;
+        if (StateUiDict.ContainsKey(name))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
+#endregion

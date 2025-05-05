@@ -8,8 +8,10 @@ public class ScreenIconInventory : BaseScreen
     //[SerializeField] private Button m_IconButton;
     [SerializeField] private InputAction m_ButtonPress;
     [SerializeField] private Vector2 m_IconPosition;
+    [SerializeField] private Vector2 m_PosMove;
     private RectTransform m_IconTransform;
-    
+    private bool m_IsOpen;
+
     private void Awake()
     {
         m_IconTransform = GetComponent<RectTransform>();
@@ -38,15 +40,36 @@ public class ScreenIconInventory : BaseScreen
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupInventory>();
+            UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.Opening);
+            StateUi popupCharacter = UIManager.Instance.GetStatePopup<PopupCharacterPanel>();
+            if (popupCharacter.Equals(StateUi.Opening))
+            {
+                PopupCharacterPanel popupCharacterPanel = UIManager.Instance.GetComponentbase<PopupCharacterPanel>();
+                popupCharacterPanel.SetPositionMove();
+                PopupInventory popupInventory = UIManager.Instance.GetComponentbase<PopupInventory>();
+                popupInventory.SetPositionMove();
+            }
+
+            var popup = UIManager.Instance.GetComponentbase<PopupInventory>();
+            if (popup != null)
+            {
+                UIManager.Instance.AddStateInDict(popup);
+            }
+            else
+            {
+                Debug.LogWarning("PopupInventory not found from UIManager");
+            }
         }
+
+
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = true;
         }
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.ShowCursor();
-        }    
+        }
 
     }
 }

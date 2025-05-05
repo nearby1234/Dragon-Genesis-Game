@@ -42,8 +42,8 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         handler = new()
         {
-            {typeof(InventorySlot), comp => HandleA((InventorySlot)comp)},
-            {typeof(ItemEquip), comp => HandleB((ItemEquip)comp)},
+            {typeof(InventorySlot), comp => HandleInventorySlot((InventorySlot)comp)},
+            {typeof(ItemEquip), comp => HandleItemEquip((ItemEquip)comp)},
         };
     }
     private void Start()
@@ -54,10 +54,9 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     public void OnBeginDrag(PointerEventData eventData)
     {
         canvasGroup.blocksRaycasts = false;
+        OriginalParent = rectTransform.parent.gameObject;
         originalAnchoredPos = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
 
-        // ===========================
-        OriginalParent = rectTransform.parent.gameObject;
         originalSiblingIndex = rectTransform.GetSiblingIndex();
         if (OriginalParent.name != "InventoryItemPanel")
         {
@@ -101,12 +100,14 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                     return;
                 }
             }
-
-            // Nếu không có component nào khớp trong handler
             ResetDraggedItemPosition();
+            DestroyPlaceHolder();
+            // Nếu không có component nào khớp trong handler
+            
         }
         else
         {
+            DestroyPlaceHolder();
             ResetDraggedItemPosition();
         }
         if (PlayerManager.HasInstance)
@@ -118,18 +119,34 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     //Hàm tạo ô clone để giữ vị trí khi drag
     private void CreatePlaceholder()
     {
-        // Tạo placeholder ngay trước khi reparent
-        placeholder = new GameObject("Placeholder");
-        placeholder.transform.SetParent(OriginalParent.transform);
+        placeholder = new GameObject("Placeholder", typeof(RectTransform));
+        placeholder.transform.SetParent(OriginalParent.transform, worldPositionStays: false);
 
-        // Copy layout size để giữ chỗ
+        // Copy LayoutElement của item gốc (size, min, preferred)  
+        var srcLE = rectTransform.GetComponent<LayoutElement>();
         var le = placeholder.AddComponent<LayoutElement>();
-        var rLE = rectTransform.GetComponent<LayoutElement>();
-        le.minHeight = rLE.minHeight;
-        le.minWidth = rLE.minWidth;
+        if (srcLE != null)
+        {
+            le.minWidth = srcLE.minWidth;
+            le.minHeight = srcLE.minHeight;
+            le.preferredWidth = srcLE.preferredWidth;
+            le.preferredHeight = srcLE.preferredHeight;
+            le.flexibleWidth = srcLE.flexibleWidth;
+            le.flexibleHeight = srcLE.flexibleHeight;
+        }
 
-        // Đặt vị trí placeholder đúng chỗ item cũ
+        // Đặt đúng vị trí trong chuỗi con
         placeholder.transform.SetSiblingIndex(originalSiblingIndex);
+    }
+
+
+    private void DestroyPlaceHolder()
+    {
+        if (placeholder != null)
+        {
+            Destroy(placeholder);
+            placeholder = null;
+        }
     }
     private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)
     {
@@ -177,15 +194,26 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         image.color = temp;
     }
 
-    private void HandleA(InventorySlot targetSlot)
+    private void HandleInventorySlot(InventorySlot targetSlot)
     {
         if (targetSlot == null)
         {
+            //if (placeholder != null)
+            //{
+            //    rectTransform.SetParent(OriginalParent.transform);
+            //    rectTransform.SetSiblingIndex(originalSiblingIndex);
+            //    Destroy(placeholder);
+            //    placeholder = null;
+            //}
+            //else
+            //{
+            //    rectTransform.anchoredPosition = originalAnchoredPos;
+            //}
             ResetDraggedItemPosition();
             return;
         }
 
-        Debug.Log("Pointer Enter: " + targetSlot.name);
+
         Image targetImage = targetSlot.GetComponent<Image>();
         TextMeshProUGUI targetTextMesh = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
         //InventorySlot draggedSlot = inventorySlot; // ô chứa item đang kéo
@@ -214,6 +242,38 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         // Reset lại vị trí dragged item và parenting
         ResetDraggedItemPosition();
 
+        DestroyPlaceHolder();
+    }
+    private void ResetDraggedItemPosition()
+    {
+        rectTransform.SetParent(OriginalParent.transform);
+        rectTransform.anchoredPosition = originalAnchoredPos;
+    }
+
+    private void HandleItemEquip(ItemEquip targetSlot)
+    {
+        if (targetSlot == null)
+        {
+            ResetDraggedItemPosition();
+            return;
+        }
+
+        if (targetSlot.TypeArmor.Equals(inventorySlot.CurrentItem.questItemData.typeArmor))
+        {
+            Debug.Log("Pointer Enter: " + targetSlot.name);
+            Image targetImage = targetSlot.GetComponent<Image>();
+            //targetSlot.CurrentItem = inventorySlot.CurrentItem;
+            Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
+            MoveSpriteToTarget(targetImage, draggedSprite);
+            targetSlot.ShowAlphaIcon(false);
+            MoveCurrentItemToTarget(targetSlot);
+            ResetDraggedItemPosition();
+            inventorySlot.SetHideText();
+        }
+        else
+        {
+            ResetDraggedItemPosition();
+        }
         if (placeholder != null)
         {
             rectTransform.SetParent(OriginalParent.transform);
@@ -224,34 +284,6 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         else
         {
             rectTransform.anchoredPosition = originalAnchoredPos;
-        }
-    }
-    private void ResetDraggedItemPosition()
-    {
-        rectTransform.anchoredPosition = originalAnchoredPos;
-        rectTransform.SetParent(OriginalParent.transform);
-    }
-
-    private void HandleB(ItemEquip targetSlot)
-    {
-        if (targetSlot == null)
-        {
-            ResetDraggedItemPosition();
-            return;
-        }
-        if (targetSlot.TypeArmor.Equals(inventorySlot.CurrentItem.questItemData.typeArmor))
-        {
-            Debug.Log("Pointer Enter: " + targetSlot.name);
-            Image targetImage = targetSlot.GetComponent<Image>();
-            //targetSlot.CurrentItem = inventorySlot.CurrentItem;
-            Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
-            MoveSpriteToTarget(targetImage, draggedSprite);
-            MoveCurrentItemToTarget(targetSlot);
-            ResetDraggedItemPosition();
-        }
-        else
-        {
-            ResetDraggedItemPosition();
         }
     }
 }

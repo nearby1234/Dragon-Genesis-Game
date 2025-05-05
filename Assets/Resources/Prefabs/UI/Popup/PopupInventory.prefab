@@ -358,6 +358,7 @@ MonoBehaviour:
   m_InventoryItemPanel: {fileID: 5931693292310098488}
   configSO: {fileID: 11400000, guid: b115f71a7c7688840be0c0f9f060d51d, type: 2}
   m_ImageIconList: []
+  m_PosMove: {x: 450, y: 250}
   listBoxInventory: []
   listItemInventory: []
 --- !u!1 &3982885375730314908

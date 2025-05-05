@@ -8,7 +8,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PopupCharacterPanel : BasePopup
+public class PopupCharacterPanel : BasePopup, IStateUi
 {
     [SerializeField] private TextMeshProUGUI m_CharacterLevelTxt;
     [SerializeField] private TextMeshProUGUI m_PointTxt;
@@ -19,6 +19,8 @@ public class PopupCharacterPanel : BasePopup
     [SerializeField] private Button m_AcceptBtn;
     [SerializeField] private Button m_DenyBtn;
     [SerializeField] private int originalPointBackup;
+    [SerializeField] private Vector2 m_PosMove;
+    private Dictionary<TYPESTAT, int> _armorBonuses = new();
     [ShowInInspector]
     private Dictionary<string, int> originalPointBackupDict = new();
     private int m_HealValueMax; // giá trị máu tối đa (cập nhật khi cộng điểm stat)
@@ -38,11 +40,29 @@ public class PopupCharacterPanel : BasePopup
     [SerializeField] private List<StatConfigSO> statConfigs;
     private Dictionary<string, StatConfigSO> configMap;
 
+
+
+    public StateUi StateUi { get; private set; }
+
+    private void Awake()
+    {
+        
+    }
     private void Start()
     {
+        InitializeStats();
         RegisterListeners();
         InitializeUI();
-        InitializeStats();
+       
+        SetStateUi(StateUi.Opening);
+
+        if (UIManager.HasInstance)
+        {
+            PopupCharacterPanel popup = GetComponent<PopupCharacterPanel>();
+            UIManager.Instance.AddStateInDict(popup);
+        }
+        foreach (var statKey in Enum.GetValues(typeof(TYPESTAT)).Cast<TYPESTAT>())
+            _armorBonuses[statKey] = 0;
     }
     private void OnDestroy()
     {
@@ -54,9 +74,29 @@ public class PopupCharacterPanel : BasePopup
     }
     public void OnExitButton()
     {
-        if (GameManager.HasInstance)
+        if (!UIManager.Instance.GetObjectInDict<PopupInventory>())
         {
-            GameManager.Instance.HideCursor();
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.HideCursor();
+            }
+        }
+        else
+        {
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
+        }
+        if (PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = false;
+        }
+
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.SetStatePopup<PopupCharacterPanel>(StateUi.closing);
+            UIManager.Instance.RemoverStateInDict<PopupCharacterPanel>();
         }
         this.Hide();
     }
@@ -64,7 +104,7 @@ public class PopupCharacterPanel : BasePopup
     {
         if (!ListenerManager.HasInstance) return;
 
-        ListenerManager.Instance.Register(ListenType.UI_SEND_VALUE_LEVEL, UpdateCharacterLevelText);
+        ListenerManager.Instance.Register(ListenType.UI_SEND_LEVEL_PLAYER, UpdateCharacterLevelText);
         ListenerManager.Instance.Register(ListenType.UI_SEND_VALUE_LEVEL, ReceiverValuePoint);
         ListenerManager.Instance.Register(ListenType.PLAYER_SEND_HEAL_VALUE, UpdateHealValueCharacterText);
         ListenerManager.Instance.Register(ListenType.SEND_HEAL_VALUE, ReceiverPlayerHealValue);
@@ -73,12 +113,14 @@ public class PopupCharacterPanel : BasePopup
         ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdateStaminaValueCharacterText);
         ListenerManager.Instance.Register(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
         ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdateManaValueCharacterText);
+        ListenerManager.Instance.Register(ListenType.SEND_ARMOR_EUIP, ReveiverEventArmor);
+
     }
     private void UnregisterListeners()
     {
         if (!ListenerManager.HasInstance) return;
 
-        ListenerManager.Instance.Unregister(ListenType.UI_SEND_VALUE_LEVEL, UpdateCharacterLevelText);
+        ListenerManager.Instance.Unregister(ListenType.UI_SEND_LEVEL_PLAYER, UpdateCharacterLevelText);
         ListenerManager.Instance.Unregister(ListenType.UI_SEND_VALUE_LEVEL, ReceiverValuePoint);
         ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_HEAL_VALUE, UpdateHealValueCharacterText);
         ListenerManager.Instance.Unregister(ListenType.SEND_HEAL_VALUE, ReceiverPlayerHealValue);
@@ -87,6 +129,8 @@ public class PopupCharacterPanel : BasePopup
         ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdateStaminaValueCharacterText);
         ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
         ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdateManaValueCharacterText);
+        ListenerManager.Instance.Unregister(ListenType.SEND_ARMOR_EUIP, ReveiverEventArmor);
+
     }
     private void InitializeUI()
     {
@@ -134,7 +178,8 @@ public class PopupCharacterPanel : BasePopup
 
                     item.SetDefaultPoint(_cfg.defaultPoint);
                     item.SetMaxPoint(_cfg.maxPoint);
-                    item.SetStatsPointText(_cfg.displayName);
+                    string displayName = item.GetStatName();
+                    item.SetStatsPointText(displayName);
 
                     // Hook buttons passing statKey
                     item.PlusBtn.onClick.AddListener(() => UpdatePlusPointsAndStatsText(item, cfg.statKey));
@@ -147,7 +192,7 @@ public class PopupCharacterPanel : BasePopup
     {
         if (value is int level)
         {
-            m_CharacterLevelTxt.text = $"Level {level}";
+            m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
         }
     }
     private void ReceiverValuePoint(object value)
@@ -200,7 +245,7 @@ public class PopupCharacterPanel : BasePopup
         if (value is int currentHeal)
         {
             m_HealValueCurrent = currentHeal;
-            UpdateStatText("HealthTxt", $"Máu: {m_HealValueCurrent} / {m_HealValueMax}");
+            UpdateStatPreview("HealStatsTxt");
         }
     }
     // Sự kiện cập nhật max heal (khi điểm stat máu được cộng)
@@ -209,7 +254,7 @@ public class PopupCharacterPanel : BasePopup
         if (value is int maxHeal)
         {
             m_HealValueMax = maxHeal;
-            UpdateStatText("HealthTxt", $"Máu: {m_HealValueCurrent} / {m_HealValueMax}");
+            UpdateStatPreview("HealStatsTxt");
         }
     }
     #endregion
@@ -221,7 +266,7 @@ public class PopupCharacterPanel : BasePopup
         {
             int newValue = (int)(staminaValue);
             action(newValue);
-            UpdateStatText("StaminaTxt", $"Thể Lực: {m_StaminaValueCurrent} / {m_StaminaValueMax}");
+            UpdateStatPreview("StaminaTxt");
         }
     }
     private void ReceiverPlayerStaminaValue(object value)
@@ -240,7 +285,7 @@ public class PopupCharacterPanel : BasePopup
         {
             int newValue = (int)(manaValue);
             action(newValue);
-            UpdateStatText("ManaTxt", $"Năng Lượng: {m_ManaValueCurrent} / {m_ManaValueMax}");
+            UpdateStatPreview("StaminaTxt");
         }
     }
     private void ReceiverPlayerManaValue(object value)
@@ -290,47 +335,114 @@ public class PopupCharacterPanel : BasePopup
         originalPointBackup = m_PointCurrentValue;
         PlayerLevelManager.Instance.UpdateTotalPoint(originalPointBackup);
         InitStatTxt(); UpdateValuePoint();
+        foreach (var cfg in statConfigs)
+        {
+            // cfg.statKey tương ứng với tên trong m_CharacterStatsPointTxt
+            UpdateStatPreview(cfg.statKey);
+        }
     }
 
     private void OnDenyButton()
     {
-        foreach (var statPoint in m_CharacterStatsPointTxt.Where(sp => sp.PendingPoint > 0))
+        // 1) Reset pending level‐up cho mỗi stat và bảo toàn armor bonus
+        foreach (var statPoint in m_CharacterStatsPointTxt)
         {
-            statPoint.ResetPendingPoints();
-            m_PointCurrentValue = originalPointBackup;
-            // reset button text
-            var cfg = configMap[statPoint.name];
-            statPoint.UpdateStatsPointText(cfg.displayName);
+            if (statPoint.PendingPoint > 0)
+                statPoint.ResetPendingPoints();
+
+            // Sau khi reset pendingLevel, vẽ lại text (baseLevel + armorBonus)
+            statPoint.RefreshTextAndBroadcast();
         }
-        InitStatTxt(); UpdateValuePoint();
-        // 2) Refresh lại UI dựa trên các giá trị vừa commit
-        InitStatTxt();
+
+        // 2) Phục hồi lại tổng điểm user có thể phân bổ
+        m_PointCurrentValue = originalPointBackup;
         UpdateValuePoint();
+
+        foreach (var cfg in statConfigs)
+        {
+            // cfg.statKey tương ứng với tên trong m_CharacterStatsPointTxt
+            UpdateStatPreview(cfg.statKey);
+        }
     }
     private void UpdateStatPreview(string statKey)
     {
         if (!configMap.TryGetValue(statKey, out var cfg))
-        {
-            Debug.LogWarning($"Missing StatConfig for {statKey}");
             return;
-        }
+
         var statPoint = GetStatsPointObjectFromList(statKey);
         var ui = GetTextObjectFromList(cfg.previewUITextKey);
         if (statPoint == null || ui == null) return;
 
+        // Pending point bonus
         int added = statPoint.PendingPoint;
-        var (current, max) = GetStatValues(statKey);
         int gain = added * cfg.multiplier;
-        if (statKey == "StrengthStatsTxt")
+
+        // Armor bonus riêng theo stat
+        // map statKey -> TYPESTAT
+        TYPESTAT type = statKey switch
         {
-            ui.text = $"{cfg.displayName}: {current} <color=#04FF00>+ {gain}";
+            "StrengthStatsTxt" => TYPESTAT.STR,
+            "HealStatsTxt" => TYPESTAT.HEA,
+            "IntelligentStatsTxt" => TYPESTAT.ITE,
+            "StaminaStatsTxt" => TYPESTAT.STA,
+            _ => TYPESTAT.UNKOWN
+        };
+        int armorBonus = _armorBonuses.TryGetValue(type, out var b) ? b * cfg.multiplier : 0;
+
+        string txt;
+        if (type == TYPESTAT.STR)
+        {
+            // Strength: tính base gốc
+            int totalCurrent = m_DamageValueCurrent;
+            int baseValue = Mathf.Max(totalCurrent - gain - armorBonus, 0);
+
+            txt = $"{cfg.displayName}: {baseValue}";
+            if (gain > 0) txt += $" <color=#04FF00>+{gain}</color>";
+            if (armorBonus > 0) txt += $" <color=#0010FF>+{armorBonus}</color>";
         }
         else
         {
-            ui.text = $"{cfg.displayName}: {current} / {max} <color=#04FF00>+{gain}";
+            // Các stat có current/max
+            var (current, max) = GetStatValues(statKey);
+
+            txt = $"{cfg.displayName}: {current} / {max - armorBonus}";
+            if (gain > 0) txt += $" <color=#04FF00>+{gain}</color>";
+            if (armorBonus > 0) txt += $" <color=#0010FF>+{armorBonus}</color>";
         }
+
+        ui.text = txt;
     }
 
+
+
+
+
+
+    private void ReveiverEventArmor(object value)
+    {
+        if (value is ValueTuple<int, StatEquipData> tuple)
+        {
+            var (bonus, data) = tuple;
+
+            // Lưu riêng
+            _armorBonuses[data.StatType] = bonus;
+
+            // Debug
+            Debug.Log($"PopupCharacterPanel: armorBonus[{data.StatType}] = {bonus}");
+
+            // Tìm statKey để vẽ lại đúng chỉ số
+            string statKey = data.StatType switch
+            {
+                TYPESTAT.STR => "StrengthStatsTxt",
+                TYPESTAT.HEA => "HealStatsTxt",
+                TYPESTAT.ITE => "IntelligentStatsTxt",
+                TYPESTAT.STA => "StaminaStatsTxt",
+                _ => null
+            };
+            if (statKey != null)
+                UpdateStatPreview(statKey);
+        }
+    }
     private void InitStatTxt()
     {
         // reset preview text to current values
@@ -359,5 +471,20 @@ public class PopupCharacterPanel : BasePopup
             "StrengthStatsTxt" => (m_DamageValueCurrent, 0), // nếu có max damage, thêm biến tương ứng
             _ => (0, 0)
         };
+    }
+
+    public void SetStateUi(StateUi value)
+    {
+        StateUi = value;
+    }
+
+    public StateUi GetStateUi()
+    {
+        return StateUi;
+    }
+    public void SetPositionMove()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.anchoredPosition = m_PosMove;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class TranslateArmor : MonoBehaviour
+public class EquipArmor : MonoBehaviour
 {
     [SerializeField] private QuestItemSO m_CurrentItem;
     [SerializeField] private Transform m_ParentArmor;
@@ -29,7 +29,7 @@ public class TranslateArmor : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.SHOWPLAYER_ARMOR_LEGS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Register(ListenType.SHOWPLAYER_ARMOR_SHOULDERS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Register(ListenType.HIDE_ITEM_ARMOR_UI, HideArmor);
-        }    
+        }
     }
     private void OnDestroy()
     {
@@ -49,78 +49,79 @@ public class TranslateArmor : MonoBehaviour
 
     private void TransLateArmorEquip(object value)
     {
-        if(value is QuestItemSO currentitem)
+        if (value is QuestItemSO currentitem)
         {
             m_CurrentItem = currentitem;
-            TransferSkinnedMeshes(m_CurrentItem,false);
-        } 
-    }    
+            TransferSkinnedMeshes(m_CurrentItem, false);
+        }
+    }
 
-    private void TransferSkinnedMeshes(QuestItemSO currentitem , bool isShow)
+    private void TransferSkinnedMeshes(QuestItemSO currentItem, bool isShowBaseArmor)
     {
-        // BƯỚC 1: Tìm armor cũ (trong listSkinnedBase) có cấu trúc bone giống armor mới
-        ArmorIdentifier oldArmor = FindMatchingSkinnedBase(currentitem);
-        var slotType = currentitem.questItemData.typeArmor;
-        if(isShow)
+        var slotType = currentItem.questItemData.typeArmor;
+
+        // 1) Nếu là yêu cầu gỡ (isShowBaseArmor = true) → hủy instance cũ và hiện base armor
+        if (isShowBaseArmor)
         {
-            if(equippedArmorDict.ContainsKey(slotType))
+            BroadcastAllStatDeltas(currentItem,false);
+
+            if (equippedArmorDict.TryGetValue(slotType, out var oldGo))
             {
-                Destroy(equippedArmorDict[slotType]);
+                Destroy(oldGo);
                 equippedArmorDict.Remove(slotType);
-            }    
-            if(oldArmor != null)
-            {
-                oldArmor.gameObject.SetActive(true);
             }
+
+            // hiện lại base armor ban đầu (nếu có)
+            var baseArmor = FindMatchingSkinnedBase(currentItem);
+            if (baseArmor != null)
+                baseArmor.gameObject.SetActive(true);
+
             return;
         }
-        //if (oldArmor != null && !isShow)
-        //{
-        //    oldArmor.gameObject.SetActive(isShow);
-        //    Debug.Log("Đã ẩn armor cũ: " + oldArmor.name);
-        //}else if(oldArmor != null && isShow)
-        //{
-        //    oldArmor.gameObject.SetActive(isShow);
-        //    Debug.Log("Đã hiện armor cũ: " + oldArmor.name);
-        //}
-        //
-        if (equippedArmorDict.ContainsKey(slotType))
+        BroadcastAllStatDeltas(currentItem, true);
+
+        // 2) Nếu trang bị mới → trước hết hủy instance trong slot (nếu đã có)
+        if (equippedArmorDict.TryGetValue(slotType, out var existGo))
         {
-            Destroy(equippedArmorDict[slotType]);
+            Destroy(existGo);
             equippedArmorDict.Remove(slotType);
-            Debug.Log("Đã xóa armor cũ ở slot: " + slotType);
-        }
-        // 2. Ẩn armor mặc định (nếu có)
-        if (oldArmor != null)
-        {
-            oldArmor.gameObject.SetActive(false);
-            Debug.Log("Đã ẩn armor base: " + oldArmor.name);
         }
 
-        string cachedRootBoneName = currentitem.questItemData.skinnedArmor.rootBone.name;
-        var newBones = new Transform[currentitem.questItemData.skinnedArmor.bones.Length];
-        for(int i = 0;i< currentitem.questItemData.skinnedArmor.bones.Length;i++)
+        // 3) Ẩn base armor mặc định
+        var oldBase = FindMatchingSkinnedBase(currentItem);
+        if (oldBase != null)
+            oldBase.gameObject.SetActive(false);
+
+        // 4) Instantiate prefab gốc
+        var prefab = currentItem.questItemData.skinnedArmor;
+        if (prefab == null)
         {
-            foreach(var newBone in m_NewArmature.GetComponentsInChildren<Transform>())
-            {
-                if(newBone.name == currentitem.questItemData.skinnedArmor.bones[i].name)
-                {
-                    newBones[i] = newBone;
-                    break;
-                }    
-            }    
+            return;
         }
-        Transform matchingRootBone = GetRootBoneByName(m_NewArmature, cachedRootBoneName);
-        currentitem.questItemData.skinnedArmor.rootBone = matchingRootBone != null ? matchingRootBone : m_NewArmature.transform;
-        currentitem.questItemData.skinnedArmor.bones = newBones;
-        Transform transform;
-        //(transform = currentitem.questItemData.skinnedArmor.transform).SetParent(m_ParentArmor);
-        transform = Instantiate(currentitem.questItemData.skinnedArmor.transform, m_ParentArmor);
-        transform.localPosition = Vector3.zero;
-        transform.gameObject.layer = config.layerIndex;
-        equippedArmorDict[slotType] = transform.gameObject;
-        Debug.Log($"Trang bị armor mới: {currentitem.questItemData.itemName} vào slot {slotType}");
-    }    
+
+        SkinnedMeshRenderer newSkin = Instantiate(prefab, m_ParentArmor);
+        newSkin.transform.localPosition = Vector3.zero;
+        newSkin.gameObject.layer = config.layerIndex;
+
+        // 5) Rebind bones sang armature mới
+        string rootName = prefab.rootBone.name;
+        var newBones = new Transform[prefab.bones.Length];
+        for (int i = 0; i < prefab.bones.Length; i++)
+        {
+            var boneName = prefab.bones[i].name;
+            newBones[i] = m_NewArmature.GetComponentsInChildren<Transform>()
+                              .FirstOrDefault(t => t.name == boneName);
+        }
+        Transform newRoot = m_NewArmature.GetComponentsInChildren<Transform>()
+                             .FirstOrDefault(t => t.name == rootName)
+                         ?? m_NewArmature;
+        newSkin.rootBone = newRoot;
+        newSkin.bones = newBones;
+
+        // 6) Lưu vào dict để quản lý slot này
+        equippedArmorDict[slotType] = newSkin.gameObject;
+    }
+
 
     private Transform GetRootBoneByName(Transform parentTransform, string name)
     {
@@ -153,14 +154,47 @@ public class TranslateArmor : MonoBehaviour
             if (child != null)
                 listSkinnedBase.Add(child);
         }
-    }    
+    }
 
     private void HideArmor(object value)
     {
-        if(value is QuestItemSO itemSO)
+        if (value is QuestItemSO itemSO)
         {
-            Debug.Log($"itemSO : {itemSO.questItemData.itemName}");
             TransferSkinnedMeshes(itemSO, true);
         }
     }
+    private void BroadcastAllStatDeltas(QuestItemSO itemSO, bool isEquip)
+    {
+        // 1) Tạo dict tĩnh hoặc mỗi lần build lại từ questItemData
+        var deltas = new Dictionary<TYPESTAT, int>()
+    {
+        { TYPESTAT.STR, itemSO.questItemData.plusStrengthArmor },
+        { TYPESTAT.ITE, itemSO.questItemData.plusAgilityArmor },
+        { TYPESTAT.HEA, itemSO.questItemData.plusHealArmor },
+        { TYPESTAT.DEF, itemSO.questItemData.plusDefendArmor },
+        { TYPESTAT.STA, itemSO.questItemData.plusStaminaArmor },
+        // ... thêm các stat khác nếu có
+    };
+
+        // 2) Duyệt và gửi event
+        foreach (var kvp in deltas)
+        {
+            if (kvp.Value == 0)
+                continue;   // bỏ qua stat không thay đổi
+
+            var delta = isEquip ? kvp.Value : -kvp.Value;
+            var payload = new StatEquipData
+            {
+                StatType = kvp.Key,
+                ValueDelta = delta
+            };
+            ListenerManager.Instance.BroadCast(
+                isEquip
+                  ? ListenType.EQUIP_STAT_UPDATE
+                  : ListenType.UNEQUIP_STAT_UPDATE,
+                payload
+            );
+        }
+    }
+
 }

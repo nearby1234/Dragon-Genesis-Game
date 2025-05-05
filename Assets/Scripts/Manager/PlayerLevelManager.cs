@@ -23,6 +23,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
                 totalStatPoints += 5 * delta;
                 if (ListenerManager.HasInstance)
                     ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_LEVEL, totalStatPoints);
+                    ListenerManager.Instance.BroadCast(ListenType.UI_SEND_LEVEL_PLAYER, currentLevel);
             }
         }
     }    

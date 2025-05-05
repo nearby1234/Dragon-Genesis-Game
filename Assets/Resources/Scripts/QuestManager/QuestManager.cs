@@ -173,6 +173,9 @@ public class QuestManager : BaseManager<QuestManager>
             case TYPEITEM.ITEM_WEAPON:
                 HandleUse(item, rt, Screen_IconBag_Pos, itemObj);
                 break;
+            case TYPEITEM.ITEM_ARMOR:
+                HandleUse(item, rt, Screen_IconBag_Pos, itemObj);
+                break;
             // TODO: nếu sau này có thêm loại mới, chỉ cần thêm case ở đây
             default:
                 Debug.LogWarning($"Unknown reward type: {item.questItemData.typeItem}");

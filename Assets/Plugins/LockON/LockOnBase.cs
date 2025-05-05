@@ -35,6 +35,11 @@ public class LockOnBase : MonoBehaviour
     private void Awake()
     {
         m_RotationComposer = m_LockOnCamera.GetComponent<CinemachineRotationComposer>();
+        if(m_RotationComposer == null)
+        {
+            Debug.LogWarning($"Chưa có {m_RotationComposer}");
+        } 
+            
         Camera = Camera.main;
     }
 
@@ -136,7 +141,10 @@ public class LockOnBase : MonoBehaviour
             if (m_RotationComposer != null)
             {
                 m_RotationComposer.Composition.ScreenPosition.y = newTarget.CompareTag("Creep") ? m_ValueCreep : m_ValueBoss;
-            }
+            }else
+            {
+                Debug.LogWarning($"chưa gắn {m_RotationComposer}");
+            }    
         }
     }
 

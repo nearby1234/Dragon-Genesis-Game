@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PopupInventory : BasePopup
+public class PopupInventory : BasePopup, IStateUi
 {
     [SerializeField] private int m_CountBox = 10;
     [SerializeField] private Vector2 m_Offset;
@@ -16,7 +16,7 @@ public class PopupInventory : BasePopup
     [SerializeField] private Transform m_InventoryItemPanel;
     [SerializeField] private Config configSO;
     [SerializeField] private List<QuestItemSO> m_ImageIconList = new();
-
+    [SerializeField] private Vector2 m_PosMove;
     // Danh sách lưu trữ box (là GameObject) và các slot item (là InventorySlot)
     [SerializeField] private List<GameObject> listBoxInventory = new();
     [SerializeField] private List<InventorySlot> listItemInventory = new();
@@ -28,6 +28,8 @@ public class PopupInventory : BasePopup
     // Prefab được load từ Resources
     private GameObject m_BoxInventoryPrefab;
     private GameObject m_ItemInventoryPrefab;
+
+    public StateUi StateUi { get; private set; }
 
     private void Awake()
     {
@@ -75,8 +77,9 @@ public class PopupInventory : BasePopup
         {
             ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
         }
-        m_Rectranform.anchoredPosition = m_Offset;
+        //m_Rectranform.anchoredPosition = m_Offset;
 
+        Debug.Log($"StateUi : {StateUi}");
         // Thêm các item reward vào các slot trống của inventory
         //AddItems(m_ImageIconList, listItemInventory);
     }
@@ -170,15 +173,31 @@ public class PopupInventory : BasePopup
     }
     private void OnClickExitBtn()
     {
-        this.Hide();
+        if(!UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+        {
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.HideCursor();
+            }
+        }else
+        {
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
+        }
+
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = false;
         }
-        if (GameManager.HasInstance)
+       
+        if(UIManager.HasInstance)
         {
-            GameManager.Instance.HideCursor();
+            UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.closing);
+            UIManager.Instance.RemoverStateInDict<PopupInventory>();
         }
+        this.Hide();
     }
 
     /// <summary>
@@ -189,5 +208,26 @@ public class PopupInventory : BasePopup
     {
         if (value is not List<QuestItemSO> newItems) return;
         AddItems(newItems);
+    }
+    public void SetPositionMove()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        if(rectTransform != null)
+        {
+            rectTransform.anchoredPosition = m_PosMove;
+        }else
+        {
+            Debug.LogWarning($"không tìm thấy {rectTransform}");
+        }
+       
+    }
+
+    public void SetStateUi(StateUi value)
+    {
+        StateUi = value;
+    }
+    StateUi IStateUi.GetStateUi()
+    {
+        return StateUi;
     }
 }

@@ -40,7 +40,9 @@ MonoBehaviour:
     plusAmor: 0
     typeArmor: 3
     skinnedArmor: {fileID: 0}
-    DespristionArmor: 
+    DespristionArmor: "Chi\u1EBFc th\u1EAFt l\u01B0ng c\u1EE7a m\u1ED9t Minotaur
+      th\u1EE3 s\u0103n l\xE3o luy\u1EC7n, n\u01A1i t\u1EEBng treo gi\u1EEF v\xF4
+      s\u1ED1 chi\u1EBFn l\u1EE3i ph\u1EA9m"
     plusStrengthArmor: 0
     plusAgilityArmor: 0
     plusStaminaArmor: 0
@@ -48,4 +50,6 @@ MonoBehaviour:
     plusDefendArmor: 0
     m_NameArmorPrefabs: Minotaur_Belt_1
   _backupJson: "{\"itemID\":\"-MinotaurBeltArmor\",\"itemName\":\"\u0110ai Gi\xE1p
-    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":60128},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0,\"typeArmor\":3,\"skinnedArmor\":{\"instanceID\":-127668},\"DespristionArmor\":\"\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"Minotaur_Belt_1\"}"
+    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52718},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0,\"typeArmor\":3,\"skinnedArmor\":{\"instanceID\":-1710},\"DespristionArmor\":\"Chi\u1EBFc
+    th\u1EAFt l\u01B0ng c\u1EE7a m\u1ED9t Minotaur th\u1EE3 s\u0103n l\xE3o luy\u1EC7n,
+    n\u01A1i t\u1EEBng treo gi\u1EEF v\xF4 s\u1ED1 chi\u1EBFn l\u1EE3i ph\u1EA9m\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"Minotaur_Belt_1\"}"

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Cinemachine;
 using UnityEngine;
+using static PlayerManager;
 
 public class ChildTriggerForwarder : MonoBehaviour
 {
@@ -77,6 +78,7 @@ public class ChildTriggerForwarder : MonoBehaviour
 
     private void ProcessCreepTrigger(Collider other)
     {
+        if(PlayerManager.instance.m_PlayerState.Equals(PlayerState.idle)) return;
         EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
         if (enemyHeal != null /*&& !isEnergyTakeDamaged*/)
         {
@@ -85,14 +87,7 @@ public class ChildTriggerForwarder : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Executes actions common to all triggers: camera shake, effects, and damage reset.
-    /// </summary>
-    /// <param name="other">Collider used to calculate hit position</param>
-    /// <param name="instantiateExplosion">
-    /// If true, the explosion prefab will be instantiated for the effect;
-    /// otherwise, the existing explosion prefab (fetched via EffectManager) is used directly.
-    /// </param>
+   
     private void ExecuteCommonDamageEffects(Collider other, bool instantiateExplosion)
     {
         CameraManager.Instance.ShakeCamera();

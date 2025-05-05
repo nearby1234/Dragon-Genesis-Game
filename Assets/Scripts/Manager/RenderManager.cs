@@ -37,9 +37,22 @@ public class RenderManager : BaseManager<RenderManager>
     }    
     private void SetParentWeaponUI(QuestItemSO itemSO)
     {
+        var raw = itemSO.questItemData.m_SwordPrefabs;
+        if (raw == null)
+        {
+            Debug.LogError("m_SwordPrefabs == null!");
+            return;
+        }
+        Debug.Log($"Type của m_SwordPrefabs là: {raw.GetType().Name}");
+        if (!(raw is GameObject))
+        {
+            Debug.LogError($"Expected GameObject nhưng m_SwordPrefabs là {raw.GetType().Name}");
+            return;
+        }
+        var goPrefab = raw as GameObject;
         if (itemSO == null) return;
         m_WeaponPrefabs = itemSO.questItemData.m_SwordPrefabs;
-        GameObject weaponPrefabs = Instantiate(m_WeaponPrefabs,m_ParentWeapon.transform);
+        GameObject weaponPrefabs = Instantiate(goPrefab, m_ParentWeapon.transform);
         weaponPrefabs.layer = config.layerIndex;
         m_Items.Add(itemSO.questItemData.itemID, weaponPrefabs);
     }    

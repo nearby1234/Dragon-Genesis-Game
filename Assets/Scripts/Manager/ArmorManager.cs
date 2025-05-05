@@ -14,26 +14,32 @@ public class ArmorManager : BaseManager<ArmorManager>
 
     private void Start()
     {
-        for(int i = 0;i<skinnedMeshesMinotaurList.Count;i++)
+        //for (int i = 0; i < skinnedMeshesMinotaurList.Count; i++)
+        //{
+        //    var mesh = skinnedMeshesMinotaurList[i];
+        //    skinnedMeshesMinotaurDict[mesh.name] = mesh; // chỉ lưu prefab, không Instantiate
+        //}
+        for (int i = 0; i < skinnedMeshesMinotaurList.Count; i++)
         {
             SkinnedMeshRenderer meshRenderer = skinnedMeshesMinotaurList[i];
             skinnedMeshesMinotaurDict[meshRenderer.name] = meshRenderer;
-        }    
-        for(int i = 0; i<questItemSOList.Count; i++)
+        }
+        for (int i = 0; i < questItemSOList.Count; i++)
         {
             QuestItemSO questItem = questItemSOList[i];
             // Kiểm tra xem tên trong questItem có tồn tại trong dictionary không
             if (skinnedMeshesMinotaurDict.TryGetValue(questItem.questItemData.m_NameArmorPrefabs, out SkinnedMeshRenderer foundMesh))
             {
                 // Gán SkinnedMeshRenderer vào QuestItemSO
-                SkinnedMeshRenderer skinnedMeshRenderer = Instantiate(foundMesh,m_ParentTranform.transform);
-                questItem.questItemData.skinnedArmor = skinnedMeshRenderer;
+                //SkinnedMeshRenderer skinnedMeshRenderer = Instantiate(foundMesh, m_ParentTranform.transform);
+                //questItem.questItemData.skinnedArmor = skinnedMeshRenderer;
+                questItem.questItemData.skinnedArmor = foundMesh;
             }
             else
             {
                 Debug.LogWarning($"No SkinnedMeshRenderer found for {questItem.name}");
             }
-        }    
+        }
 
     }
 }

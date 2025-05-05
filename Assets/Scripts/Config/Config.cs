@@ -27,5 +27,10 @@ public class Config : ScriptableObject
     [Header("Layer Index Show PlayerUI")]
     public int layerIndex;
 
-    
+    [Header("Index Left Padding ToolTip")]
+    public int paddingLeftItem;
+    public int paddingLeftArmor;
+
+
+
 }

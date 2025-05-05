@@ -23,3 +23,5 @@ MonoBehaviour:
   NameQuestMissionOne: -QuestMissionOne
   NameQuestMissionTwo: -QuestMissionTwo
   layerIndex: 14
+  paddingLeftItem: 300
+  paddingLeftArmor: 150

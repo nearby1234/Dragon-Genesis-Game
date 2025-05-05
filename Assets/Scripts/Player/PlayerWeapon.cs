@@ -10,6 +10,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private GameObject m_CurrentWeapon;
     [SerializeField] private MeshFilter m_CurrentWeaponMesh;
     [SerializeField] private MeshRenderer m_CurrentWeaponMeshRender;
+    [SerializeField] private MeshFilter m_EnergyMesh;
     //[SerializeField] private Config config;
     [ShowInInspector]
     private Dictionary<string, GameObject> m_Items = new();
@@ -46,6 +47,8 @@ public class PlayerWeapon : MonoBehaviour
         if (itemSO == null) return;
         if(m_CurrentWeaponMesh != null) m_CurrentWeaponMesh.mesh = m_CurrentItem.questItemData.m_SwordMesh;
         if(m_CurrentWeaponMeshRender != null) m_CurrentWeaponMeshRender.material = m_CurrentItem.questItemData.m_SwordMaterial;
+        if (m_EnergyMesh != null) m_EnergyMesh.mesh = m_CurrentItem.questItemData.m_SwordMesh;
+        Debug.Log($"m_SwordMesh : {m_CurrentItem.questItemData.m_SwordMesh}"  );
 
     }
 }
