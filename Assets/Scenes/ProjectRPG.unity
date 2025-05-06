@@ -258,6 +258,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
+--- !u!4 &5157266 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7765746994098836329, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
+  m_PrefabInstance: {fileID: 5157265}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &5157267 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6910562150147660841, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
+  m_PrefabInstance: {fileID: 5157265}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &5469889
 GameObject:
   m_ObjectHideFlags: 0
@@ -9401,16 +9411,6 @@ Transform:
   - {fileID: 610650435}
   m_Father: {fileID: 862157145}
   m_LocalEulerAnglesHint: {x: 0, y: 136.908, z: 0}
---- !u!1 &489277132 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6910562150147660841, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
-  m_PrefabInstance: {fileID: 5157265}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &489277133 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7765746994098836329, guid: d14b506813dbb9d44be9e437c73de192, type: 3}
-  m_PrefabInstance: {fileID: 5157265}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &500646276
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22781,7 +22781,7 @@ MonoBehaviour:
   m_Name: SpawnEnemyPosition
   m_EditorClassIdentifier: 
   m_PoolSize: 20
-  m_EnemyPrehabs: {fileID: 489277132}
+  m_EnemyPrehabs: {fileID: 5157267}
   m_ActiveEnemiesCount: 5
 --- !u!1001 &1318269861
 PrefabInstance:
@@ -22965,7 +22965,7 @@ Transform:
   - {fileID: 830173458}
   - {fileID: 1381947203}
   - {fileID: 1406040406}
-  - {fileID: 489277133}
+  - {fileID: 5157266}
   - {fileID: 161829989}
   - {fileID: 4283042856818539599}
   - {fileID: 196038796}

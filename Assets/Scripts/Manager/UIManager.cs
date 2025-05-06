@@ -562,6 +562,7 @@ public class UIManager : BaseManager<UIManager>
         if (!StateUiDict.ContainsKey(name))
         {
             StateUiDict.Add(name, stateUi);
+            Debug.Log($"Name : {name},{stateUi}");
         }
         else
         {

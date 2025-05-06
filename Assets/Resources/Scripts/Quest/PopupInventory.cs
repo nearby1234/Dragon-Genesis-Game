@@ -100,9 +100,13 @@ public class PopupInventory : BasePopup, IStateUi
         for (int i = 0; i < m_CountBox; i++)
         {
             GameObject box = Instantiate(m_BoxInventoryPrefab, m_InventoryBoxPanel);
-            box.name = $"{m_BoxInventoryPrefab.name}-{i}";
-            listBoxInventory.Add(box);
+            if(box != null)
+            {
+                box.name = $"{m_BoxInventoryPrefab.name}-{i}";
+                listBoxInventory.Add(box);
+            }
         }
+           
     }
 
     /// <summary>
@@ -173,19 +177,18 @@ public class PopupInventory : BasePopup, IStateUi
     }
     private void OnClickExitBtn()
     {
-        if(!UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+        if (GameManager.HasInstance)
         {
-            if (GameManager.HasInstance)
-            {
-                GameManager.Instance.HideCursor();
-            }
-        }else
-        {
-            if (GameManager.HasInstance)
+            if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
             {
                 GameManager.Instance.ShowCursor();
             }
+            else
+            {
+                GameManager.Instance.HideCursor();
+            }
         }
+
 
         if (PlayerManager.HasInstance)
         {
@@ -197,7 +200,11 @@ public class PopupInventory : BasePopup, IStateUi
             UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.closing);
             UIManager.Instance.RemoverStateInDict<PopupInventory>();
         }
-        this.Hide();
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
+            this.Hide();
     }
 
     /// <summary>

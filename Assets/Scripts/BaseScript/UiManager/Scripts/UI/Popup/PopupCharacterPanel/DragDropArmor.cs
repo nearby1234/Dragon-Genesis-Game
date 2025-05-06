@@ -60,8 +60,9 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         canvasGroup.blocksRaycasts = true;
         if (eventData.pointerEnter != null)
         {
-            InventorySlot inventorySlot = eventData.pointerEnter.GetComponent<InventorySlot>();
-            if (inventorySlot != null)
+            Debug.Log("pointerEnter: " + (eventData.pointerEnter ? eventData.pointerEnter.name : "null"));
+
+            if (eventData.pointerEnter.TryGetComponent<InventorySlot>(out var inventorySlot))
             {
                 HandlerItemInventory(inventorySlot);
                 ResetDraggedItemPosition();
@@ -70,14 +71,21 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
                     ListenerManager.Instance.BroadCast(ListenType.HIDE_ITEM_ARMOR_UI, itemEquip.CurrentItem);
                 }
                 itemEquip.CurrentItem = null;
+                itemEquip.ShowAlphaIcon(true);
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("EquipItem");
+                }
             }
             else
             {
+                itemEquip.ShowAlphaIcon(false);
                 ResetDraggedItemPosition();
             }
         }
         else
         {
+            itemEquip.ShowAlphaIcon(false);
             ResetDraggedItemPosition();
         }
     }
@@ -118,4 +126,6 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
         Debug.Log($"anchoredPosition after reset: {rectTransform.anchoredPosition}");
     }
+
+
 }

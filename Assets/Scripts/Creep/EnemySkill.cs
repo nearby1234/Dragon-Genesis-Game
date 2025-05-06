@@ -30,6 +30,10 @@ public class EnemySkill : MonoBehaviour
             fxSpawn[index].SetActive(true);
             fxSpawn[index].transform.SetPositionAndRotation(m_SpawnEffect.position, m_SpawnEffect.rotation);
             PlayEffect(index);
+            if(AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("DragonFire");
+            }
         }
     }
     private void PlayEffect(int index)
@@ -62,6 +66,11 @@ public class EnemySkill : MonoBehaviour
         if(other.CompareTag("Player"))
         {
             other.GetComponent<PlayerHeal>().ReducePlayerHeal((int)m_damageFireBall * collisionEvents.Count);
+            if(AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("FireExplosion");
+                AudioManager.Instance.PlaySE("PlayerHit");
+            }
         }
     }
 

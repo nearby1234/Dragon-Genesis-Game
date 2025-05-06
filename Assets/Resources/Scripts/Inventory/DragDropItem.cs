@@ -198,17 +198,6 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     {
         if (targetSlot == null)
         {
-            //if (placeholder != null)
-            //{
-            //    rectTransform.SetParent(OriginalParent.transform);
-            //    rectTransform.SetSiblingIndex(originalSiblingIndex);
-            //    Destroy(placeholder);
-            //    placeholder = null;
-            //}
-            //else
-            //{
-            //    rectTransform.anchoredPosition = originalAnchoredPos;
-            //}
             ResetDraggedItemPosition();
             return;
         }
@@ -230,12 +219,17 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 SwapSprites(targetImage, draggedSprite, targetSprite);
                 SwapText(targetText, draggedText, targetTextMesh);
                 SwapCurrentItem(targetSlot);
+                
             }
             else
             {
                 MoveSpriteToTarget(targetImage, draggedSprite);
                 MoveTextToTarget(targetTextMesh, draggedText);
                 MoveCurrentItemToTarget(targetSlot);
+            }
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("EquipItem");
             }
         }
 
@@ -269,6 +263,10 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             MoveCurrentItemToTarget(targetSlot);
             ResetDraggedItemPosition();
             inventorySlot.SetHideText();
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("EquipItem");
+            }
         }
         else
         {

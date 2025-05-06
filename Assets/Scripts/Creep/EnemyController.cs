@@ -58,6 +58,14 @@ public class EnemyController : MonoBehaviour
         randomNavMeshMovement.EnemyMoveTarget();
         enemyDetecPlayer.CalculateDistance();
     }
+
+    public void SoundBat(string nameSound)
+    {
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(nameSound);
+        }    
+    }    
    
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetNavMeshAgent() => agent;
@@ -66,5 +74,6 @@ public class EnemyController : MonoBehaviour
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO => enemyStatSO;
     public Collider GetCollider => enemyCollider;
+    
    
 }

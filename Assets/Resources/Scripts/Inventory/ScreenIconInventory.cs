@@ -1,4 +1,5 @@
 using DG.Tweening;
+using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -48,19 +49,12 @@ public class ScreenIconInventory : BaseScreen
                 popupCharacterPanel.SetPositionMove();
                 PopupInventory popupInventory = UIManager.Instance.GetComponentbase<PopupInventory>();
                 popupInventory.SetPositionMove();
+                
             }
-
             var popup = UIManager.Instance.GetComponentbase<PopupInventory>();
-            if (popup != null)
-            {
-                UIManager.Instance.AddStateInDict(popup);
-            }
-            else
-            {
-                Debug.LogWarning("PopupInventory not found from UIManager");
-            }
+            if(popup != null) 
+            UIManager.Instance.AddStateInDict(popup);
         }
-
 
         if (PlayerManager.HasInstance)
         {
@@ -69,6 +63,10 @@ public class ScreenIconInventory : BaseScreen
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ShowCursor();
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
         }
 
     }

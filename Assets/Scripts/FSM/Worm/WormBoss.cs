@@ -292,6 +292,13 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             UIManager.Instance.ShowPopup<WinPopup>();
         }
     }
+    public void SoundWormBoss(string nameSound)
+    {
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE(nameSound);
+        }
+    }
 
    
     private void OnDrawGizmos()

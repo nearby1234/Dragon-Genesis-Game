@@ -3,6 +3,7 @@ using UnityEngine.AI;
 
 public class DragonDetecPlayer : BaseEnemyDetecPlayer
 {
+    private bool hasPlayedIdle = false;
     [SerializeField] private float meleeRange = 5f;    // Tầm tấn công cận chiến
     protected override void Awake()
     {
@@ -16,6 +17,14 @@ public class DragonDetecPlayer : BaseEnemyDetecPlayer
         // Nếu player nằm trong tầm tấn công fireball hoặc melee (fireballRange)
         if (m_DistacneWithPlayer < m_MaxDistance)
         {
+            if(!hasPlayedIdle)
+            {
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("DragonIdle");
+                }
+                hasPlayedIdle = true;
+            }
             m_DetectedPlayer = true;
             //    // Chuyển qua trạng thái battle (idle battle) trước khi tấn công
             //    enemyController.GetAnimator().SetBool("IsDetec", true);
@@ -46,6 +55,7 @@ public class DragonDetecPlayer : BaseEnemyDetecPlayer
         else
         {
             m_DetectedPlayer = false;
+            hasPlayedIdle = false;
             enemyController.GetAnimator().SetBool("IsDetec", false);
             //enemyController.GetAnimator().SetBool("RangeAttack", false); // T?t t?n công
             enemyController.GetAnimator().SetBool("RangeAttack", false);

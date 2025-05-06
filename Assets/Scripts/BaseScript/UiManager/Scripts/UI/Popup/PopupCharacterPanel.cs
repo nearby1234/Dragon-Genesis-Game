@@ -44,10 +44,6 @@ public class PopupCharacterPanel : BasePopup, IStateUi
 
     public StateUi StateUi { get; private set; }
 
-    private void Awake()
-    {
-        
-    }
     private void Start()
     {
         InitializeStats();
@@ -56,11 +52,11 @@ public class PopupCharacterPanel : BasePopup, IStateUi
        
         SetStateUi(StateUi.Opening);
 
-        if (UIManager.HasInstance)
-        {
-            PopupCharacterPanel popup = GetComponent<PopupCharacterPanel>();
-            UIManager.Instance.AddStateInDict(popup);
-        }
+        //if (UIManager.HasInstance)
+        //{
+        //    PopupCharacterPanel popup = GetComponent<PopupCharacterPanel>();
+        //    UIManager.Instance.AddStateInDict(popup);
+        //}
         foreach (var statKey in Enum.GetValues(typeof(TYPESTAT)).Cast<TYPESTAT>())
             _armorBonuses[statKey] = 0;
     }
@@ -74,20 +70,18 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     }
     public void OnExitButton()
     {
-        if (!UIManager.Instance.GetObjectInDict<PopupInventory>())
+        if(GameManager.HasInstance)
         {
-            if (GameManager.HasInstance)
+            if (UIManager.Instance.GetObjectInDict<PopupInventory>())
+            {
+                GameManager.Instance.ShowCursor();
+            }else
             {
                 GameManager.Instance.HideCursor();
             }
         }
-        else
-        {
-            if (GameManager.HasInstance)
-            {
-                GameManager.Instance.ShowCursor();
-            }
-        }
+       
+        
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = false;
@@ -228,6 +222,10 @@ public class PopupCharacterPanel : BasePopup, IStateUi
         item.UpdateStatsPointText(configMap[statKey].displayName);
         UpdateStatPreview(statKey);
         UpdateValuePoint();
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("EquipItem");
+        }
     }
     private void UpdateMinusPointsAndStatsText(CharacterStatsPoint item, string statKey)
     {
@@ -237,6 +235,10 @@ public class PopupCharacterPanel : BasePopup, IStateUi
         item.UpdateStatsPointText(configMap[statKey].displayName);
         UpdateStatPreview(statKey);
         UpdateValuePoint();
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("EquipItem");
+        }
     }
     #region Heal
     // Sự kiện cập nhật current heal realtime
@@ -340,6 +342,10 @@ public class PopupCharacterPanel : BasePopup, IStateUi
             // cfg.statKey tương ứng với tên trong m_CharacterStatsPointTxt
             UpdateStatPreview(cfg.statKey);
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("EquipItem");
+        }
     }
 
     private void OnDenyButton()
@@ -362,6 +368,10 @@ public class PopupCharacterPanel : BasePopup, IStateUi
         {
             // cfg.statKey tương ứng với tên trong m_CharacterStatsPointTxt
             UpdateStatPreview(cfg.statKey);
+        }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("EquipItem");
         }
     }
     private void UpdateStatPreview(string statKey)

@@ -8,7 +8,6 @@ using UnityEngine.InputSystem;
 public class ScreenOriginalScrollBtn : BaseScreen
 {
     private RectTransform m_RectTransform;
-    private Button button;
     private Image image;
     private TextMeshProUGUI textMeshProUGUI;
     private string m_DOItemPrefabPath;
@@ -19,7 +18,6 @@ public class ScreenOriginalScrollBtn : BaseScreen
     private void Awake()
     {
         m_RectTransform = GetComponent<RectTransform>();
-        button = GetComponent<Button>();
         image = GetComponent<Image>();
         textMeshProUGUI = GetComponentInChildren<TextMeshProUGUI>();
         m_DOItemPrefabPath = QuestManager.Instance.m_DOItemPrefabPath;
@@ -51,6 +49,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ClickSound");
+            AudioManager.Instance.PlaySE("ScrollSound");
         }
 
         if (UIManager.HasInstance)

@@ -17,6 +17,11 @@ public class EnemyTakeDamageByParticle : MonoBehaviour
                     if (other.TryGetComponent<PlayerHeal>(out var playerHeal))
                     {
                         playerHeal.ReducePlayerHeal(m_FireBallDamage);
+                        if (AudioManager.HasInstance)
+                        {
+                            AudioManager.Instance.PlaySE("FireExplosion");
+                            AudioManager.Instance.PlaySE("PlayerHit");
+                        }
                     }
                 }
             }

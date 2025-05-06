@@ -24,6 +24,10 @@ public class EnemyCollision : MonoBehaviour
             if (PlayerManager.instance.playerHeal.m_IsDamaging == false)
             {
                 PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage);
+                if(AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("PlayerHit");
+                }
             }
 
             if (Time.time - lastHitTime > hitCooldown)

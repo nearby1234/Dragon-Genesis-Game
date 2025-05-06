@@ -35,14 +35,6 @@ public class QuestManager : BaseManager<QuestManager>
     }
 
     private Dictionary<string, int> initialItemCounts = new();
-
-    protected override void Awake()
-    {
-        base.Awake();
-        //BackupInitialCountItems();
-      
-    }
-
     private void Start()
     {
         m_QuestItemPrefabPath = configSO.m_QuestItemPrefabPath;
@@ -113,12 +105,6 @@ public class QuestManager : BaseManager<QuestManager>
         Debug.Log($"Chuyển sang nhiệm vụ mới: {currentQuest.questName}");
     }
 
-    /// <summary>
-    /// Phương thức GrantReward hiện đã chuyển toàn bộ logic của GetSpriteItemReward từ PopupScrollMagic.
-    /// Nó chịu trách nhiệm hiển thị tween animation cho từng phần thưởng, cập nhật trạng thái quest,
-    /// hiển thị các màn hình phụ (nếu cần) và phát sự kiện broadcast.
-    /// </summary>
-    /// <param name="reward">Đối tượng QuestBonus chứa thông tin phần thưởng</param>
     public void GrantReward(QuestBonus reward)
     {
         GameObject prefab = Resources.Load<GameObject>(m_DOItemPrefabPath);
@@ -199,6 +185,7 @@ public class QuestManager : BaseManager<QuestManager>
           .SetEase(Ease.InBack)
           .OnComplete(() =>
           {
+              SoundReward();
               Destroy(itemObj);
           });
     }
@@ -206,6 +193,7 @@ public class QuestManager : BaseManager<QuestManager>
     {
         rt.DOAnchorPos(targetPos, TWEEN_DURATION).SetEase(Ease.InBack).OnComplete(() =>
         {
+            SoundReward();
             Destroy(itemObj);
         });
     }
@@ -225,6 +213,7 @@ public class QuestManager : BaseManager<QuestManager>
                        UIManager.Instance.ShowScreen<ScreenIconInventory>();
                        UIManager.Instance.ShowScreen<ScreenBox>();
                    }
+                   SoundReward();
                    Destroy(itemObj);
                });
                 break;
@@ -238,6 +227,7 @@ public class QuestManager : BaseManager<QuestManager>
                       UIManager.Instance.ShowScreen<ScreenBoxSkill>();
                       UIManager.Instance.ShowScreen<ScreenBookSkill>();
                   }
+                  SoundReward();
                   Destroy(itemObj);
               });
                 break;
@@ -311,6 +301,14 @@ public class QuestManager : BaseManager<QuestManager>
                     ListenerManager.Instance.BroadCast(ListenType.QUEST_COMPLETE, currentQuest.isCompleteMission);
                 }
             }
+        }
+    }
+
+    private void SoundReward()
+    {
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("RewardItem");
         }
     }
 

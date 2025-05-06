@@ -123,6 +123,10 @@ public class DragDropSkill : MonoBehaviour, IPointerClickHandler , IBeginDragHan
         {
             // Nếu tìm thấy một SkillSlot hợp lệ, tạo một bản sao của item và đặt vào ScreenBox.
             CreateClone(targetSlot);
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("EquipItem");
+            }
         }
         else
         {
@@ -156,11 +160,6 @@ public class DragDropSkill : MonoBehaviour, IPointerClickHandler , IBeginDragHan
         GameObject clonedItem = Instantiate(this.gameObject);
         clonedItem.name = this.gameObject.name + "_Clone";
 
-        // Lấy RectTransform của clone
-        //RectTransform clonedRectTransform = clonedItem.GetComponent<RectTransform>();
-
-        //// Đặt vị trí của clone vào vị trí của targetSlot (ScreenBox)
-        //clonedRectTransform.anchoredPosition = Vector2.zero; // Điều chỉnh tùy thuộc vào yêu cầu của bạn
 
         // Set lại các thuộc tính cho clone (ảnh, item, v.v.)
         SkillSlot clonedSkillSlot = clonedItem.GetComponent<SkillSlot>();
@@ -190,30 +189,6 @@ public class DragDropSkill : MonoBehaviour, IPointerClickHandler , IBeginDragHan
         // Đặt vị trí placeholder đúng chỗ item cũ
         placeholder.transform.SetSiblingIndex(originalSiblingIndex);
     }
-    //private void MoveCurrentItemToTargetSlot(SkillSlot targetSlot)
-    //{
-    //    // Chuyển currentItem từ bản clone vào targetSlot trong ScreenBox
-    //    targetSlot.CurrentItem = skillSlot.CurrentItem;  // Chuyển currentItem từ skillSlot (bản clone) vào targetSlot
-    //    skillSlot.CurrentItem = null;  // Xóa currentItem khỏi bản gốc (PopupSkill)
-    //    skillSlot.ClearItem();  // Xóa item trong PopupSkill
-
-    //    // Nếu cần, bạn có thể gán lại các thuộc tính khác của clone tại đây
-    //    image.sprite = null;  // Xóa hình ảnh trong PopupSkill
-    //    SetAlphaColor(0f, image);  // Đặt alpha của hình ảnh trong PopupSkill thành 0
-    //}
-    //private void SwapSprites(Image targetImage, Sprite draggedSprite, Sprite targetSprite)
-    //{
-    //    image.sprite = targetSprite;
-    //    SetAlphaColor(1f, image);
-    //    targetImage.sprite = draggedSprite;
-    //    SetAlphaColor(1f, targetImage);
-    //}
-    //private void MoveCurrentItemToTarget(SkillSlot targetSlot)
-    //{
-    //    targetSlot.CurrentItem = skillSlot.CurrentItem;
-    //    skillSlot.CurrentItem = null; // Đặt lại item đang kéo về null
-    //    skillSlot.ClearItem(); // Xóa item trong Box hiện tại
-    //}
     private void SetAlphaColor(float alpha, Image image)
     {
         if (image == null) return;
@@ -222,15 +197,4 @@ public class DragDropSkill : MonoBehaviour, IPointerClickHandler , IBeginDragHan
         temp.a = alpha;
         image.color = temp;
     }
-    // private void SwapCurrentItem(SkillSlot targetSlot)
-    //{
-    //    (targetSlot.CurrentItem, skillSlot.CurrentItem) = (skillSlot.CurrentItem, targetSlot.CurrentItem);
-    //}
-    //private void MoveSpriteToTarget(Image targetImage, Sprite draggedSprite)
-    //{
-    //    targetImage.sprite = draggedSprite;
-    //    SetAlphaColor(1f, targetImage);
-    //    image.sprite = null;
-    //    SetAlphaColor(0f, image);
-    //}
 }

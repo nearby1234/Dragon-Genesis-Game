@@ -48,7 +48,7 @@ public class PopupScrollMagic : BasePopup
             ListenerManager.Instance.Register(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, ReceiverPlayAnimMoveScroll);
             ListenerManager.Instance.Register(ListenType.UI_UPDATE_ITEM_MISSION, ReceiUpdateTextMission);
             ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE, ReceiverEventIsCompleteQuest);
-            
+
         }
 
         if (m_ExitBtn != null)
@@ -70,7 +70,7 @@ public class PopupScrollMagic : BasePopup
             Debug.LogError("Current quest data is null. Cannot initialize PopupScrollMagic.");
             return;
         }
-        
+
 
         m_TitleText.text = m_CurrentQuestData.questName;
         m_ContentText.text = m_CurrentQuestData.description;
@@ -86,10 +86,6 @@ public class PopupScrollMagic : BasePopup
         GetListItem(m_MissionItemObjectList, m_CurrentQuestData.ItemMission);
         InitItemObject(m_MissionItemObjectList, QUEST_ITEM_PREFAB_PATH, m_MisionItemParentObject.transform, true);
     }
-    private void Update()
-    {
-        //UpdateTextMissionCurrent();
-    }
     private void OnDestroy()
     {
         if (ListenerManager.HasInstance)
@@ -98,9 +94,9 @@ public class PopupScrollMagic : BasePopup
             ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, ReceiverEventIsCompleteQuest);
         }
     }
-    
+
     private void OnFinishWrittingText()
-    { 
+    {
         m_RewardItemParentObject.ShowCanvasGroup();
         m_MisionItemParentObject.ShowCanvasGroup();
         m_RewardBtn.ShowCanvasGroup();
@@ -112,7 +108,7 @@ public class PopupScrollMagic : BasePopup
             AudioManager.Instance.PlaySE("ScrollSound");
         }
         m_Animator.Play("MoveCenter");
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.HideCursor();
         }
@@ -121,17 +117,21 @@ public class PopupScrollMagic : BasePopup
     }
     private void OnClickNextMission()
     {
-        if(QuestManager.HasInstance)
+        if (QuestManager.HasInstance)
         {
             QuestManager.Instance.AcceptQuest();
             m_CurrentQuestData = QuestManager.Instance.CurrentQuest;
             m_CurrentQuestData.isAcceptMission = true;
             UpdateUI();
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ScrollSound");
+        }
     }
     private void UpdateUI()
     {
-       StartCoroutine(DelayAnimation());
+        StartCoroutine(DelayAnimation());
     }
 
     private void GetListItem(List<QuestItemSO> questItems, List<QuestItemSO> questDatas)
@@ -190,7 +190,7 @@ public class PopupScrollMagic : BasePopup
         {
             buttonImage.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         }
-      
+
     }
     private void ShowRewardButton()
     {
@@ -244,8 +244,13 @@ public class PopupScrollMagic : BasePopup
         // 4. Chờ animation Shake xong
         yield return PlayAndWait("Shake");
 
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ScrollSound");
+        }
         // 5. Quay về MoveOutSide và chờ xong
         yield return PlayAndWait("MoveOutSide");
+       
 
         // 6. Cập nhật lại text và hiện UI
         RefreshUI();
@@ -319,7 +324,7 @@ public class PopupScrollMagic : BasePopup
         var first = m_CurrentQuestData.ItemMission.FirstOrDefault(x => x.questItemData.typeItem.Equals(TYPEITEM.ITEM_COLLECT));
         if (first == null) return;
         m_MisionItemParentObject.UpdateTextItemMission(first);
-        if(m_CurrentQuestData.isCompleteMission)
+        if (m_CurrentQuestData.isCompleteMission)
         {
             ShowRewardButton();
         }
@@ -327,9 +332,16 @@ public class PopupScrollMagic : BasePopup
 
     private void ReceiverEventIsCompleteQuest(object value)
     {
-        if(value is bool isComplete)
+        if (value is bool isComplete)
         {
             if (isComplete) ShowRewardButton();
         }
     }
+    public void PlaySE()
+    {
+      if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("AcceptMision");
+        }    
+    }    
 }

@@ -36,9 +36,9 @@ public class ScreenPlayerImformation : BaseScreen
     }
     private void OnDestroy()
     {
-        m_ButtonPress.Disable();
         m_ButtonPress.performed -= OnClickButton;
         UnRegisterListeners();
+        m_ButtonPress.Disable();
     }
     private void Update()
     {
@@ -103,8 +103,15 @@ public class ScreenPlayerImformation : BaseScreen
             StateUi popupInventory = UIManager.Instance.GetStatePopup<PopupInventory>();
             if (popupInventory.Equals(StateUi.Opening))
             {
-                PopupInventory popupInventoryBase = UIManager.Instance.GetComponentbase<PopupInventory>();
-                popupInventoryBase.SetPositionMove();
+                PopupCharacterPanel popupCharacterPanel = UIManager.Instance.GetComponentbase<PopupCharacterPanel>();
+                popupCharacterPanel.SetPositionMove();
+                PopupInventory popupInventorySlot = UIManager.Instance.GetComponentbase<PopupInventory>();
+                popupInventorySlot.SetPositionMove();
+            }
+           var popup = UIManager.Instance.GetComponentbase<PopupCharacterPanel> ();
+           if (popup != null)
+            {
+                UIManager.Instance.AddStateInDict(popup);
             }
         }
         if (AudioManager.HasInstance)

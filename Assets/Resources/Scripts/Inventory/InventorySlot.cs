@@ -12,7 +12,7 @@ using UnityEngine.UI;
 [System.Serializable]
 [RequireComponent(typeof(CanvasGroup))]
 [RequireComponent(typeof(DragDropItem))]
-public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IPointerExitHandler
+public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private bool m_IsEmpty = true;
     [SerializeField] private Image m_IconImage;
@@ -32,8 +32,8 @@ public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IP
     {
         get => m_CurrentItem;
         set => m_CurrentItem = value;
-    } 
-        
+    }
+
 
     private void Awake()
     {
@@ -291,7 +291,7 @@ public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IP
     }
     public void SetHideText()
     {
-        m_CountTxt.color = new (1,1,1,0);
+        m_CountTxt.color = new(1, 1, 1, 0);
     }
 
     private void ShowItemTypeUSE()
@@ -303,5 +303,7 @@ public class InventorySlot : MonoBehaviour, IItemSlot,  IPointerEnterHandler, IP
     {
         UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
         PopupItemToolipPanel.Instance.ShowToolTipItemArmor(m_CurrentItem);
-    }    
+    }
+
+
 }

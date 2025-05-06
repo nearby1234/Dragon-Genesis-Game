@@ -181,4 +181,15 @@ public class AudioManager : BaseManager<AudioManager>
             mixerGroup.audioMixer.SetFloat("FootstepVolume", dB);
         }
     }
+
+    public void PlayEnemySound(string enemysound, Vector3 position, float volume = 1f)
+    {
+        if (!seDic.ContainsKey(enemysound))
+        {
+            Debug.LogWarning($"không có {enemysound} trong dict");
+            return;
+        }
+        
+        AudioSource.PlayClipAtPoint(seDic[enemysound], position, volume);
+    }
 }
