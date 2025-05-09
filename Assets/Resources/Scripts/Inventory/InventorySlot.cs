@@ -154,6 +154,10 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
                     GameObject heal = GetPooledItem("Heal", PlayerManager.instance.transform); // hoặc transform cha
                     CooldownTime(m_CurrentItem.questItemData.timeCoolDown);
                 }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("RegenSound");
+                }
                 break;
             case ITEMUSE.ITEM_USE_MANA:
                 if (ListenerManager.HasInstance)
@@ -165,6 +169,10 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
                 {
                     GameObject mana = GetPooledItem("Mana", PlayerManager.instance.transform); // hoặc transform cha
                     CooldownTime(m_CurrentItem.questItemData.timeCoolDown);
+                }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("RegenSound");
                 }
                 break;
         }

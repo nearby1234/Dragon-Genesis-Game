@@ -15,13 +15,14 @@ public class QuestManager : BaseManager<QuestManager>
     public Config configSO;
 
     [InlineEditor]
+    [ListDrawerSettings(ShowPaging = false)]
     public List<QuestData> questList;
     public string m_QuestItemPrefabPath;
     public string m_QuestRewardItemPrefabPath;
     public string m_DOItemPrefabPath;
-    public const string NameQuestMissionOne = "-QuestMissionOne";
-    public const string NameQuestMissionTwo = "-QuestMissionTwo";
-    public const string NameQuestMissionThree = "-QuestMissionThree";
+    public const string NameQuestMissionOne = "-QuestMission1";
+    public const string NameQuestMissionTwo = "-QuestMission2";
+    public const string NameQuestMissionThree = "-QuestMission3";
     public int m_CountNumber;
 
     // Các hằng số tween được định nghĩa lại ở đây để sử dụng trong GrantReward
@@ -67,6 +68,8 @@ public class QuestManager : BaseManager<QuestManager>
         {
             currentQuest = quest;
             quest.isAcceptMission = true;
+           
+            Debug.Log($"m_CountNumber accept : {m_CountNumber}");
             //if (questList.Contains(quest))
             //{
             //    return;
@@ -77,6 +80,7 @@ public class QuestManager : BaseManager<QuestManager>
         }
         else
         {
+            m_CountNumber = 0;
             NextQuest();
             Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
         }
@@ -111,14 +115,17 @@ public class QuestManager : BaseManager<QuestManager>
         Transform rewardParent = UIManager.Instance.cPopup.transform;
         if (prefab == null)
         {
-            Debug.LogError("Failed to load prefab for reward items.");
+            Debug.LogWarning("Failed to load prefab for reward items.");
             return;
         }
 
+        var clones = new List<QuestItemSO>(reward.itemsReward.Count);
         foreach (var item in reward.itemsReward)
         {
             var itemObj = Instantiate(prefab, rewardParent);
-            var sliderPos = _SliderPos.TranslatePosition();
+            var runtimeItem = Instantiate(item);
+            clones.Add(runtimeItem);
+            //var sliderPos = _SliderPos.TranslatePosition();
 
             // Set icon nếu có
             if (itemObj.TryGetComponent<Image>(out var image))
@@ -127,14 +134,14 @@ public class QuestManager : BaseManager<QuestManager>
             if (itemObj.TryGetComponent<RectTransform>(out var rt))
             {
                 // Chỉ gọi 1 dòng duy nhất, chuyển cho phương thức tương ứng
-                HandleByType(item, rt, itemObj);
+                HandleByType(runtimeItem, rt, itemObj);
             }
 
             // Đánh dấu hoàn thành quest + broadcast
 
         }
         if (CurrentQuest != null) CurrentQuest.isCompleteMission = true;
-        ListenerManager.Instance?.BroadCast(ListenType.UI_SEND_LIST_ITEM_REWARD, reward.itemsReward);
+        ListenerManager.Instance?.BroadCast(ListenType.UI_SEND_LIST_ITEM_REWARD, clones);
     }
     private void HandleByType(QuestItemSO item, RectTransform rt, GameObject itemObj)
     {
@@ -288,6 +295,7 @@ public class QuestManager : BaseManager<QuestManager>
         if (first != null)
         {
             m_CountNumber++;
+            Debug.Log($"m_CountNumber : {m_CountNumber}");
             first.questItemData.completionCount = m_CountNumber;
             if (ListenerManager.HasInstance)
             {

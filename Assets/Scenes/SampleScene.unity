@@ -1086,6 +1086,14 @@ PrefabInstance:
       propertyPath: _SliderPos
       value: 
       objectReference: {fileID: 1983556768}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: questList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 7a61720856dfa644885501e2cda665e5, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

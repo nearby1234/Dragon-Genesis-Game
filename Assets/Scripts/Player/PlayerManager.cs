@@ -90,7 +90,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         }
         else
         {
-
+            playerDamage.RegisterEventAttack();
             if (CameraManager.HasInstance)
             {
                 CameraManager.Instance.SetActiveInputAxisController(true);

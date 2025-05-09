@@ -34,6 +34,7 @@ public class AudioManager : BaseManager<AudioManager>
             bgmDic[clip.name] = clip;
         foreach (var clip in Resources.LoadAll<AudioClip>("Audio/SE"))
             seDic[clip.name] = clip;
+        
     }
 
     public void PlaySE(string seName, float delay = 0f)
@@ -47,6 +48,14 @@ public class AudioManager : BaseManager<AudioManager>
         nextSEName = seName;
         Invoke(nameof(DelayPlaySE), delay);
     }
+    public void StopSe(string seName)
+    {
+        if (seDic.ContainsKey(seName))
+        {
+            AttachSESource.Stop();
+        } 
+            
+    }    
 
     private string nextSEName;
     private void DelayPlaySE()

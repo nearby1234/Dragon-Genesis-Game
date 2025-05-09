@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9122ffe465b8bde4488f7932d036dd39, type: 3}
-  m_Name: QuestMissionOne
+  m_Name: QuestMission1
   m_EditorClassIdentifier: 
-  questType: 0
-  questID: -QuestMissionOne
+  questType: 3
+  questID: -QuestMission1
   questName: "L\u1EDDi Ti\xEAn Tri"
   QuestGiver: {fileID: 0}
   description: "<speed=6>{Fade}<B>Tr\u01B0\u1EDFng L\xE0ng Long H\u1EEFu : </B>\n\n<i>H\u1EE1i

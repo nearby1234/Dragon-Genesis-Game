@@ -134,6 +134,11 @@ public class ScreenPlayerImformation : BaseScreen
         {
             GameManager.Instance.ShowCursor();
         }
+        if(PlayerManager.HasInstance)
+        {
+            PlayerManager.instance.isInteractingWithUI = true;
+        }
+
     }
 
     public void ReceiverPlayerHealValue(object value)

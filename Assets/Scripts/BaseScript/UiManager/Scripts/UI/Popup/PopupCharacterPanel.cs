@@ -80,7 +80,6 @@ public class PopupCharacterPanel : BasePopup, IStateUi
                 GameManager.Instance.HideCursor();
             }
         }
-       
         
         if (PlayerManager.HasInstance)
         {

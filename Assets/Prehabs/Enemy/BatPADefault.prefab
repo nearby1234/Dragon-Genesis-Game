@@ -329,7 +329,7 @@ MonoBehaviour:
   m_EnemyHeal: 0
   m_Timer: 0.5
   m_EnemyController: {fileID: 0}
-  creepType: 0
+  creepType: 1
   m_IsDead: 0
 --- !u!114 &26052474023415600
 MonoBehaviour:
@@ -1326,6 +1326,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_target: {fileID: 0}
   m_Invert: 1
+  m_IsClick: 0
 --- !u!1 &5288852173813489732
 GameObject:
   m_ObjectHideFlags: 0

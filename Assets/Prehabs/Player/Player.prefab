@@ -5746,23 +5746,6 @@ MonoBehaviour:
   smoothInputVector: {x: 0, y: 0}
   velocity: {x: 0, y: 0, z: 0}
   moveState: 0
-  m_MoveAction:
-    m_Name: Move
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 04510b51-c0ef-4951-8c4e-1b54fb2ad3a4
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings:
-    - m_Name: 
-      m_Id: 2324ae27-ceab-4787-b3d1-8624b5298610
-      m_Path: 
-      m_Interactions: 
-      m_Processors: 
-      m_Groups: 
-      m_Action: Move
-      m_Flags: 0
-    m_Flags: 0
   characterController: {fileID: 0}
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
@@ -5845,12 +5828,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 11ad24b0b07557646b2240af0abef3a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_EscButton:
+    m_Name: Esc Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 07383bb3-e6e6-4141-8e81-a2b62ba8fd0b
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
   controller: {fileID: 0}
   playerMove: {fileID: 0}
   playerJump: {fileID: 0}
   playerDamage: {fileID: 0}
   playerAnim: {fileID: 0}
   playerHeal: {fileID: 0}
+  playerMana: {fileID: 0}
+  playerStamina: {fileID: 0}
   playerCasting: {fileID: 0}
   playerDodge: {fileID: 0}
   effectSpawn: {fileID: 0}

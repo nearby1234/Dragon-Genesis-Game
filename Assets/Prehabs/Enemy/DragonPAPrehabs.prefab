@@ -1673,7 +1673,7 @@ MonoBehaviour:
   m_EnemyHeal: 0
   m_Timer: 0
   m_EnemyController: {fileID: 0}
-  creepType: 0
+  creepType: 2
   m_IsDead: 0
 --- !u!195 &715805975673094015
 NavMeshAgent:
@@ -2323,6 +2323,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_target: {fileID: 0}
   m_Invert: 1
+  m_IsClick: 0
 --- !u!1 &7992631581538963251
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9122ffe465b8bde4488f7932d036dd39, type: 3}
-  m_Name: QuestMissionTwo
+  m_Name: QuestMission2
   m_EditorClassIdentifier: 
-  questType: 1
-  questID: -QuestMissionTwo
+  questType: 4
+  questID: -QuestMission2
   questName: "D\u1EA5u V\u1EBFt B\xF3ng \u0110\xEAm"
   QuestGiver: {fileID: 0}
   description: "<speed=6>{Fade}N\u01A1i b\xF3ng t\u1ED1i v\u1EEBa gieo m\xECnh, t\xE0n

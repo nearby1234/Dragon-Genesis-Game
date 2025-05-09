@@ -27,6 +27,7 @@ public class PopupScrollMagic : BasePopup
     [SerializeField] private QuestData m_CurrentQuestData;
     private readonly string QUEST_ITEM_PREFAB_PATH = QuestManager.Instance.m_QuestItemPrefabPath;
     private readonly string QUEST_REWARD_ITEM_PREFAB_PATH = QuestManager.Instance.m_QuestRewardItemPrefabPath;
+    private bool m_IsShowRewardBtn;
 
     private void Awake()
     {
@@ -128,6 +129,7 @@ public class PopupScrollMagic : BasePopup
         {
             AudioManager.Instance.PlaySE("ScrollSound");
         }
+        m_IsShowRewardBtn = false;
     }
     private void UpdateUI()
     {
@@ -194,6 +196,7 @@ public class PopupScrollMagic : BasePopup
     }
     private void ShowRewardButton()
     {
+        m_IsShowRewardBtn = true;
         m_RewardBtn.GetComponent<Button>().interactable = true;
         if (m_RewardBtn.TryGetComponent<Image>(out Image buttonImage))
         {
@@ -324,17 +327,21 @@ public class PopupScrollMagic : BasePopup
         var first = m_CurrentQuestData.ItemMission.FirstOrDefault(x => x.questItemData.typeItem.Equals(TYPEITEM.ITEM_COLLECT));
         if (first == null) return;
         m_MisionItemParentObject.UpdateTextItemMission(first);
-        if (m_CurrentQuestData.isCompleteMission)
-        {
-            ShowRewardButton();
-        }
+        //if (m_CurrentQuestData.isCompleteMission)
+        //{
+        //    ShowRewardButton();
+        //}
     }
 
     private void ReceiverEventIsCompleteQuest(object value)
     {
         if (value is bool isComplete)
         {
-            if (isComplete) ShowRewardButton();
+            if (isComplete && !m_IsShowRewardBtn)
+            {
+                ShowRewardButton();
+                m_IsShowRewardBtn = true;
+            }
         }
     }
     public void PlaySE()
