@@ -4,6 +4,7 @@ using Unity.AI.Navigation;
 using System.Collections;
 using System.Collections.Generic;
 using DG.Tweening;
+using Sirenix.Utilities;
 
 public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 {
@@ -49,6 +50,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public string[] listStringRefer;
     public GameObject m_Player;
     [SerializeField] private SkinnedMeshRenderer m_SkinnedMeshRenderer;
+
+    [Header("Collider")]
+    [SerializeField] private List<Collider> m_Colliders;
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
     public DissovleController dissovleController;
     private void Awake()
@@ -75,6 +79,16 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         if(ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ResetWormBossHeal);
+        }
+
+
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, ResetWormBossHeal);
         }
     }
     protected override void Update()
@@ -82,9 +96,20 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         finiteSM?.Update();
         if (PlayerInRange())
         {
+            //Debug.Log($"PlayerInRange : {PlayerInRange()}");
             if(!isShowHealbarBoss)
             {
-                UIManager.Instance.ShowScreen<ScreenHealBarBoss>();
+                if(UIManager.HasInstance)
+                {
+                    UIManager.Instance.ShowScreen<ScreenHealBarBoss>(null,true);
+
+                }
+                if(AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlayBGM("CombatMusic",true);
+                }
+                
+                
                 isShowHealbarBoss = true;
             }  
             if(currentState.Equals(WORMSTATE.DIE))
@@ -98,7 +123,15 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             }
            
         }
-        
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        if(colliders != null && colliders.Length > 0)
+        {
+            for(int i = 0; i < colliders.Length; i++)
+            {
+                m_Colliders.Add(colliders[i]);
+            }
+        }
         
     }
     public override void RequestStateTransition(WORMSTATE requestedState)
@@ -289,18 +322,51 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         yield return new WaitForSeconds(3f);
         if(UIManager.HasInstance)
         {
-            UIManager.Instance.ShowPopup<WinPopup>();
+            var msg = new PopupMessage()
+            {
+                popupType = PopupType.WIN,
+            };
+            UIManager.Instance.ShowPopup<LosePopup>(msg,true);
         }
+
     }
     public void SoundWormBoss(string nameSound)
     {
-        if(AudioManager.HasInstance)
+        // 1) Kiểm tra boss đã thấy player chưa (trong detectionRange)  
+        if (!PlayerInRange())
+            return;
+
+        if (!AudioManager.HasInstance)
+            return;
+
+        // 2) Phát âm thanh positional 3D tại vị trí boss
+        AudioManager.Instance.PlaySE(nameSound);
+        Debug.Log($"nameSound : {nameSound}");
+        Debug.Log($"PlayerInRange : {PlayerInRange()}");
+
+    }
+
+    public void SetHideCollider()
+    {
+        for (int i = 0; i < m_Colliders.Count; i++)
         {
-            AudioManager.Instance.PlaySE(nameSound);
+            m_Colliders[i].enabled = false;
         }
     }
 
-   
+    private void ResetWormBossHeal(object value)
+    {
+        m_WormBossHeal = WormAttributeSO.heal;
+        IsRageState = false;
+        isShowHealbarBoss = false;  
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
+        }
+
+    }
+
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;

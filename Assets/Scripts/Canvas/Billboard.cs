@@ -4,13 +4,29 @@ public class Billboard : MonoBehaviour
 {
     [SerializeField] private Transform m_target;
     [SerializeField] private bool m_Invert;
+    [SerializeField] private bool m_IsClick;
 
     private void Awake()
     {
         m_target = GameObject.Find("Player").GetComponent<Transform>();
     }
+    private void Start()
+    {
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverClickMainMenu);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverClickMainMenu);
+        }
+    }
     private void Update()
     {
+        if (m_IsClick) return;
         RotationTarget();
     }
     private void RotationTarget()
@@ -25,6 +41,9 @@ public class Billboard : MonoBehaviour
         {
             transform.rotation = Quaternion.LookRotation(direction);
         }
-
+    }
+    private void ReceiverClickMainMenu(object value)
+    {
+        m_IsClick = true;
     }
 }

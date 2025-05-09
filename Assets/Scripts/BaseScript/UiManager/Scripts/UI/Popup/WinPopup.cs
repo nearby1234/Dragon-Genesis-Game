@@ -14,6 +14,7 @@ public class WinPopup : BasePopup
         {
             m_Button.onClick.AddListener(HideWinPopup);
         }
+       ShowCusor(true);
     }
     public override void Init()
     {
@@ -32,5 +33,20 @@ public class WinPopup : BasePopup
     public void HideWinPopup()
     {
         this.Hide();
+        ShowCusor(false);
+    }
+
+    private void ShowCusor(bool isShow)
+    {
+        if(GameManager.HasInstance)
+        {
+            if(isShow)
+            {
+                GameManager.Instance.ShowCursor();
+            }else
+            {
+                GameManager.Instance.HideCursor();
+            }
+        }
     }
 }

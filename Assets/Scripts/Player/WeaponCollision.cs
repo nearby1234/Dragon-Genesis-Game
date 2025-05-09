@@ -53,14 +53,19 @@ public class WeaponCollision : MonoBehaviour
                 if (EffectManager.HasInstance)
                 {
                     Vector3 closepoint = other.ClosestPoint(other.transform.position);
+                    Vector3 newClosePoint = new Vector3(closepoint.x,closepoint.y, closepoint.z -1);
                     GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
                     textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
                     if (damageText != null)
                     {
-                        damageText.ChangeTextDamage(damage, closepoint);
+                        damageText.ChangeTextDamage(damage, newClosePoint);
                     }
                 }
                 CameraManager.Instance.ShakeCamera();
+                if(AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("WormBossHit");
+                }    
             }
         }
 

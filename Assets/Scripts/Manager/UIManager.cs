@@ -172,7 +172,6 @@ public class UIManager : BaseManager<UIManager>
     }
 
 
-
     public T GetExistScreen<T>() where T : BaseScreen
     {
         string nameScreen = typeof(T).Name;

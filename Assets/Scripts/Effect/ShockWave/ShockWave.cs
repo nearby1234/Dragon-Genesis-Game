@@ -3,7 +3,21 @@ using UnityEngine;
 public class ShockWave : MonoBehaviour
 {
     [SerializeField]private  ParticleSystem shockWave;
-   public void PlayShockWave()
+    private void Start()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverOnClickPlayAgain);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverOnClickPlayAgain);
+        }
+    }
+    public void PlayShockWave()
     {
       if(shockWave != null)
         {
@@ -26,4 +40,8 @@ public class ShockWave : MonoBehaviour
             }    
         }
     }    
+    private void ReceiverOnClickPlayAgain(object value)
+    {
+        StopShockWave();
+    }
 }

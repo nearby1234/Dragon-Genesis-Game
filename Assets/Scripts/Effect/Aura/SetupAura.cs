@@ -12,9 +12,10 @@ public class SetupAura : MonoBehaviour
     }
     private void Start()
     {
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.BOSS_STATE_CURRENT, SetOffAura);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverOnClickPlayAgain);
         }
     }
     private void OnDestroy()
@@ -22,6 +23,7 @@ public class SetupAura : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.BOSS_STATE_CURRENT, SetOffAura);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverOnClickPlayAgain);
         }
 
     }
@@ -56,14 +58,14 @@ public class SetupAura : MonoBehaviour
                 }
             }
         }
-    }    
+    }
     private void SetOffAura(object value)
     {
-        if(value != null)
+        if (value != null)
         {
-            if(value is WORMSTATE wormState)
+            if (value is WORMSTATE wormState)
             {
-                if(wormState.Equals(WORMSTATE.DIE))
+                if (wormState.Equals(WORMSTATE.DIE))
                 {
                     foreach (var a in m_Aura)
                     {
@@ -72,6 +74,13 @@ public class SetupAura : MonoBehaviour
                 }
             }
         }
-       
+    }
+    private void ReceiverOnClickPlayAgain(object value)
+    {
+        foreach (var a in m_Aura)
+        {
+            a.gameObject.SetActive(false);
+        }
+
     }
 }

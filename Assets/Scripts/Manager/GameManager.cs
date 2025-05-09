@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngineInternal;
 
 
 public enum GAMESTATE
@@ -12,9 +13,7 @@ public enum GAMESTATE
 }
 public class GameManager : BaseManager<GameManager>
 {
-    //[SerializeField] private GameObject m_Player;
-
-    //[SerializeField] private List<GameObject> npcList = new();
+    public Transform m_SpawnPlayer;
 
     [SerializeField] private GAMESTATE m_GameState = GAMESTATE.NONE;
     public bool m_IsPlaying = false;
@@ -28,9 +27,21 @@ public class GameManager : BaseManager<GameManager>
     }
     private void Start()
     {
-        ShowMenuLoading();
+        StartGame();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.SEND_POS_SPAWN_PLAYER,ReceiverEventPosPlayerSpawn);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN,ReceiverEventPlayerAGain);
+        }    
     }
-
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.SEND_POS_SPAWN_PLAYER, ReceiverEventPosPlayerSpawn);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverEventPlayerAGain);
+        }
+    }
     protected override void Awake()
     {
         base.Awake();
@@ -67,6 +78,37 @@ public class GameManager : BaseManager<GameManager>
             UIManager.Instance.ShowPopup<PopupCharacterPanel>();
             UIManager.Instance.HidePopup<PopupCharacterPanel>();
         }
-    }    
-   
+    }
+
+     private void StartGame()
+    {
+        ShowMenuLoading();
+    }
+    private  void ReceiverEventPlayerAGain(object value)
+    {
+        Debug.Log($"ReceiverEventPlayerAGain : called");
+        PlayerManager.instance.playerHeal.ResetPlayerHeal();
+        PlayerManager.instance.playerMana.ResetMana();
+        PlayerManager.instance.playerStamina.ResetStamina();
+        PlayerManager.instance.playerAnim.ResetAnimPlayerIdle();
+        PlayerManager.instance.controller.enabled = false;
+        PlayerManager.instance.transform.SetPositionAndRotation(m_SpawnPlayer.position, m_SpawnPlayer.rotation);
+        PlayerManager.instance.controller.enabled = true;
+        PlayerManager.instance.playerMove.canMove = true;
+        PlayerManager.instance.playerMove.ResetInput();
+        PlayerManager.instance.playerDamage.RegisterEventAttack();
+        PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
+
+    }
+    private void ReceiverEventPosPlayerSpawn(object value)
+    {
+        if(value != null)
+        {
+            if(value is Transform transform)
+            {
+                m_SpawnPlayer = transform;
+            }    
+        }
+       
+    }
 }

@@ -73,6 +73,6 @@ public class DragonDetecPlayer : BaseEnemyDetecPlayer
     public override void ResetAttackAnimation()
     {
         enemyController.GetAnimator().SetBool("MeleeAttack", false);
-        enemyController.GetAnimator().SetBool("Fireball", false);
+        enemyController.GetAnimator().SetBool("RangeAttack", false);
     }
 }

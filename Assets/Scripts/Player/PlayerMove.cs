@@ -99,7 +99,6 @@ public class PlayerMove : MonoBehaviour
         m_ButtonLeftShift.performed -= OnLeftShiftPerformed;
         m_ButtonLeftShift.canceled -= OnLeftShiftCancel;
         m_ButtonLeftShift.Disable();
-
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.PLAYER_MOVE_STOP, ReceiverStateMove);
@@ -230,7 +229,7 @@ public class PlayerMove : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, m_TurnSpeed * Time.deltaTime);
     }
 
-    private void OnMove(InputValue value)
+    public void OnMove(InputValue value)
     {
         inputVector = value.Get<Vector2>();
     }
@@ -289,6 +288,20 @@ public class PlayerMove : MonoBehaviour
             Debug.Log("[RUN] Play RunSound at volume 0.5");
             AudioManager.Instance.PlayPlayerSound("RunSound", 0.5f);
         }
+    }
+    public void ResetInput()
+    {
+        // Xóa hết dư input cũ để blend tree không kẹt
+        inputVector = Vector2.zero;
+        smoothInputVector = Vector2.zero;
+        velocity = Vector3.zero;
+
+        // (Nếu bạn có parameter blend “Speed/X/Y”,
+        //  cũng reset lại animator params)
+        var anim = PlayerManager.instance.playerAnim.GetAnimator();
+        anim.SetFloat("MoveX", 0f);
+        anim.SetFloat("MoveY", 0f);
+        anim.SetFloat("Speed", 0f);
     }
 
 }

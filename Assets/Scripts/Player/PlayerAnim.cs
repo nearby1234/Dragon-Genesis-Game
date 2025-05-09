@@ -1,3 +1,4 @@
+using UnityEditor.Rendering;
 using UnityEngine;
 
 public class PlayerAnim : MonoBehaviour
@@ -12,4 +13,9 @@ public class PlayerAnim : MonoBehaviour
     {
         return animator;
     }    
+    public void ResetAnimPlayerIdle()
+    {
+        Debug.Log($"ResetAnimPlayerIdle : called");
+       animator.SetTrigger("Reset");
+    }
 }

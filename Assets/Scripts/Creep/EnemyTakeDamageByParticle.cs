@@ -22,6 +22,7 @@ public class EnemyTakeDamageByParticle : MonoBehaviour
                             AudioManager.Instance.PlaySE("FireExplosion");
                             AudioManager.Instance.PlaySE("PlayerHit");
                         }
+                        Debug.Log($"m_FireBallDamage : {m_FireBallDamage}");
                     }
                 }
             }

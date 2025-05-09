@@ -30,6 +30,12 @@ public class ScreenLoadingPanel : BaseScreen
         videoPlayer.url = path;
         videoPlayer.Play();
     }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        m_ProgressSlider.value = 0;
+        StartCoroutine(LoadScene());
+    }
     public IEnumerator LoadScene()
     {
         // 1. Bắt đầu load async (chưa allow activate)
@@ -93,8 +99,10 @@ public class ScreenLoadingPanel : BaseScreen
                     UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
                     GameManager.Instance.ShowBoardPlayerStats();
                     GameManager.Instance.HideCursor();
+                    this.Hide();
                 }
             }
         });
     }
+ 
 }

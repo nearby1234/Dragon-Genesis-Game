@@ -109,5 +109,9 @@ public class PlayerMana : MonoBehaviour
             }
         }
     }
+    public void ResetMana()
+    {
+        m_CurrentMana = m_MaxMana; // Initialize current mana to max mana
+    }
 
 }

@@ -32,13 +32,23 @@ public class WormTakeDamage : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PlayerHeal playerHeal = other.GetComponent<PlayerHeal>();
-            if (playerHeal != null)
+            if (other.TryGetComponent<PlayerHeal>(out var playerHeal))
             {
-                if(!m_IsPlayerReceiverDamage && m_WormBoss.CurrenState.Equals(WORMSTATE.ATTACK))
+                if (!m_IsPlayerReceiverDamage && m_WormBoss.CurrenState.Equals(WORMSTATE.ATTACK))
                 {
                     playerHeal.ReducePlayerHeal((int)m_DamageCurrent);
                     m_IsPlayerReceiverDamage = true;
+                    Vector3 hitPoint = other.ClosestPoint(transform.position);
+                    if (EffectManager.HasInstance)
+                    {
+                        GameObject bloodPrehaps = EffectManager.Instance.GetPrefabs("BloodFx");
+                        GameObject particle = Instantiate(bloodPrehaps, hitPoint, Quaternion.identity);
+                        Destroy(particle, 2f);
+                    }
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE("PlayerHit");
+                    }
                     StartCoroutine(ResetIsPlayerReceiverDamage());
                 }
             }
@@ -50,14 +60,14 @@ public class WormTakeDamage : MonoBehaviour
         if (value != null)
         {
             if (m_WormBoss != null)
-                
+
             {
                 if (value is (int currentAttackIndex, List<WormAttackData> attackDataList))
                 {
                     m_DamageCurrent = attackDataList[currentAttackIndex].CalculateDamage(m_WormBoss);
                 }
             }
-           
+
         }
     }
     private IEnumerator ResetIsPlayerReceiverDamage()

@@ -23,6 +23,7 @@ public class PlayerStamina : MonoBehaviour
         m_StaminaBase = PlayerManager.instance.PlayerStatSO.m_PlayerStamina;
         m_MaxStamina = m_StaminaBase;
         m_CurrentStamina = m_MaxStamina; // Initialize current stamina to max stamina
+        Debug.Log($"m_CurrentStamina : {m_CurrentStamina}");
 
         if (m_effectStamina == null && EffectManager.HasInstance)
         {
@@ -154,6 +155,14 @@ public class PlayerStamina : MonoBehaviour
             {
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
             }
+        }
+    }
+    public void ResetStamina()
+    {
+        m_CurrentStamina = m_MaxStamina; // Initialize current stamina to max stamina
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
         }
     }
     private void StaminaFull()

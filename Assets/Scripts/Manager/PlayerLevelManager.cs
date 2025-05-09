@@ -22,8 +22,11 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
             {
                 totalStatPoints += 5 * delta;
                 if (ListenerManager.HasInstance)
+                {
                     ListenerManager.Instance.BroadCast(ListenType.UI_SEND_VALUE_LEVEL, totalStatPoints);
                     ListenerManager.Instance.BroadCast(ListenType.UI_SEND_LEVEL_PLAYER, currentLevel);
+                }    
+                    
             }
         }
     }    
@@ -60,6 +63,8 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
     {
         expNextLevel = m_CurrentLevelUp.expNeedLvup;
         m_LevelUpFx = EffectManager.Instance.GetPrefabs("Lvlup"); // Prefab dạng GameObject
+        //ListenerManager.Instance.BroadCast(ListenType.UI_SEND_LEVEL_PLAYER, currentLevel);
+        //ListenerManager.Instance.BroadCast(ListenType.PLAYER_EXP_UPDATED, m_DisPlayExp);
     }
     public void AddExp(int amount)
     {
@@ -82,7 +87,7 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
         while (m_DisPlayExp < currentExp)
         {
             m_DisPlayExp = Mathf.MoveTowards(m_DisPlayExp, currentExp, expLerpSpeed * Time.deltaTime);
-
+            //ListenerManager.Instance.BroadCast(ListenType.PLAYER_EXP_UPDATED, m_DisPlayExp);
             //// Cập nhật UI nếu có (ví dụ thanh Exp)
             //UpdateExpBar(m_DisPlayExp);
 

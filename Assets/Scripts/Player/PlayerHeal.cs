@@ -56,6 +56,10 @@ public class PlayerHeal : MonoBehaviour
         {
             m_PlayerCurrentHeal = 0; // Đảm bảo current heal không âm
             m_IsPlayerDeath = true;
+            if(ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_DIE, m_IsPlayerDeath);
+            }    
             PlayerManager.instance.playerAnim.GetAnimator().Play("Death");
         }
         else
@@ -100,6 +104,14 @@ public class PlayerHeal : MonoBehaviour
                 ListenerManager.Instance.BroadCast(ListenType.SEND_HEAL_VALUE, m_PlayerMaxHeal);
             }
         }
+    }
+
+    public void ResetPlayerHeal()
+    {
+        m_PlayerCurrentHeal = m_PlayerMaxHeal; // Khởi tạo player heal với giá trị cơ bản
+        m_IsPlayerDeath = false;
+        UpdateHealUI();
+        Debug.Log($"m_PlayerCurrentHeal : {m_PlayerCurrentHeal}");
     }
 }
 

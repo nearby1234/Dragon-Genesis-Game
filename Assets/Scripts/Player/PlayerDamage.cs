@@ -57,6 +57,7 @@ public class PlayerDamage : MonoBehaviour
         {
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
         }
+        DegreeEventClickMouse();
     }
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {

@@ -16,6 +16,11 @@ public class WormDieState : BaseState<WormBoss, WORMSTATE>
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_STATE_CURRENT, WORMSTATE.DIE);
         }
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("WormBossDie");
+        }
+        boss.SetHideCollider();
         waitBossDie = boss.StartCoroutine(WaitBossDie());
         
     }
@@ -29,10 +34,9 @@ public class WormDieState : BaseState<WormBoss, WORMSTATE>
             waitBossDie = null;
         }
     }
-
     public override void Updates()
     {
-
+        
     }
 
     private IEnumerator WaitBossDie()
@@ -48,5 +52,9 @@ public class WormDieState : BaseState<WormBoss, WORMSTATE>
             return (!info.IsName("Die")) || (info.IsName("Die") && info.normalizedTime >= 1f);
         });
         boss.StartCoroutine(boss.dissovleController.DissolveCo());
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("DissolveSound");
+        }    
     }
 }

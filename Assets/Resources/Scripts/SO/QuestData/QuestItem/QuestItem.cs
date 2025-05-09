@@ -91,12 +91,15 @@ public class QuestItem
     public TYPEWEAPON typeWeapon;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
+    [DisableInPlayMode]
     public GameObject m_SwordPrefabs;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
+    [DisableInPlayMode]
     public Mesh m_SwordMesh;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
+    [DisableInPlayMode]
     public Material m_SwordMaterial;
     [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]

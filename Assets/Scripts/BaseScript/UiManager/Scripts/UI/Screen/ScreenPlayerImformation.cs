@@ -33,18 +33,26 @@ public class ScreenPlayerImformation : BaseScreen
         m_ButtonPress.performed += OnClickButton;
         RegisterListeners();
         Initialized();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void OnDestroy()
     {
         m_ButtonPress.performed -= OnClickButton;
         UnRegisterListeners();
         m_ButtonPress.Disable();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void Update()
     {
         m_ExpValueMax = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
         m_ExpValueUpdate = PlayerLevelManager.Instance.DisPlayExp;
-        UpdateText(m_HealValueTxt, $"{(int)m_HealValueUpdate} / {m_HealValueMax} ");
+        //UpdateText(m_HealValueTxt, $"{(int)(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)} / {m_HealValueMax}");
         UpdateText(m_ManaValueTxt, $"{(int)m_ManaValueUpdate} / {m_ManaValueMax} ");
         UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
         UpdateText(m_ExpValueTxt, $"{(int)m_ExpValueUpdate} / {m_ExpValueMax} ");
@@ -79,6 +87,8 @@ public class ScreenPlayerImformation : BaseScreen
             ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdatePlayerStaminaValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
             ListenerManager.Instance.Register(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdatePlayerManaValue);
+            //ListenerManager.Instance.Register(ListenType.PLAYER_EXP_UPDATED, OnPlayerExpUpdated);
+            //ListenerManager.Instance.Register(ListenType.UI_SEND_LEVEL_PLAYER, OnPlayerLevelChanged);
 
         }
     }
@@ -92,6 +102,8 @@ public class ScreenPlayerImformation : BaseScreen
             ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_STAMINA_VALUE, UpdatePlayerStaminaValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_MANA_VALUE, ReceiverPlayerManaValue);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_UPDATE_MANA_VALUE, UpdatePlayerManaValue);
+            //ListenerManager.Instance.Unregister(ListenType.PLAYER_EXP_UPDATED, OnPlayerExpUpdated);
+            //ListenerManager.Instance.Unregister(ListenType.UI_SEND_LEVEL_PLAYER, OnPlayerLevelChanged);
         }
     }
     public void OnClickButton(InputAction.CallbackContext callback)
@@ -131,6 +143,7 @@ public class ScreenPlayerImformation : BaseScreen
             m_HealValueMax = maxHeal;
             float ratio = m_HealValueUpdate / m_HealValueMax;
             m_HealBarValue.Initialize(ratio); // Thiết lập max cho thanh
+            UpdateText(m_HealValueTxt, $"{(int)(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)} / {m_HealValueMax}");
         }
     }
     private void UpdatePlayerHealValue(object value)
@@ -140,6 +153,7 @@ public class ScreenPlayerImformation : BaseScreen
             m_HealValueUpdate = currentHeal;
             float ratio = (float)m_HealValueUpdate / m_HealValueMax;
             m_HealBarValue.UpdateBar(ratio);
+            UpdateText(m_HealValueTxt, $"{(int)(m_HealValueUpdate <= 0 ? 0 : m_HealValueUpdate)} / {m_HealValueMax}");
         }
     }
     private void ReceiverPlayerStaminaValue(object value)
@@ -149,6 +163,7 @@ public class ScreenPlayerImformation : BaseScreen
             m_StaminaValueMax = maxStamina;
             float ratio = m_StaminaValueUpdate / m_StaminaValueMax;
             m_StaminaBarValue.Initialize(ratio); // Thiết lập max cho thanh
+            UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
 
         }
     }
@@ -159,6 +174,7 @@ public class ScreenPlayerImformation : BaseScreen
             m_StaminaValueUpdate = currentStamina;
             float ratio = m_StaminaValueUpdate / m_StaminaValueMax;
             m_StaminaBarValue.UpdateBar(ratio, true);
+            UpdateText(m_StaminaValueTxt, $"{(int)m_StaminaValueUpdate} / {m_StaminaValueMax} ");
 
         }
     }
@@ -186,4 +202,23 @@ public class ScreenPlayerImformation : BaseScreen
     {
         textMeshProUGUI.text = content;
     }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        Debug.Log($"screenplayerimformation");
+        this.Hide();
+    }
+    //private void OnPlayerExpUpdated(object value)
+    //{
+    //    float dispExp = (float)value;
+    //    m_ExpBar.value = dispExp;
+    //    UpdateText(m_ExpValueTxt, $"{(int)dispExp} / {m_ExpValueMax}");
+    //}
+
+    //private void OnPlayerLevelChanged(object value)
+    //{
+    //    int lvl = (int)value;
+    //    m_LevelTxt.text = lvl.ToString();
+    //    m_ExpValueMax = PlayerLevelManager.Instance.CurrentLevelUp.expNeedLvup;
+    //    m_ExpBar.maxValue = m_ExpValueMax;
+    //}
 }

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0517d37a39e33d4faca1de57c90cad6, type: 3}
   m_Name: WormData
   m_EditorClassIdentifier: 
-  enemyType: 0
+  enemyType: 2
   m_PhysicsDamage: 0
   m_MagicDamage: 0
-  m_EffectDamage: 0
+  m_EffectDamage: 5

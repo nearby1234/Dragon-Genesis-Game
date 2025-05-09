@@ -10,6 +10,7 @@ public class WormRageState : BaseState<WormBoss, WORMSTATE>
     public override void Enter()
     {
         boss.ChangeStateCurrent(WORMSTATE.RAGE);
+        boss.Animator.SetInteger("Loop", 0);
         boss.Animator.Play("Angry",0,0f);
         boss.undergroundDuration = 1f;
         playTauntingLoop = boss.StartCoroutine(PlayTauntingLoop());

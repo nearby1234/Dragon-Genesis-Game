@@ -12,6 +12,7 @@ public class ScreenMenuPanel : BaseScreen
     //[SerializeField] private CanvasGroup canvasGroup;
     [SerializeField] private TextAnimator_TMP textAnimator;
     [SerializeField] private GameObject m_Sword;
+    [SerializeField] private Vector2 m_SwordBackup;
     [SerializeField] private Vector2 m_SwordPos;
     [SerializeField] private GameObject m_ShinyText;
     [SerializeField] private GameObject m_LeftPos;
@@ -41,25 +42,36 @@ public class ScreenMenuPanel : BaseScreen
 
     private const float BUTTON_FADE_DURATION = 0.5f;
     private const float SWORD_MOVE_DURATION = 0.2f;
+
     private void Awake()
     {
         videoPlayer = videoPlayer != null ? videoPlayer : GetComponent<VideoPlayer>();
+        RectTransform rectTransform = m_Sword.GetComponent<RectTransform>();
+        m_SwordBackup = rectTransform.anchoredPosition;
     }
 
     private void Start()
     {
         InitializeVideoPlayer();
         InitializeUI();
-
+        
         // Bắt đầu chuỗi hiệu ứng
         StartCoroutine(PlaySequence());
-        m_StartBtn.onClick.AddListener(() => HandleButtonClick( OnClickStartButton));
-        m_SettingBtn.onClick.AddListener(()=>HandleButtonClick( OnClickSettingButton));
+        m_StartBtn.onClick.AddListener(() => HandleButtonClick(OnClickStartButton));
+        m_SettingBtn.onClick.AddListener(() => HandleButtonClick(OnClickSettingButton));
         m_ExitGameBtn.onClick.AddListener(() => HandleButtonClick(OnClickExitGameButton));
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void OnDestroy()
     {
         DOTween.KillAll(); // hoặc DOTween.Kill(m_ShinyText.transform);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void InitializeVideoPlayer()
     {
@@ -69,6 +81,7 @@ public class ScreenMenuPanel : BaseScreen
     }
     private void InitializeUI()
     {
+
         m_TextCanvasGroup.alpha = 0f;
         textAnimator.SetText("LONG KHỞI");
         textAnimator.maxVisibleCharacters = 0;
@@ -118,12 +131,12 @@ public class ScreenMenuPanel : BaseScreen
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
-                if(AudioManager.HasInstance)
+                if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("SwordSound");
                     AudioManager.Instance.PlayBGM("Forest_FULL_TRACK");
                 }
-              
+
                 onComplete?.Invoke();
             });
     }
@@ -149,11 +162,11 @@ public class ScreenMenuPanel : BaseScreen
     }
     private void HandleButtonClick(System.Action action)
     {
-        if(AudioManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ClickSound");
-        }    
-           
+        }
+
         action?.Invoke();
     }
     private void OnClickStartButton()
@@ -171,23 +184,35 @@ public class ScreenMenuPanel : BaseScreen
                 _shinyLoop?.Kill();
             });
 
-        if(UIManager.HasInstance)
+        if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenLoadingPanel>();
-        }    
-        
+        }
+
     }
     private void OnClickSettingButton()
     {
-        
+
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
         }
     }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        Debug.Log($"TESDT");
+        this.Show(null);
+
+        // reset vị trí gươm
+        var rt = m_Sword.GetComponent<RectTransform>();
+        rt.anchoredPosition = m_SwordBackup;
+
+        InitializeUI();
+        StartCoroutine(PlaySequence());
+    }
     private void OnClickExitGameButton()
     {
-       
+
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
 #else
