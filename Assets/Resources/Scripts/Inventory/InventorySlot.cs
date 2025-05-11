@@ -320,6 +320,7 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
     private void ReceiverEventClickMainMenu(object value)
     {
         m_CurrentItem = null;
+        ClearItem();
     }
 
 

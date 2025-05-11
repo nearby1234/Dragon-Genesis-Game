@@ -26,7 +26,7 @@ public class QuestManager : BaseManager<QuestManager>
     public int m_CountNumber;
 
     // Các hằng số tween được định nghĩa lại ở đây để sử dụng trong GrantReward
-    private readonly Vector2 Screen_IconBag_Pos = new(-230f, -535f);
+    private readonly Vector2 Screen_IconBag_Pos = new(-200f, -535f);
     private readonly Vector2 Screen_IconBookSkill_Pos = new(0, -540f);
     private const float TWEEN_DURATION = 2f;
     public QuestData CurrentQuest
@@ -327,7 +327,10 @@ public class QuestManager : BaseManager<QuestManager>
         {
             questList[i].isCompleteMission = false;
             questList[i].isAcceptMission = false;
-            questList[i].ItemMission[i].questItemData.completionCount = 0;
+            for (int j = 0; j < questList[i].ItemMission.Count; j++)
+            {
+                questList[i].ItemMission[j].questItemData.completionCount = 0;
+            }
         }
         ResetItemCounts();
     }

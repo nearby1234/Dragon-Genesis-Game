@@ -48,7 +48,7 @@ public class PopupBoxSkill : BasePopup
             if (questItemSO[i].questItemData.typeItem.Equals(TYPEITEM.ITEM_SKILL))
             {
                 InitBoxSkillSLot(questItemSO[i]);
-                Debug.Log($"questItemSO : {questItemSO[i]}");
+                Debug.Log($"questItemSkill : {questItemSO[i].name}");
             }
         }
     }
@@ -82,7 +82,6 @@ public class PopupBoxSkill : BasePopup
         if (value is List<QuestItemSO> itemSO)
         {
             FillerItemSKill(itemSO);
-            Debug.Log($"{itemSO}");
         }
     }
 }

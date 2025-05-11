@@ -101,7 +101,7 @@ public class GameManager : BaseManager<GameManager>
         PlayerManager.instance.playerMove.ResetInput();
         PlayerManager.instance.playerDamage.RegisterEventAttack();
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
-        ResetUi();
+        //ResetUi();
     }
 
     private void ResetUi()

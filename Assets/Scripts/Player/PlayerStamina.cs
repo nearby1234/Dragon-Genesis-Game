@@ -87,10 +87,19 @@ public class PlayerStamina : MonoBehaviour
     /// Hàm tiêu hao stamina, ví dụ dodge tiêu hao một phần % của max stamina.
     /// </summary>
     /// <param name="percentConsumption">Phần trăm tiêu hao (0-1)</param>
-    public void ConsumeStamina(float percentConsumption)
+    public void ConsumeStamina(float percentConsumption, bool IsPercent)
     {
         StopRegen();  // Dừng hồi phục khi tiêu hao mới xảy ra
-        float amount = m_MaxStamina * percentConsumption;
+        float amount;
+        if (IsPercent)
+        {
+            amount = m_MaxStamina * percentConsumption * Time.deltaTime;
+        }
+        else
+        {
+            amount = percentConsumption;
+        }
+
         m_CurrentStamina -= amount;
         m_CurrentStamina = Mathf.Max(0f, m_CurrentStamina);
         // Thông báo cập nhật stamina
@@ -114,7 +123,7 @@ public class PlayerStamina : MonoBehaviour
                     AudioManager.Instance.PlayLoopSE("RegenSound");
                 }
                 particle.Play();
-               
+
             }
             while (m_CurrentStamina < m_MaxStamina)
             {
@@ -149,7 +158,7 @@ public class PlayerStamina : MonoBehaviour
     {
         if (value is float percentConsumption)
         {
-            ConsumeStamina(percentConsumption);
+            ConsumeStamina(percentConsumption,true);
             StartRegen();
             if (ListenerManager.HasInstance)
             {
@@ -160,7 +169,7 @@ public class PlayerStamina : MonoBehaviour
     public void ResetStamina()
     {
         m_CurrentStamina = m_MaxStamina; // Initialize current stamina to max stamina
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
         }
@@ -195,7 +204,7 @@ public class PlayerStamina : MonoBehaviour
     {
         if (value is float percentConsumption)
         {
-            ConsumeStamina(percentConsumption);
+            ConsumeStamina(percentConsumption,false);
             StartRegen();
             if (ListenerManager.HasInstance)
             {
@@ -231,7 +240,7 @@ public class PlayerStamina : MonoBehaviour
     }
     private void CalcuDodgeStaminaConsumption()
     {
-        float amount = m_MaxStamina * m_PlayerDodgeConsumption;
+        float amount = m_PlayerDodgeConsumption;
         // Nếu current stamina đủ để dodge, thì dodge được (false – không cạn)
         // Nếu m_CurrentStamina < amount, thì không đủ và là stamina cạn (true)
         bool dodgeNotPossible = m_CurrentStamina < amount;
@@ -248,7 +257,7 @@ public class PlayerStamina : MonoBehaviour
             int newMax = (int)m_StaminaBase + (data.Point * (int)m_PlusStaminaValue);
             m_MaxStamina = newMax;
 
-            
+
             if (ListenerManager.HasInstance)
             {
                 // Cập nhật max stamina mới tới UI

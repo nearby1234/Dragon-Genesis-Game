@@ -21,6 +21,8 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     [SerializeField] private CreepType creepType;
     public CreepType CreepType => creepType;
     public WORMSTATE CurrenState => currentState;
+    private float maxHealth;
+
 
 
     [Header("Atribute")]
@@ -57,6 +59,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     [SerializeField] private List<Collider> m_Colliders;
     public NavMeshAgent NavMeshAgent => m_NavmeshAgent;
     public DissovleController dissovleController;
+
     private void Awake()
     {
         m_NavmeshSurface = GameObject.Find(listStringRefer[0]).GetComponent<NavMeshSurface>();
@@ -68,7 +71,8 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     }
     protected override void Start()
     {
-        m_WormBossHeal = WormAttributeSO.heal;
+        maxHealth = WormAttributeSO.heal;
+        m_WormBossHeal = maxHealth;
         m_WormDamage = WormAttributeSO.damage;
         finiteSM = new FSM<WormBoss, WORMSTATE>();
         finiteSM.ChangeState(new WormIdleState(this, finiteSM));
@@ -82,6 +86,14 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ResetWormBossHeal);
+        }
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        if (colliders != null && colliders.Length > 0)
+        {
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                m_Colliders.Add(colliders[i]);
+            }
         }
 
 
@@ -126,14 +138,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         }
 
-        Collider[] colliders = GetComponentsInChildren<Collider>();
-        if (colliders != null && colliders.Length > 0)
-        {
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                m_Colliders.Add(colliders[i]);
-            }
-        }
+
 
     }
     public override void RequestStateTransition(WORMSTATE requestedState)
@@ -247,8 +252,9 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Nếu sau khi trừ damage, máu boss ≤ 50 và boss chưa ở state RAGE,
         // chuyển ngay sang state RAGE (phase 2) và áp dụng damage.
-        if (m_WormBossHeal - damage <= 50f && !currentState.Equals(WORMSTATE.RAGE))
+        if (m_WormBossHeal - damage <= maxHealth * 0.3f && !currentState.Equals(WORMSTATE.RAGE))
         {
+            Debug.Log($"m_WormBossHeal : {(m_WormBossHeal * 0.3)}");
             if (!TryApplyDamage(damage))
                 return;
             IsRageState = true;

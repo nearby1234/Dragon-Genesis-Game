@@ -15,7 +15,8 @@ public class ScreenBookSkill : BaseScreen
 
     private void Awake()
     {
-        m_IconTransform = GetComponent<RectTransform>();
+        m_IconTransform =button.GetComponent<RectTransform>();
+        m_IconTransform.anchoredPosition = offSet;
     }
 
     private void Start()

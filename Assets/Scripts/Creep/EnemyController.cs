@@ -15,7 +15,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
     [SerializeField] private BatPanel batPanel;
-    
+
 
     private void Awake()
     {
@@ -25,7 +25,7 @@ public class EnemyController : MonoBehaviour
         enemyHeal = GetComponent<EnemyHeal>();
         enemyDetecPlayer = GetComponent<BaseEnemyDetecPlayer>();
         enemyCollider = GetComponentInChildren<Collider>();
-        
+
     }
     void Start()
     {
@@ -34,7 +34,7 @@ public class EnemyController : MonoBehaviour
         {
             ListenerManager.Instance.BroadCast(ListenType.CREEP_SEND_HEAL_VALUE, (this.gameObject, enemyStatSO));
         }
-       
+
     }
     void Update()
     {
@@ -46,13 +46,23 @@ public class EnemyController : MonoBehaviour
         }
         if (enemyHeal.IsEnemyDead())
         {
-           
-                
             batPanel.HideHeathlyBar();
             agent.isStopped = true;
-            animator.SetBool("Attack",false);
-            animator.SetBool("IsDetec", false);
-           
+            switch (enemyHeal.CreepType)
+            {
+                case CreepType.BAT:
+                    animator.SetBool("Attack", false);
+                    animator.SetBool("IsDetec", false);
+                    break;
+                case CreepType.DRAGON:
+                    animator.SetBool("MeleeAttack", false);
+                    animator.SetBool("RangeAttack", false);
+                    animator.SetBool("IsDetec", false);
+                    break;
+                default:
+                    Debug.LogWarning($"Không có enemy {enemyHeal.CreepType}");
+                    break;
+            }
             return;
         }
         randomNavMeshMovement.EnemyMoveTarget();
@@ -61,12 +71,12 @@ public class EnemyController : MonoBehaviour
 
     public void SoundBat(string nameSound)
     {
-        if(AudioManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE(nameSound);
-        }    
-    }    
-   
+        }
+    }
+
     public Animator GetAnimator() => animator;
     public NavMeshAgent GetNavMeshAgent() => agent;
     public RandomNavMeshMove GetrandomNavMeshMovement() => randomNavMeshMovement;
@@ -74,6 +84,6 @@ public class EnemyController : MonoBehaviour
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO => enemyStatSO;
     public Collider GetCollider => enemyCollider;
-    
-   
+
+
 }

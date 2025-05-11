@@ -460,7 +460,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HealBarText: {fileID: 3697940214499649979}
   m_HealBarMicroBar: {fileID: 6971264735997038936}
-  m_offset: {x: 0, y: -380}
+  m_offset: {x: 0, y: -360}
 --- !u!1 &8369703344475937872
 GameObject:
   m_ObjectHideFlags: 0

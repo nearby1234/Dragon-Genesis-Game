@@ -9,6 +9,7 @@ public class EnemyHeal : MonoBehaviour
     [SerializeField] private float m_Timer;
     [SerializeField] private EnemyController m_EnemyController;
     [SerializeField] private CreepType creepType;
+    public CreepType CreepType => creepType;
     public EnemyController GetEnemyController => m_EnemyController;
     [SerializeField] private bool m_IsDead;
     private void Awake()

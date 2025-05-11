@@ -19,6 +19,7 @@ public class ShockWave : MonoBehaviour
     }
     public void PlayShockWave()
     {
+        Debug.Log($"PlayShockWave");
       if(shockWave != null)
         {
             shockWave.gameObject.SetActive(true);
@@ -31,6 +32,7 @@ public class ShockWave : MonoBehaviour
     
     public void StopShockWave()
     {
+        Debug.Log($"PlayShockWave");
         if (shockWave != null)
         {
             shockWave.gameObject.SetActive(false);
@@ -42,6 +44,7 @@ public class ShockWave : MonoBehaviour
     }    
     private void ReceiverOnClickPlayAgain(object value)
     {
+        Debug.Log($"PlayShockWave");
         StopShockWave();
     }
 }

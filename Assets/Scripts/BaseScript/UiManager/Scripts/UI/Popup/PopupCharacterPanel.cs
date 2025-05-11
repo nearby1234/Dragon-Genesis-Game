@@ -49,7 +49,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
         InitializeStats();
         RegisterListeners();
         InitializeUI();
-       
+
         SetStateUi(StateUi.Opening);
 
         //if (UIManager.HasInstance)
@@ -70,17 +70,18 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     }
     public void OnExitButton()
     {
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             if (UIManager.Instance.GetObjectInDict<PopupInventory>())
             {
                 GameManager.Instance.ShowCursor();
-            }else
+            }
+            else
             {
                 GameManager.Instance.HideCursor();
             }
         }
-        
+
         if (PlayerManager.HasInstance)
         {
             PlayerManager.instance.isInteractingWithUI = false;

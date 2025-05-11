@@ -17,6 +17,7 @@ public class ScreenPlayerImformation : BaseScreen
     [SerializeField] private MicroBar m_HealBarValue;
     [SerializeField] private MicroBar m_ManaBarValue;
     [SerializeField] private MicroBar m_StaminaBarValue;
+    [SerializeField] private Vector2 m_CharacterUiPos;
     private float m_HealValueMax;
     private float m_ManaValueMax;
     private float m_StaminaValueMax;
@@ -25,7 +26,7 @@ public class ScreenPlayerImformation : BaseScreen
     private float m_StaminaValueUpdate;
     private float m_ExpValueMax;
     private float m_ExpValueUpdate;
-    private bool m_IsOpen;
+   
 
     private void Start()
     {
@@ -36,6 +37,11 @@ public class ScreenPlayerImformation : BaseScreen
         if(ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
+        RectTransform rectTransform = m_CharacterStatsBtn.GetComponent<RectTransform>();
+        if(rectTransform != null )
+        {
+            rectTransform.anchoredPosition = m_CharacterUiPos;
         }
     }
     private void OnDestroy()
@@ -138,7 +144,6 @@ public class ScreenPlayerImformation : BaseScreen
         {
             PlayerManager.instance.isInteractingWithUI = true;
         }
-
     }
 
     public void ReceiverPlayerHealValue(object value)
@@ -207,6 +212,7 @@ public class ScreenPlayerImformation : BaseScreen
     {
         textMeshProUGUI.text = content;
     }
+   
     private void ReceiverEventClickMainMenu(object value)
     {
         Debug.Log($"screenplayerimformation");

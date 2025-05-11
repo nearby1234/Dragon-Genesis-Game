@@ -5750,7 +5750,7 @@ MonoBehaviour:
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
   smoothTime: 0.1
-  StaminaConsumptionPercent: 0.002
+  StaminaConsumptionPercent: 0.1
   IsPressLeftShift: 0
   m_IsPressButtonSwap: 0
   m_ButtonLeftShift:
@@ -5988,7 +5988,7 @@ MonoBehaviour:
       m_Flags: 0
     m_Flags: 0
   isDodging: 0
-  StaminaConsumptionPercent: 0.15
+  StaminaConsumptionPercent: 15
 --- !u!114 &1467169287372418217
 MonoBehaviour:
   m_ObjectHideFlags: 0
