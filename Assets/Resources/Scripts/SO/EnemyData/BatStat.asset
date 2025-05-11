@@ -10,8 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 878ff1c5f8b953e448eaac68269cb45c, type: 3}
-  m_Name: DragonStat
+  m_Name: BatStat
   m_EditorClassIdentifier: 
-  creepType: 2
-  heal: 15
-  damage: 5
+  creepType: 1
+  heal: 60
+  damage: 10
+  m_PhysicsDamage: 0
+  m_MagicDamage: 0
+  m_EffectDamage: 0
+  enemyType: 1

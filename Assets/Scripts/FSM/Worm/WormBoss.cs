@@ -18,6 +18,8 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public bool IsRageState = false;
     public bool isShowHealbarBoss = false;
     private bool isShowWinPopup = false;
+    [SerializeField] private CreepType creepType;
+    public CreepType CreepType => creepType;
     public WORMSTATE CurrenState => currentState;
 
 
@@ -44,7 +46,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     [Header("Material")]
     [SerializeField] private Material m_DefaultMaterial;
     [SerializeField] private Material m_GetHitMaterial;
-     
+
 
     [Header("References")]
     public string[] listStringRefer;
@@ -75,8 +77,8 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             size = m_NavmeshSurface.size;
             center = m_NavmeshSurface.transform.position + m_NavmeshSurface.center;
         }
-        
-        if(ListenerManager.HasInstance)
+
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ResetWormBossHeal);
@@ -97,42 +99,42 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         if (PlayerInRange())
         {
             //Debug.Log($"PlayerInRange : {PlayerInRange()}");
-            if(!isShowHealbarBoss)
+            if (!isShowHealbarBoss)
             {
-                if(UIManager.HasInstance)
+                if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowScreen<ScreenHealBarBoss>(null,true);
+                    UIManager.Instance.ShowScreen<ScreenHealBarBoss>(null, true);
 
                 }
-                if(AudioManager.HasInstance)
+                if (AudioManager.HasInstance)
                 {
-                    AudioManager.Instance.PlayBGM("CombatMusic",true);
+                    AudioManager.Instance.PlayBGM("CombatMusic", true);
                 }
-                
-                
+
+
                 isShowHealbarBoss = true;
-            }  
-            if(currentState.Equals(WORMSTATE.DIE))
+            }
+            if (currentState.Equals(WORMSTATE.DIE))
             {
                 if (!isShowWinPopup)
                 {
-                  
+
                     StartCoroutine(DelayShowWinPopup());
                     isShowWinPopup = true;
                 }
             }
-           
+
         }
 
         Collider[] colliders = GetComponentsInChildren<Collider>();
-        if(colliders != null && colliders.Length > 0)
+        if (colliders != null && colliders.Length > 0)
         {
-            for(int i = 0; i < colliders.Length; i++)
+            for (int i = 0; i < colliders.Length; i++)
             {
                 m_Colliders.Add(colliders[i]);
             }
         }
-        
+
     }
     public override void RequestStateTransition(WORMSTATE requestedState)
     {
@@ -289,19 +291,19 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Trừ damage, đặt flag và khởi chạy coroutine reset flag.
         m_WormBossHeal -= damage;
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_UPDATE_HEAL_VALUE, m_WormBossHeal);
         }
         m_SkinnedMeshRenderer.material = m_GetHitMaterial;
         StartCoroutine(RestoreDefaultMaterial(0.2f));
 
-        if(m_WormBossHeal <= 0)
+        if (m_WormBossHeal <= 0)
         {
             IsRageState = false;
             RequestStateTransition(WORMSTATE.DIE);
             return true;
-        }    
+        }
         m_IsGetDamage = true;
         StartCoroutine(ResetDamageFlag());
         return true;
@@ -320,13 +322,13 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     private IEnumerator DelayShowWinPopup()
     {
         yield return new WaitForSeconds(3f);
-        if(UIManager.HasInstance)
+        if (UIManager.HasInstance)
         {
             var msg = new PopupMessage()
             {
                 popupType = PopupType.WIN,
             };
-            UIManager.Instance.ShowPopup<LosePopup>(msg,true);
+            UIManager.Instance.ShowPopup<LosePopup>(msg, true);
         }
 
     }
@@ -358,7 +360,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     {
         m_WormBossHeal = WormAttributeSO.heal;
         IsRageState = false;
-        isShowHealbarBoss = false;  
+        isShowHealbarBoss = false;
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);

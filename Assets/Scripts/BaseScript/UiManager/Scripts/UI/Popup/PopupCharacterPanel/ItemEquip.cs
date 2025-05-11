@@ -5,25 +5,22 @@ using UnityEngine.UI;
 [RequireComponent(typeof(DragDropArmor))]
 public class ItemEquip : MonoBehaviour, IItemSlot
 {
-    [SerializeField] private Image m_Image;
     [SerializeField] private QuestItemSO m_CurrentItem;
-    [SerializeField] private CanvasGroup m_CanvasGroup;
     [SerializeField] private Sprite m_OriginalSprite;
     [SerializeField] private TYPEARMOR m_TypeArmor;
     [SerializeField] private Image m_OriginalIcon;
     public TYPEARMOR TypeArmor => m_TypeArmor;
 
-    private void Awake()
-    {
-        m_Image = GetComponent<Image>();
-        m_CanvasGroup = GetComponent<CanvasGroup>();
-    }
     public QuestItemSO CurrentItem
     {
         get => m_CurrentItem;
         set
         {
             m_CurrentItem = value;
+           //if(m_CurrentItem.questItemData.typeItem.Equals(TYPEITEM.ITEM_WEAPON))
+           // {
+           //     if(m_CurrentItem.questItemData.itemID 
+           // }
             if (m_CurrentItem != null)
             {
                 SendEventItemEquip();
@@ -34,6 +31,17 @@ public class ItemEquip : MonoBehaviour, IItemSlot
     {
         SendEventItemEquip();
         GetAboveSibling();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void SendEventItemEquip()
     {
@@ -44,14 +52,15 @@ public class ItemEquip : MonoBehaviour, IItemSlot
             if (m_CurrentItem != null)
             {
                 QuestItemSO questItemSO = Instantiate(m_CurrentItem);
-                // Kiểm tra xem item có phải là ITEM_WEAPON không
+                //Kiểm tra xem item có phải là ITEM_WEAPON không
                 if (questItemSO.questItemData.typeItem.Equals(TYPEITEM.ITEM_WEAPON))
                 {
-                   
+                    Debug.Log($"m_CurrentItem : {m_CurrentItem.questItemData.plusStrengthArmor}");
                     ListenerManager.Instance.BroadCast(ListenType.SHOWPLAYER_WEAPON_UI, questItemSO);
                     Debug.Log($"m_SwordPrefabs : {questItemSO.questItemData.m_SwordPrefabs}");
                     Debug.Log($"m_SwordMesh : {questItemSO.questItemData.m_SwordMesh}");
                     Debug.Log($"m_SwordMaterial : {questItemSO.questItemData.m_SwordMaterial}");
+                    return;
                 }
 
                 // Kiểm tra item có phải là ARMOR không và thực hiện Broadcast tương ứng
@@ -81,6 +90,9 @@ public class ItemEquip : MonoBehaviour, IItemSlot
                     case TYPEARMOR.ARMOR_BOOTS:
                         ListenerManager.Instance.BroadCast(ListenType.SHOWPLAYER_ARMOR_BOOTS_UI, questItemSO);
                         break;
+                    //case TYPEARMOR.ARMOR_WEAPON:
+                    //    ListenerManager.Instance.BroadCast(ListenType.SHOWPLAYER_ARMOR_BOOTS_UI, questItemSO);
+                    //    break;
                     default:
                         Debug.LogWarning($"Không tìm thấy {questItemSO.questItemData.typeArmor}");
                         break;
@@ -124,5 +136,9 @@ public class ItemEquip : MonoBehaviour, IItemSlot
         {
             Debug.Log("Tôi là phần tử đầu tiên, không có sibling nào ở trên.");
         }
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        m_CurrentItem = null;
     }
 }

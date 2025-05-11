@@ -29,6 +29,7 @@ public class EquipArmor : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.SHOWPLAYER_ARMOR_LEGS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Register(ListenType.SHOWPLAYER_ARMOR_SHOULDERS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Register(ListenType.HIDE_ITEM_ARMOR_UI, HideArmor);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
         }
     }
     private void OnDestroy()
@@ -44,6 +45,7 @@ public class EquipArmor : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.SHOWPLAYER_ARMOR_LEGS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Unregister(ListenType.SHOWPLAYER_ARMOR_SHOULDERS_UI, TransLateArmorEquip);
             ListenerManager.Instance.Unregister(ListenType.HIDE_ITEM_ARMOR_UI, HideArmor);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
         }
     }
 
@@ -195,6 +197,10 @@ public class EquipArmor : MonoBehaviour
                 payload
             );
         }
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        m_CurrentItem = null;
     }
 
 }

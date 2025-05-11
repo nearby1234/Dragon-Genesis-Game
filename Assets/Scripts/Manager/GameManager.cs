@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngineInternal;
 
@@ -17,6 +18,8 @@ public class GameManager : BaseManager<GameManager>
 
     [SerializeField] private GAMESTATE m_GameState = GAMESTATE.NONE;
     public bool m_IsPlaying = false;
+
+    
     public GAMESTATE GameState
     {
         get => m_GameState;
@@ -98,8 +101,19 @@ public class GameManager : BaseManager<GameManager>
         PlayerManager.instance.playerMove.ResetInput();
         PlayerManager.instance.playerDamage.RegisterEventAttack();
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
-
+        ResetUi();
     }
+
+    private void ResetUi()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.RemoveScreen<ScreenOriginalScrollBtn>();
+            UIManager.Instance.RemoveScreen<ScreenIconInventory>();
+            UIManager.Instance.RemoveScreen<ScreenBookSkill>();
+        } 
+            
+    }    
     private void ReceiverEventPosPlayerSpawn(object value)
     {
         if(value != null)
@@ -109,6 +123,7 @@ public class GameManager : BaseManager<GameManager>
                 m_SpawnPlayer = transform;
             }    
         }
-       
     }
+
+   
 }

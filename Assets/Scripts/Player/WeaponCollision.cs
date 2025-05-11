@@ -43,6 +43,10 @@ public class WeaponCollision : MonoBehaviour
                     }
                 }
                 CameraManager.Instance.ShakeCamera();
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("attaccolidersound");
+                }
             }
         }
         else if (other.gameObject.CompareTag("Boss"))
@@ -65,6 +69,8 @@ public class WeaponCollision : MonoBehaviour
                 if(AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("WormBossHit");
+                    AudioManager.Instance.PlaySE("attaccolidersound");
+
                 }    
             }
         }

@@ -53,6 +53,7 @@ public class QuestManager : BaseManager<QuestManager>
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CREEP_IS_DEAD, OnEnemyDead);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
         }
     }
     private void OnDestroy()
@@ -60,6 +61,7 @@ public class QuestManager : BaseManager<QuestManager>
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CREEP_IS_DEAD, OnEnemyDead);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
         }
     }
     public void AcceptQuest(QuestData quest = null)
@@ -68,7 +70,7 @@ public class QuestManager : BaseManager<QuestManager>
         {
             currentQuest = quest;
             quest.isAcceptMission = true;
-           
+
             Debug.Log($"m_CountNumber accept : {m_CountNumber}");
             //if (questList.Contains(quest))
             //{
@@ -314,10 +316,20 @@ public class QuestManager : BaseManager<QuestManager>
 
     private void SoundReward()
     {
-        if(AudioManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("RewardItem");
         }
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        for (int i = 0; i < questList.Count; i++)
+        {
+            questList[i].isCompleteMission = false;
+            questList[i].isAcceptMission = false;
+            questList[i].ItemMission[i].questItemData.completionCount = 0;
+        }
+        ResetItemCounts();
     }
 
     private void OnDisable()

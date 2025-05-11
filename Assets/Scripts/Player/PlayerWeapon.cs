@@ -1,5 +1,6 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEngine.Rendering.STP;
 
@@ -39,6 +40,8 @@ public class PlayerWeapon : MonoBehaviour
         if (value is QuestItemSO itemSO)
         {
             m_CurrentItem = itemSO;
+
+            BroadcastAllStatDeltas(itemSO, true);
             SetWeapon(m_CurrentItem);
         }
     }
@@ -50,5 +53,38 @@ public class PlayerWeapon : MonoBehaviour
         if (m_EnergyMesh != null) m_EnergyMesh.mesh = m_CurrentItem.questItemData.m_SwordMesh;
         Debug.Log($"m_SwordMesh : {m_CurrentItem.questItemData.m_SwordMesh}"  );
 
+    }
+    private void BroadcastAllStatDeltas(QuestItemSO itemSO, bool isEquip)
+    {
+        // 1) Tạo dict tĩnh hoặc mỗi lần build lại từ questItemData
+        var deltas = new Dictionary<TYPESTAT, int>()
+    {
+        { TYPESTAT.STR, itemSO.questItemData.plusStrengthArmor },
+        { TYPESTAT.ITE, itemSO.questItemData.plusAgilityArmor },
+        { TYPESTAT.HEA, itemSO.questItemData.plusHealArmor },
+        { TYPESTAT.DEF, itemSO.questItemData.plusDefendArmor },
+        { TYPESTAT.STA, itemSO.questItemData.plusStaminaArmor },
+        // ... thêm các stat khác nếu có
+    };
+
+        // 2) Duyệt và gửi event
+        foreach (var kvp in deltas)
+        {
+            if (kvp.Value == 0)
+                continue;   // bỏ qua stat không thay đổi
+
+            var delta = isEquip ? kvp.Value : -kvp.Value;
+            var payload = new StatEquipData
+            {
+                StatType = kvp.Key,
+                ValueDelta = delta
+            };
+            ListenerManager.Instance.BroadCast(
+                isEquip
+                  ? ListenType.EQUIP_STAT_UPDATE
+                  : ListenType.UNEQUIP_STAT_UPDATE,
+                payload
+            );
+        }
     }
 }

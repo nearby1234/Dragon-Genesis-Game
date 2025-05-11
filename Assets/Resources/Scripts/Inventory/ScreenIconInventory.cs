@@ -1,8 +1,6 @@
 using DG.Tweening;
-using Mono.Cecil.Cil;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 
 public class ScreenIconInventory : BaseScreen
 {
@@ -11,7 +9,6 @@ public class ScreenIconInventory : BaseScreen
     [SerializeField] private Vector2 m_IconPosition;
     [SerializeField] private Vector2 m_PosMove;
     private RectTransform m_IconTransform;
-    private bool m_IsOpen;
 
     private void Awake()
     {
@@ -23,11 +20,19 @@ public class ScreenIconInventory : BaseScreen
         m_IconTransform.localScale = new Vector3(0f, 0f, 0f);
         m_IconTransform.anchoredPosition = m_IconPosition;
         DoScaleIconInventory();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
     private void OnDestroy()
     {
         m_ButtonPress.Disable();
         m_ButtonPress.performed -= OnClickIconInventory;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
     private void DoScaleIconInventory()
     {
@@ -70,4 +75,9 @@ public class ScreenIconInventory : BaseScreen
         }
 
     }
+    private void ReceiverEventCLickMainMenu(object value)
+    {
+        this.Hide();
+    } 
+        
 }

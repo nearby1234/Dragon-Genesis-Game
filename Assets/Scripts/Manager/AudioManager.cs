@@ -129,6 +129,9 @@ public class AudioManager : BaseManager<AudioManager>
             loopSESource.volume = volume;
             loopSESource.loop = true;
             loopSESource.Play();
+        }else
+        {
+            Debug.Log($"không có SOund {name} này ");
         }
     }
 

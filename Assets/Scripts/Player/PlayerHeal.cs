@@ -58,6 +58,7 @@ public class PlayerHeal : MonoBehaviour
             m_IsPlayerDeath = true;
             if(ListenerManager.HasInstance)
             {
+                Debug.Log($"m_IsPlayerDeath :{m_IsPlayerDeath}");
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_DIE, m_IsPlayerDeath);
             }    
             PlayerManager.instance.playerAnim.GetAnimator().Play("Death");

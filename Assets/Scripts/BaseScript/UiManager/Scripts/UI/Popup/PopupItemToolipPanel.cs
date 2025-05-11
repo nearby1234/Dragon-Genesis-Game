@@ -72,9 +72,21 @@ public class PopupItemToolipPanel : BasePopup
     public void ShowToolTipItemArmor(QuestItemSO itemSo)
     {
         //ClearBonusLines();
+
         m_VerticalLayoutGroup.padding.left = config.paddingLeftArmor;
         m_ItemName.text = itemSo.questItemData.itemName;
-        m_ItemDespri.text = itemSo.questItemData.DespristionArmor;
+        switch(itemSo.questItemData.typeItem)
+        {
+            case TYPEITEM.ITEM_WEAPON:
+                m_ItemDespri.text = itemSo.questItemData.DespristionWeapon;
+                break;
+            case TYPEITEM.ITEM_ARMOR:
+                m_ItemDespri.text = itemSo.questItemData.DespristionArmor;
+                break;
+                default:
+                break;
+        }
+        
         m_ItemImage.sprite = itemSo.questItemData.icon;
         var pairs = new List<(string name, int value)>
         {

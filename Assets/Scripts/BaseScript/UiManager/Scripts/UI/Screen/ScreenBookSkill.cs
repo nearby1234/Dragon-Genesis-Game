@@ -25,11 +25,19 @@ public class ScreenBookSkill : BaseScreen
         m_ButtonPress.Enable();
         m_ButtonPress.performed += (calback) => OnClickButtonPress();
         button.onClick.AddListener(OnClickButton);
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
     private void OnDestroy()
     {
         m_ButtonPress.Disable();
         m_ButtonPress.performed -= (calback) => OnClickButtonPress();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
 
     private void OnClickButton()
@@ -88,4 +96,8 @@ public class ScreenBookSkill : BaseScreen
             HidePopupSkillBox();
         }
     }
+    private void ReceiverEventCLickMainMenu(object value)
+    {
+        this.Hide();
+    }    
 }

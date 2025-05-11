@@ -32,6 +32,7 @@ public enum TYPEARMOR
     ARMOR_ARMS,
     ARMOR_LEGS,
     ARMOR_SHOULDERS,
+    ARMOR_WEAPON,
    
 }
 public enum ITEMUSE
@@ -105,21 +106,21 @@ public class QuestItem
     [BoxGroup("Item Use Stats")]
     [TextArea(3, 10)]
     public string DespristionWeapon;
-    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
-    [BoxGroup("Item Use Stats")]
-    public int plusStrength;
-    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
-    [BoxGroup("Item Use Stats")]
-    public int plusAgility;
-    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
-    [BoxGroup("Item Use Stats")]
-    public int plusStamina;
-    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
-    [BoxGroup("Item Use Stats")]
-    public int plusHeal;
-    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
-    [BoxGroup("Item Use Stats")]
-    public int plusAmor;
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
+    //public int plusStrength;
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
+    //public int plusAgility;
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
+    //public int plusStamina;
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
+    //public int plusHeal;
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
+    //public int plusAmor;
 
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
     [BoxGroup("Item Use Stats")]
@@ -127,23 +128,35 @@ public class QuestItem
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
     [BoxGroup("Item Use Stats")]
     public SkinnedMeshRenderer skinnedArmor;
+    [TextArea(3, 10)]
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
     [BoxGroup("Item Use Stats")]
-    [TextArea(3, 10)]
+    //[ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    //[BoxGroup("Item Use Stats")]
     public string DespristionArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
     public int plusStrengthArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
     [BoxGroup("Item Use Stats")]
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    [BoxGroup("Item Use Stats")]
     public int plusAgilityArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
     public int plusStaminaArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
     [BoxGroup("Item Use Stats")]
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
+    [BoxGroup("Item Use Stats")]
     public int plusHealArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]
+    [BoxGroup("Item Use Stats")]
+    [ShowIf("@typeItem == TYPEITEM.ITEM_WEAPON")]
     [BoxGroup("Item Use Stats")]
     public int plusDefendArmor;
     [ShowIf("@typeItem == TYPEITEM.ITEM_ARMOR")]

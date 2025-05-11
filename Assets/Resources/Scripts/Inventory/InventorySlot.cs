@@ -56,6 +56,8 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UPDATE_COUNT_ITEM, ReceiverEventUpdateCountItem);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+
         }
     }
     private void OnDestroy()
@@ -272,6 +274,9 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
             case TYPEITEM.ITEM_ARMOR:
                 ShowItemTypeARMOR();
                 break;
+            case TYPEITEM.ITEM_WEAPON:
+                ShowItemTypeARMOR();
+                break;
             default:
                 Debug.Log($"Không có {m_CurrentItem.questItemData.typeItem}");
                 break;
@@ -311,6 +316,10 @@ public class InventorySlot : MonoBehaviour, IItemSlot, IPointerEnterHandler, IPo
     {
         UIManager.Instance.ShowPopup<PopupItemToolipPanel>();
         PopupItemToolipPanel.Instance.ShowToolTipItemArmor(m_CurrentItem);
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        m_CurrentItem = null;
     }
 
 

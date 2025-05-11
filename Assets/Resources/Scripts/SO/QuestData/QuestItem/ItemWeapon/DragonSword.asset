@@ -18,7 +18,7 @@ MonoBehaviour:
     count: 1
     requestCount: 0
     completionCount: 0
-    icon: {fileID: 21300000, guid: d86c6426baa0a6f4ab3384330961184f, type: 3}
+    icon: {fileID: 0}
     typeItem: 7
     percentIncrease: 0
     timeCoolDown: 0
@@ -29,19 +29,10 @@ MonoBehaviour:
     TimerSkillCoolDown: 0
     DespristionSkill: 
     typeWeapon: 1
-    m_SwordPrefabs: {fileID: 3938717156402355979, guid: a44c47c937f7b19419a76c4abb799469, type: 3}
-    m_SwordMesh: {fileID: -7642069956563106955, guid: effac2fe4a87d80429f7bdd3f4e61f20, type: 3}
-    m_SwordMaterial: {fileID: 2100000, guid: 33649d841ff0fe04891941dd8fa63b35, type: 2}
-    DespristionWeapon: "L\u01B0\u1EE1i ki\u1EBFm u\u1ED1n l\u01B0\u1EE3n \u0111\u01B0\u1EE3c
-      r\xE8n t\u1EEB m\u1ED9t lo\u1EA1i kim lo\u1EA1i b\xED \u1EA9n, c\xF3 l\u1EBD
-      l\xE0 t\u1EEB v\u1EA3y c\u1EE7a m\u1ED9t con r\u1ED3ng c\u1ED5 \u0111\u1EA1i.
-      C\xE1n ki\u1EBFm b\u1ECDc da th\xF4 r\xE1p, g\u1EE3i nh\u1EDB v\u1EC1 ngu\u1ED3n
-      g\u1ED1c hoang d\xE3 v\xE0 s\u1EE9c m\u1EA1nh ti\u1EC1m \u1EA9n."
-    plusStrength: 0
-    plusAgility: 0
-    plusStamina: 0
-    plusHeal: 0
-    plusAmor: 0
+    m_SwordPrefabs: {fileID: 0}
+    m_SwordMesh: {fileID: 0}
+    m_SwordMaterial: {fileID: 0}
+    DespristionWeapon: 
     typeArmor: 0
     skinnedArmor: {fileID: 0}
     DespristionArmor: 
@@ -51,9 +42,4 @@ MonoBehaviour:
     plusHealArmor: 0
     plusDefendArmor: 0
     m_NameArmorPrefabs: 
-  _backupJson: "{\"itemID\":\"-DragonSword\",\"itemName\":\"Ki\u1EBFm R\u1ED3ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52640},\"typeItem\":7,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":103978},\"m_SwordMesh\":{\"instanceID\":104096},\"m_SwordMaterial\":{\"instanceID\":54752},\"DespristionWeapon\":\"L\u01B0\u1EE1i
-    ki\u1EBFm u\u1ED1n l\u01B0\u1EE3n \u0111\u01B0\u1EE3c r\xE8n t\u1EEB m\u1ED9t
-    lo\u1EA1i kim lo\u1EA1i b\xED \u1EA9n, c\xF3 l\u1EBD l\xE0 t\u1EEB v\u1EA3y c\u1EE7a
-    m\u1ED9t con r\u1ED3ng c\u1ED5 \u0111\u1EA1i. C\xE1n ki\u1EBFm b\u1ECDc da th\xF4
-    r\xE1p, g\u1EE3i nh\u1EDB v\u1EC1 ngu\u1ED3n g\u1ED1c hoang d\xE3 v\xE0 s\u1EE9c
-    m\u1EA1nh ti\u1EC1m \u1EA9n.\",\"plusStrength\":0,\"plusAgility\":0,\"plusStamina\":0,\"plusHeal\":0,\"plusAmor\":0,\"typeArmor\":0,\"skinnedArmor\":{\"instanceID\":0},\"DespristionArmor\":\"\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"\"}"
+  _backupJson: "{\"itemID\":\"-DragonSword\",\"itemName\":\"Ki\u1EBFm R\u1ED3ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":52646},\"typeItem\":7,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":123394},\"m_SwordMesh\":{\"instanceID\":123512},\"m_SwordMaterial\":{\"instanceID\":54792},\"DespristionWeapon\":\"\",\"typeArmor\":0,\"skinnedArmor\":{\"instanceID\":0},\"DespristionArmor\":\"\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"\"}"

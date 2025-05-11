@@ -182,7 +182,7 @@ public class UIManager : BaseManager<UIManager>
         return null;
     }
 
-    private void RemoveScreen(string v)
+    public void RemoveScreen(string v)
     {
         for (int i = 0; i < rmScreens.Count; i++)
         {
@@ -200,6 +200,20 @@ public class UIManager : BaseManager<UIManager>
             }
         }
     }
+
+    public void RemoveScreen<T>() where T : BaseScreen
+    {
+        string screen = typeof(T).Name;
+        if(screens.ContainsKey(screen))
+        {
+            Destroy(screens[screen].gameObject);
+            screens.Remove(screen);
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
+        }    
+    }    
+    
+      
     #endregion
     #region Popup
     public void ShowPopup<T>(object data = null, bool forceShowData = false) where T : BasePopup
@@ -394,6 +408,17 @@ public class UIManager : BaseManager<UIManager>
                 }
                 break;
             }
+        }
+    }
+    public void RemovePopup<T>() where T : BasePopup
+    {
+        string popup = typeof(T).Name;
+        if (popups.ContainsKey(popup))
+        {
+            Destroy(popups[popup].gameObject);
+            popups.Remove(popup);
+            Resources.UnloadUnusedAssets();
+            System.GC.Collect();
         }
     }
     #endregion

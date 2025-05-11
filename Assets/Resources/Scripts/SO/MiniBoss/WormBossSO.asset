@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: WormBossSO
   m_EditorClassIdentifier: 
   creepType: 3
-  heal: 70
-  damage: 500
+  heal: 250
+  damage: 100
+  m_PhysicsDamage: 0
+  m_MagicDamage: 0
+  m_EffectDamage: 0
+  enemyType: 2

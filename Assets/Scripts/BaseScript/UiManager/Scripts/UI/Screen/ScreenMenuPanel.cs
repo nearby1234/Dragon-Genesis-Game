@@ -52,6 +52,7 @@ public class ScreenMenuPanel : BaseScreen
 
     private void Start()
     {
+        Time.timeScale = 1f;
         InitializeVideoPlayer();
         InitializeUI();
         
@@ -92,7 +93,7 @@ public class ScreenMenuPanel : BaseScreen
     IEnumerator PlaySequence()
     {
         yield return new WaitForSeconds(delayBeforeTyping);
-
+       
         m_TextCanvasGroup.DOFade(1f, fadeDuration);
 
         AnimateTextTyping(() =>
@@ -200,7 +201,6 @@ public class ScreenMenuPanel : BaseScreen
     }
     private void ReceiverEventClickMainMenu(object value)
     {
-        Debug.Log($"TESDT");
         this.Show(null);
 
         // reset vị trí gươm

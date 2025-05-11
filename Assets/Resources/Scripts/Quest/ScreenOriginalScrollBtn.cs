@@ -34,11 +34,19 @@ public class ScreenOriginalScrollBtn : BaseScreen
         m_RectTransform.anchoredPosition3D = m_Offset;
         //button.onClick.AddListener(OnClickButtonShowPopupScrollView);
         InitObjDoMove();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }    
     }
     private void OnDestroy()
     {
         m_ButtonPress.Disable();
         m_ButtonPress.performed -= OnClickButtonShowPopupScrollView;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
     private void OnClickButtonShowPopupScrollView(InputAction.CallbackContext callback)
     {
@@ -114,4 +122,9 @@ public class ScreenOriginalScrollBtn : BaseScreen
             Debug.LogWarning($"không tìm th?y ???ng d?n : {m_DOItemPrefabPath}");
         }
     }
+
+    private void ReceiverEventCLickMainMenu(object value)
+    {
+        this.Hide();
+    }    
 }

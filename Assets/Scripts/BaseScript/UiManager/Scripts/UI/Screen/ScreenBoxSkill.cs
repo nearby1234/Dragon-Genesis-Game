@@ -11,11 +11,26 @@ public class ScreenBoxSkill : BaseScreen
     {
         rectTransform.anchoredPosition = m_Offset;
         ShowFadeBoxSkill();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+        }
     }
 
     private void ShowFadeBoxSkill()
     {
         m_canvasGroup.DOFade(1f,1f);
     }
+    private void ReceiverEventCLickMainMenu(object value)
+    {
+        this.Hide();
+    }    
 
 }

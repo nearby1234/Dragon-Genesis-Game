@@ -45,6 +45,15 @@ public class SkillSlot : MonoBehaviour
         if(ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.PU_BOXSKILL_SEND_TEXT, ReceiverEventPUBookSkillText);
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PU_BOXSKILL_SEND_TEXT, ReceiverEventPUBookSkillText);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
         }
     }
     public void SetCurrenItem(QuestItemSO item)
@@ -96,5 +105,9 @@ public class SkillSlot : MonoBehaviour
         {
             m_DeprisionSkill = text;
         }
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        m_CurrentItem = null;
     }
 }

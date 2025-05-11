@@ -22,10 +22,10 @@ public class PopupMessage
     public string titleMainMenu = "Main Menu";
     public string hexColorLose = "#FF0000";
     public string hexColorWin = "#002FFF";
+    public string hexColorPause = "#FF0000";
     public Color TitleLoseColor => ColorUtility.TryParseHtmlString(hexColorLose, out var color) ? color : Color.red;
-
-
     public Color TitleWinColor => ColorUtility.TryParseHtmlString(hexColorWin, out var color) ? color : Color.blue;
+    public Color TitlePauseColor => ColorUtility.TryParseHtmlString(hexColorPause, out var color) ? color : Color.red;
 
 
     public Action OnPlayAgain;

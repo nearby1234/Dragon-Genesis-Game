@@ -15,10 +15,12 @@ public class WormDieState : BaseState<WormBoss, WORMSTATE>
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_STATE_CURRENT, WORMSTATE.DIE);
+            ListenerManager.Instance.BroadCast(ListenType.CREEP_IS_DEAD, boss.CreepType);
         }
         if(AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("WormBossDie");
+            AudioManager.Instance.PlayBGM("Age_Of_Heroes_FULL_TRACK", true);
         }
         boss.SetHideCollider();
         waitBossDie = boss.StartCoroutine(WaitBossDie());

@@ -15816,6 +15816,7 @@ MonoBehaviour:
   idleGraceActive: 0
   IsRageState: 0
   isShowHealbarBoss: 0
+  creepType: 3
   m_AngularSpeed: 120
   currentAttackIndex: 0
   m_StopDistance: 0

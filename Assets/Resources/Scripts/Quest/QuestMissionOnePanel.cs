@@ -41,10 +41,21 @@ public class QuestMissionOnePanel : BasePopup
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
         ShowContentMission();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     private void Update()
     {
         ShowContentMission();
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
     }
     //Sau khi text chạy hết
     private void OnFinishedText() // API của package Text Animator
@@ -155,5 +166,12 @@ public class QuestMissionOnePanel : BasePopup
         m_ContentMissionElse.text = m_QuestDataMissionOne.descriptionElse;
         m_QuestMissionBarElse.SetActive(true);
         m_HasShownAlternative = true;
+    }
+    private void ReceiverEventClickMainMenu(object value)
+    {
+        m_QuestDataMissionOne.isAcceptMission = false;
+        m_PlayerDialog.HasAcceptQuest = false;
+        m_HasShownContent = false;
+        m_HasShownAlternative = false;
     }
 }

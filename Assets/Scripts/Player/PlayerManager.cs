@@ -1,9 +1,5 @@
-using Mono.Cecil.Cil;
 using System.Collections;
-using Unity.Cinemachine;
-using UnityEditor.SearchService;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
@@ -58,6 +54,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             ListenerManager.Instance.Register(ListenType.PLAYER_DIE, ReceiverPlayerDie);
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, _ => CancelLoseCoroutine());
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
         }
         m_EscButton.Enable();
         m_EscButton.performed += (ctx) => OnEscPerfomed();
@@ -74,6 +71,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             ListenerManager.Instance.Unregister(ListenType.PLAYER_DIE, ReceiverPlayerDie);
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, _ => CancelLoseCoroutine());
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
         }
     }
     // Update is called once per frame
@@ -214,7 +212,6 @@ public class PlayerManager : BaseManager<PlayerManager>
                     },
 
                 };
-                Debug.Log("vao day tiep 1");
                 UIManager.Instance.ShowPopup<LosePopup>(message, true);
             }
 
