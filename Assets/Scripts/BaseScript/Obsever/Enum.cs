@@ -96,5 +96,6 @@ public enum CreepType
     BAT,
     DRAGON,
     WORM,
+    BullTank,
 }
 

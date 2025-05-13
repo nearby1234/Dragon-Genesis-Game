@@ -5,4 +5,5 @@ public enum EnemyType
     DragonFire,
     Bat,
     Worm,
+    BullTank,
 }

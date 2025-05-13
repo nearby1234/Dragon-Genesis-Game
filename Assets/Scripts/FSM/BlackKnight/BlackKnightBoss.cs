@@ -89,7 +89,7 @@ public class BlackKnightBoss : BaseBoss<BlackKnightBoss,ENEMYSTATE>
                 break;
 
             case ENEMYSTATE.ATTACK:
-                finiteSM.ChangeState(new AttackState(this, finiteSM));
+                finiteSM.ChangeState(new AttackStateCompBT(this, finiteSM));
                 break;
 
             case ENEMYSTATE.RUN:

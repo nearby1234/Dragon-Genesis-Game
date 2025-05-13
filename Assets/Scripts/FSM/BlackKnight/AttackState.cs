@@ -1,12 +1,12 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class AttackState : BaseState<BlackKnightBoss, ENEMYSTATE>
+public class AttackStateCompBT : BaseState<BlackKnightBoss, ENEMYSTATE>
 {
     private Coroutine attackCoroutine;
     private Quaternion lockedRotation;
 
-    public AttackState(BlackKnightBoss miniBoss, FSM<BlackKnightBoss, ENEMYSTATE> fsm) : base(miniBoss, fsm) { }
+    public AttackStateCompBT(BlackKnightBoss miniBoss, FSM<BlackKnightBoss, ENEMYSTATE> fsm) : base(miniBoss, fsm) { }
 
     public override void Enter()
     {

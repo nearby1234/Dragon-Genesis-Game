@@ -18,7 +18,7 @@ public class BaseManager<T> : MonoBehaviour where T : BaseManager<T>
 
                 if (instance == null)
                 {
-                    Debug.LogError($"No {typeof(T).Name} Singleton Instance");
+                    Debug.LogWarning($"No {typeof(T).Name} Singleton Instance");
                 }
             }
             return instance;
