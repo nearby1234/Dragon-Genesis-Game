@@ -16,6 +16,10 @@ public class LosePopup : BasePopup
     {
         Debug.Log("LosePopup show");
         base.Show(data);
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+        }
         if (data != null)
         {
             if (data is PopupMessage msg)
@@ -36,6 +40,14 @@ public class LosePopup : BasePopup
                             {
                                 GameManager.Instance.HideCursor();
                             }
+                            if(ListenerManager.HasInstance)
+                            {
+                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                            }
+                            if (AudioManager.HasInstance)
+                            {
+                                AudioManager.Instance.PlaySE("ExitSound");
+                            }
 
                             this.Hide();
                         });
@@ -46,6 +58,14 @@ public class LosePopup : BasePopup
                             if (Cheat.HasInstance)
                             {
                                 Cheat.Instance.StopParticleOpen();
+                            }
+                            if (ListenerManager.HasInstance)
+                            {
+                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                            }
+                            if (AudioManager.HasInstance)
+                            {
+                                AudioManager.Instance.PlaySE("ExitSound");
                             }
                             this.Hide();
                         });
@@ -59,6 +79,10 @@ public class LosePopup : BasePopup
                             m_ExitBtn.interactable = false;
                             m_MainMenuBtn.gameObject.SetActive(false);
                             m_PlayAgainBtn.gameObject.SetActive(false);
+                            if (ListenerManager.HasInstance)
+                            {
+                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                            }
                             StartCoroutine(HideWinPopup());
                         }
                         break;
@@ -79,6 +103,14 @@ public class LosePopup : BasePopup
                                 {
                                     GameManager.Instance.HideCursor();
                                 }
+                                if (ListenerManager.HasInstance)
+                                {
+                                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                                }
+                                if (AudioManager.HasInstance)
+                                {
+                                    AudioManager.Instance.PlaySE("ExitSound");
+                                }
                                 this.Hide();
                             });
                             m_MainMenuBtn.onClick.RemoveAllListeners();
@@ -88,6 +120,14 @@ public class LosePopup : BasePopup
                                 if(Cheat.HasInstance)
                                 {
                                     Cheat.Instance.StopParticleOpen();
+                                }
+                                if (ListenerManager.HasInstance)
+                                {
+                                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                                }
+                                if (AudioManager.HasInstance)
+                                {
+                                    AudioManager.Instance.PlaySE("ExitSound");
                                 }
                                 this.Hide();
                             });

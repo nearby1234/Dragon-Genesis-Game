@@ -68,14 +68,12 @@ public class QuestMissionOnePanel : BasePopup
         {
             AudioManager.Instance.PlaySE("ClickSound");
         }
-        if(GameManager.HasInstance)
-        {
-            GameManager.Instance.HideCursor();
-        }
+        if(GameManager.HasInstance) GameManager.Instance.HideCursor();
         m_HasAcceptMission = true;
         if(ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_HAS_ACCEPT_QUEST, m_HasAcceptMission);
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
         }    
         if (QuestManager.HasInstance)
         {
@@ -87,11 +85,6 @@ public class QuestMissionOnePanel : BasePopup
                     item.questItemData.completionCount = 1;
                 }
             }
-            //if (GameManager.HasInstance)
-            //{
-            //    GameObject npc = GameManager.Instance.GetNPC("Abe");
-            //    m_QuestDataMissionOne.QuestGiver = npc;
-            //}
             m_PlayerDialog.SetIsTalkingNPC(false);
         }
         if (CameraManager.HasInstance)
@@ -100,6 +93,12 @@ public class QuestMissionOnePanel : BasePopup
             if (cameraBase != null)
             {
                 cameraBase.Priority = 8;
+                int playerLayer = LayerMask.NameToLayer("Player");
+                int weaponLayer = LayerMask.NameToLayer("Weapon");
+                int fxLayer = LayerMask.NameToLayer("FX");
+
+                int combinedMask = (1 << playerLayer) | (1 << weaponLayer) | (1 << fxLayer);
+                Camera.main.cullingMask |= combinedMask;
             }
             this.Hide();
         }

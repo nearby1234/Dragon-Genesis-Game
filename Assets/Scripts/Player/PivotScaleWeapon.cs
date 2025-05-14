@@ -183,6 +183,11 @@ public class PivotScaleWeapon : MonoBehaviour
         ResetScale();
         StartCoroutine(m_ChildTriggerForwarder.ResetSwing());
     }
+    public void SetupResetScale()
+    {
+        ResetScale();
+        StartCoroutine(m_ChildTriggerForwarder.ResetSwing());
+    }
     private IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
     {
         // Lưu lại góc ban đầu của player
@@ -329,16 +334,16 @@ public class PivotScaleWeapon : MonoBehaviour
         }
         // Khi thả phím thì tính toán tiêu hao mana và gửi dữ liệu cho PlayerMana
         ManaConsumption(m_ManaMax, m_CurrentIndex);
-        if (m_CurrentIndex > 0)
-        {
-            Debug.Log($"m_CurrentIndex : {m_CurrentIndex}");
-            setupScaleDefault = StartCoroutine(SetupScaleDefault());
-        }
-        else
-        {
-            ResetScale();
-            animator.Play("Move"); // hoặc tên state Idle của bạn
-        }
+        //if (m_CurrentIndex > 0)
+        //{
+        //    Debug.Log($"m_CurrentIndex : {m_CurrentIndex}");
+        //    setupScaleDefault = StartCoroutine(SetupScaleDefault());
+        //}
+        //else
+        //{
+        //    ResetScale();
+        //    animator.Play("Move"); // hoặc tên state Idle của bạn
+        //}
 
         StartCoroutine(SmoothRotateToCameraDirection(0.3f));
     }

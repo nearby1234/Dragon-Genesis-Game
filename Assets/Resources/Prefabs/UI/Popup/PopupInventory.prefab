@@ -350,7 +350,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_CountBox: 20
-  m_Offset: {x: 0, y: 250}
+  m_Offset: {x: 0, y: 200}
   m_Rectranform: {fileID: 0}
   m_ExitBtn: {fileID: 7213306868763703221}
   m_MoneyTxt: {fileID: 6145679624852160790}

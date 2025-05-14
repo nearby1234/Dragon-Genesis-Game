@@ -116,6 +116,7 @@ public class ScreenPlayerImformation : BaseScreen
     {
         if (UIManager.HasInstance)
         {
+          
             UIManager.Instance.ShowPopup<PopupCharacterPanel>();
             UIManager.Instance.SetStatePopup<PopupCharacterPanel>(StateUi.Opening);
             StateUi popupInventory = UIManager.Instance.GetStatePopup<PopupInventory>();
@@ -140,10 +141,11 @@ public class ScreenPlayerImformation : BaseScreen
         {
             GameManager.Instance.ShowCursor();
         }
-        if(PlayerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
-            PlayerManager.instance.isInteractingWithUI = true;
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
+
     }
 
     public void ReceiverPlayerHealValue(object value)

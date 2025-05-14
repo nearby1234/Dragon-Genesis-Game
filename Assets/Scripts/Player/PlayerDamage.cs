@@ -19,6 +19,8 @@ public class PlayerDamage : MonoBehaviour
     public int PlusDamageValue => m_PlusDamageValue; // Giá trị damage cộng thêm
 
     private Animator playerAnimator; // Animator của player
+    private bool m_IsHeavyAttack = false;
+    public bool Heavyattack => m_IsHeavyAttack;
 
     void Start()
     {
@@ -61,19 +63,19 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnCancelAttackRightMouse(InputAction.CallbackContext context)
     {
-        //m_IsPressRightMouse = false;
+        StartCoroutine(DelaySetFalseRightAttack());
     }
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
-        //m_IsPressRightMouse = true;
 
-
+        //if (context.phase != InputActionPhase.Started) return;
         // Nếu animation Heavy Attack chưa đang chạy thì play nó
         if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
         {
             playerAnimator.Play("Heavy Attack");
         }
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
+        m_IsHeavyAttack = true;
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
@@ -145,12 +147,18 @@ public class PlayerDamage : MonoBehaviour
         {
             AudioManager.Instance.PlaySE(nameSound);
         }
-    } 
+    }
     public void StopSound(string nameSound)
     {
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.StopSe(nameSound);
         }
-    }    
+    }
+    IEnumerator DelaySetFalseRightAttack()
+    {
+        yield return new WaitForSeconds(1f);
+        m_IsHeavyAttack = false;
+    }
+    
 }

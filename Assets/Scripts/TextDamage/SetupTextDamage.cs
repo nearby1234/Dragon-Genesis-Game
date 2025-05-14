@@ -1,7 +1,9 @@
 ﻿using DG.Tweening;
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class SetupTextDamage : MonoBehaviour
 {
@@ -20,7 +22,9 @@ public class SetupTextDamage : MonoBehaviour
     {
         if (m_DamageTxt != null)
         {
-            m_DamageTxt.text = $"<color={m_HashCharacter}{m_Color}>{damage}</color>";
+            m_DamageTxt.color = Random.ColorHSV(0f, 1f, 0.7f, 1f, 0.8f, 1f);
+            //m_DamageTxt.text = $"<color={m_HashCharacter}{m_Color}>{damage}</color>";
+            m_DamageTxt.text = damage.ToString();
         }
         //m_DamageTxt.rectTransform.position = new Vector3(position.x + 2, position.y, position.z);
         m_DamageTxt.rectTransform.position = position;

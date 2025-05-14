@@ -103,7 +103,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             ResetDraggedItemPosition();
             DestroyPlaceHolder();
             // Nếu không có component nào khớp trong handler
-            
+
         }
         else
         {
@@ -201,8 +201,6 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
             ResetDraggedItemPosition();
             return;
         }
-
-
         Image targetImage = targetSlot.GetComponent<Image>();
         TextMeshProUGUI targetTextMesh = targetSlot.GetComponentInChildren<TextMeshProUGUI>();
         //InventorySlot draggedSlot = inventorySlot; // ô chứa item đang kéo
@@ -219,7 +217,6 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 SwapSprites(targetImage, draggedSprite, targetSprite);
                 SwapText(targetText, draggedText, targetTextMesh);
                 SwapCurrentItem(targetSlot);
-                
             }
             else
             {
@@ -254,19 +251,36 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
 
         if (targetSlot.TypeArmor.Equals(inventorySlot.CurrentItem.questItemData.typeArmor))
         {
-            Debug.Log("Pointer Enter: " + targetSlot.name);
             Image targetImage = targetSlot.GetComponent<Image>();
-            //targetSlot.CurrentItem = inventorySlot.CurrentItem;
             Sprite draggedSprite = inventorySlot.CurrentItem.questItemData.icon;
-            MoveSpriteToTarget(targetImage, draggedSprite);
-            targetSlot.ShowAlphaIcon(false);
-            MoveCurrentItemToTarget(targetSlot);
-            ResetDraggedItemPosition();
-            inventorySlot.SetHideText();
-            if (AudioManager.HasInstance)
+            if (targetSlot.CurrentItem == null)
             {
-                AudioManager.Instance.PlaySE("EquipItem");
+                Debug.Log("Pointer Enter: " + targetSlot.name);
+                //targetSlot.CurrentItem = inventorySlot.CurrentItem;
+               
+                MoveSpriteToTarget(targetImage, draggedSprite);
+                targetSlot.ShowAlphaIcon(false);
+                MoveCurrentItemToTarget(targetSlot);
+                ResetDraggedItemPosition();
+                inventorySlot.SetHideText();
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("EquipItem");
+                }
             }
+            else
+            {
+                Sprite targetSprite = targetImage.sprite;
+                SwapSprites(targetImage, draggedSprite, targetSprite);
+                (targetSlot.CurrentItem, inventorySlot.CurrentItem) = (inventorySlot.CurrentItem, targetSlot.CurrentItem);
+
+                ResetDraggedItemPosition();
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("EquipItem");
+                }
+            }
+
         }
         else
         {

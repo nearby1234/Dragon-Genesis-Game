@@ -75,17 +75,19 @@ public class PopupCharacterPanel : BasePopup, IStateUi
             if (UIManager.Instance.GetObjectInDict<PopupInventory>())
             {
                 GameManager.Instance.ShowCursor();
+                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
             }
             else
             {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
                 GameManager.Instance.HideCursor();
             }
         }
 
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = false;
-        }
+       
 
         if (UIManager.HasInstance)
         {

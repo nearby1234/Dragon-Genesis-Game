@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.SearchService;
 
 public class PlayerManager : BaseManager<PlayerManager>
 {
@@ -55,6 +56,8 @@ public class PlayerManager : BaseManager<PlayerManager>
             ListenerManager.Instance.Register(ListenType.PLAYER_DIE, ReceiverPlayerDie);
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, _ => CancelLoseCoroutine());
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
+            ListenerManager.Instance.Register(ListenType.UI_CLICK_SHOWUI, ReceiverEventClickShowUI);
+            ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, ReceiverEvenDisableShowUI);
         }
         m_EscButton.Enable();
         m_EscButton.performed += (ctx) => OnEscPerfomed();
@@ -72,28 +75,30 @@ public class PlayerManager : BaseManager<PlayerManager>
             ListenerManager.Instance.Unregister(ListenType.PLAYER_DIE, ReceiverPlayerDie);
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, _ => CancelLoseCoroutine());
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
+            ListenerManager.Instance.Unregister(ListenType.UI_CLICK_SHOWUI, ReceiverEventClickShowUI);
+            ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, ReceiverEvenDisableShowUI);
         }
     }
     // Update is called once per frame
     void Update()
     {
-        if (/*EventSystem.current.IsPointerOverGameObject() ||*/isInteractingWithUI)
-        {
-            playerDamage.DegreeEventClickMouse();
-            if (CameraManager.HasInstance)
-            {
-                CameraManager.Instance.SetActiveInputAxisController(false);
-            }
-            return;
-        }
-        else
-        {
-            playerDamage.RegisterEventAttack();
-            if (CameraManager.HasInstance)
-            {
-                CameraManager.Instance.SetActiveInputAxisController(true);
-            }
-        }
+        //if (/*EventSystem.current.IsPointerOverGameObject() ||*/isInteractingWithUI)
+        //{
+        //    playerDamage.DegreeEventClickMouse();
+        //    if (CameraManager.HasInstance)
+        //    {
+        //        CameraManager.Instance.SetActiveInputAxisController(false);
+        //    }
+        //    return;
+        //}
+        //else
+        //{
+        //    playerDamage.RegisterEventAttack();
+        //    if (CameraManager.HasInstance)
+        //    {
+        //        CameraManager.Instance.SetActiveInputAxisController(true);
+        //    }
+        //}
         switch (m_PlayerState)
         {
             case PlayerState.idle:
@@ -118,12 +123,14 @@ public class PlayerManager : BaseManager<PlayerManager>
             OnResume = () =>
             {
                 Time.timeScale = 1f;
+             
             },
             OnMainMenu = () =>
             {
                 if (ListenerManager.HasInstance)
                 {
                     ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_MAINMENU, null);
+                  
                 }
                 Time.timeScale = 1f;
                 //StopAllCoroutines();
@@ -139,7 +146,27 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             UIManager.Instance.ShowPopup<LosePopup>(msg, true);
         }
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ClickSound");
+        }
         Time.timeScale = 0;
+    }
+    private void ReceiverEventClickShowUI(object value)
+    {
+        playerDamage.DegreeEventClickMouse();
+        if (CameraManager.HasInstance)
+        {
+            CameraManager.Instance.SetActiveInputAxisController(false);
+        }
+    }
+    private void ReceiverEvenDisableShowUI(object value)
+    {
+        playerDamage.RegisterEventAttack();
+        if (CameraManager.HasInstance)
+        {
+            CameraManager.Instance.SetActiveInputAxisController(true);
+        }
     }
 
     private void CacheComponents()
@@ -195,6 +222,8 @@ public class PlayerManager : BaseManager<PlayerManager>
                         if (ListenerManager.HasInstance)
                         {
                             ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_PLAYAGAIN, null);
+                            
+                            
                         }
                         var fakeLoadingSetting = new FakeLoadingSetting();
                         UIManager.Instance.ShowPopup<PopupFakeLoading>(fakeLoadingSetting, true);
@@ -204,6 +233,7 @@ public class PlayerManager : BaseManager<PlayerManager>
                         if (ListenerManager.HasInstance)
                         {
                             ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_MAINMENU, null);
+                           
                         }
 
                         //StopAllCoroutines();

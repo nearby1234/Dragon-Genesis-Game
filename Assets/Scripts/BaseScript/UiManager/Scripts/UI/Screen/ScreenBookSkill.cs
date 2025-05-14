@@ -15,7 +15,7 @@ public class ScreenBookSkill : BaseScreen
 
     private void Awake()
     {
-        m_IconTransform =button.GetComponent<RectTransform>();
+        m_IconTransform = button.GetComponent<RectTransform>();
         m_IconTransform.anchoredPosition = offSet;
     }
 
@@ -88,17 +88,23 @@ public class ScreenBookSkill : BaseScreen
     private void OnClickButtonPress()
     {
         m_IsPress = !m_IsPress;
+        if (!ListenerManager.HasInstance) return;
+
         if (m_IsPress)
         {
             ShowPopupSkillBox();
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
         else
         {
             HidePopupSkillBox();
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
         }
+
+
     }
     private void ReceiverEventCLickMainMenu(object value)
     {
         this.Hide();
-    }    
+    }
 }

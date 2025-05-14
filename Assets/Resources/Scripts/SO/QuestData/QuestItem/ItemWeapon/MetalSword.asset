@@ -31,7 +31,7 @@ MonoBehaviour:
     typeWeapon: 1
     m_SwordPrefabs: {fileID: 0}
     m_SwordMesh: {fileID: 0}
-    m_SwordMaterial: {fileID: 7400000, guid: b39ecacaeb6b88f4a85c272216f2aa47, type: 2}
+    m_SwordMaterial: {fileID: 2100000, guid: 599706eeb6a8fcf4ba9c725a8a30654d, type: 2}
     DespristionWeapon: 
     typeArmor: 0
     skinnedArmor: {fileID: 0}
@@ -42,4 +42,4 @@ MonoBehaviour:
     plusHealArmor: 0
     plusDefendArmor: 0
     m_NameArmorPrefabs: 
-  _backupJson: "{\"itemID\":\"-MetalSword\",\"itemName\":\"Ki\u1EBFm S\u1EAFt\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":0},\"typeItem\":7,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":54416},\"DespristionWeapon\":\"\",\"typeArmor\":0,\"skinnedArmor\":{\"instanceID\":0},\"DespristionArmor\":\"\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"\"}"
+  _backupJson: "{\"itemID\":\"-MetalSword\",\"itemName\":\"Ki\u1EBFm S\u1EAFt\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":0},\"typeItem\":7,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":54428},\"DespristionWeapon\":\"\",\"typeArmor\":0,\"skinnedArmor\":{\"instanceID\":0},\"DespristionArmor\":\"\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":0,\"plusHealArmor\":0,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"\"}"

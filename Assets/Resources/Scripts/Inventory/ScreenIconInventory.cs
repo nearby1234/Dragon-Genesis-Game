@@ -45,6 +45,10 @@ public class ScreenIconInventory : BaseScreen
     {
         if (UIManager.HasInstance)
         {
+           if( UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PU_CHARACTER_IMFORMA, null);
+            }
             UIManager.Instance.ShowPopup<PopupInventory>();
             UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.Opening);
             StateUi popupCharacter = UIManager.Instance.GetStatePopup<PopupCharacterPanel>();
@@ -61,9 +65,9 @@ public class ScreenIconInventory : BaseScreen
             UIManager.Instance.AddStateInDict(popup);
         }
 
-        if (PlayerManager.HasInstance)
+        if(ListenerManager.HasInstance)
         {
-            PlayerManager.instance.isInteractingWithUI = true;
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
         if (GameManager.HasInstance)
         {

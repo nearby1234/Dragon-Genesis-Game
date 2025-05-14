@@ -8,8 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: PA_Oldtext_mtl
-  m_Shader: {fileID: -6465566751694194690, guid: 3290604b90a8f244ebe65b5396bca262,
-    type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 3290604b90a8f244ebe65b5396bca262, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -98,7 +97,7 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - Color_80E46BEA: {r: 7.4642644, g: 4.2359033, b: 0.8206781, a: 0}
+    - Color_80E46BEA: {r: 1.9766748, g: 1.1217453, b: 0.2173307, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}

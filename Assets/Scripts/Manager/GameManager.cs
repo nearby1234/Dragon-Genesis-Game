@@ -101,6 +101,7 @@ public class GameManager : BaseManager<GameManager>
         PlayerManager.instance.playerMove.ResetInput();
         PlayerManager.instance.playerDamage.RegisterEventAttack();
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.idle);
+        ResetSound();
         //ResetUi();
     }
 
@@ -114,6 +115,13 @@ public class GameManager : BaseManager<GameManager>
         } 
             
     }    
+    private void ResetSound()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.StopLoopSE();
+        }
+    }
     private void ReceiverEventPosPlayerSpawn(object value)
     {
         if(value != null)

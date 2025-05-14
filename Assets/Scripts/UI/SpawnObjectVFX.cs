@@ -127,19 +127,29 @@ public class SpawnObjectVFX : MonoBehaviour
     private void MoveSLiderUI(RectTransform rectTransform)
     {
         Vector2 sliderRectPos = TranslatePosition();
+        Sequence seq = DOTween.Sequence();
 
-        rectTransform.DOAnchorPos(sliderRectPos, m_Speed)
-            .SetEase(Ease.InBack)
-            .OnComplete(() =>
+        seq.Append(rectTransform.DOAnchorPos(sliderRectPos, m_Speed)
+            .SetEase(Ease.InBack));
+        seq.Join(rectTransform.DOScale(Vector3.zero, m_Speed).SetEase(Ease.InQuad));
+
+        seq.OnComplete(() =>
+        {
+            if (PlayerLevelManager.HasInstance)
             {
-                if(PlayerLevelManager.HasInstance)
-                {
-                    PlayerLevelManager.Instance.AddExp(PlayerLevelManager.Instance.ExpOrbValue);
-                }
-                PlayAnimationFade();
+                PlayerLevelManager.Instance.AddExp(PlayerLevelManager.Instance.ExpOrbValue);
+            }
+            PlayAnimationFade();
+            ReturnObjectToPool(rectTransform);
+        } 
+        );
 
-                ReturnObjectToPool(rectTransform);
-            });
+        //rectTransform.DOAnchorPos(sliderRectPos, m_Speed)
+        //    .SetEase(Ease.InBack)
+        //    .OnComplete(() =>
+        //    {
+                
+        //    });
     }
 
    

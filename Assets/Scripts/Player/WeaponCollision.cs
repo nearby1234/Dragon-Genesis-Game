@@ -21,8 +21,21 @@ public class WeaponCollision : MonoBehaviour
         // N?u enemy ?ã b? damage trong ?òn này, b? qua
         if (m_IsTakeDamaged)
             return;
-
         int damage = PlayerManager.instance.playerDamage.GetPlayerDamage();
+
+        if (PlayerManager.instance.playerDamage.Heavyattack)
+        {
+            Debug.Log($"Heavyattack :{PlayerManager.instance.playerDamage.Heavyattack}");
+            int baseDamage = damage;
+            int bonus = Mathf.RoundToInt(baseDamage * 1.15f);
+            damage = bonus;
+            Debug.Log($"damage : {damage}");
+            Debug.Log($"bonus :{bonus}");
+        }
+        else
+        {
+            Debug.Log($"Heavyattack :{PlayerManager.instance.playerDamage.Heavyattack}");
+        }
 
         if (other.gameObject.CompareTag("Creep"))
         {
@@ -30,9 +43,9 @@ public class WeaponCollision : MonoBehaviour
             if (enemyHeal != null)
             {
                 enemyHeal.ReducePlayerHealth(damage);
-                if(EffectManager.HasInstance)
+                if (EffectManager.HasInstance)
                 {
-                   
+
                     Vector3 closepoint = other.ClosestPoint(other.transform.position);
                     GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
 
@@ -57,7 +70,7 @@ public class WeaponCollision : MonoBehaviour
                 if (EffectManager.HasInstance)
                 {
                     Vector3 closepoint = other.ClosestPoint(other.transform.position);
-                    Vector3 newClosePoint = new Vector3(closepoint.x,closepoint.y, closepoint.z -1);
+                    Vector3 newClosePoint = new Vector3(closepoint.x, closepoint.y, closepoint.z - 1);
                     GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
                     textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
                     if (damageText != null)
@@ -66,12 +79,12 @@ public class WeaponCollision : MonoBehaviour
                     }
                 }
                 CameraManager.Instance.ShakeCamera();
-                if(AudioManager.HasInstance)
+                if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("WormBossHit");
                     AudioManager.Instance.PlaySE("attaccolidersound");
 
-                }    
+                }
             }
         }
 

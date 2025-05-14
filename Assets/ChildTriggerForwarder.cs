@@ -28,7 +28,6 @@ public class ChildTriggerForwarder : MonoBehaviour
         }
         pivotScaleWeapon.GetChildTriggerForwarder(this);
     }
-
     private void OnTriggerEnter(Collider other)
     {
         Collider[] colliders = Physics.OverlapBox(GetComponent<Collider>().bounds.center,
@@ -55,38 +54,33 @@ public class ChildTriggerForwarder : MonoBehaviour
             }
         }
     }
-
     // Sau khi kết thúc swing, reset danh sách
     public IEnumerator ResetSwing()
     {
         yield return new WaitForSeconds(1f);
         damagedColliders.Clear();
     }
-
-
     #region Trigger Processing
 
     private void ProcessBossTrigger(Collider other)
     {
         WormBoss wormBoss = GetComponentInParent<WormBoss>();
-        if (wormBoss != null /*&& !isEnergyTakeDamaged*/)
+        if (wormBoss != null)
         {
             wormBoss.GetDamage(pivotScaleWeapon.EnergyWeaponDamage);
             ExecuteCommonDamageEffects(other, instantiateExplosion: false);
         }
     }
-
     private void ProcessCreepTrigger(Collider other)
     {
         if(PlayerManager.instance.m_PlayerState.Equals(PlayerState.idle)) return;
         EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
-        if (enemyHeal != null /*&& !isEnergyTakeDamaged*/)
+        if (enemyHeal != null )
         {
             enemyHeal.ReducePlayerHealth(pivotScaleWeapon.EnergyWeaponDamage);
             ExecuteCommonDamageEffects(other, instantiateExplosion: true);
         }
     }
-
    
     private void ExecuteCommonDamageEffects(Collider other, bool instantiateExplosion)
     {
@@ -109,12 +103,6 @@ public class ChildTriggerForwarder : MonoBehaviour
 
         //StartCoroutine(ResetEnergyDamageFlag());
     }
-
-    /// <summary>
-    /// Helper method to attempt to play a ParticleSystem if available on the given GameObject.
-    /// </summary>
-    /// <param name="effectObject">The prefab or instance containing the ParticleSystem component.</param>
-    /// <param name="position">Position to set before playing the particle system.</param>
     private void PlayParticleEffect(GameObject effectObject, Vector3 position)
     {
         if (effectObject != null && effectObject.TryGetComponent<ParticleSystem>(out var particleSystem))
@@ -123,7 +111,6 @@ public class ChildTriggerForwarder : MonoBehaviour
             particleSystem.Play();
         }
         Destroy(effectObject, 1f);
-        
     }
 
     #endregion

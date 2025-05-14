@@ -46,15 +46,13 @@ public class PlayerDialog : MonoBehaviour
             {
                 AudioManager.Instance.PlaySE("HoverSound");
             }
-            if(GameManager.HasInstance)
-            {
-                GameManager.Instance.ShowCursor();
-            }
+            if(GameManager.HasInstance) GameManager.Instance.ShowCursor();
             m_IsPressButtonJ = true;
             SetIsTalkingNPC(true);
-            if (PlayerManager.HasInstance)
+            if (ListenerManager.HasInstance)
             {
-                PlayerManager.instance.isInteractingWithUI = true;
+                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+                ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
             }
         }
     }
@@ -75,14 +73,21 @@ public class PlayerDialog : MonoBehaviour
             m_IsCollisionNpc = false;
         }
     }
+
     private void HandleNPCInteraction()
     {
         if (CameraManager.HasInstance)
         {
             var camera = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
-            if (camera != null)
+            int playerLayer = LayerMask.NameToLayer("Player");
+            int weaponLayer = LayerMask.NameToLayer("Weapon");
+            int fxLayer = LayerMask.NameToLayer("FX");
+
+            int combinedMask = (1 << playerLayer) | (1 << weaponLayer)| (1 << fxLayer);
+            if (camera != null )
             {
                 camera.Priority = 15;
+                Camera.main.cullingMask &= ~combinedMask;
             }
         }
 

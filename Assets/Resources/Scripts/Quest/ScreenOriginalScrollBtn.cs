@@ -53,6 +53,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, true);
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
         if (AudioManager.HasInstance)
         {
@@ -64,10 +65,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
         {
             UIManager.Instance.ShowPopup<PopupScrollMagic>();
         }
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = true;
-        }
+      
         if (GameManager.HasInstance)
         {
             GameManager.Instance.ShowCursor();

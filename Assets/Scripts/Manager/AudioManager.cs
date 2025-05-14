@@ -53,8 +53,7 @@ public class AudioManager : BaseManager<AudioManager>
         if (seDic.ContainsKey(seName))
         {
             AttachSESource.Stop();
-        } 
-            
+        }
     }    
 
     private string nextSEName;

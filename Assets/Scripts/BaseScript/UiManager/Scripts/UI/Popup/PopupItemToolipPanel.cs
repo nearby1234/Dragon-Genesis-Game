@@ -63,7 +63,7 @@ public class PopupItemToolipPanel : BasePopup
     public void ShowTooltipItemUSE(QuestItemSO itemSo)
     {
         ClearBonusLines();
-        m_VerticalLayoutGroup.padding.left = config.paddingLeftItem;
+        //m_VerticalLayoutGroup.padding.left = config.paddingLeftItem;
         // 2) Cập nhật các thông tin cơ bản
         m_ItemName.text = itemSo.questItemData.itemName;
         m_ItemDespri.text = itemSo.questItemData.ItemDespri;
@@ -73,7 +73,7 @@ public class PopupItemToolipPanel : BasePopup
     {
         //ClearBonusLines();
 
-        m_VerticalLayoutGroup.padding.left = config.paddingLeftArmor;
+        //m_VerticalLayoutGroup.padding.left = config.paddingLeftArmor;
         m_ItemName.text = itemSo.questItemData.itemName;
         switch(itemSo.questItemData.typeItem)
         {

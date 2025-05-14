@@ -113,6 +113,10 @@ public class PopupScrollMagic : BasePopup
         {
             GameManager.Instance.HideCursor();
         }
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+        }
         StartCoroutine(DelayHide());
 
     }

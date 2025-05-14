@@ -40,7 +40,7 @@ public class UIManager : BaseManager<UIManager>
     public BasePopup CurPopup => curPopup;
     public BaseNotify CurNotify => curNotify;
 
-    private bool m_isShowCusor;
+  
 
     protected override void Awake()
     {

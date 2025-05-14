@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -44,7 +45,7 @@ public class PopupInventory : BasePopup, IStateUi
 
     private void Start()
     {
-      
+        m_Rectranform.anchoredPosition = m_Offset;
         m_BoxInventoryPrefab = Resources.Load<GameObject>(m_BoxImgPath);
         if (m_BoxInventoryPrefab == null) Debug.LogWarning($"không tim thầy đường dẫn : {m_BoxImgPath}");
 
@@ -76,12 +77,8 @@ public class PopupInventory : BasePopup, IStateUi
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
+            ListenerManager.Instance.Register(ListenType.PU_CHARACTER_IMFORMA, ReceiverEventPUCharacter);
         }
-        //m_Rectranform.anchoredPosition = m_Offset;
-
-        Debug.Log($"StateUi : {StateUi}");
-        // Thêm các item reward vào các slot trống của inventory
-        //AddItems(m_ImageIconList, listItemInventory);
     }
 
     private void OnDestroy()
@@ -89,6 +86,7 @@ public class PopupInventory : BasePopup, IStateUi
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
+            ListenerManager.Instance.Unregister(ListenType.PU_CHARACTER_IMFORMA, ReceiverEventPUCharacter);
         }
     }
 
@@ -181,19 +179,20 @@ public class PopupInventory : BasePopup, IStateUi
         {
             if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
             {
+               
                 GameManager.Instance.ShowCursor();
+                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
             }
             else
             {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
                 GameManager.Instance.HideCursor();
             }
         }
-
-
-        if (PlayerManager.HasInstance)
-        {
-            PlayerManager.instance.isInteractingWithUI = false;
-        }
+       
        
         if(UIManager.HasInstance)
         {
@@ -215,6 +214,10 @@ public class PopupInventory : BasePopup, IStateUi
     {
         if (value is not List<QuestItemSO> newItems) return;
         AddItems(newItems);
+    }
+    private void ReceiverEventPUCharacter(object value)
+    {
+        m_Rectranform.anchoredPosition = m_PosMove;
     }
     public void SetPositionMove()
     {
