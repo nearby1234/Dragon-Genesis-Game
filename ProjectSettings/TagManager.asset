@@ -12,6 +12,7 @@ TagManager:
   - NPC
   - PAT
   - ScreenBox
+  - BullTank
   layers:
   - Default
   - TransparentFX
@@ -31,7 +32,7 @@ TagManager:
   - PlayerInventory
   - Ignore
   - Weapon
-  - 
+  - BullTank
   - 
   - 
   - 

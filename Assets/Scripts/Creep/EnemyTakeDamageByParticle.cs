@@ -16,7 +16,7 @@ public class EnemyTakeDamageByParticle : MonoBehaviour
                     m_FireBallDamage = dragonFireData.m_EffectDamage;
                     if (other.TryGetComponent<PlayerHeal>(out var playerHeal))
                     {
-                        playerHeal.ReducePlayerHeal(m_FireBallDamage);
+                        playerHeal.ReducePlayerHeal(m_FireBallDamage, TypeCollider.UnKnown);
                         if (AudioManager.HasInstance)
                         {
                             AudioManager.Instance.PlaySE("FireExplosion");

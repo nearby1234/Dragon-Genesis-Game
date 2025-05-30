@@ -7,7 +7,6 @@ public class PlayerHeal : MonoBehaviour
     [SerializeField] private int m_PlayerHealBase; // Giá trị hồi máu cơ bản
     [SerializeField] private int m_PlusHealValue; // Giá trị hồi máu cộng thêm
     [SerializeField] private int m_PlayerMaxHeal; // Máu tối đa của player
-
     [SerializeField] private bool m_IsPlayerDeath;
     public bool m_IsDamaging = false;
     public int PlayerHealValue
@@ -21,6 +20,9 @@ public class PlayerHeal : MonoBehaviour
         }
     }
     public int PlusHealValue => m_PlusHealValue;
+
+    private readonly int hashNameBigHit = Animator.StringToHash("Damage_Front_Big_ver_B");
+    private readonly int hashNameHit = Animator.StringToHash("Damage_Front_Small_ver_A");
 
 
     private void Start()
@@ -44,7 +46,7 @@ public class PlayerHeal : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
         }
     }
-    public void ReducePlayerHeal(int Enemydamage)
+    public void ReducePlayerHeal(int Enemydamage , TypeCollider typeCollider)
     {
         if (m_IsPlayerDeath) return;
         m_PlayerCurrentHeal -= Enemydamage;
@@ -65,6 +67,13 @@ public class PlayerHeal : MonoBehaviour
         }
         else
         {
+            switch(typeCollider)
+            {
+                case TypeCollider.Leg: PlayAnimationBigHit();
+                    break;
+                case TypeCollider.Axe:  PlayAnimationHit();
+                    break;
+            }
             StartCoroutine(ResetDamaging());
         }
     }
@@ -114,6 +123,9 @@ public class PlayerHeal : MonoBehaviour
         UpdateHealUI();
         Debug.Log($"m_PlayerCurrentHeal : {m_PlayerCurrentHeal}");
     }
+
+    public void PlayAnimationBigHit() => PlayerManager.instance.playerAnim.GetAnimator().CrossFade(hashNameBigHit, 0.2f);
+    public void PlayAnimationHit() => PlayerManager.instance.playerAnim.GetAnimator().CrossFade(hashNameHit, 0.2f);
 }
 
 

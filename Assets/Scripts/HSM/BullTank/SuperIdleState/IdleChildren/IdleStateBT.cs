@@ -4,6 +4,7 @@ using UnityEngine;
 public class IdleStateBT : State<BullTankBoss>
 {
     private SuperIdleState parent;
+    private Coroutine m_TimeChangeMoveState;
     public IdleStateBT(BullTankBoss stateMachine,SuperIdleState parent) : base(stateMachine)
     {
         this.parent = parent;
@@ -13,12 +14,18 @@ public class IdleStateBT : State<BullTankBoss>
         base.Enter(); 
         stateMachine.SetSubStateHSM(this);
         stateMachine.Animator.SetBool("Walk", false);
-        stateMachine.StartCoroutine(TimeChangeMoveState());
+        m_TimeChangeMoveState =stateMachine.StartCoroutine(TimeChangeMoveState());
        
     }
     public override void Update()
     {
         base.Update();
+    }
+    public override void Exit()
+    {
+        base.Exit();
+        if(m_TimeChangeMoveState != null)
+            stateMachine.StopCoroutine(m_TimeChangeMoveState);
     }
 
     IEnumerator TimeChangeMoveState()

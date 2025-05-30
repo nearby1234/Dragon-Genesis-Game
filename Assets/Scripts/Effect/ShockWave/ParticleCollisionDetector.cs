@@ -15,13 +15,13 @@ public class ParticleCollisionDetector : MonoBehaviour
         ParticleSystem ps = GetComponent<ParticleSystem>();
 
         // L?y thông tin chi ti?t c?a va ch?m n?u c?n
-        List<ParticleCollisionEvent> collisionEvents = new List<ParticleCollisionEvent>();
-        int numCollisionEvents = ParticlePhysicsExtensions.GetCollisionEvents(ps, other, collisionEvents);
+        List<ParticleCollisionEvent> collisionEvents = new();
+        _ = ParticlePhysicsExtensions.GetCollisionEvents(ps, other, collisionEvents);
 
         // G?i hàm x? lý trong EnemySkill
         if (enemySkill != null)
         {
-            enemySkill.HandleParticleCollision(gameObject, other, collisionEvents);
+            enemySkill.HandleParticleCollision( other, collisionEvents);
         }
     }
 

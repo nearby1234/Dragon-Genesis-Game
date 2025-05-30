@@ -28,8 +28,8 @@ public class AttackAxeStateBT : State<BullTankBoss>
             stateMachine.BullTankAgent.SetDestination(stateMachine.Player.transform.position);
             // Chờ đến khi vào tầm đánh
             yield return new WaitUntil(() =>
-                stateMachine.Distance() &&
-                stateMachine.DistanceWithPlayer() <= stateMachine.m_DistanceAttackSword
+                stateMachine.IsWithin(stateMachine.m_ZoneDetecPlayerDraw) &&
+                stateMachine.GetDistanceToPlayer() <= stateMachine.m_DistanceAttackSword
             );
 
             // Dừng, trigger đòn đánh

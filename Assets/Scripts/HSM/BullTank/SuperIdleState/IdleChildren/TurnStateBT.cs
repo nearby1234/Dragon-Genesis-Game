@@ -16,23 +16,31 @@ public class TurnStateBT : State<BullTankBoss>
         base.Enter();
         Debug.Log($"TurnStateBT enter");
         stateMachine.SetSubStateHSM(this);
-        var agent = stateMachine.BullTankAgent;
-        agent.updateRotation = false;
-        agent.isStopped = true;
+        stateMachine.BullTankAgent.SetDestination(stateMachine.Player.transform.position);
+        stateMachine.EnableAgentPosition(false);
+
     }
     public override void Update()
     {
         base.Update();
         if (stateMachine.Rotation() <= angleThreshold)
         {
-            parent.ChangeChild<ChaseStateBT>();
+            stateMachine.Animator.SetTrigger("Charge");
         }
     }
     public override void Exit()
     {
         base.Exit();
-        stateMachine.BullTankAgent.updatePosition = true;
         stateMachine.BullTankAgent.ResetPath();
-        stateMachine.BullTankAgent.isStopped = false;
+        stateMachine.EnableAgentPosition(true);
+        stateMachine.Animator.ResetTrigger("Charge");
+    }
+    public override void OnAnimationComplete(NameState namState)
+    {
+        base.OnAnimationComplete(namState);
+        if (namState.Equals(NameState.RunStart))
+        {
+            RaiseComplete();
+        }
     }
 }

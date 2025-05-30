@@ -5,7 +5,7 @@ using UnityEngine;
 public class DataManager : BaseManager<DataManager>
 {
     private readonly Dictionary<Type, Dictionary<Enum, ScriptableObject>> enumDataDictionary = new();
-    private Dictionary<ScriptableObject, string> originalDataBackup = new();
+    private readonly Dictionary<ScriptableObject, string> originalDataBackup = new();
 
     private const string pathScriptableObject = "Scripts/SO";
 
@@ -15,16 +15,7 @@ public class DataManager : BaseManager<DataManager>
         LoadAllData();
         //BackupAllData();
     }
-    private void OnDisable()
-    {
-        //RestoreOriginalData();
-    }
 
-    /// <summary>
-    /// Load tất cả các asset Scriptable Object từ folder Resources/Scripts/SO
-    /// Chỉ load những asset implement IEnumKeyed.
-    /// </summary>
-    /// 
     public void LoadAllData()
     {
         // Load tất cả các asset có kiểu ScriptableObject từ folder Resources/ScriptableObjects
@@ -93,7 +84,7 @@ public class DataManager : BaseManager<DataManager>
         }
         return null;
     }
-    private T GetData<T,TEnum>(TEnum key) where T : ScriptableObject , IEnumKeyed<TEnum> where TEnum : Enum
+    public T GetData<T,TEnum>(TEnum key) where T : ScriptableObject , IEnumKeyed<TEnum> where TEnum : Enum
     {
         Type assetType = typeof(T);
         if(enumDataDictionary.TryGetValue(assetType,out Dictionary<Enum,ScriptableObject> subDict))

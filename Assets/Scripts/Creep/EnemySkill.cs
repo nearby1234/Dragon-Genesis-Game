@@ -61,11 +61,11 @@ public class EnemySkill : MonoBehaviour
         fxSpawn[index].SetActive(false);
     }
 
-    public void HandleParticleCollision(GameObject fxObj, GameObject other, List<ParticleCollisionEvent> collisionEvents)
+    public void HandleParticleCollision( GameObject other, List<ParticleCollisionEvent> collisionEvents)
     {
         if(other.CompareTag("Player"))
         {
-            other.GetComponent<PlayerHeal>().ReducePlayerHeal((int)m_damageFireBall * collisionEvents.Count);
+            other.GetComponent<PlayerHeal>().ReducePlayerHeal((int)m_damageFireBall * collisionEvents.Count,TypeCollider.UnKnown);
             if(AudioManager.HasInstance)
             {
                 AudioManager.Instance.PlaySE("FireExplosion");

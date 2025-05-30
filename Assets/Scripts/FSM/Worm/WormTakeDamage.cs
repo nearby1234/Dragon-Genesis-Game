@@ -36,7 +36,7 @@ public class WormTakeDamage : MonoBehaviour
             {
                 if (!m_IsPlayerReceiverDamage && m_WormBoss.CurrenState.Equals(WORMSTATE.ATTACK))
                 {
-                    playerHeal.ReducePlayerHeal((int)m_DamageCurrent);
+                    playerHeal.ReducePlayerHeal((int)m_DamageCurrent, TypeCollider.UnKnown);
                     m_IsPlayerReceiverDamage = true;
                     Vector3 hitPoint = other.ClosestPoint(transform.position);
                     if (EffectManager.HasInstance)

@@ -13,12 +13,18 @@ public class CoolDownStateBT : State<BullTankBoss>
         base.Enter();
         stateMachine.SetSubStateHSM(this);
         stateMachine.Animator.SetTrigger("Idle");
+        stateMachine.Animator.SetBool("Walk",false);
         stateMachine.StartCoroutine(WaitTranferAttackState());
+    }
+    public override void Exit()
+    {
+        stateMachine.Animator.ResetTrigger("Idle");
+        base.Exit();
     }
     private IEnumerator WaitTranferAttackState()
     {
-        yield return new WaitForSeconds(2f);
-        parent.NotifyAttackAxeStateComplete(false);
+        yield return new WaitForSeconds(4f);
+        RaiseComplete();
     }
 
 }

@@ -9,11 +9,18 @@ public class SuperComboState : CompositeState<BullTankBoss>
 
     public SuperComboState(BullTankBoss stateMachine) : base(stateMachine)
     {
-        AddChild(new AwakenStateBT(stateMachine, this));
-        AddChild(new ThrowAxeStateBT(stateMachine, this));
-        AddChild(new CoolDownStateBT(stateMachine, this));
-        AddChild(new AttackAxeStateBT(stateMachine,this));  
-        SetInitial<AwakenStateBT>();
+        var awakenStateBT = new AwakenStateBT(stateMachine, this);
+        var throwAxeStateBT = new ThrowAxeStateBT(stateMachine, this);
+        var coolDownStateBT = new CoolDownStateBT(stateMachine, this);
+        var attackAxeStateBT = new AttackAxeStateBT(stateMachine, this);
+        coolDownStateBT.OnStateComplete += state => ChangeChild<AwakenStateBT>();
+        awakenStateBT.OnStateComplete += state => ChangeChild<AttackAxeStateBT>();
+
+        AddChild(awakenStateBT);
+        AddChild(throwAxeStateBT);
+        AddChild(coolDownStateBT);
+        AddChild(attackAxeStateBT);  
+        SetInitial<CoolDownStateBT>();
     }
     public override void Enter()
     {

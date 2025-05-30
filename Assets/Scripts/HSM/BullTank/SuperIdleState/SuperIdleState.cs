@@ -1,35 +1,41 @@
-using Unity.VisualScripting;
-using UnityEngine;
+
+using System.Diagnostics;
 
 public class SuperIdleState : CompositeState<BullTankBoss>
 {
     private bool _hasDetectedPlayer;
     public SuperIdleState(BullTankBoss stateMachine) : base(stateMachine)
     {
-        AddChild(new MoveStateBT(stateMachine, this));
-        AddChild(new IdleStateBT(stateMachine, this));
-        AddChild(new TurnStateBT(stateMachine, this));
-        AddChild(new ChaseStateBT(stateMachine, this));
+        var moveState = new MoveStateBT(stateMachine, this);
+        var idleState = new IdleStateBT(stateMachine, this);
+        var turnState = new TurnStateBT(stateMachine, this);
+        var chaseState = new ChaseStateBT(stateMachine, this);
+
+        AddTransition<MoveStateBT, TurnStateBT>(() => stateMachine.IsWithin(stateMachine.m_ZoneDetecPlayerDraw));
+        turnState.OnStateComplete += state => ChangeChild<ChaseStateBT>();
+        chaseState.OnStateComplete += state => RaiseComplete();
+
+        AddChild(moveState);
+        AddChild(idleState);
+        AddChild(turnState);
+        AddChild(chaseState);
         SetInitial<MoveStateBT>();
     }
     public override void Enter()
     {
         base.Enter();
         stateMachine.SetSuperStateHSM(this);
-        _hasDetectedPlayer = false;
         
     }
     public override void Update()
     {
-        if (stateMachine.Distance() && !_hasDetectedPlayer)
-        {
-            stateMachine.BullTankAgent.isStopped = true;
-            stateMachine.BullTankAgent.ResetPath();
-            ChangeChild<TurnStateBT>();
-            _hasDetectedPlayer = true;
-            return;   // NGĂT, không gọi sub-state trong frame này
-        }
+        //if(stateMachine.IsWithin(stateMachine.m_ZoneDetecPlayerDraw) && CurrentChild is not TurnStateBT)
+        //{
+        //    ChangeChild<TurnStateBT>();
+        //    return;
+        //}    
         
         base.Update();// = currentchild?.update;
     }
+    
 }

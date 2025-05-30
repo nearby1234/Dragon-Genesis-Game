@@ -11,7 +11,10 @@ using Random = UnityEngine.Random;
 
 public enum StateHSM
 {
+    Unknow,
     Idle,
+    Attack,
+    Combo,
 }
 
 public class BullTankBoss : StateMachine<BullTankBoss>
@@ -21,8 +24,8 @@ public class BullTankBoss : StateMachine<BullTankBoss>
     public string currentSuperState;
 
     [Header("Setting Draw Gizmos")]
-    [SerializeField] private float m_ZoneDetecPlayerDraw;
-    [SerializeField] private float m_ZoneAttackPlayerDraw;
+    public float m_ZoneDetecPlayerDraw;
+    public float m_ZoneAttackPlayerDraw;
 
     [Header("Reference")]
     [SerializeField] private GameObject m_Player;
@@ -37,48 +40,68 @@ public class BullTankBoss : StateMachine<BullTankBoss>
     public float m_SpeedWalk;
     public float m_TimeTranferComboState;
 
-    [Header("Flag Check")]
-    [SerializeField] private bool m_HasCompleteSuperIdleState;
-    [SerializeField] private bool m_HasCompleteSuperAttackState;
-    [SerializeField] private bool m_IsTranferComboState;
+    [Header("Debug/Test")]
+    public bool debugMode = false;
+    public StateHSM debugStateName;
+
 
     // Property
     public Animator Animator => m_Animator;
     public NavMeshAgent BullTankAgent => m_BullTankAgent;
     public GameObject Player => m_Player;
 
-    [Header("Parent State")]
-    private SuperIdleState idleStateComp;
-    private SuperAttackStateBT attackStateComp;
-    private SuperComboState comboStateComp;
     private void Start()
     {
-        idleStateComp = new SuperIdleState(this);
-        attackStateComp = new SuperAttackStateBT(this);
-        comboStateComp = new SuperComboState(this);
-        SetState(idleStateComp);
+        var superIdleState = new SuperIdleState(this);
+        var superAttackState = new SuperAttackStateBT(this);
+        var superComboState = new SuperComboState(this);
+        
+        superIdleState.OnStateComplete += (state) => SetState(superAttackState);
+        superAttackState.OnStateComplete += (state) => SetState(superComboState);
         m_DistanceAttackJump = m_BullTankSO.distanceAttackJump;
         m_DistanceAttackSword = m_BullTankSO.distanceAttackSword;
         m_SpeedWalk = m_BullTankSO.speedWalk;
+        DebugTest();
+        SetState(superIdleState);
     }
     protected override void Update()
     {
-        if(m_HasCompleteSuperIdleState && !m_HasCompleteSuperAttackState && Distance())
-        {
-            SetState(attackStateComp);
-        }
-        if(m_HasCompleteSuperAttackState)
-        {
-            if (!m_IsTranferComboState)
-            {
-                m_Animator.SetTrigger("Idle");
-                StartCoroutine(WaitTranferComboState());
-                return;
-            }
-        }    
+        //if(m_HasCompleteSuperIdleState && !m_HasCompleteSuperAttackState && IsWithin(m_ZoneDetecPlayerDraw))
+        //{
+        //    SetState(new SuperAttackStateBT(this));
+        //}
+        //if(m_HasCompleteSuperAttackState)
+        //{
+        //    if (!m_IsTranferComboState)
+        //    {
+        //        m_Animator.SetTrigger("Idle");
+        //        StartCoroutine(WaitTranferComboState());
+        //        return;
+        //    }
+        //}    
         base.Update();
     }
 
+    public void DebugTest()
+    {
+        if (debugMode && debugStateName != StateHSM.Unknow)
+        {
+            switch (debugStateName)
+            {
+                case StateHSM.Combo:
+                    SetState(new SuperComboState(this));
+                    break;
+                case StateHSM.Attack:
+                    SetState(new SuperAttackStateBT(this));
+                    break;
+                default:
+                    Debug.LogWarning($"Không có State {debugStateName} này");
+                    break;
+            }
+            return;
+        }
+       
+    }
     public Vector3 GetRandomEmergencePosition()
     {
         // Lấy center của surface sang world-space
@@ -109,22 +132,37 @@ public class BullTankBoss : StateMachine<BullTankBoss>
         }
     }
 
-    public bool Distance()
+    public bool IsWithin(float radius) => GetDistanceToPlayer() <= radius;
+    public float GetDistanceToPlayer() => Vector3.Distance(Player.transform.position, transform.position);
+
+    public bool HasArrived()
     {
-        float distance = Vector3.Distance(m_Player.transform.position, this.transform.position);
-        return (distance < m_ZoneDetecPlayerDraw);
+        // 1. Chưa tính xong đường thì chưa xét tiếp
+        if (m_BullTankAgent.pathPending)
+            return false;
+
+        // 2. Path phải được tính xong và thành công
+        if (m_BullTankAgent.pathStatus != NavMeshPathStatus.PathComplete)
+            return false;
+
+        // 3. Agent phải đang có path để theo
+        if (!m_BullTankAgent.hasPath)
+            return false;
+
+        // 4. Khoảng cách còn lại phải <= stoppingDistance
+        if (m_BullTankAgent.remainingDistance > m_BullTankAgent.stoppingDistance)
+            return false;
+
+        // 5. Và agent phải thực sự dừng (velocity gần 0)
+        if (m_BullTankAgent.velocity.sqrMagnitude > 0.1f)
+            return false;
+
+        return true;
     }
-    public float DistanceWithPlayer()
+
+    public bool HasStopDistance()
     {
-        float distance = Vector3.Distance(m_Player.transform.position, this.transform.position);
-        return distance;
-    }
-    public bool IsMoveWayPoint()
-    {
-        return (
-               !m_BullTankAgent.pathPending &&
-                m_BullTankAgent.remainingDistance <= m_BullTankAgent.stoppingDistance &&
-                m_BullTankAgent.velocity.sqrMagnitude < 0.1f);
+        return m_BullTankAgent.remainingDistance <= m_BullTankAgent.stoppingDistance;
     }
     public bool IsRangeAttackPlayer(float range)
     {
@@ -134,7 +172,7 @@ public class BullTankBoss : StateMachine<BullTankBoss>
     public float Rotation()
     {
         // Tính Hướng
-        Vector3 directionToPlayer = (m_Player.transform.position-transform.position).normalized;
+        Vector3 directionToPlayer = (m_Player.transform.position - transform.position).normalized;
         directionToPlayer.y = 0f;
         // Tính Quaternion mục tiêu
         Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
@@ -145,26 +183,13 @@ public class BullTankBoss : StateMachine<BullTankBoss>
         float angel = Quaternion.Angle(transform.rotation, targetRotation);
         return angel;
     }
-    public void SetStateNavmeshAgent(int index = 0,bool IsUpdateRotation = false ,  bool IsUPdatePosition = false)
+    public bool RotateForwardPlayer()
     {
-        switch(index)
-        {
-            case 1:
-                BullTankAgent.updateRotation = IsUpdateRotation;
-                break;
-            case 2:
-                BullTankAgent.updatePosition = IsUPdatePosition;
-                break;
-            case 3:
-                BullTankAgent.updatePosition = IsUPdatePosition;
-                BullTankAgent.updateRotation = IsUpdateRotation;
-                break;
-            default:
-                break;
-        }
-      
-        
+        return Rotation() <= 2f;
     }
+
+    public void EnableAgentRotation(bool v) => BullTankAgent.updateRotation = v;
+    public void EnableAgentPosition(bool v) => BullTankAgent.updatePosition = v;
     public void SetSubStateHSM(object state)
     {
         string name = state.GetType().Name;
@@ -181,14 +206,10 @@ public class BullTankBoss : StateMachine<BullTankBoss>
             currentSuperState = name;
         }
     }
-    public void NotifySuperIdleStateComplete() => m_HasCompleteSuperIdleState = true;
-    public void NotifySuperAttackStateComplete() => m_HasCompleteSuperAttackState = true;
-    private IEnumerator WaitTranferComboState()
+    public void HandleAnimationComplete(NameState NameState)
     {
-        yield return new WaitForSeconds(m_TimeTranferComboState);
-        SetState(comboStateComp);
-        m_IsTranferComboState = true;
-    }    
+        CurrentState?.OnAnimationComplete(NameState);
+    }
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;

@@ -16,6 +16,7 @@ MonoBehaviour:
   favoriteScenesInfos:
   - guid: 99c9720ab356a0642a771bea13969a05
   - guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - guid: 59f20f08412b33242b2f7893fa31df52
   prefabDirectories: []
   prefabDirectoriesInfos:
   - guid: e6abc45dc080dbd438997ee681a8433d

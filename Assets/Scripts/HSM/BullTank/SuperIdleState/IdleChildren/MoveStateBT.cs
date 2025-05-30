@@ -28,9 +28,9 @@ public class MoveStateBT : State<BullTankBoss>
             m_HasDestination = stateMachine.MoveToRandomPosition();
             return;
         }
-        if (stateMachine.IsMoveWayPoint())
+        if (stateMachine.HasArrived())
         {
-            Debug.Log($"stateMachine.IsMoveWayPoint : {stateMachine.IsMoveWayPoint()}");
+            Debug.Log($"stateMachine.IsMoveWayPoint : {stateMachine.HasArrived()}");
             stateMachine.BullTankAgent.isStopped = true;
             stateMachine.BullTankAgent.ResetPath();
             parent.ChangeChild<IdleStateBT>();

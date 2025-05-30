@@ -75,6 +75,7 @@ public enum ListenType
     CLICK_TALK_NPC,
     SEND_POS_SPAWN_PLAYER,
     PU_CHARACTER_IMFORMA,
+    TYPECOLLIDER_CHILD,
 
 
 

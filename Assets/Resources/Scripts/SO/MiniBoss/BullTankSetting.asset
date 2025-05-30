@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 066c5a84b70d3a54cbd7b24d181d3d06, type: 3}
+  m_Name: BullTankSetting
+  m_EditorClassIdentifier: 
+  enemyType: 3
+  WanderRadius: 25
+  SpeedAgent: 0.5
+  SpeedWalk: 0
+  SpeedRun: 5.5
+  RangeAttackJump: 8
+  RangeAttackSword: 6
+  RangeAttackThrow: 15
+  Heal: 100
+  DamageBase: 100
+  percentAttackAxe: 15
+  percentAttackThrowAxe: 0
+  percentAttackJump: 20
+  PercentPhaseSecond: 0
+  PercentPhaseThird: 0
+  rangeFirstPhase: 2
+  rangeSecondPhase: 1
+  rangeThirdPhase: 0.5

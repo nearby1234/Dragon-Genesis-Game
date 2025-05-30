@@ -20,7 +20,7 @@ public class ThrowAxeStateBT : State<BullTankBoss>
     }
     public override void Update()
     {
-        if (stateMachine.Distance() && !m_HasLockedDirection)
+        if (stateMachine.IsWithin(stateMachine.m_ZoneDetecPlayerDraw) && !m_HasLockedDirection)
         {
             stateMachine.Rotation();
 

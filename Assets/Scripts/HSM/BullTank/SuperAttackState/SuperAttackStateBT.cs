@@ -2,12 +2,15 @@ using UnityEngine;
 
 public class SuperAttackStateBT : CompositeState<BullTankBoss>
 {
-    private bool notifyAttackComplete;
-    private bool notifyAttackThrowComplete;
     public SuperAttackStateBT(BullTankBoss stateMachine) : base(stateMachine)
     {
-        AddChild(new AttackStateBT(stateMachine,this));
-        AddChild(new AttackThrowAxeBT(stateMachine,this));
+        var AttackState = new AttackStateBT(stateMachine, this);
+        var AttackThrowAxe = new AttackThrowAxeBT(stateMachine, this);
+
+        AttackState.OnStateComplete += state => ChangeChild<AttackThrowAxeBT>();
+        AttackThrowAxe.OnStateComplete += state => RaiseComplete();
+        AddChild(AttackState);
+        AddChild(AttackThrowAxe);
         SetInitial<AttackStateBT>();
 
     }
@@ -19,26 +22,6 @@ public class SuperAttackStateBT : CompositeState<BullTankBoss>
     }
     public override void Update()
     {
-        if(notifyAttackComplete)
-        {
-            ChangeChild<AttackThrowAxeBT>();
-            //return;
-        }
-        if(notifyAttackThrowComplete)
-        {
-            stateMachine.NotifySuperAttackStateComplete();
-            return;
-        }
-
-       
         base.Update();
-    }
-    public void NotifyAttackStateComplete()
-    {
-        notifyAttackComplete = true;
-    }
-    public void NotifyAttackThrowStateComplete()
-    {
-        notifyAttackThrowComplete = true;
     }
 }

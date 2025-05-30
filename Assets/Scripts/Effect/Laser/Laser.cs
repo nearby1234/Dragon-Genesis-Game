@@ -87,7 +87,7 @@ public class Laser : MonoBehaviour
                     //hit.collider.GetComponent<HS_HittedObject>().TakeDamage(damageOverTime * Time.deltaTime);
                     if (!m_IsReceiverDamageLaser)
                     {
-                        hit.collider.GetComponent<PlayerHeal>().ReducePlayerHeal((int)damageOverTime);
+                        hit.collider.GetComponent<PlayerHeal>().ReducePlayerHeal((int)damageOverTime, TypeCollider.UnKnown);
                         m_IsReceiverDamageLaser = true;
                     }
                 }

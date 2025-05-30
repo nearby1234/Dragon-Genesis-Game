@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -8,11 +9,15 @@ public class WeaponCollision : MonoBehaviour
     [SerializeField] private GameObject m_HitPrehabs;
     [SerializeField] private bool m_IsTakeDamaged;
     [SerializeField] private float m_timer;
+    [SerializeField] private List<string> tagList;
     private void OnTriggerEnter(Collider other)
     {
-        // Ch? x? lý n?u va ch?m v?i enemy ki?u Creep ho?c Boss
-        if (!other.gameObject.CompareTag("Creep") && !other.gameObject.CompareTag("Boss"))
-            return;
+        string nameTag = other.gameObject.tag;
+        if (!tagList.Contains(nameTag)) return;
+
+        //// Ch? x? lý n?u va ch?m v?i enemy ki?u Creep ho?c Boss
+        //if (!other.gameObject.CompareTag("Creep") && !other.gameObject.CompareTag("Boss"))
+        //    return;
 
         // N?u player ?ang ? tr?ng thái idle thì không gây damage
         if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle))
@@ -32,66 +37,78 @@ public class WeaponCollision : MonoBehaviour
             Debug.Log($"damage : {damage}");
             Debug.Log($"bonus :{bonus}");
         }
-        else
-        {
-            Debug.Log($"Heavyattack :{PlayerManager.instance.playerDamage.Heavyattack}");
-        }
 
-        if (other.gameObject.CompareTag("Creep"))
+        //if (other.gameObject.CompareTag("Creep"))
+        //{
+
+        //}
+        //else if (other.gameObject.CompareTag("Boss"))
+        //{
+        //    if (other.TryGetComponent<WormBoss>(out var wormBoss))
+        //    {
+        //        wormBoss.GetDamage(damage);
+        //        ShowDamageText(1, other, damage);
+
+
+        //        CameraManager.Instance.ShakeCamera();
+        //        if (AudioManager.HasInstance)
+        //        {
+        //            AudioManager.Instance.PlaySE("WormBossHit");
+        //            AudioManager.Instance.PlaySE("attaccolidersound");
+
+        //        }
+        //    }
+        //}
+
+        switch (other.gameObject.tag)
         {
-            EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
-            if (enemyHeal != null)
-            {
-                enemyHeal.ReducePlayerHealth(damage);
-                if (EffectManager.HasInstance)
+            case "Creep":
                 {
-
-                    Vector3 closepoint = other.ClosestPoint(other.transform.position);
-                    GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
-
-                    textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
-                    if (damageText != null)
+                    EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
+                    if (enemyHeal != null)
                     {
-                        damageText.ChangeTextDamage(damage, closepoint);
+                        enemyHeal.ReducePlayerHealth(damage);
+                    }
+                    ShowDamageText(0, other, damage);
+                    CameraManager.Instance.ShakeCamera();
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE("attaccolidersound");
                     }
                 }
-                CameraManager.Instance.ShakeCamera();
-                if (AudioManager.HasInstance)
+                break;
+            case "Boss":
                 {
-                    AudioManager.Instance.PlaySE("attaccolidersound");
-                }
-            }
-        }
-        else if (other.gameObject.CompareTag("Boss"))
-        {
-            if (other.TryGetComponent<WormBoss>(out var wormBoss))
-            {
-                wormBoss.GetDamage(damage);
-                if (EffectManager.HasInstance)
-                {
-                    Vector3 closepoint = other.ClosestPoint(other.transform.position);
-                    Vector3 newClosePoint = new Vector3(closepoint.x, closepoint.y, closepoint.z - 1);
-                    GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), other.transform.position, other.transform.rotation);
-                    textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
-                    if (damageText != null)
+                    if (other.TryGetComponent<WormBoss>(out var wormBoss))
                     {
-                        damageText.ChangeTextDamage(damage, newClosePoint);
+                        wormBoss.GetDamage(damage);
+                    }
+                    ShowDamageText(1, other, damage);
+                    CameraManager.Instance.ShakeCamera();
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE("WormBossHit");
+                        AudioManager.Instance.PlaySE("attaccolidersound");
+
                     }
                 }
-                CameraManager.Instance.ShakeCamera();
-                if (AudioManager.HasInstance)
+                break;
+            case "BullTank":
                 {
-                    AudioManager.Instance.PlaySE("WormBossHit");
-                    AudioManager.Instance.PlaySE("attaccolidersound");
-
+                    if(other.TryGetComponent<BullTankHeal>(out var bullTankHeal))
+                    {
+                        bullTankHeal.ReduceHeal(damage);
+                    }
+                    ShowDamageText(1, other, damage);
+                    CameraManager.Instance.ShakeCamera();
                 }
-            }
+                break;
+
         }
 
         // ?ánh d?u ?ã gây damage r?i và reset flag sau m?t kho?ng th?i gian nh?t ??nh
         m_IsTakeDamaged = true;
         StartCoroutine(ResetDamageFlag());
-
         SpawnHitPrehabs(other);
     }
 
@@ -106,6 +123,20 @@ public class WeaponCollision : MonoBehaviour
     {
         yield return new WaitForSeconds(m_timer);
         m_IsTakeDamaged = false;
+    }
+    private void ShowDamageText(int offSetPosZ, Collider collider, int damage)
+    {
+        if (EffectManager.HasInstance)
+        {
+            Vector3 closepoint = collider.ClosestPoint(collider.transform.position);
+            Vector3 newClosePoint = new(closepoint.x, closepoint.y, closepoint.z - offSetPosZ);
+            GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), collider.transform.position, collider.transform.rotation);
+            textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
+            if (damageText != null)
+            {
+                damageText.ChangeTextDamage(damage, newClosePoint);
+            }
+        }
     }
 
 }

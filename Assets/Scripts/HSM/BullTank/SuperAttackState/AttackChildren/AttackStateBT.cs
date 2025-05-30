@@ -4,9 +4,7 @@ using UnityEngine;
 public class AttackStateBT : State<BullTankBoss>
 {
     private SuperAttackStateBT parent;
-    private float m_angelThreshhold = 2f;
     private bool m_IsAttack;
-    private bool m_IsRun;
 
     public AttackStateBT(BullTankBoss stateMachine, SuperAttackStateBT parent) : base(stateMachine)
     {
@@ -16,64 +14,51 @@ public class AttackStateBT : State<BullTankBoss>
     {
         base.Enter();
         stateMachine.SetSubStateHSM(this);
-        stateMachine.BullTankAgent.updateRotation = false;
+        stateMachine.EnableAgentRotation(false);
+        //stateMachine.BullTankAgent.SetDestination(stateMachine.Player.transform.position);
         stateMachine.BullTankAgent.stoppingDistance = stateMachine.m_DistanceAttackSword;
-        stateMachine.Animator.SetTrigger("WalkIdle");
+        //stateMachine.Animator.SetTrigger("RunAttack");
 
     }
     public override void Update()
     {
-        stateMachine.Rotation();
-        if ((stateMachine.Rotation() > m_angelThreshhold)) return;
-        if (stateMachine.DistanceWithPlayer() <= stateMachine.BullTankAgent.stoppingDistance)
+        if (m_IsAttack) return;
+        if (stateMachine.GetDistanceToPlayer()<= stateMachine.m_DistanceAttackSword)
         {
-            if (!m_IsAttack)
+            stateMachine.Rotation();
+            stateMachine.Animator.SetTrigger("WalkRotate");
+            if (stateMachine.RotateForwardPlayer())
             {
-                stateMachine.BullTankAgent.isStopped = true;
-                stateMachine.BullTankAgent.ResetPath();
-                if (!m_IsRun)
-                {
-                    stateMachine.Animator.SetTrigger("AttackSword");
-                }
-                else
-                {
-                    stateMachine.Animator.SetBool("Run", false);
-                }
-                m_IsAttack = true;
-                stateMachine.StartCoroutine(WaitAttackPlay());
+                stateMachine.Animator.SetTrigger("AttackSword");
             }
         }
         else
         {
-            if (!m_IsRun)
+            stateMachine.EnableAgentRotation(true);
+            stateMachine.Animator.SetTrigger("RunAttack");
+            stateMachine.BullTankAgent.SetDestination(stateMachine.Player.transform.position);
+            if(stateMachine.HasStopDistance())
             {
-                stateMachine.BullTankAgent.SetDestination(stateMachine.Player.transform.position);
-                stateMachine.BullTankAgent.updateRotation = true;
-                stateMachine.BullTankAgent.updatePosition = true;
-                stateMachine.Animator.SetBool("Run", true);
-                if (stateMachine.DistanceWithPlayer() <= stateMachine.BullTankAgent.stoppingDistance)
-                {
-                    stateMachine.Animator.SetBool("Run", false);
-                }
-                m_IsRun = true;
-            }
+                stateMachine.Animator.SetTrigger("AttackSword");
+            }    
         }
+
         base.Update();
     }
     public override void Exit()
     {
         base.Exit();
         stateMachine.Animator.ResetTrigger("AttackSword");
-        stateMachine.Animator.ResetTrigger("WalkIdle");
+        stateMachine.Animator.ResetTrigger("RunAttack");
+        stateMachine.Animator.ResetTrigger("WalkRotate");
+        stateMachine.BullTankAgent.ResetPath();
     }
-    IEnumerator WaitAttackPlay()
+    public override void OnAnimationComplete(NameState nameState)
     {
-        yield return new WaitUntil(() => stateMachine.Animator.GetCurrentAnimatorStateInfo(0).IsName("Attack_01"));
-        yield return new WaitUntil(() =>
+        base.OnAnimationComplete(nameState);
+        if (nameState.Equals(NameState.Attack01Axe))
         {
-            stateMachine.Animator.GetCurrentAnimatorStateInfo(0);
-            return (stateMachine.Animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f);
-        });
-        parent.NotifyAttackStateComplete();
+            RaiseComplete();
+        }
     }
 }

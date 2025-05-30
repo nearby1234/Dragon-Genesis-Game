@@ -23,7 +23,7 @@ public class EnemyCollision : MonoBehaviour
         {
             if (PlayerManager.instance.playerHeal.m_IsDamaging == false)
             {
-                PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage);
+                PlayerManager.instance.playerHeal.ReducePlayerHeal(m_EnemyDamage , TypeCollider.UnKnown);
                 if(AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("PlayerHit");
