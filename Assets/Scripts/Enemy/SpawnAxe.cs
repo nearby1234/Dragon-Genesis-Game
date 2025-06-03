@@ -13,6 +13,7 @@ public class SpawnAxe : MonoBehaviour
     [SerializeField] private float axeSpeed = 10f;
     [SerializeField] private float zSpinSpeed = 10f;
     [SerializeField] private float SpeedAngle = 10f;
+    [SerializeField] private float posY;
     [SerializeField] private Vector3 boxHalfExtents = new(1f, 1f, 1f);
     [SerializeField] private LayerMask layerMask;
 
@@ -21,7 +22,6 @@ public class SpawnAxe : MonoBehaviour
     private readonly Queue<GameObject> pool = new();
     private readonly List<GameObject> activeAxes = new();
     public bool m_IsThrow;
-    public float dist;
 
     private void Start()
     {
@@ -30,18 +30,18 @@ public class SpawnAxe : MonoBehaviour
  
     private IEnumerator SpawnCircleAxes()
     {
-        // Chờ tới khi rìu gốc đủ gần player
-        while (true)
-        {
-            dist = Vector3.Distance( Player.transform.position, axePrefab.transform.position);
-            Collider[] collider = Physics.OverlapBox(axePrefab.transform.position, boxHalfExtents,Quaternion.identity, layerMask);
-            if(collider.Length >0)
-                break;
-            yield return null; // chờ frame tiếp
-        }
+        //// Chờ tới khi rìu gốc đủ gần player
+        //while (true)
+        //{
+        //    Collider[] collider = Physics.OverlapBox(axePrefab.transform.position, boxHalfExtents,Quaternion.identity, layerMask);
+        //    if(collider.Length >0)
+        //        break;
+        //    yield return null; // chờ frame tiếp
+        //}
 
         // Lấy vị trí trung tâm từ rìu ban đầu
-        Vector3 center = axePrefab.transform.position;
+        //Vector3 center = axePrefab.transform.position;
+        Vector3 center = transform.position + transform.up * posY;
 
         // Spawn circleCount rìu tỏa đều 360°
         for (int i = 0; i < circleCount; i++)
@@ -61,6 +61,10 @@ public class SpawnAxe : MonoBehaviour
                 if(clone.TryGetComponent<ParticleSystem>(out var particles))
                 {
                     particles.Play();
+                }
+                if (clone.TryGetComponent<ChildHitBox>(out var childBoxes))
+                {
+                    childBoxes.TypeCollider = TypeCollider.ThrowAxeFx;
                 }
                 if (clone.TryGetComponent<Rigidbody>(out var rb))
                 {

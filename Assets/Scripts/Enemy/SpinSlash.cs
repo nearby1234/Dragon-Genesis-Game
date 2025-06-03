@@ -37,6 +37,16 @@ public class SpinSlash : MonoBehaviour
             if (obj.TryGetComponent<Projectile>(out var projectile))
             {
                 projectile.Fire();
+                //if(AudioManager.HasInstance)
+                //{
+                //    AudioManager.Instance.PlaySE("SFX-Spell-02-Earth_wav");
+                //}
+                if (ListenerManager.HasInstance)
+                {
+                    string nameSound = "SFX-Spell-03-Earth_wav";
+                    ListenerManager.Instance.BroadCast(ListenType.PLAYSOUNDSE_BOSSBULLTANK, nameSound);
+                }
+
             }
             Destroy(obj,3f);
         }

@@ -73,6 +73,10 @@ public class PlayerHeal : MonoBehaviour
                     break;
                 case TypeCollider.Axe:  PlayAnimationHit();
                     break;
+                case TypeCollider.ThrowAxe: PlayAnimationHit();
+                    break;
+                case TypeCollider.ThrowAxeFx:  PlayAnimationHit();
+                    break;
             }
             StartCoroutine(ResetDamaging());
         }

@@ -16507,26 +16507,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1334056833}
     m_Modifications:
     - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
-      propertyPath: TriggerModule.exit
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
-      propertyPath: TriggerModule.enter
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
-      propertyPath: TriggerModule.inside
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
-      propertyPath: TriggerModule.outside
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
-      propertyPath: TriggerModule.colliderQueryMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2910394921703884674, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
+      propertyPath: 'TriggerModule.primitives.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4283042856818539599}
+    - target: {fileID: 3167798744925414227, guid: b39b75ad891674040ad559ec0c51a8bf, type: 3}
       propertyPath: 'TriggerModule.primitives.Array.data[0]'
       value: 
       objectReference: {fileID: 4283042856818539599}
@@ -31740,8 +31724,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6821260705300234406, guid: b3d3ae993ae52bf408078495584b054f, type: 3}
+      propertyPath: TriggerModule.enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821260705300234406, guid: b3d3ae993ae52bf408078495584b054f, type: 3}
       propertyPath: TriggerModule.outside
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6821260705300234406, guid: b3d3ae993ae52bf408078495584b054f, type: 3}
+      propertyPath: CollisionModule.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6821260705300234406, guid: b3d3ae993ae52bf408078495584b054f, type: 3}
       propertyPath: TriggerModule.primitives.Array.size

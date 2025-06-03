@@ -25,6 +25,7 @@ public class AudioManager : BaseManager<AudioManager>
     private Dictionary<string, AudioClip> bgmDic = new();
     [ShowInInspector]
     private Dictionary<string, AudioClip> seDic = new();
+    public Dictionary<string, AudioClip> SeDic => seDic;
 
     protected override void Awake()
     {

@@ -101,6 +101,12 @@ public class WeaponCollision : MonoBehaviour
                     }
                     ShowDamageText(1, other, damage);
                     CameraManager.Instance.ShakeCamera();
+                    if (AudioManager.HasInstance)
+                    {
+                        AudioManager.Instance.PlaySE("BullTankHit");
+                        AudioManager.Instance.PlaySE("attaccolidersound");
+
+                    }
                 }
                 break;
 

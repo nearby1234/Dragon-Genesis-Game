@@ -8,6 +8,9 @@ public enum TypeCollider
     Leg,
     Axe,
     AxeFX,
+    ThrowAxe,
+    ThrowAxeFx,
+    JumpFx,
 }
 public enum BullTankState
 {
@@ -23,6 +26,7 @@ public class BullTankDamage : MonoBehaviour
     [SerializeField] private BehaviorTreeSO bullTankSetting;
     [SerializeField] private float DamageBase;
     [SerializeField] private BullTankState bullTankState;
+    [SerializeField] private ChildHitBox throwAxeHitBox;
     private bool IsAttackJump;
     private bool IsAttackAxe;
 
@@ -33,10 +37,19 @@ public class BullTankDamage : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.TYPECOLLIDER_CHILD, OnChildHit);
+            ListenerManager.Instance.Register(ListenType.PARTICLE_TRIGGER, OnPartilceHit);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.TYPECOLLIDER_CHILD, OnChildHit);
+            ListenerManager.Instance.Unregister(ListenType.PARTICLE_TRIGGER, OnPartilceHit);
         }
     }
 
-    public void OnChildHit(object value)
+    private void OnChildHit(object value)
     {
         if (value != null)
         {
@@ -48,14 +61,12 @@ public class BullTankDamage : MonoBehaviour
                     case TypeCollider.Leg:
                         {
                             float damageLeg = CaculateDamage(bullTankSetting.percentAttackJump);
-                            
+
                             if (playerHeal != null && bullTankState == BullTankState.Jump)
                             {
                                 if (!IsAttackJump)
                                 {
-                                    playerHeal.ReducePlayerHeal((int)damageLeg, TypeCollider.Leg);
-                                    PlayFxBlood(other);
-                                    if (AudioManager.HasInstance) AudioManager.Instance.PlaySE("PlayerHit");
+                                    HandlerDamageTypeCollider(playerHeal, damageLeg, TypeCollider.Leg, other, "PlayerHit");
                                     IsAttackJump = true;
                                 }
                             }
@@ -68,7 +79,86 @@ public class BullTankDamage : MonoBehaviour
                             {
                                 if (!IsAttackAxe)
                                 {
-                                    playerHeal.ReducePlayerHeal((int)damageAxe, TypeCollider.Axe);
+                                    HandlerDamageTypeCollider(playerHeal, damageAxe, TypeCollider.Axe, other, "PlayerHit");
+                                    IsAttackAxe = true;
+                                }
+                            }
+                        }
+                        break;
+                    case TypeCollider.ThrowAxe:
+                        {
+                            float damageAxe = CaculateDamage(bullTankSetting.percentAttackAxe);
+                            if (playerHeal != null && bullTankState == BullTankState.Attack)
+                            {
+                                if (!IsAttackAxe)
+                                {
+                                    HandlerDamageTypeCollider(playerHeal, damageAxe, TypeCollider.ThrowAxe, other, "PlayerHit");
+                                    if(AudioManager.HasInstance)
+                                    {
+                                        AudioManager.Instance.PlaySE("ThrowAxeHit");
+                                    }
+                                    IsAttackAxe = true;
+
+                                }
+                            }
+                        }
+                        break;
+                    case TypeCollider.ThrowAxeFx:
+                        {
+                            IsAttackAxe = false;
+                            float damageAxe = CaculateDamage(bullTankSetting.percentAttackAxe);
+                            if (playerHeal != null)
+                            {
+                                if (!IsAttackAxe)
+                                {
+                                    HandlerDamageTypeCollider(playerHeal, damageAxe, TypeCollider.ThrowAxeFx, other, "PlayerHit");
+                                    if (AudioManager.HasInstance)
+                                    {
+                                        AudioManager.Instance.PlaySE("ThrowAxeHit");
+                                    }
+                                    IsAttackAxe = true;
+                                }
+                            }
+                        }
+                        break;
+
+                }
+            }
+        }
+    }
+    private void OnPartilceHit(object value)
+    {
+        if (value !=null)
+        {
+            if (value is (TypeCollider typeCollider,GameObject other))
+            {
+                Debug.Log("Da vao v�y");
+                PlayerHeal playerHeal = other.GetComponent<PlayerHeal>();
+                switch (typeCollider)
+                {
+                    case TypeCollider.JumpFx:
+                        {
+                            IsAttackJump = false;
+                            float damageJumpFx = CaculateDamage(bullTankSetting.percentAttackJump);
+                            if (playerHeal != null)
+                            {
+                                if (!IsAttackJump)
+                                {
+                                    HandlerDamageTypeCollider(playerHeal, damageJumpFx, TypeCollider.Leg, other, "PlayerHit");
+                                    IsAttackJump = true;
+                                }
+                            }
+                        }
+                        break;
+                    case TypeCollider.AxeFX:
+                        {
+                            IsAttackAxe = false;
+                            float damageAxeFx = CaculateDamage(bullTankSetting.percentAttackAxe);
+                            if (playerHeal != null)
+                            {
+                                if (!IsAttackAxe)
+                                {
+                                    playerHeal.ReducePlayerHeal((int)damageAxeFx, TypeCollider.Leg);
                                     PlayFxBlood(other);
                                     if (AudioManager.HasInstance) AudioManager.Instance.PlaySE("PlayerHit");
                                     IsAttackAxe = true;
@@ -76,9 +166,22 @@ public class BullTankDamage : MonoBehaviour
                             }
                         }
                         break;
-                }
+                }    
             }
-        }
+        }    
+    }    
+
+    private void HandlerDamageTypeCollider(PlayerHeal playerHeal, float damage, TypeCollider typecollider, Collider collider, string nameSoundSE)
+    {
+        playerHeal.ReducePlayerHeal((int)damage, typecollider);
+        PlayFxBlood(collider);
+        if (AudioManager.HasInstance) AudioManager.Instance.PlaySE(nameSoundSE);
+    }
+    private void HandlerDamageTypeCollider(PlayerHeal playerHeal, float damage, TypeCollider typecollider, GameObject obj, string nameSoundSE)
+    {
+        playerHeal.ReducePlayerHeal((int)damage, typecollider);
+        PlayFxBlood(GetComponent<Collider>());
+        if (AudioManager.HasInstance) AudioManager.Instance.PlaySE(nameSoundSE);
     }
 
     private float CaculateDamage(float percentDamage)
@@ -91,11 +194,10 @@ public class BullTankDamage : MonoBehaviour
     {
         this.bullTankState = bullTankState;
     }
-   
-
+    public void SetTypeCollider(TypeCollider typeCollider) => throwAxeHitBox.TypeCollider = typeCollider;
     public void SetStateAttackJumpFlag() => IsAttackJump = false;
     public void SetStateAttackAxeFlag() => IsAttackAxe = false;
-  
+
     private void PlayFxBlood(Collider collider)
     {
         GameObject bloodPrefabs;
@@ -107,4 +209,15 @@ public class BullTankDamage : MonoBehaviour
             Destroy(obj, 2f);
         }
     }
+    private void PlayFxBlood(GameObject collider)
+    {
+        GameObject bloodPrefabs;
+        if (EffectManager.HasInstance)
+        {
+            bloodPrefabs = EffectManager.Instance.GetPrefabs("BloodFx");
+            GameObject obj = Instantiate(bloodPrefabs, collider.transform.position, Quaternion.identity);
+            Destroy(obj, 2f);
+        } 
+            
+    }    
 }

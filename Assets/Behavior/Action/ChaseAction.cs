@@ -14,7 +14,7 @@ public partial class ChaseAction : Action
     [SerializeReference] public BlackboardVariable<BehaviorTreeSO> BehaviorTreeSO;
     private NavMeshAgent _nav;
     private Animator animator;
-    private int stringtoHash = Animator.StringToHash("RunStart");
+    private readonly int stringtoHash = Animator.StringToHash("RunStart");
     protected override Status OnStart()
     {
         if (Agent.Value == null) return Status.Failure;
@@ -35,6 +35,7 @@ public partial class ChaseAction : Action
         if (animator != null)
         {
             animator.SetTrigger("ChargeStart");
+            animator.SetTrigger("RunStart");
         }
 
         return Status.Running;
@@ -49,18 +50,18 @@ public partial class ChaseAction : Action
             Debug.Log("da het animation RunStart");
             _nav.isStopped = false;
             _nav.updatePosition = true;
-        }    
-       
+        }
+
         // 1) N?u path ch?a s?n sàng ? ti?p t?c ch?y
         if (_nav.pathPending || !_nav.hasPath)
             return Status.Running;
 
-        // 2) Ki?m tra agent có trên NavMesh không
-        if (!_nav.isOnNavMesh)
-        {
-            Debug.LogError("Agent is not on a NavMesh!");
-            return Status.Failure;
-        }
+        //// 2) Ki?m tra agent có trên NavMesh không
+        //if (!_nav.isOnNavMesh)
+        //{
+        //    Debug.LogError("Agent is not on a NavMesh!");
+        //    return Status.Failure;
+        //}
 
         // 3) Bây gi? newRemainingDistance m?i ph?n ánh ?úng
         float remDist = _nav.remainingDistance;
@@ -80,6 +81,8 @@ public partial class ChaseAction : Action
         // Ch? ResetPath khi NavMeshAgent còn active và ?ang on NavMesh
         if (_nav.enabled && _nav.isOnNavMesh && _nav.hasPath)
             _nav.ResetPath();
+        animator.ResetTrigger("ChargeStart");
+        animator.ResetTrigger("RunStart");
     }
 }
 

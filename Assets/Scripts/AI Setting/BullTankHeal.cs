@@ -1,6 +1,14 @@
+using System;
 using Unity.Behavior;
 using UnityEngine;
 using UnityEngine.UI;
+
+public struct DataBullTankBoss
+{
+    public CreepType creepType;
+    public float Heal;
+
+}
 
 public class BullTankHeal : MonoBehaviour
 {
@@ -17,34 +25,50 @@ public class BullTankHeal : MonoBehaviour
 
     public float maxHeal;
     public BehaviorTreeSO bulltankSO;
-    public Slider healSlider;
+    [SerializeField] private CreepType creepType;
+    public CreepType CreepType => creepType;
     private bool m_IsDie;
     private BehaviorGraphAgent graphAgent;
+    public event Action<BehaviorGraphAgent> OnActionAgent;
+
 
     private void Start()
     {
         maxHeal = bulltankSO.Heal;
         heal = maxHeal;
-        healSlider.maxValue = heal;
-        healSlider.value = heal;
+        if(ListenerManager.HasInstance)
+        {
+            DataBullTankBoss dataBull = new DataBullTankBoss()
+            {
+                creepType = this.creepType,
+                Heal = heal,
+            };
+            ListenerManager.Instance.BroadCast(ListenType.BOSSTYPE_SEND_HEAL_VALUE, dataBull);
+        }    
         graphAgent = GetComponent<BehaviorGraphAgent>();
         if (graphAgent != null)
         {
+            OnActionAgent?.Invoke(graphAgent);
             graphAgent.SetVariableValue<float>("BullTankHeal", Heal);
         }
-    }
-    private void RotationSlider()
-    {
-        Vector3 dir = (Camera.main.transform.position - healSlider.transform.position).normalized;
-        Quaternion lookRotation = Quaternion.LookRotation(dir);
-        healSlider.transform.rotation = lookRotation;
-
     }
 
     public void ReduceHeal(float damage)
     {
+
         Heal -= damage;
-        healSlider.value = Heal;
+        //healSlider.value = Heal;
+        if (ListenerManager.HasInstance)
+        {
+            DataBullTankBoss data = new DataBullTankBoss
+            {
+                creepType = this.creepType,
+                Heal = this.Heal
+            };
+
+            ListenerManager.Instance.BroadCast(ListenType.BOSSTYPE_UPDATE_HEAL_VALUE, data);
+        } 
+            
         if (graphAgent != null)
         {
             if (graphAgent.GetVariable<bool>("IsWait", out BlackboardVariable<bool> IsWait))
@@ -53,6 +77,7 @@ public class BullTankHeal : MonoBehaviour
 
             graphAgent.SetVariableValue<bool>("IsHit", true);
             graphAgent.SetVariableValue<float>("BullTankHeal", Heal);
+            OnActionAgent?.Invoke(graphAgent);
         }
         if (m_IsDie) return;
         if (Heal <= 0)

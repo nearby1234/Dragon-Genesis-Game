@@ -12,17 +12,22 @@ public partial class PlayParticleSystemAction : Action
 
     protected override Status OnStart()
     {
-        if(ParticleSystem.Value == null) return Status.Failure;
+        if (ParticleSystem.Value == null) return Status.Failure;
         ParticleSystem.Value.gameObject.SetActive(true);
-        if(ParticleSystem.Value.isPlaying)
+        if (ParticleSystem.Value.isPlaying)
         {
             ParticleSystem.Value.Stop();
             ParticleSystem.Value.Play();
             Debug.Log($"Play {ParticleSystem.Value.name} axxe");
             return Status.Success;
-        }    
+        }
+        else
+        {
+            Debug.Log($"Else Play {ParticleSystem.Value.name} axxe");
+            ParticleSystem.Value.Play();
+        }
         return Status.Running;
     }
-  
+
 }
 

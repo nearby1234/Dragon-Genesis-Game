@@ -17,7 +17,7 @@ public class SpawnAxeModel : MonoBehaviour
 
     public void SpawnAxe()
     {
-      
+
         Vector3 spawnPos = m_ParentAxe.position + AxePos;
         spawnPos.x += GetRandomYOffsetByPhase();
         Quaternion spawnRot = m_ParentAxe.rotation;
@@ -61,8 +61,25 @@ public class SpawnAxeModel : MonoBehaviour
             Debug.LogWarning("Không tìm thấy biến 'PhaseStateBoss' trên Blackboard");
         }
         return 0f;
-       
+
     }
     public void HideAxe() => m_AxePrefabs.SetActive(false);
-    public void ShowAxe() => m_AxePrefabs.SetActive(true);
+    public void ShowAxe()
+    {
+        m_AxePrefabs.SetActive(true);
+       
+        if (graphAgent.BlackboardReference
+       .GetVariable<PhaseState>("PhaseStateBoss", out var bbVar))
+        {
+            PhaseState phaseState = bbVar.Value;
+            if(phaseState == PhaseState.Third)
+            {
+                ParticleSystem particleSystem = m_AxePrefabs.GetComponent<ParticleSystem>();
+                if (particleSystem != null)
+                {
+                    particleSystem.Play();
+                }
+            } 
+        }    
+    }
 }

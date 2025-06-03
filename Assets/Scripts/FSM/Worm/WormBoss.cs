@@ -187,8 +187,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
     public void MoveToRandomPosition()
     {
         Vector3 randomPoint = GetRandomEmergencePosition();
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 5f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, 5f, NavMesh.AllAreas))
         {
             m_NavmeshAgent.stoppingDistance = 0;
             m_NavmeshAgent.Warp(hit.position);

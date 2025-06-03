@@ -13,7 +13,8 @@ public class PlayerManager : BaseManager<PlayerManager>
     public enum PlayerState
     {
         idle,
-        attack
+        attack,
+        hit,
     }
     public static PlayerManager instance;
 
@@ -82,23 +83,6 @@ public class PlayerManager : BaseManager<PlayerManager>
     // Update is called once per frame
     void Update()
     {
-        //if (/*EventSystem.current.IsPointerOverGameObject() ||*/isInteractingWithUI)
-        //{
-        //    playerDamage.DegreeEventClickMouse();
-        //    if (CameraManager.HasInstance)
-        //    {
-        //        CameraManager.Instance.SetActiveInputAxisController(false);
-        //    }
-        //    return;
-        //}
-        //else
-        //{
-        //    playerDamage.RegisterEventAttack();
-        //    if (CameraManager.HasInstance)
-        //    {
-        //        CameraManager.Instance.SetActiveInputAxisController(true);
-        //    }
-        //}
         switch (m_PlayerState)
         {
             case PlayerState.idle:
@@ -195,14 +179,9 @@ public class PlayerManager : BaseManager<PlayerManager>
         //playerDamage.Attack();
     }
 
-    //IEnumerator DelayHideAnimator()
-    //{
-    //    yield return new WaitForSeconds(3f);
-    //    playerAnim.GetAnimator().enabled = false;
-    //}
+    
     private IEnumerator DelayShowLosePopup()
     {
-        Debug.Log("vao day tiep");
         yield return new WaitForSeconds(3f);
         // Nếu đã hủy từ trước, dừng luôn
         if (m_CancelLosePopup)
