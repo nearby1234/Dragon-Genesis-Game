@@ -38,28 +38,6 @@ public class WeaponCollision : MonoBehaviour
             Debug.Log($"bonus :{bonus}");
         }
 
-        //if (other.gameObject.CompareTag("Creep"))
-        //{
-
-        //}
-        //else if (other.gameObject.CompareTag("Boss"))
-        //{
-        //    if (other.TryGetComponent<WormBoss>(out var wormBoss))
-        //    {
-        //        wormBoss.GetDamage(damage);
-        //        ShowDamageText(1, other, damage);
-
-
-        //        CameraManager.Instance.ShakeCamera();
-        //        if (AudioManager.HasInstance)
-        //        {
-        //            AudioManager.Instance.PlaySE("WormBossHit");
-        //            AudioManager.Instance.PlaySE("attaccolidersound");
-
-        //        }
-        //    }
-        //}
-
         switch (other.gameObject.tag)
         {
             case "Creep":
@@ -99,13 +77,12 @@ public class WeaponCollision : MonoBehaviour
                     {
                         bullTankHeal.ReduceHeal(damage);
                     }
-                    ShowDamageText(1, other, damage);
+                    ShowDamageText(3, other, damage);
                     CameraManager.Instance.ShakeCamera();
                     if (AudioManager.HasInstance)
                     {
                         AudioManager.Instance.PlaySE("BullTankHit");
                         AudioManager.Instance.PlaySE("attaccolidersound");
-
                     }
                 }
                 break;
@@ -135,7 +112,7 @@ public class WeaponCollision : MonoBehaviour
         if (EffectManager.HasInstance)
         {
             Vector3 closepoint = collider.ClosestPoint(collider.transform.position);
-            Vector3 newClosePoint = new(closepoint.x, closepoint.y, closepoint.z - offSetPosZ);
+            Vector3 newClosePoint = closepoint + Vector3.up * offSetPosZ;
             GameObject textDamage = Instantiate(EffectManager.Instance.GetPrefabs("DamageText"), collider.transform.position, collider.transform.rotation);
             textDamage.TryGetComponent<SetupTextDamage>(out var damageText);
             if (damageText != null)

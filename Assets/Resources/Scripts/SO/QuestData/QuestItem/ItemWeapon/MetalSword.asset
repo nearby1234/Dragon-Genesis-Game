@@ -31,7 +31,7 @@ MonoBehaviour:
     typeWeapon: 1
     m_SwordPrefabs: {fileID: 0}
     m_SwordMesh: {fileID: 0}
-    m_SwordMaterial: {fileID: 11500000, guid: 2c61219a8c88e2b43a6637bc8fe558dc, type: 3}
+    m_SwordMaterial: {fileID: 11500000, guid: f5ff1027825046c46884c3ad73d26610, type: 3}
     DespristionWeapon: 
     typeArmor: 0
     skinnedArmor: {fileID: 0}

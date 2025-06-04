@@ -94,6 +94,14 @@ public class PlayParrticleEarth : MonoBehaviour
         particle.transform.localPosition = Vector3.zero;
     }
 
+    public void ShakeCamera()
+    {
+        if(CameraManager.HasInstance)
+        {
+            CameraManager.Instance.ShakeCamera();
+        }
+    }
+
     private void ReceiverActionEvent(BehaviorGraphAgent agent)
     {
         if (agent != null)
@@ -111,5 +119,7 @@ public class PlayParrticleEarth : MonoBehaviour
             }
         return false;
     }
+
+    
 
 }

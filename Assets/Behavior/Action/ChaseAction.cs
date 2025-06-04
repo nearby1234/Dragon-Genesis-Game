@@ -45,7 +45,7 @@ public partial class ChaseAction : Action
     {
         _nav.SetDestination(Player.Value.transform.position);
         AnimatorStateInfo info = animator.GetCurrentAnimatorStateInfo(0);
-        if(info.shortNameHash == stringtoHash && info.normalizedTime >=0.9f)
+        if(info.shortNameHash == stringtoHash && info.normalizedTime >=0.8f)
         {
             Debug.Log("da het animation RunStart");
             _nav.isStopped = false;
@@ -54,7 +54,10 @@ public partial class ChaseAction : Action
 
         // 1) N?u path ch?a s?n sàng ? ti?p t?c ch?y
         if (_nav.pathPending || !_nav.hasPath)
+        {
+            _nav.SetDestination(Player.Value.transform.position);
             return Status.Running;
+        }
 
         //// 2) Ki?m tra agent có trên NavMesh không
         //if (!_nav.isOnNavMesh)

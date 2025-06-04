@@ -9,24 +9,29 @@ public class SetupTextDamage : MonoBehaviour
 {
     [SerializeField] private TextMeshPro m_DamageTxt;
     [SerializeField] private string m_Color;
-    private const string m_HashCharacter = "#";
-    private const string m_ImagePath = "Image/Sword";
+    private Camera Camera;
 
 
     private void Awake()
     {
         m_DamageTxt = GetComponent<TextMeshPro>();
     }
+    private void Start()
+    {
+        Camera = Camera.main;   
+    }
 
+    private void LateUpdate()
+    {
+        RotateforwarCamera();
+    }
     public void ChangeTextDamage(int damage, Vector3 position)
     {
         if (m_DamageTxt != null)
         {
             m_DamageTxt.color = Random.ColorHSV(0f, 1f, 0.7f, 1f, 0.8f, 1f);
-            //m_DamageTxt.text = $"<color={m_HashCharacter}{m_Color}>{damage}</color>";
             m_DamageTxt.text = damage.ToString();
         }
-        //m_DamageTxt.rectTransform.position = new Vector3(position.x + 2, position.y, position.z);
         m_DamageTxt.rectTransform.position = position;
         PlayAnimation();
     }
@@ -42,6 +47,15 @@ public class SetupTextDamage : MonoBehaviour
 
         // Mờ dần rồi hủy object
         m_DamageTxt.DOFade(0, duration).OnComplete(() => Destroy(gameObject));
+    }
+
+    private void RotateforwarCamera()
+    {
+        if(Camera !=null)
+        {
+            transform.LookAt(Camera.transform);
+            transform.rotation = Quaternion.LookRotation(Camera.transform.forward);
+        }    
     }
 }
 
