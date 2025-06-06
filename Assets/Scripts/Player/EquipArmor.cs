@@ -122,6 +122,7 @@ public class EquipArmor : MonoBehaviour
 
         // 6) Lưu vào dict để quản lý slot này
         equippedArmorDict[slotType] = newSkin.gameObject;
+        newSkin.gameObject.tag = "Player";
     }
 
 

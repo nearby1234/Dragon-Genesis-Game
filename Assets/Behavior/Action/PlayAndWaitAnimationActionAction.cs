@@ -3,8 +3,6 @@ using Unity.Behavior;
 using UnityEngine;
 using Action = Unity.Behavior.Action;
 using Unity.Properties;
-using System.Security.Cryptography.X509Certificates;
-using BuildReportTool;
 
 [Serializable, GeneratePropertyBag]
 [NodeDescription(name: "Wait Play Animation complete", story: "Wait Animation [StateName] complete", category: "Action", id: "f01bd120ee6d181d458c90e7b91c7988")]

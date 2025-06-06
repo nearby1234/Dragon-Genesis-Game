@@ -38,7 +38,7 @@ public class ChildHitBox : MonoBehaviour
 
     IEnumerator SetStateIsCollision()
     {
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.8f);
         IsCollisionParticle = false;
     }
  

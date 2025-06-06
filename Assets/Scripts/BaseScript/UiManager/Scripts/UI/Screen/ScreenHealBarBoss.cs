@@ -1,10 +1,6 @@
 using Microlight.MicroBar;
-using Mono.Cecil.Cil;
 using TMPro;
-using Unity.Behavior;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Animations.Rigging;
 
 public class ScreenHealBarBoss : BaseScreen
 {
@@ -16,14 +12,18 @@ public class ScreenHealBarBoss : BaseScreen
     public override void Show(object data)
     {
         base.Show(data);
+
         if (data != null)
         {
+            if (data is WormAttackData dataWorm)
+            {
+                m_HealBarText.text = dataWorm.nameWorm;
+            }
             if (data is DataBullTank dataBullTank)
             {
                 m_HealBarText.text = dataBullTank.FirstPhase;
-                Debug.Log($"m_HealBarText.text {m_HealBarText.text}");
-                Debug.Log($"dataBullTank.FirstPhase {dataBullTank.FirstPhase}");
             }
+           
         }
 
     }
@@ -91,6 +91,14 @@ public class ScreenHealBarBoss : BaseScreen
                     this.Hide();
                 }
             }
+            if(value is CreepType creepType)
+            {
+                if (creepType == CreepType.BullTank)
+                {
+                    this.Hide();
+                }
+            }
+
         }
     }
     private void ReceiverEventClickMainMenu(object value)
@@ -144,7 +152,8 @@ public class ScreenHealBarBoss : BaseScreen
             {
                 if (dataBullTankBoss.creepType == CreepType.BullTank)
                 {
-                    m_HealBarMicroBar.Initialize(dataBullTankBoss.Heal);
+                    Debug.Log("InitHealBossType");  
+                    m_HealBarMicroBar.Initialize(dataBullTankBoss.m_Heal);
                 }
 
             }
@@ -158,9 +167,8 @@ public class ScreenHealBarBoss : BaseScreen
             {
                 if (dataBullTankBoss.creepType == CreepType.BullTank)
                 {
-                    m_HealBarMicroBar.UpdateBar(dataBullTankBoss.Heal);
+                    m_HealBarMicroBar.UpdateBar(dataBullTankBoss.m_Heal);
                 }
-
             }
         }
     }

@@ -15821,7 +15821,7 @@ MonoBehaviour:
   currentAttackIndex: 0
   m_StopDistance: 0
   detectionRange: 25
-  undergroundDuration: 3
+  undergroundDuration: 2
   wormAttackDatasPhase1:
   - animationName: Attack01
     stopDistance: 4
@@ -15829,24 +15829,28 @@ MonoBehaviour:
     Damage: 0
     damagePercent: 15
     IsUpdateDamaged: 0
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   - animationName: Attack02
     stopDistance: 4
     needFollowUp: 0
     Damage: 0
     damagePercent: 20
     IsUpdateDamaged: 0
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   - animationName: Attack03
     stopDistance: 14
     needFollowUp: 0
     Damage: 0
     damagePercent: 15
     IsUpdateDamaged: 0
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   - animationName: Attack05ST
     stopDistance: 15
     needFollowUp: 1
     Damage: 0
     damagePercent: 35
     IsUpdateDamaged: 0
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   wormAttackDatasPhase2:
   - animationName: Attack04
     stopDistance: 14
@@ -15854,12 +15858,14 @@ MonoBehaviour:
     Damage: 0
     damagePercent: 15
     IsUpdateDamaged: 1
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   - animationName: Attack06ST
     stopDistance: 15
     needFollowUp: 1
     Damage: 0
     damagePercent: 35
     IsUpdateDamaged: 1
+    nameWorm: "S\xE2u H\u1EAFc \xC1m"
   undergroundAnimation: GoUnderground
   emergeAnimation: Emerge
   m_DefaultMaterial: {fileID: 2100000, guid: 00a76c0feb80edd4f9dad922a92f82e3, type: 2}

@@ -21,6 +21,11 @@ public class EnemyStatSO : ScriptableObject , IEnumKeyed<EnemyType>
     public float distanceAttackSword;
     [ShowIf("@creepType == CreepType.BullTank")]
     public float speedWalk;
+    
+    [ShowIf("@creepType == CreepType.WORM")]
+    public float percentHealTranslatePhase; 
+    [ShowIf("@creepType == CreepType.WORM")]
+    public float timeWaitUnderGround;
 
 
 }

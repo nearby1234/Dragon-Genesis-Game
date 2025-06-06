@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class AttackStateBT : State<BullTankBoss>
 {
-    private SuperAttackStateBT parent;
-    private bool m_IsAttack;
+    private readonly SuperAttackStateBT parent;
+    private readonly bool m_IsAttack;
 
     public AttackStateBT(BullTankBoss stateMachine, SuperAttackStateBT parent) : base(stateMachine)
     {

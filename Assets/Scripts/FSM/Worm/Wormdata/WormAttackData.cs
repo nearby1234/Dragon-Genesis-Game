@@ -9,6 +9,7 @@ public class WormAttackData
     public float Damage;
     public int damagePercent;
     public bool IsUpdateDamaged;
+    public string nameWorm = "Sâu Hắc Ám";
 
     public float CalculateDamage(WormBoss boss)
     {

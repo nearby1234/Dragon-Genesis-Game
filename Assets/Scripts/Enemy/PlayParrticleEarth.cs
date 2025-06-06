@@ -9,6 +9,7 @@ public class PlayParrticleEarth : MonoBehaviour
     [SerializeField] private ParticleSystem thunderWeapon;
     [SerializeField] private ParticleSystem trackZone;
     [SerializeField] private ParticleSystem ThunderArmor;
+    [SerializeField] private ParticleSystem AxeFire;
     [SerializeField] private float posZTrackZone;
     [SerializeField] private GameObject earthSkillContainer;
     [SerializeField] private GameObject earthSkillGameObj;
@@ -85,6 +86,10 @@ public class PlayParrticleEarth : MonoBehaviour
         forceJump.gameObject.SetActive(true);
         forceJump.Play();
         StartCoroutine(SetParent(forceJump));
+    }
+    public void HideAxeFire()
+    {
+        AxeFire.Stop();
     }
 
     IEnumerator SetParent(ParticleSystem particle)

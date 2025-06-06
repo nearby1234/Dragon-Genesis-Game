@@ -35,7 +35,7 @@ public class QuestManager : BaseManager<QuestManager>
         set => currentQuest = value;
     }
 
-    private Dictionary<string, int> initialItemCounts = new();
+    private readonly Dictionary<string, int> initialItemCounts = new();
     private void Start()
     {
         m_QuestItemPrefabPath = configSO.m_QuestItemPrefabPath;
@@ -143,7 +143,11 @@ public class QuestManager : BaseManager<QuestManager>
 
         }
         if (CurrentQuest != null) CurrentQuest.isCompleteMission = true;
-        ListenerManager.Instance?.BroadCast(ListenType.UI_SEND_LIST_ITEM_REWARD, clones);
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_SEND_LIST_ITEM_REWARD, clones);
+        }
+       
     }
     private void HandleByType(QuestItemSO item, RectTransform rt, GameObject itemObj)
     {
@@ -183,8 +187,8 @@ public class QuestManager : BaseManager<QuestManager>
           .SetEase(Ease.InBack)
           .OnComplete(() =>
           {
-              PlayerLevelManager.Instance?.AddExp(item.questItemData.CountExp);
-              UIManager.Instance?.SpawnObjectVFXPrefab.PlayAnimationFade();
+              if(PlayerLevelManager.HasInstance) PlayerLevelManager.Instance.AddExp(item.questItemData.CountExp);
+              if(UIManager.HasInstance) UIManager.Instance.SpawnObjectVFXPrefab.PlayAnimationFade();
               Destroy(itemObj);
           });
     }

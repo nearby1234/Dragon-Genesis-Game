@@ -24190,6 +24190,7 @@ MonoBehaviour:
   maxHeal: 0
   bulltankSO: {fileID: 11400000, guid: 726ec5ed1a90bfa40a8238d4acdee092, type: 2}
   creepType: 4
+  animator: {fileID: 0}
 --- !u!114 &6275489625407815444
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24249,6 +24250,7 @@ MonoBehaviour:
   thunderWeapon: {fileID: 2407061826536047608}
   trackZone: {fileID: 508787015268776063}
   ThunderArmor: {fileID: 2648864618043108993}
+  AxeFire: {fileID: 4195239127649720250}
   posZTrackZone: 3
   earthSkillContainer: {fileID: 6682721025453911910}
   earthSkillGameObj: {fileID: 0}

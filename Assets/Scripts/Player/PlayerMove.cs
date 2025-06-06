@@ -261,7 +261,8 @@ public class PlayerMove : MonoBehaviour
 
     private void BroadCastStaminaPercent()
     {
-        ListenerManager.Instance?.BroadCast(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, StaminaConsumptionPercent);
+        if (ListenerManager.HasInstance)
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, StaminaConsumptionPercent);
     }
 
     // Khi nhận được sự kiện liên quan đến trạng thái stamina từ hệ thống (ví dụ hàm tính tiêu hao stamina)
@@ -285,7 +286,6 @@ public class PlayerMove : MonoBehaviour
     {
         if (AudioManager.HasInstance && moveState == MOVESTATE.RUNNING)
         {
-            Debug.Log("[RUN] Play RunSound at volume 0.5");
             AudioManager.Instance.PlayPlayerSound("RunSound", 0.5f);
         }
     }

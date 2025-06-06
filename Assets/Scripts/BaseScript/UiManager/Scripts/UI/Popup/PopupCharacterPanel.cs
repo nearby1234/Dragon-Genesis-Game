@@ -357,9 +357,10 @@ public class PopupCharacterPanel : BasePopup, IStateUi
         {
             if (statPoint.PendingPoint > 0)
                 statPoint.ResetPendingPoints();
+            //else if(statPoint.PendingPoint <= 0) return;
 
-            // Sau khi reset pendingLevel, vẽ lại text (baseLevel + armorBonus)
-            statPoint.RefreshTextAndBroadcast();
+                // Sau khi reset pendingLevel, vẽ lại text (baseLevel + armorBonus)
+                statPoint.RefreshTextAndBroadcast();
         }
 
         // 2) Phục hồi lại tổng điểm user có thể phân bổ

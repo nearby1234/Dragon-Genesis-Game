@@ -115,31 +115,25 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             {
                 if (UIManager.HasInstance)
                 {
-                    UIManager.Instance.ShowScreen<ScreenHealBarBoss>(null, true);
-
+                    WormAttackData data = new();
+                  
+                    UIManager.Instance.ShowScreen<ScreenHealBarBoss>(data, true);
                 }
                 if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlayBGM("CombatMusic", true);
                 }
-
-
                 isShowHealbarBoss = true;
             }
             if (currentState.Equals(WORMSTATE.DIE))
             {
                 if (!isShowWinPopup)
                 {
-
                     StartCoroutine(DelayShowWinPopup());
                     isShowWinPopup = true;
                 }
             }
-
         }
-
-
-
     }
     public override void RequestStateTransition(WORMSTATE requestedState)
     {
@@ -228,8 +222,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         int indexCurrentAttack = Random.Range(0, attackList.Count);
         return indexCurrentAttack;
     }
-
-
     public void GetDamage(int damage)
     {
         // Nếu máu boss đã ≤ 0 thì boss chết.
@@ -251,7 +243,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
 
         // Nếu sau khi trừ damage, máu boss ≤ 50 và boss chưa ở state RAGE,
         // chuyển ngay sang state RAGE (phase 2) và áp dụng damage.
-        if (m_WormBossHeal - damage <= maxHealth * 0.3f && !currentState.Equals(WORMSTATE.RAGE))
+        if (m_WormBossHeal - damage <= maxHealth * (WormAttributeSO.percentHealTranslatePhase/100f) && !currentState.Equals(WORMSTATE.RAGE))
         {
             Debug.Log($"m_WormBossHeal : {(m_WormBossHeal * 0.3)}");
             if (!TryApplyDamage(damage))
@@ -331,11 +323,14 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         {
             var msg = new PopupMessage()
             {
-                popupType = PopupType.WIN,
+                popupType = PopupType.WORM_DIE,
             };
+            if (PlayerManager.HasInstance)
+            {
+                PlayerManager.Instance.m_IsShowingLosePopup = true;
+            }
             UIManager.Instance.ShowPopup<LosePopup>(msg, true);
         }
-
     }
     public void SoundWormBoss(string nameSound)
     {
@@ -360,7 +355,6 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
             m_Colliders[i].enabled = false;
         }
     }
-
     private void ResetWormBossHeal(object value)
     {
         m_WormBossHeal = WormAttributeSO.heal;
@@ -370,16 +364,12 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
         {
             ListenerManager.Instance.BroadCast(ListenType.BOSS_SEND_HEAL_VALUE, m_WormBossHeal);
         }
-
     }
-
-
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, detectionRange);
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, m_StopDistance);
-
     }
 }

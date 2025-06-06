@@ -6,6 +6,8 @@ using UnityEngine.UI;
 public class LosePopup : BasePopup
 {
     [SerializeField] private TextMeshProUGUI m_Title;
+    [SerializeField] private TextMeshProUGUI m_NameBoss;
+    [SerializeField] private TextMeshProUGUI m_NameDefeat;
     [SerializeField] private TextMeshProUGUI m_TitlePlayAgain;
     [SerializeField] private TextMeshProUGUI m_TitleMainMenu;
     [SerializeField] private Button m_PlayAgainBtn;
@@ -27,6 +29,12 @@ public class LosePopup : BasePopup
                 switch (msg.popupType)
                 {
                     case PopupType.LOSE:
+
+                        m_MainMenuBtn.gameObject.SetActive(true);
+                        m_PlayAgainBtn.gameObject.SetActive(true);
+                        m_Title.gameObject.SetActive(true);
+                        m_NameBoss.gameObject.SetActive(false);
+                        m_NameDefeat.gameObject.SetActive(false);
                         m_Title.text = msg.titleLose;
                         m_Title.color = msg.TitleLoseColor;
                         m_ExitBtn.image.color = new(1, 1, 1, 0);
@@ -42,13 +50,17 @@ public class LosePopup : BasePopup
                             }
                             if(ListenerManager.HasInstance)
                             {
+                               
                                 ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
                             }
                             if (AudioManager.HasInstance)
                             {
                                 AudioManager.Instance.PlaySE("ExitSound");
                             }
-
+                            if(PlayerManager.HasInstance)
+                            {
+                                PlayerManager.Instance.m_IsShowingLosePopup = false;
+                            }
                             this.Hide();
                         });
                         m_MainMenuBtn.onClick.RemoveAllListeners();
@@ -67,13 +79,44 @@ public class LosePopup : BasePopup
                             {
                                 AudioManager.Instance.PlaySE("ExitSound");
                             }
+                            if (PlayerManager.HasInstance)
+                            {
+                                PlayerManager.Instance.m_IsShowingLosePopup = false;
+                            }
                             this.Hide();
                         });
 
                         break;
-                    case PopupType.WIN:
+                    case PopupType.WORM_DIE:
                         {
-                            m_Title.text = msg.titleWin;
+                            m_Title.gameObject.SetActive(false);
+                            m_NameBoss.gameObject.SetActive(true);
+                            m_NameDefeat.gameObject.SetActive(true);
+                            m_NameBoss.text = msg.WormDie;
+                            m_NameDefeat.text = msg.nameState;
+                            m_Title.color = msg.TitleWinColor;
+                            m_ExitBtn.image.color = new(1, 1, 1, 0);
+                            m_ExitBtn.interactable = false;
+                            m_MainMenuBtn.gameObject.SetActive(false);
+                            m_PlayAgainBtn.gameObject.SetActive(false);
+                            if (ListenerManager.HasInstance)
+                            {
+                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                            }
+                            if (Cheat.HasInstance)
+                            {
+                                Cheat.Instance.StartParticleOpen();
+                            }
+                            StartCoroutine(HideWinPopup());
+                        }
+                        break;
+                    case PopupType.BULLTANK_DIE:
+                        {
+                            m_Title.gameObject.SetActive(false);
+                            m_NameBoss.gameObject.SetActive(true);
+                            m_NameDefeat.gameObject.SetActive(true);
+                            m_NameBoss.text = msg.BullTankDie;
+                            m_NameDefeat.text = msg.nameState;
                             m_Title.color = msg.TitleWinColor;
                             m_ExitBtn.image.color = new(1, 1, 1, 0);
                             m_ExitBtn.interactable = false;
@@ -88,6 +131,9 @@ public class LosePopup : BasePopup
                         break;
                     case PopupType.PAUSE:
                         {
+                            m_Title.gameObject.SetActive(true);
+                            m_NameBoss.gameObject.SetActive(false);
+                            m_NameDefeat.gameObject.SetActive(false);
                             m_Title.text = msg.titlePause;
                             m_Title.color = msg.TitlePauseColor;
                             m_ExitBtn.image.color = new(1, 1, 1, 0);
@@ -144,9 +190,10 @@ public class LosePopup : BasePopup
     {
         yield return new WaitForSeconds(3f);
         this.Hide();
-        if (Cheat.HasInstance)
+      
+        if (PlayerManager.HasInstance)
         {
-            Cheat.Instance.StartParticleOpen();
+            PlayerManager.Instance.m_IsShowingLosePopup = false;
         }
 
     }

@@ -1086,6 +1086,18 @@ PrefabInstance:
       propertyPath: _SliderPos
       value: 
       objectReference: {fileID: 1983556768}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: questList.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 53602d221030e204984aa6532a8a3f54, type: 2}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 904c44cb4378ed64cab9ff35d38fede1, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

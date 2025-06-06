@@ -10,11 +10,15 @@ public enum PopupType
     WIN,
     LOSE,
     PAUSE,
+    WORM_DIE,
+    BULLTANK_DIE,
 }
 public class PopupMessage
 {
     public PopupType popupType;
-    public string titleWin = "WIN";
+    public string WormDie = "Sâu Hắc Ám";
+    public string BullTankDie = "Hắc Ngưu Ma Vương";
+    public string nameState = "TIÊU DIỆT";
     public string titleLose = "LOSE";
     public string titlePause = "PAUSE";
     public string titlePlayAgain = "Play Again";

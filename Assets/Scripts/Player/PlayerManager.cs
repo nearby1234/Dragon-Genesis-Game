@@ -2,7 +2,6 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
-using UnityEngine.SearchService;
 
 public class PlayerManager : BaseManager<PlayerManager>
 {
@@ -38,6 +37,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     public PlayerStatSO PlayerStatSO => m_PlayerStatSO;
 
     public bool isInteractingWithUI;
+    public bool m_IsShowingLosePopup;
 
     protected override void Awake()
     {
@@ -83,6 +83,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     // Update is called once per frame
     void Update()
     {
+        if (playerHeal.GetPlayerDeath()) return;
         switch (m_PlayerState)
         {
             case PlayerState.idle:
@@ -101,6 +102,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     }
     private void OnEscPerfomed()
     {
+        if (m_IsShowingLosePopup) return;
         var msg = new PopupMessage()
         {
             popupType = PopupType.PAUSE,
@@ -118,7 +120,7 @@ public class PlayerManager : BaseManager<PlayerManager>
                 }
                 Time.timeScale = 1f;
                 //StopAllCoroutines();
-                SceneManager.LoadScene("SampleScene");
+                SceneManager.LoadScene("Menu");
                 GameManager.Instance.GameState = GAMESTATE.MENULOADING;
             },
         };
@@ -200,10 +202,13 @@ public class PlayerManager : BaseManager<PlayerManager>
                     {
                         if (ListenerManager.HasInstance)
                         {
-                            ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_PLAYAGAIN, null);
-                            
-                            
+                            if(GameManager.HasInstance)
+                            {
+                                ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_PLAYAGAIN, null);
+                            }    
+                           
                         }
+                        m_IsShowingLosePopup = true;
                         var fakeLoadingSetting = new FakeLoadingSetting();
                         UIManager.Instance.ShowPopup<PopupFakeLoading>(fakeLoadingSetting, true);
                     },
@@ -212,11 +217,10 @@ public class PlayerManager : BaseManager<PlayerManager>
                         if (ListenerManager.HasInstance)
                         {
                             ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_MAINMENU, null);
-                           
                         }
 
                         //StopAllCoroutines();
-                        SceneManager.LoadScene("SampleScene");
+                        SceneManager.LoadScene("Menu");
                         GameManager.Instance.GameState = GAMESTATE.MENULOADING;
                     },
 

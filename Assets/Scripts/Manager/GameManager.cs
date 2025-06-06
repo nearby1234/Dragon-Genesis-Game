@@ -1,6 +1,6 @@
-using System.Collections;
+
 using UnityEngine;
-using UnityEngineInternal;
+
 
 
 public enum GAMESTATE
@@ -12,11 +12,14 @@ public enum GAMESTATE
     PAUSE,
     GAMEOVER,
 }
+
 public class GameManager : BaseManager<GameManager>
 {
     public Transform m_SpawnPlayer;
 
     [SerializeField] private GAMESTATE m_GameState = GAMESTATE.NONE;
+    [SerializeField] private CreepType creepType;
+   
     public bool m_IsPlaying = false;
 
     
@@ -104,6 +107,7 @@ public class GameManager : BaseManager<GameManager>
         ResetSound();
         //ResetUi();
     }
+   
 
     private void ResetUi()
     {
@@ -132,6 +136,12 @@ public class GameManager : BaseManager<GameManager>
             }    
         }
     }
-
-   
+    public CreepType GetCreepType()
+    {
+        return creepType;
+    }    
+    public void SetCreepType(CreepType type)
+    {
+        creepType = type;
+    }
 }

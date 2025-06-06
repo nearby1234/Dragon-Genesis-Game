@@ -64,7 +64,8 @@ public class QuestMissionOnePanel : BasePopup
     }
     private void OnClickAcceptButton()
     {
-        if(AudioManager.HasInstance)
+        this.Hide();
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ClickSound");
         }
@@ -87,22 +88,8 @@ public class QuestMissionOnePanel : BasePopup
             }
             m_PlayerDialog.SetIsTalkingNPC(false);
         }
-        if (CameraManager.HasInstance)
-        {
-            CinemachineVirtualCameraBase cameraBase = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
-            if (cameraBase != null)
-            {
-                cameraBase.Priority = 8;
-                int playerLayer = LayerMask.NameToLayer("Player");
-                int weaponLayer = LayerMask.NameToLayer("Weapon");
-                int fxLayer = LayerMask.NameToLayer("FX");
-
-                int combinedMask = (1 << playerLayer) | (1 << weaponLayer) | (1 << fxLayer);
-                Camera.main.cullingMask |= combinedMask;
-            }
-            this.Hide();
-        }
-        if(UIManager.HasInstance)
+        SettingCamera();
+        if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
         }
@@ -122,15 +109,8 @@ public class QuestMissionOnePanel : BasePopup
             AudioManager.Instance.PlaySE("ExitSound");
         }
         m_PlayerDialog.SetIsTalkingNPC(false);
-        if (CameraManager.HasInstance)
-        {
-            CinemachineVirtualCameraBase cameraBase = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
-            if (cameraBase != null)
-            {
-                cameraBase.Priority = 8;
-            }
-            this.Hide();
-        }
+       SettingCamera();
+        this.Hide();
     }   
     private void ShowContentMission()
     {
@@ -173,4 +153,21 @@ public class QuestMissionOnePanel : BasePopup
         m_HasShownContent = false;
         m_HasShownAlternative = false;
     }
+    private void SettingCamera()
+    {
+        if (CameraManager.HasInstance)
+        {
+            CinemachineVirtualCameraBase cameraBase = CameraManager.Instance.GetCameraCinemachine("NPCCamera");
+            if (cameraBase != null)
+            {
+                cameraBase.Priority = 8;
+                int playerLayer = LayerMask.NameToLayer("Player");
+                int weaponLayer = LayerMask.NameToLayer("Weapon");
+                int fxLayer = LayerMask.NameToLayer("FX");
+
+                int combinedMask = (1 << playerLayer) | (1 << weaponLayer) | (1 << fxLayer);
+                Camera.main.cullingMask |= combinedMask;
+            }
+        }
+    }    
 }

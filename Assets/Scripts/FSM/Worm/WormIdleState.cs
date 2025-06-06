@@ -34,7 +34,7 @@ public class WormIdleState : BaseState<WormBoss,WORMSTATE>
             boss.RequestStateTransition(WORMSTATE.DETEC);
             yield break;
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(boss.WormAttributeSO.timeWaitUnderGround);
         boss.RequestStateTransition(WORMSTATE.UNDERGROUND);
     }
    

@@ -9,4 +9,5 @@ public enum QuestType
     Mission2  ,  // Nhi?m v? hàng ngày
     Mission3  ,  // Nhi?m v? hàng ngày
     Mission4  ,  // Nhi?m v? hàng ngày
+    Mission5  ,  // Nhi?m v? hàng ngày
 }
