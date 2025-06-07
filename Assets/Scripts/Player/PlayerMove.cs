@@ -175,7 +175,7 @@ public class PlayerMove : MonoBehaviour
                 else
                 {
                     // Stamina cạn: chỉ tăng nhẹ (jogging)
-                    m_CurrentSpeed = m_SpeedMove + playerStatSO.speedRun;
+                    m_CurrentSpeed = m_SpeedMove + playerStatSO.speedJogging;
                     maxSpeed = m_JoggingSpeed;
                 }
             }

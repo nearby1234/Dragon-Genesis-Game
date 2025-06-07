@@ -1,22 +1,36 @@
 using System.Collections;
 using UnityEngine;
+using DG.Tweening;
 
 public class ParticleCollision : MonoBehaviour
 {
     [SerializeField] private float autoReturnDelay = 2f;      // Thời gian đợi trước khi tự động return
     private Coroutine _autoReturnCoroutine;
+    [SerializeField] private Transform player;
 
     private void OnEnable()
     {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.PLAYER_POS, ReceiverPlayerPosition);
+        }
         // Khi orb vừa active, bắt đầu đếm ngược để tự động return
         _autoReturnCoroutine = StartCoroutine(AutoReturnCoroutine());
     }
 
     private void OnDisable()
     {
+       
         // Dọn dẹp coroutine nếu object bị deactivate/destroy
         if (_autoReturnCoroutine != null)
             StopCoroutine(_autoReturnCoroutine);
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_POS, ReceiverPlayerPosition);
+        }
     }
 
     private void OnParticleCollision(GameObject other)
@@ -43,12 +57,26 @@ public class ParticleCollision : MonoBehaviour
 
     private void ReturnAndSpawnUI()
     {
-        // 1) trả orb về pool
-        var spawner = GetComponentInParent<ExpOrbEffectSpawner>();
-        spawner.ReturnPoolOrbEffect(gameObject);
-
-        // 2) spawn VFX trên UI
-        if (UIManager.HasInstance)
-            UIManager.Instance.SpawnObjectVFXPrefab.GetObjectFormPool(1);
+        if(player !=null)
+        {
+            transform.DOMove(player.position, 1f).SetEase(Ease.InBack)
+          .OnComplete(() =>
+          {
+              // 1) trả orb về pool
+              var spawner = GetComponentInParent<ExpOrbEffectSpawner>();
+              spawner.ReturnPoolOrbEffect(gameObject);
+              // 2) spawn VFX trên UI
+              if (UIManager.HasInstance)
+                  UIManager.Instance.SpawnObjectVFXPrefab.GetObjectFormPool(1);
+          });
+        }
+    }
+    private void ReceiverPlayerPosition(object value)
+    {
+        if (value is Transform playerTransform)
+        {
+            Debug.Log("Received player position from ListenerManager");
+            player = playerTransform;
+        }
     }
 }

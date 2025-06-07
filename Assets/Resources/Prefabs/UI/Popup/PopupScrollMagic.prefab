@@ -913,7 +913,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Animator: {fileID: 0}
-  m_ExitBtn: {fileID: 426958313798977233}
   m_RewardBtn: {fileID: 8367413497635736166}
   m_NextMisstionBtn: {fileID: 3235386384549305899}
   typewriterByCharacter: {fileID: 9005114545338132779}
@@ -964,7 +963,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &3490257474431258960
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1775,7 +1774,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7157497201385764048}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0

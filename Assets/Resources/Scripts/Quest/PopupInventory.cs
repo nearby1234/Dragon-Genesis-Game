@@ -11,7 +11,7 @@ public class PopupInventory : BasePopup, IStateUi
     [SerializeField] private int m_CountBox = 10;
     [SerializeField] private Vector2 m_Offset;
     [SerializeField] private RectTransform m_Rectranform;
-    [SerializeField] private Button m_ExitBtn;
+    //[SerializeField] private Button m_ExitBtn;
     [SerializeField] private TextMeshProUGUI m_MoneyTxt;
     [SerializeField] private Transform m_InventoryBoxPanel;
     [SerializeField] private Transform m_InventoryItemPanel;
@@ -64,10 +64,10 @@ public class PopupInventory : BasePopup, IStateUi
             PlayerManager.instance.isInteractingWithUI = true;
         }
 
-        if (m_ExitBtn != null)
-        {
-            m_ExitBtn.onClick.AddListener(OnClickExitBtn);
-        }
+        //if (m_ExitBtn != null)
+        //{
+        //    m_ExitBtn.onClick.AddListener(OnClickExitBtn);
+        //}
         else
         {
             Debug.LogWarning("Không gán được Button Exit!");
@@ -173,38 +173,6 @@ public class PopupInventory : BasePopup, IStateUi
             }
         }
     }
-    private void OnClickExitBtn()
-    {
-        if (GameManager.HasInstance)
-        {
-            if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
-            {
-               
-                GameManager.Instance.ShowCursor();
-                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-            }
-            else
-            {
-                if (ListenerManager.HasInstance)
-                {
-                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                }
-                GameManager.Instance.HideCursor();
-            }
-        }
-       
-       
-        if(UIManager.HasInstance)
-        {
-            UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.closing);
-            UIManager.Instance.RemoverStateInDict<PopupInventory>();
-        }
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE("ExitSound");
-        }
-            this.Hide();
-    }
 
     /// <summary>
     /// Hàm nhận danh sách QuestItem (reward) từ hệ thống sự kiện.
@@ -231,7 +199,6 @@ public class PopupInventory : BasePopup, IStateUi
         }
        
     }
-
     public void SetStateUi(StateUi value)
     {
         StateUi = value;

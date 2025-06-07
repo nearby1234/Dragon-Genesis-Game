@@ -1,5 +1,6 @@
 using Microlight.MicroBar;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ScreenHealBarBoss : BaseScreen
@@ -8,7 +9,7 @@ public class ScreenHealBarBoss : BaseScreen
     [SerializeField] private MicroBar m_HealBarMicroBar;
     [SerializeField] private Vector2 m_offset;
 
-
+    
     public override void Show(object data)
     {
         base.Show(data);
@@ -29,7 +30,8 @@ public class ScreenHealBarBoss : BaseScreen
     }
     private void Start()
     {
-        if (ListenerManager.HasInstance)
+        this.Hide();
+        if (ListenerManager.HasInstance) 
         {
             ListenerManager.Instance.Register(ListenType.BOSS_SEND_HEAL_VALUE, InitBossHealValue);
             ListenerManager.Instance.Register(ListenType.BOSS_UPDATE_HEAL_VALUE, UpdateBossHealValue);
@@ -117,7 +119,6 @@ public class ScreenHealBarBoss : BaseScreen
             if (value is PhaseState blackboardVariable)
             {
                 var newPhase = blackboardVariable;
-                Debug.Log($"newPhase : {newPhase}");
                 var dataBullTank = new DataBullTank();
                 switch (newPhase)
                 {
@@ -152,7 +153,6 @@ public class ScreenHealBarBoss : BaseScreen
             {
                 if (dataBullTankBoss.creepType == CreepType.BullTank)
                 {
-                    Debug.Log("InitHealBossType");  
                     m_HealBarMicroBar.Initialize(dataBullTankBoss.m_Heal);
                 }
 

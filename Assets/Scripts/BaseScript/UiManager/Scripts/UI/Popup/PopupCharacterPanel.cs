@@ -14,7 +14,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     [SerializeField] private TextMeshProUGUI m_PointTxt;
     //[SerializeField] private int m_PointDefaultValue = 0;
     [SerializeField] private int m_PointCurrentValue;
-    [SerializeField] private Button m_ExitBtn;
+    //[SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_GearBtn;
     [SerializeField] private Button m_AcceptBtn;
     [SerializeField] private Button m_DenyBtn;
@@ -68,34 +68,6 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     {
         UpdateValuePoint();
     }
-    public void OnExitButton()
-    {
-        if (GameManager.HasInstance)
-        {
-            if (UIManager.Instance.GetObjectInDict<PopupInventory>())
-            {
-                GameManager.Instance.ShowCursor();
-                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-            }
-            else
-            {
-                if (ListenerManager.HasInstance)
-                {
-                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                }
-                GameManager.Instance.HideCursor();
-            }
-        }
-
-       
-
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.SetStatePopup<PopupCharacterPanel>(StateUi.closing);
-            UIManager.Instance.RemoverStateInDict<PopupCharacterPanel>();
-        }
-        this.Hide();
-    }
     private void RegisterListeners()
     {
         if (!ListenerManager.HasInstance) return;
@@ -137,7 +109,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
 
         m_AcceptBtn.onClick.AddListener(OnAcceptButton);
         m_DenyBtn.onClick.AddListener(OnDenyButton);
-        if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
+        //if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
         if (m_GearBtn != null) m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
         originalPointBackup = PlayerLevelManager.Instance.TotalStatPoints;
@@ -425,12 +397,6 @@ public class PopupCharacterPanel : BasePopup, IStateUi
 
         ui.text = txt;
     }
-
-
-
-
-
-
     private void ReveiverEventArmor(object value)
     {
         if (value is ValueTuple<int, StatEquipData> tuple)

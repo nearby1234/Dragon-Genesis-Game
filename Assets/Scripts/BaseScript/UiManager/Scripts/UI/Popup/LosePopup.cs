@@ -30,6 +30,8 @@ public class LosePopup : BasePopup
                 {
                     case PopupType.LOSE:
 
+                        if (PlayerManager.HasInstance) PlayerManager.instance.m_IsShowingLosePopup = true;
+                       
                         m_MainMenuBtn.gameObject.SetActive(true);
                         m_PlayAgainBtn.gameObject.SetActive(true);
                         m_Title.gameObject.SetActive(true);

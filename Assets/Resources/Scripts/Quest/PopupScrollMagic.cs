@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class PopupScrollMagic : BasePopup
 {
     [SerializeField] private Animator m_Animator;
-    [SerializeField] private Button m_ExitBtn;
+    //[SerializeField] private Button m_ExitBtn;
     [SerializeField] private HandleCanvasGroup m_RewardBtn;
     [SerializeField] private HandleCanvasGroup m_NextMisstionBtn;
     [SerializeField] private TypewriterByCharacter typewriterByCharacter;
@@ -49,13 +49,15 @@ public class PopupScrollMagic : BasePopup
             ListenerManager.Instance.Register(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, ReceiverPlayAnimMoveScroll);
             ListenerManager.Instance.Register(ListenType.UI_UPDATE_ITEM_MISSION, ReceiUpdateTextMission);
             ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE, ReceiverEventIsCompleteQuest);
+            ListenerManager.Instance.Register(ListenType.HIDE_SCOLLVIEW, ReceiverEventDisableUi);
+
 
         }
 
-        if (m_ExitBtn != null)
-        {
-            m_ExitBtn.onClick.AddListener(OnClickBtnExitScrollView);
-        }
+        //if (m_ExitBtn != null)
+        //{
+        //    m_ExitBtn.onClick.AddListener(OnClickBtnExitScrollView);
+        //}
         else
         {
             Debug.LogWarning("Exit button is not assigned.");
@@ -93,6 +95,7 @@ public class PopupScrollMagic : BasePopup
         {
             ListenerManager.Instance.Unregister(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, ReceiverPlayAnimMoveScroll);
             ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, ReceiverEventIsCompleteQuest);
+            ListenerManager.Instance.Unregister(ListenType.HIDE_SCOLLVIEW, ReceiverEventDisableUi);
         }
     }
 
@@ -100,26 +103,34 @@ public class PopupScrollMagic : BasePopup
     {
         m_RewardItemParentObject.ShowCanvasGroup();
         m_MisionItemParentObject.ShowCanvasGroup();
-        m_RewardBtn.ShowCanvasGroup();
-    }
-    private void OnClickBtnExitScrollView()
-    {
-        if (AudioManager.HasInstance)
+        if (m_CurrentQuestData.isCompleteMission)
         {
-            AudioManager.Instance.PlaySE("ScrollSound");
+            m_RewardBtn.ShowCanvasGroup();
         }
-        m_Animator.Play("MoveCenter");
-        if (GameManager.HasInstance)
+        else
         {
-            GameManager.Instance.HideCursor();
+            m_RewardBtn.HideCanvasGroup();
         }
-        if(ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-        }
-        StartCoroutine(DelayHide());
 
     }
+    //private void OnClickBtnExitScrollView()
+    //{
+    //    if (AudioManager.HasInstance)
+    //    {
+    //        AudioManager.Instance.PlaySE("ScrollSound");
+    //    }
+    //    m_Animator.Play("MoveCenter");
+    //    if (GameManager.HasInstance)
+    //    {
+    //        GameManager.Instance.HideCursor();
+    //    }
+    //    if(ListenerManager.HasInstance)
+    //    {
+    //        ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+    //    }
+    //    StartCoroutine(DelayHide());
+
+    //}
     private void OnClickNextMission()
     {
         if (QuestManager.HasInstance)
@@ -201,6 +212,7 @@ public class PopupScrollMagic : BasePopup
     private void ShowRewardButton()
     {
         m_IsShowRewardBtn = true;
+        m_RewardBtn.ShowCanvasGroup();
         m_RewardBtn.GetComponent<Button>().interactable = true;
         if (m_RewardBtn.TryGetComponent<Image>(out Image buttonImage))
         {
@@ -257,7 +269,7 @@ public class PopupScrollMagic : BasePopup
         }
         // 5. Quay về MoveOutSide và chờ xong
         yield return PlayAndWait("MoveOutSide");
-       
+
 
         // 6. Cập nhật lại text và hiện UI
         RefreshUI();
@@ -348,11 +360,29 @@ public class PopupScrollMagic : BasePopup
             }
         }
     }
+    private void ReceiverEventDisableUi(object value)
+    {
+        Debug.Log("ReceiverEventDisableUi");
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ScrollSound");
+        }
+        m_Animator.Play("MoveCenter");
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
+        //if (ListenerManager.HasInstance)
+        //{
+        //    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+        //}
+        StartCoroutine(DelayHide());
+    }
     public void PlaySE()
     {
-      if(AudioManager.HasInstance)
+        if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("AcceptMision");
-        }    
-    }    
+        }
+    }
 }

@@ -45,7 +45,7 @@ MonoBehaviour:
     plusDefendArmor: 0
     m_NameArmorPrefabs: Minotaur_Arms_1
   _backupJson: "{\"itemID\":\"-MinotaurArmsArmor\",\"itemName\":\"Bao Tay Gi\xE1p
-    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57104},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"typeArmor\":6,\"skinnedArmor\":{\"instanceID\":-2376},\"DespristionArmor\":\"T\u1EEBng
+    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57104},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"typeArmor\":6,\"skinnedArmor\":{\"instanceID\":-1947932},\"DespristionArmor\":\"T\u1EEBng
     thu\u1ED9c v\u1EC1 m\u1ED9t th\u1EE3 r\xE8n Minotaur n\u1ED5i ti\u1EBFng, chi\u1EBFc
     gi\xE1p tay n\xE0y th\u1EC3 hi\u1EC7n s\u1EF1 kh\xE9o l\xE9o v\xE0 s\u1EE9c m\u1EA1nh
     phi th\u01B0\u1EDDng\",\"plusStrengthArmor\":1,\"plusAgilityArmor\":2,\"plusStaminaArmor\":0,\"plusHealArmor\":1,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"Minotaur_Arms_1\"}"

@@ -105,8 +105,8 @@ public class PlayerStamina : MonoBehaviour
 
         m_CurrentStamina -= amount;
         m_CurrentStamina = Mathf.Max(0f, m_CurrentStamina);
-        // Thông báo cập nhật stamina
-        // ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
+        //Thông báo cập nhật stamina
+         ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
     }
 
     private IEnumerator RegenCoroutine()

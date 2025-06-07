@@ -15,7 +15,6 @@ public partial class ShowHealBarAction : Action
         {
             var data = new DataBullTank();
             UIManager.Instance.ShowScreen<ScreenHealBarBoss>(data,true);
-            Debug.Log($"data {data.FirstPhase}");
             return Status.Success;
         }
         return Status.Running;

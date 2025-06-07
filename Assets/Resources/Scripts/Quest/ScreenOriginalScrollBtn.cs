@@ -14,6 +14,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
     [SerializeField] private Vector3 m_Offset;
     [SerializeField] private Vector2 m_targetPos;
     [SerializeField] private InputAction m_ButtonPress;
+    [SerializeField] private bool isClick;
 
     private void Awake()
     {
@@ -50,29 +51,40 @@ public class ScreenOriginalScrollBtn : BaseScreen
     }
     private void OnClickButtonShowPopupScrollView(InputAction.CallbackContext callback)
     {
-        if (ListenerManager.HasInstance)
+        isClick = !isClick;
+        if(isClick)
         {
-            ListenerManager.Instance.BroadCast(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, true);
-            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-        }
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE("ClickSound");
-            AudioManager.Instance.PlaySE("ScrollSound");
-        }
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.SE_ICONSCROLLMAGIC_ONCLICK, true);
+                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+            }
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ClickSound");
+                AudioManager.Instance.PlaySE("ScrollSound");
+            }
 
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.ShowPopup<PopupScrollMagic>();
-        }
-      
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.ShowCursor();
-        }
+            if (UIManager.HasInstance)
+            {
+                UIManager.Instance.ShowPopup<PopupScrollMagic>();
+            }
 
-
-        this.Hide();
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
+            this.Hide();
+        }
+        else
+        {
+            if(ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.HIDE_SCOLLVIEW, null);  
+                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);  
+            }
+        }
+       
     }
     private void InitObjDoMove()
     {

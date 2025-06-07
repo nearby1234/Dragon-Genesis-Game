@@ -9,6 +9,7 @@ public class ScreenIconInventory : BaseScreen
     [SerializeField] private Vector2 m_IconPosition;
     [SerializeField] private Vector2 m_PosMove;
     private RectTransform m_IconTransform;
+    private bool isClick;
 
     private void Awake()
     {
@@ -43,41 +44,79 @@ public class ScreenIconInventory : BaseScreen
     }
     private void OnClickIconInventory(InputAction.CallbackContext callback)
     {
-        if (UIManager.HasInstance)
+        isClick=!isClick;
+        if(isClick)
         {
-           if( UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+            if (UIManager.HasInstance)
             {
-                ListenerManager.Instance.BroadCast(ListenType.PU_CHARACTER_IMFORMA, null);
+                if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.PU_CHARACTER_IMFORMA, null);
+                }
+                UIManager.Instance.ShowPopup<PopupInventory>();
+                UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.Opening);
+                StateUi popupCharacter = UIManager.Instance.GetStatePopup<PopupCharacterPanel>();
+                if (popupCharacter.Equals(StateUi.Opening))
+                {
+                    PopupCharacterPanel popupCharacterPanel = UIManager.Instance.GetComponentbase<PopupCharacterPanel>();
+                    popupCharacterPanel.SetPositionMove();
+                    PopupInventory popupInventory = UIManager.Instance.GetComponentbase<PopupInventory>();
+                    popupInventory.SetPositionMove();
+
+                }
+                var popup = UIManager.Instance.GetComponentbase<PopupInventory>();
+                if (popup != null)
+                    UIManager.Instance.AddStateInDict(popup);
             }
-            UIManager.Instance.ShowPopup<PopupInventory>();
-            UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.Opening);
-            StateUi popupCharacter = UIManager.Instance.GetStatePopup<PopupCharacterPanel>();
-            if (popupCharacter.Equals(StateUi.Opening))
+
+            if (ListenerManager.HasInstance)
             {
-                PopupCharacterPanel popupCharacterPanel = UIManager.Instance.GetComponentbase<PopupCharacterPanel>();
-                popupCharacterPanel.SetPositionMove();
-                PopupInventory popupInventory = UIManager.Instance.GetComponentbase<PopupInventory>();
-                popupInventory.SetPositionMove();
-                
+                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
             }
-            var popup = UIManager.Instance.GetComponentbase<PopupInventory>();
-            if(popup != null) 
-            UIManager.Instance.AddStateInDict(popup);
+            if (GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ClickSound");
+            }
         }
+        else
+        {
+            if (GameManager.HasInstance)
+            {
+                if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+                {
 
-        if(ListenerManager.HasInstance)
-        {
-            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-        }
-        if (GameManager.HasInstance)
-        {
-            GameManager.Instance.ShowCursor();
-        }
-        if (AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlaySE("ClickSound");
-        }
+                    GameManager.Instance.ShowCursor();
+                    ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+                }
+                else
+                {
+                    if (ListenerManager.HasInstance)
+                    {
+                        ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                    }
+                    GameManager.Instance.HideCursor();
+                }
+            }
 
+
+            if (UIManager.HasInstance)
+            {
+                UIManager.Instance.SetStatePopup<PopupInventory>(StateUi.closing);
+                UIManager.Instance.RemoverStateInDict<PopupInventory>();
+            }
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ExitSound");
+            }
+            if(UIManager.HasInstance)
+            {
+                UIManager.Instance.HidePopup<PopupInventory>();
+            }
+        }
     }
     private void ReceiverEventCLickMainMenu(object value)
     {

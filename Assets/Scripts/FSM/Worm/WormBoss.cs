@@ -116,7 +116,7 @@ public class WormBoss : BaseBoss<WormBoss, WORMSTATE>
                 if (UIManager.HasInstance)
                 {
                     WormAttackData data = new();
-                  
+                    Debug.Log("Show HealBar Boss");
                     UIManager.Instance.ShowScreen<ScreenHealBarBoss>(data, true);
                 }
                 if (AudioManager.HasInstance)

@@ -419,6 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8435736927336727652}
   - component: {fileID: 6578015888413889924}
+  - component: {fileID: -2506211331636062332}
   m_Layer: 0
   m_Name: ScreenHealBarBoss
   m_TagString: Untagged
@@ -461,6 +462,18 @@ MonoBehaviour:
   m_HealBarText: {fileID: 3697940214499649979}
   m_HealBarMicroBar: {fileID: 6971264735997038936}
   m_offset: {x: 0, y: -360}
+--- !u!225 &-2506211331636062332
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8020042899124736474}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &8369703344475937872
 GameObject:
   m_ObjectHideFlags: 0

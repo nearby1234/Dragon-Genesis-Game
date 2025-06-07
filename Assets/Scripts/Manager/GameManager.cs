@@ -1,4 +1,5 @@
 
+using System.Collections;
 using UnityEngine;
 
 
@@ -75,7 +76,10 @@ public class GameManager : BaseManager<GameManager>
         if(UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenMenuPanel>();
+            UIManager.Instance.ShowScreen<ScreenHealBarBoss>();
+            //StartCoroutine(DelayShowScreenHealbarBoss());
         }
+
     }
     public void ShowBoardPlayerStats()
     {
@@ -144,4 +148,5 @@ public class GameManager : BaseManager<GameManager>
     {
         creepType = type;
     }
+   
 }

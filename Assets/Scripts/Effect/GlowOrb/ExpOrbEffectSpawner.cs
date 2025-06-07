@@ -45,10 +45,6 @@ public class ExpOrbEffectSpawner : MonoBehaviour
                     // Giai đoạn 2: Rơi xuống vị trí ngẫu nhiên
                     orb.transform.DOMove(scatterTarget, halfDuration)
                         .SetEase(Ease.InQuad);
-                        //.OnComplete(() =>
-                        //{
-
-                        //});
                 });
         }
     }

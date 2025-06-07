@@ -2,13 +2,13 @@ using UnityEngine;
 
 public class Billboard : MonoBehaviour
 {
-    [SerializeField] private Transform m_target;
+    [SerializeField] private Transform mainCamera;
     [SerializeField] private bool m_Invert;
     [SerializeField] private bool m_IsClick;
 
     private void Awake()
     {
-        m_target = GameObject.Find("Player").GetComponent<Transform>();
+        mainCamera = Camera.main != null ? Camera.main.transform : null;
     }
     private void Start()
     {
@@ -31,7 +31,7 @@ public class Billboard : MonoBehaviour
     }
     private void RotationTarget()
     {
-        Vector3 direction = transform.position - m_target.position;
+        Vector3 direction = transform.position - mainCamera.position;
         direction.y = 0;
         if (m_Invert)
         {

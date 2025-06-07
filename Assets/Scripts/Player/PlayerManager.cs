@@ -211,7 +211,6 @@ public class PlayerManager : BaseManager<PlayerManager>
                             }    
                            
                         }
-                        m_IsShowingLosePopup = true;
                         var fakeLoadingSetting = new FakeLoadingSetting();
                         UIManager.Instance.ShowPopup<PopupFakeLoading>(fakeLoadingSetting, true);
                     },

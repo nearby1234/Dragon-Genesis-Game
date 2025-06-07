@@ -70,7 +70,6 @@ public partial class ChaseAction : Action
         float remDist = _nav.remainingDistance;
         if (remDist <= _nav.stoppingDistance)
         {
-            Debug.Log($"remainingDistance: {remDist}, stoppingDistance: {_nav.stoppingDistance}");
             animator.SetTrigger("JumpEnd");
             return Status.Success;
         }

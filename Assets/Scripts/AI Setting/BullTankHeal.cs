@@ -21,9 +21,10 @@ public class BullTankHeal : MonoBehaviour
     [SerializeField] private Animator animator;
     [SerializeField] private NavMeshAgent navMeshAgent;
     [SerializeField] private PlayParrticleEarth playParrticle;
+    [SerializeField] private Vector3 baseTranform;
     private BehaviorGraphAgent graphAgent;
     private bool m_IsDie;
-    private Transform baseTranform;
+   
 
     private void Awake()
     {
@@ -33,7 +34,7 @@ public class BullTankHeal : MonoBehaviour
     }
     private void Start()
     {
-        baseTranform = transform;
+        baseTranform = transform.position;
         maxHeal = bulltankSO.Heal;
         heal = maxHeal;
         if (ListenerManager.HasInstance)
@@ -100,7 +101,6 @@ public class BullTankHeal : MonoBehaviour
                 PopupMessage msg = new()
                 {
                     popupType = PopupType.BULLTANK_DIE,
-
                 };
                 if (PlayerManager.HasInstance)
                 {
@@ -132,10 +132,10 @@ public class BullTankHeal : MonoBehaviour
                         creepType = this.creepType,
                         m_Heal = heal,
                     };
-                    Debug.Log($"DataBullTankBoss : {data.m_Heal}");
                     ListenerManager.Instance.BroadCast(ListenType.BOSSTYPE_SEND_HEAL_VALUE, data);
                 }
-                navMeshAgent.Warp(baseTranform.position); // Reset position to base transform position
+                navMeshAgent.Warp(baseTranform); // Reset position to base transform position
+                navMeshAgent.ResetPath();
                 ResetNode();
                 ResetParticle();
                 animator.CrossFade("Idle", 0.1f);
