@@ -127,9 +127,8 @@ public class PlayerLevelManager : BaseManager<PlayerLevelManager>
         GameObject fxInstance = Instantiate(m_LevelUpFx, transform.position, Quaternion.identity, transform);
 
         // Lấy ParticleSystem từ bản vừa Instantiate
-        ParticleSystem fx = fxInstance.GetComponent<ParticleSystem>();
-
-        if (fx != null)
+        
+        if (fxInstance.TryGetComponent<ParticleSystem>(out var fx))
         {
             fx.Play();
         }

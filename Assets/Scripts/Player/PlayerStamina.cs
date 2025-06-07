@@ -71,6 +71,12 @@ public class PlayerStamina : MonoBehaviour
             StopCoroutine(regenCoroutine);
             regenCoroutine = null;
         }
+        SetParticle(false);
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.StopLoopSE();
+        }
+
     }
     /// <summary>
     /// Gọi khi người chơi ngừng tiêu hao stamina để bắt đầu hồi phục sau delay.
@@ -78,10 +84,7 @@ public class PlayerStamina : MonoBehaviour
     public void StartRegen()
     {
         // Nếu coroutine đang chạy thì không cần bắt đầu lại
-        if (regenCoroutine == null)
-        {
-            regenCoroutine = StartCoroutine(RegenCoroutine());
-        }
+        regenCoroutine ??= StartCoroutine(RegenCoroutine());
     }
     /// <summary>
     /// Hàm tiêu hao stamina, ví dụ dodge tiêu hao một phần % của max stamina.
@@ -108,23 +111,18 @@ public class PlayerStamina : MonoBehaviour
 
     private IEnumerator RegenCoroutine()
     {
-
         // Đợi delay trước khi hồi phục
         yield return new WaitForSeconds(m_RegenDelay);
-        ParticleSystem particle = m_effectStamina.GetComponent<ParticleSystem>();
 
         if (m_CurrentStamina < m_MaxStamina)
         {
-            if (particle != null)
+            m_effectStamina.SetActive(true);
+            if (AudioManager.HasInstance)
             {
-                m_effectStamina.SetActive(true);
-                if (AudioManager.HasInstance)
-                {
-                    AudioManager.Instance.PlayLoopSE("RegenSound");
-                }
-                particle.Play();
-
+                AudioManager.Instance.PlayLoopSE("RegenSound");
             }
+            SetParticle(true); ;
+
             while (m_CurrentStamina < m_MaxStamina)
             {
                 m_CurrentStamina += m_StaminaRegenRate * Time.deltaTime;
@@ -139,14 +137,12 @@ public class PlayerStamina : MonoBehaviour
                 yield return null;
                 if (m_CurrentStamina >= m_MaxStamina)
                 {
-                    if (particle != null)
+                    SetParticle(false);
+                    if (AudioManager.HasInstance)
                     {
-                        particle.Stop();
-                        if (AudioManager.HasInstance)
-                        {
-                            AudioManager.Instance.StopLoopSE();
-                        }
+                        AudioManager.Instance.StopLoopSE();
                     }
+
                     break;
                 }
             }
@@ -158,7 +154,7 @@ public class PlayerStamina : MonoBehaviour
     {
         if (value is float percentConsumption)
         {
-            ConsumeStamina(percentConsumption,true);
+            ConsumeStamina(percentConsumption, true);
             StartRegen();
             if (ListenerManager.HasInstance)
             {
@@ -204,7 +200,7 @@ public class PlayerStamina : MonoBehaviour
     {
         if (value is float percentConsumption)
         {
-            ConsumeStamina(percentConsumption,false);
+            ConsumeStamina(percentConsumption, false);
             StartRegen();
             if (ListenerManager.HasInstance)
             {
@@ -264,6 +260,23 @@ public class PlayerStamina : MonoBehaviour
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_STAMINA_VALUE, m_MaxStamina);
             }
         }
+    }
+    private void SetParticle(bool isPlay)
+    {
+        if (m_effectStamina.TryGetComponent<ParticleSystem>(out var particle))
+        {
+            if (isPlay)
+            {
+                particle.Play();
+            }
+            else
+            {
+                particle.Stop();
+            }
+        }
+
+
+
     }
 
 }

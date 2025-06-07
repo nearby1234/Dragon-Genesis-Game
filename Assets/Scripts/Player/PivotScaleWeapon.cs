@@ -33,7 +33,6 @@ public class PivotScaleWeapon : MonoBehaviour
     private int m_CurrentIndex = 0;
 
     private Coroutine scalingCoroutine;
-    private Coroutine setupScaleDefault;
 
     private const string attackAnimationClip = "Great Sword Casting_IK";
     private const string attackCastingAnimationClip = "Great Sword Casting_attack_IK";
@@ -56,8 +55,7 @@ public class PivotScaleWeapon : MonoBehaviour
         m_BeforMeshFilter = m_Sword.GetComponent<MeshFilter>();
         m_CurrentMeshFilter = m_TranformEnergyWeapon.GetComponent<MeshFilter>();
         //m_EnergyWeaponMesh = m_TranformEnergyWeapon.GetComponent<MeshRenderer>();
-        ParticleSystemRenderer psRenderer = m_Cirlcle.GetComponent<ParticleSystemRenderer>();
-        if (psRenderer != null)
+        if (m_Cirlcle.TryGetComponent<ParticleSystemRenderer>(out var psRenderer))
         {
             m_CircleMaterial = psRenderer.material;
         }
@@ -188,7 +186,7 @@ public class PivotScaleWeapon : MonoBehaviour
         ResetScale();
         StartCoroutine(m_ChildTriggerForwarder.ResetSwing());
     }
-    private IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
+    public IEnumerator SmoothRotateToCameraDirection(float rotateDuration)
     {
         // Lưu lại góc ban đầu của player
         Quaternion initialRotation = transform.rotation;

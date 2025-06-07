@@ -29,8 +29,8 @@ MonoBehaviour:
     TimerSkillCoolDown: 0
     DespristionSkill: 
     typeWeapon: 1
-    m_SwordPrefabs: {fileID: 3938717156402355979, guid: a44c47c937f7b19419a76c4abb799469, type: 3}
-    m_SwordMesh: {fileID: -7642069956563106955, guid: effac2fe4a87d80429f7bdd3f4e61f20, type: 3}
+    m_SwordPrefabs: {fileID: 2800000, guid: e08f45f1f68d24869b1f62afb9f58046, type: 3}
+    m_SwordMesh: {fileID: 2800000, guid: 4c8eb2b50e5e144d7bc02897f92e4c40, type: 3}
     m_SwordMaterial: {fileID: 2100000, guid: 33649d841ff0fe04891941dd8fa63b35, type: 2}
     DespristionWeapon: "M\xF4 ph\u1ECFng l\u1EA1i t\u1EEB h\xECnh d\xE1ng c\u1EE7a
       r\u1ED3ng . Tuy ch\u01B0a dung h\u1EE3p s\xFAc m\u1EA1nh c\u1EE7a r\u1ED3ng

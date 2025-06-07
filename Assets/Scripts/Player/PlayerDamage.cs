@@ -16,12 +16,17 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int m_PlayerDamage;
     [SerializeField] private int m_PlayerDamageBase; // Giá trị damage cơ bản
     [SerializeField] private int m_PlusDamageValue;
+    [SerializeField] private PivotScaleWeapon m_PivotScaleWeapon;
     public int PlusDamageValue => m_PlusDamageValue; // Giá trị damage cộng thêm
 
     private Animator playerAnimator; // Animator của player
     private bool m_IsHeavyAttack = false;
     public bool Heavyattack => m_IsHeavyAttack;
 
+    private void Awake()
+    {
+        m_PivotScaleWeapon = GetComponent<PivotScaleWeapon>();  
+    }
     void Start()
     {
         playerAnimator = PlayerManager.instance.playerAnim.GetAnimator();
@@ -75,6 +80,7 @@ public class PlayerDamage : MonoBehaviour
             playerAnimator.Play("Heavy Attack");
         }
         PlayerManager.instance.ChangeStatePlayer(PlayerManager.PlayerState.attack);
+        StartCoroutine(m_PivotScaleWeapon.SmoothRotateToCameraDirection(0.3f));
         m_IsHeavyAttack = true;
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
@@ -82,7 +88,7 @@ public class PlayerDamage : MonoBehaviour
         //m_IsPressLeftMouse = true;
 
         // Nếu animation attack hiện tại vẫn chưa hoàn thành, bỏ qua việc kích hoạt lại attack
-        if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f &&
+        if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.5f &&
             playerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))
         {
             return;
@@ -97,6 +103,7 @@ public class PlayerDamage : MonoBehaviour
         {
             m_AttackAnimIndex = 0;
         }
+        StartCoroutine(m_PivotScaleWeapon.SmoothRotateToCameraDirection(0.3f));
     }
     private void OnCancelAttackLeftMouse(InputAction.CallbackContext context)
     {

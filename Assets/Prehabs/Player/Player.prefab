@@ -5749,7 +5749,7 @@ MonoBehaviour:
   characterController: {fileID: 0}
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
-  smoothTime: 0.1
+  smoothTime: 0.05
   StaminaConsumptionPercent: 0.1
   IsPressLeftShift: 0
   m_IsPressButtonSwap: 0
@@ -5774,7 +5774,6 @@ MonoBehaviour:
   m_WalkSpeed: 0.3
   m_JoggingSpeed: 0.6
   m_RunSpeed: 1
-  m_SpeedBlendTree: 0
   m_TurnSpeed: 20
   canMove: 1
 --- !u!114 &8116466600639583589
@@ -5851,6 +5850,7 @@ MonoBehaviour:
   m_PlayerState: 0
   m_PlayerStatSO: {fileID: 11400000, guid: 416aece4576b91146904393a73a36101, type: 2}
   isInteractingWithUI: 0
+  m_IsShowingLosePopup: 0
 --- !u!114 &8482353392867440214
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5919,6 +5919,7 @@ MonoBehaviour:
   m_PlayerDamage: 10
   m_PlayerDamageBase: 0
   m_PlusDamageValue: 2
+  m_PivotScaleWeapon: {fileID: 0}
 --- !u!114 &3286362027152036089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6022,7 +6023,7 @@ MonoBehaviour:
   m_CurrentStamina: 0
   m_StaminaBase: 0
   m_PlusStaminaValue: 5
-  m_StaminaRegenRate: 10
+  m_StaminaRegenRate: 6
   m_StaminaDrainRate: 10
   m_StaminaFull: 0
   m_RegenDelay: 5
@@ -26782,7 +26783,7 @@ Transform:
   m_GameObject: {fileID: 2743127705564320446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -58826,6 +58827,7 @@ MonoBehaviour:
   m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
   m_IsTakeDamaged: 0
   m_timer: 0.2
+  tagList: []
 --- !u!1 &6511328590097995561
 GameObject:
   m_ObjectHideFlags: 0

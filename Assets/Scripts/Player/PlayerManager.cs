@@ -84,6 +84,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     void Update()
     {
         if (playerHeal.GetPlayerDeath()) return;
+        if (isInteractingWithUI) return;
         switch (m_PlayerState)
         {
             case PlayerState.idle:
@@ -145,6 +146,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             CameraManager.Instance.SetActiveInputAxisController(false);
         }
+        isInteractingWithUI = true;
     }
     private void ReceiverEvenDisableShowUI(object value)
     {
@@ -153,6 +155,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             CameraManager.Instance.SetActiveInputAxisController(true);
         }
+        isInteractingWithUI = false;
     }
 
     private void CacheComponents()

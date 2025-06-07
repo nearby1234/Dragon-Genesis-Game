@@ -19,8 +19,9 @@ public class SpawnObjectVFX : MonoBehaviour
     [SerializeField] private int m_PoolSize = 10;
     [SerializeField] private Queue<GameObject> poolVfx = new();
     [SerializeField] private RectTransform sliderRectTransform;
+    private Vector3 baseScale;
     [ShowInInspector, ReadOnly]
-    private List<GameObject> vfxPoolList => new(poolVfx);
+    private List<GameObject> VfxPoolList => new(poolVfx);
 
     private void Start()
     {
@@ -34,6 +35,7 @@ public class SpawnObjectVFX : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.CAMERA_SEND_VALUE, ReceiverCamera);
             ListenerManager.Instance.BroadCast(ListenType.UI_SEND_CANVASMAIN, mainCanvas);
         }
+        baseScale = m_SpawnVFXPrefab.transform.localScale; // Lưu kích thước gốc của prefab
         InitPoolVFX();
         StartCoroutine(DelayGetRectTransform());
     }
@@ -48,32 +50,43 @@ public class SpawnObjectVFX : MonoBehaviour
     }
     public GameObject GetObjectFormPool(int countExpOrb)  // Gọi hàm này khi muốn tạo exp move lên slider exp
     {
+        GameObject vfx = null;
+
         if (poolVfx.Count > 0)
         {
-            for (int i = 0; i < countExpOrb; i++)
-            {
-                if (poolVfx.Count > 0)
-                {
-                    GameObject vfx = poolVfx.Dequeue();
-                    RectTransform rectTransform = vfx.GetComponent<RectTransform>();
-                    vfx.SetActive(true);
-                    MoveSLiderUI(rectTransform);
-                    return vfx;
-                }
-            }
+            // Lấy từ pool
+            vfx = poolVfx.Dequeue();
         }
         else
         {
-            Debug.Log("No VFX available in the pool.");
-            GameObject vfx = Instantiate(m_SpawnVFXPrefab, m_ParentTranformObj.transform);
-            return vfx;
+            // Pool cạn → instantiate mới
+            Debug.Log("No VFX available in the pool, instantiating new one.");
+            vfx = Instantiate(m_SpawnVFXPrefab, m_ParentTranformObj.transform);
         }
-        return null;
+
+        // Dù là object từ pool hay mới instantiate, đều phải làm 3 bước sau:
+        RectTransform rectTransform = vfx.GetComponent<RectTransform>();
+        ParticleSystem particleSystem = vfx.GetComponent<ParticleSystem>();
+
+        vfx.SetActive(true);
+
+        if (particleSystem != null)
+        {
+            particleSystem.Play();
+        }
+
+        if (rectTransform != null)
+        {
+            MoveSLiderUI(rectTransform);
+        }
+
+        return vfx;
     }
     public void ReturnObjectToPool(RectTransform rectTransform)
     {
         rectTransform.gameObject.SetActive(false);
         rectTransform.anchoredPosition = Vector2.zero;
+        rectTransform.localScale = baseScale; // Đặt lại kích thước về kích thước gốc
         poolVfx.Enqueue(rectTransform.gameObject);
     }
     public Vector2 TranslatePosition()

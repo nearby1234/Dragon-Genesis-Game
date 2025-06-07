@@ -17,3 +17,6 @@ MonoBehaviour:
   m_PlayerStamina: 100
   m_PlayerDamage: 20
   m_PlayerArmor: 5
+  speedJogging: 2
+  speedRun: 5
+  playerType: 0
