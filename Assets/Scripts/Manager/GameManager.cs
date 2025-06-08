@@ -69,6 +69,7 @@ public class GameManager : BaseManager<GameManager>
     {
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        
     }
     public void ShowMenuLoading()
     {

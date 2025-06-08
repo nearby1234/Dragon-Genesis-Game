@@ -68,6 +68,7 @@ public class ScreenOriginalScrollBtn : BaseScreen
             if (UIManager.HasInstance)
             {
                 UIManager.Instance.ShowPopup<PopupScrollMagic>();
+                UIManager.Instance.HideNotify<NotifyMission>();
             }
 
             if (GameManager.HasInstance)
@@ -82,6 +83,10 @@ public class ScreenOriginalScrollBtn : BaseScreen
             {
                 ListenerManager.Instance.BroadCast(ListenType.HIDE_SCOLLVIEW, null);  
                 ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);  
+            }
+            if(UIManager.HasInstance)
+            {
+                UIManager.Instance.ShowNotify<NotifyMission>();
             }
         }
        

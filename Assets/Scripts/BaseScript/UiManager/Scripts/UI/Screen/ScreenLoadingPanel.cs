@@ -97,6 +97,8 @@ public class ScreenLoadingPanel : BaseScreen
                 if (GameManager.Instance.GameState == GAMESTATE.START)
                 {
                     UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
+                    NotifySystemData notifyData = DataManager.Instance.GetData<NotifySystemData,NotifyType>(NotifyType.StartGame);
+                    UIManager.Instance.ShowNotify<NotifySystem>(notifyData, true);
                     GameManager.Instance.ShowBoardPlayerStats();
                     GameManager.Instance.HideCursor();
                     this.Hide();

@@ -440,6 +440,7 @@ public class UIManager : BaseManager<UIManager>
                 RemoveNotify(curName);
             }
         }
+        
 
         if (result == null)
         {
@@ -479,6 +480,23 @@ public class UIManager : BaseManager<UIManager>
             curNotify = result;
             result.transform.SetAsLastSibling();
             result.Show(data);
+        }
+    }
+    public void HideNotify<T>() where T : BaseNotify
+    {
+        string nameNotify = typeof(T).Name;
+        if (notifies.ContainsKey(nameNotify))
+        {
+            BaseNotify notifyScr = notifies[nameNotify];
+            if (notifyScr != null && !notifyScr.IsHide)
+            {
+                notifyScr.Hide();
+                // Nếu notify hiện tại đang là notify vừa ẩn thì reset curNotify
+                if (curNotify == notifyScr)
+                {
+                    curNotify = null;
+                }
+            }
         }
     }
 

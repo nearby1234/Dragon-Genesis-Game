@@ -70,15 +70,6 @@ public class QuestManager : BaseManager<QuestManager>
         {
             currentQuest = quest;
             quest.isAcceptMission = true;
-
-            Debug.Log($"m_CountNumber accept : {m_CountNumber}");
-            //if (questList.Contains(quest))
-            //{
-            //    return;
-            //}
-            //questList.Add(quest);
-            Debug.Log("Nhận nhiệm vụ: " + currentQuest.questName);
-            //UIManager.Instance.ShowScreen<QuestScreen>(currentQuest);
         }
         else
         {

@@ -2,7 +2,6 @@
 using Sirenix.OdinInspector;
 using TMPro;
 using Unity.Cinemachine;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -92,6 +91,7 @@ public class QuestMissionOnePanel : BasePopup
         if (UIManager.HasInstance)
         {
             UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+            UIManager.Instance.ShowNotify<NotifyMission>();
         }
         if (PlayerManager.HasInstance)
         {

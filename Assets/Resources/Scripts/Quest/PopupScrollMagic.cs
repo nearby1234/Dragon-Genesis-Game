@@ -111,6 +111,10 @@ public class PopupScrollMagic : BasePopup
         {
             m_RewardBtn.HideCanvasGroup();
         }
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SEND_QUESTMISSION_CURRENT, m_CurrentQuestData);
+        }
 
     }
     //private void OnClickBtnExitScrollView()
