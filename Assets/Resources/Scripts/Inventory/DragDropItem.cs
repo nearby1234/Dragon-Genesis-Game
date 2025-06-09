@@ -279,6 +279,10 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
                 {
                     AudioManager.Instance.PlaySE("EquipItem");
                 }
+                if(ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.HIDE_ITEM_WEAPON_UI, inventorySlot.CurrentItem);
+                }
             }
 
         }

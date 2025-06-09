@@ -25,6 +25,7 @@ public class PlayerManager : BaseManager<PlayerManager>
     public PlayerHeal playerHeal;
     public PlayerMana playerMana;
     public PlayerStamina playerStamina;
+    public PlayerWeapon playerWeapon;
 
     public PlayerCasting playerCasting;
     public PlayerDodge playerDodge;
@@ -59,6 +60,7 @@ public class PlayerManager : BaseManager<PlayerManager>
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
             ListenerManager.Instance.Register(ListenType.UI_CLICK_SHOWUI, ReceiverEventClickShowUI);
             ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, ReceiverEvenDisableShowUI);
+            ListenerManager.Instance.Register(ListenType.PLAYER_NOT_WEAPON, OnEventNotWeapon);
         }
         m_EscButton.Enable();
         m_EscButton.performed += (ctx) => OnEscPerfomed();
@@ -78,6 +80,7 @@ public class PlayerManager : BaseManager<PlayerManager>
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, _ => CancelLoseCoroutine());
             ListenerManager.Instance.Unregister(ListenType.UI_CLICK_SHOWUI, ReceiverEventClickShowUI);
             ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, ReceiverEvenDisableShowUI);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_NOT_WEAPON, OnEventNotWeapon);
         }
     }
     // Update is called once per frame
@@ -110,14 +113,14 @@ public class PlayerManager : BaseManager<PlayerManager>
             OnResume = () =>
             {
                 Time.timeScale = 1f;
-             
+
             },
             OnMainMenu = () =>
             {
                 if (ListenerManager.HasInstance)
                 {
                     ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_MAINMENU, null);
-                  
+
                 }
                 Time.timeScale = 1f;
                 //StopAllCoroutines();
@@ -125,7 +128,7 @@ public class PlayerManager : BaseManager<PlayerManager>
                 GameManager.Instance.GameState = GAMESTATE.MENULOADING;
             },
         };
-        if(GameManager.HasInstance)
+        if (GameManager.HasInstance)
         {
             GameManager.Instance.ShowCursor();
         }
@@ -151,27 +154,27 @@ public class PlayerManager : BaseManager<PlayerManager>
     private void ReceiverEvenDisableShowUI(object value)
     {
         playerDamage.RegisterEventAttack();
+        if (playerWeapon.CurrentItem == null)
+        {
+            playerDamage.isNotWeapon = true;
+        }
+        else
+        {
+            playerDamage.isNotWeapon = false;
+        }
+
         if (CameraManager.HasInstance)
         {
             CameraManager.Instance.SetActiveInputAxisController(true);
         }
         isInteractingWithUI = false;
     }
-
-    private void CacheComponents()
+    private void OnEventNotWeapon(object value)
     {
-        controller = GetComponent<CharacterController>();
-        playerMove = GetComponent<PlayerMove>();
-        playerJump = GetComponent<PlayerJump>();
-        playerAnim = GetComponent<PlayerAnim>();
-        effectSpawn = GetComponent<EffectSpawn>();
-        playerDamage = GetComponent<PlayerDamage>();
-        playerHeal = GetComponent<PlayerHeal>();
-        playerMana = GetComponent<PlayerMana>();
-        playerStamina = GetComponent<PlayerStamina>();
-        playerCasting = GetComponent<PlayerCasting>();
-        playerDodge = GetComponent<PlayerDodge>();
+        playerDamage.isNotWeapon = true;
     }
+
+
     private void HandleIdleState()
     {
         playerMove.PlayerMovement();
@@ -183,8 +186,19 @@ public class PlayerManager : BaseManager<PlayerManager>
     {
         //playerDamage.Attack();
     }
+    private void ReceiverPlayerDie(object value)
+    {
+        if (value is bool died && died && !m_IsShowLosePopup)
+        {
+            m_IsShowLosePopup = true;
+            m_CancelLosePopup = false;
+            _delayLoseCoroutine = StartCoroutine(DelayShowLosePopup());
 
-    
+            // Tắt attack
+            playerDamage.DegreeEventClickMouse();
+        }
+    }
+
     private IEnumerator DelayShowLosePopup()
     {
         yield return new WaitForSeconds(3f);
@@ -205,11 +219,11 @@ public class PlayerManager : BaseManager<PlayerManager>
                     {
                         if (ListenerManager.HasInstance)
                         {
-                            if(GameManager.HasInstance)
+                            if (GameManager.HasInstance)
                             {
                                 ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_PLAYAGAIN, null);
-                            }    
-                           
+                            }
+
                         }
                         var fakeLoadingSetting = new FakeLoadingSetting();
                         UIManager.Instance.ShowPopup<PopupFakeLoading>(fakeLoadingSetting, true);
@@ -236,18 +250,7 @@ public class PlayerManager : BaseManager<PlayerManager>
             }
         }
     }
-    private void ReceiverPlayerDie(object value)
-    {
-        if (value is bool died && died && !m_IsShowLosePopup)
-        {
-            m_IsShowLosePopup = true;
-            m_CancelLosePopup = false;
-            _delayLoseCoroutine = StartCoroutine(DelayShowLosePopup());
 
-            // Tắt attack
-            playerDamage.DegreeEventClickMouse();
-        }
-    }
     private void CancelLoseCoroutine()
     {
         // Dùng để hủy coroutine chờ popup
@@ -259,5 +262,21 @@ public class PlayerManager : BaseManager<PlayerManager>
             _delayLoseCoroutine = null;
         }
         playerDamage.RegisterEventAttack();
+    }
+    private void CacheComponents()
+    {
+        controller = GetComponent<CharacterController>();
+        playerMove = GetComponent<PlayerMove>();
+        playerJump = GetComponent<PlayerJump>();
+        playerAnim = GetComponent<PlayerAnim>();
+        effectSpawn = GetComponent<EffectSpawn>();
+        playerDamage = GetComponent<PlayerDamage>();
+        playerHeal = GetComponent<PlayerHeal>();
+        playerMana = GetComponent<PlayerMana>();
+        playerStamina = GetComponent<PlayerStamina>();
+        playerCasting = GetComponent<PlayerCasting>();
+        playerDodge = GetComponent<PlayerDodge>();
+        playerWeapon = GetComponent<PlayerWeapon>();
+
     }
 }

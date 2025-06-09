@@ -30,6 +30,11 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if(itemEquip.CurrentItem == null)
+        {
+            Debug.Log("Not Item equip.");
+            return;
+        }    
         canvasGroup.blocksRaycasts = false;
         originalAnchoredPos = rectTransform.anchoredPosition;
         OriginalParent = rectTransform.parent.gameObject;
@@ -47,6 +52,11 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnDrag(PointerEventData eventData)
     {
+        if (itemEquip.CurrentItem == null)
+        {
+            Debug.Log("Not Item equip.");
+            return;
+        }
         rectTransform.anchoredPosition += eventData.delta;
 
         if (PlayerManager.HasInstance)
@@ -57,6 +67,11 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
 
     public void OnEndDrag(PointerEventData eventData)
     {
+        if (itemEquip.CurrentItem == null)
+        {
+            Debug.Log("Not Item equip.");
+            return;
+        }
         canvasGroup.blocksRaycasts = true;
         if (eventData.pointerEnter != null)
         {
@@ -66,9 +81,18 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
             {
                 HandlerItemInventory(inventorySlot);
                 ResetDraggedItemPosition();
+
                 if (ListenerManager.HasInstance)
                 {
-                    ListenerManager.Instance.BroadCast(ListenType.HIDE_ITEM_ARMOR_UI, itemEquip.CurrentItem);
+                    if (itemEquip.CurrentItem.questItemData.typeWeapon != TYPEWEAPON.DEFAULT)
+                    {
+                        ListenerManager.Instance.BroadCast(ListenType.HIDE_ITEM_WEAPON_UI, itemEquip.CurrentItem);
+                    }
+                    else
+                    {
+                        ListenerManager.Instance.BroadCast(ListenType.HIDE_ITEM_ARMOR_UI, itemEquip.CurrentItem);
+                    }
+
                 }
                 itemEquip.CurrentItem = null;
                 itemEquip.ShowAlphaIcon(true);
@@ -91,8 +115,7 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     }
     private void HandlerItemInventory(InventorySlot inventorySlot)
     {
-        Image imgInventory = inventorySlot.GetComponent<Image>();
-        if (imgInventory != null)
+        if (inventorySlot.TryGetComponent<Image>(out var imgInventory))
         {
             Sprite sprite = image.sprite;
             SetSpriteTarget(imgInventory, sprite);
@@ -127,5 +150,5 @@ public class DragDropArmor : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         Debug.Log($"anchoredPosition after reset: {rectTransform.anchoredPosition}");
     }
 
-
+   
 }

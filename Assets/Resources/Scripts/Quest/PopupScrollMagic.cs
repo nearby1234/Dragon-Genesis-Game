@@ -111,7 +111,7 @@ public class PopupScrollMagic : BasePopup
         {
             m_RewardBtn.HideCanvasGroup();
         }
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.SEND_QUESTMISSION_CURRENT, m_CurrentQuestData);
         }
@@ -147,6 +147,15 @@ public class PopupScrollMagic : BasePopup
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ScrollSound");
+        }
+        if (UIManager.HasInstance)
+        {
+            NotifyMessageMission<PopupScrollMagic> notifyMessageMission = new()
+            {
+                uiElement = this,
+                questData = m_CurrentQuestData,
+            };
+            UIManager.Instance.ShowNotify<NotifySystem>(notifyMessageMission,true);
         }
         m_IsShowRewardBtn = false;
     }

@@ -194,6 +194,16 @@ public class PlayerStamina : MonoBehaviour
             {
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_STAMINA_EMPTY, m_StaminaFull);
             }
+            if(UIManager.HasInstance)
+            {
+                NotifyMessageMission<PlayerStamina> notifyMessage = new()
+                {
+                    uiElement = this,
+                    message = "Hết thể lực",
+                };
+                UIManager.Instance.ShowNotify<NotifySystem>(notifyMessage,true);
+            }
+
         }
     }
     private void ReceiverStateDodge(object value)

@@ -71,6 +71,7 @@ public enum ListenType
     SHOWPLAYER_ARMOR_LEGS_UI,
     SHOWPLAYER_ARMOR_SHOULDERS_UI,
     HIDE_ITEM_ARMOR_UI,
+    HIDE_ITEM_WEAPON_UI,
     HIDE_SCOLLVIEW,
     EQUIP_STAT_UPDATE,    // g?i khi trang b? xong
     UNEQUIP_STAT_UPDATE, // g?i khi g? ??
@@ -85,6 +86,7 @@ public enum ListenType
     TYPECOLLIDER_CHILD,
     PARTICLE_TRIGGER,
     PLAYSOUNDSE_BOSSBULLTANK,
+    PLAYER_NOT_WEAPON,
 
 
 

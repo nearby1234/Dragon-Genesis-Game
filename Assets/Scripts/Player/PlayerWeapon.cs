@@ -1,8 +1,6 @@
 using Sirenix.OdinInspector;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.Rendering.STP;
 
 public class PlayerWeapon : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class PlayerWeapon : MonoBehaviour
     [SerializeField] private MeshFilter m_CurrentWeaponMesh;
     [SerializeField] private MeshRenderer m_CurrentWeaponMeshRender;
     [SerializeField] private MeshFilter m_EnergyMesh;
+    public QuestItemSO CurrentItem => m_CurrentItem;
     //[SerializeField] private Config config;
     [ShowInInspector]
     private Dictionary<string, GameObject> m_Items = new();
@@ -25,6 +24,7 @@ public class PlayerWeapon : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.SHOWPLAYER_WEAPON_UI, ReceiverEventShowPlayerWeaponUI);
+            ListenerManager.Instance.Register(ListenType.HIDE_ITEM_WEAPON_UI, OnEventHideWeapon);
         }
     }
     private void OnDestroy()
@@ -32,6 +32,7 @@ public class PlayerWeapon : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.SHOWPLAYER_WEAPON_UI, ReceiverEventShowPlayerWeaponUI);
+            ListenerManager.Instance.Unregister(ListenType.HIDE_ITEM_WEAPON_UI, OnEventHideWeapon);
         }
     }
 
@@ -43,6 +44,27 @@ public class PlayerWeapon : MonoBehaviour
 
             BroadcastAllStatDeltas(itemSO, true);
             SetWeapon(m_CurrentItem);
+        }
+    }
+    private void OnEventHideWeapon(object value)
+    {
+        if (value is QuestItemSO itemSO)
+        {
+            if(m_CurrentItem.questItemData.m_SwordMesh == itemSO.questItemData.m_SwordMesh)
+            {
+                m_CurrentItem = null;
+                if(m_CurrentItem == null)
+                {
+                    if(ListenerManager.HasInstance)
+                    {
+                        ListenerManager.Instance.BroadCast(ListenType.PLAYER_NOT_WEAPON, null);
+                    }
+                }
+                if (m_CurrentWeaponMesh != null) m_CurrentWeaponMesh.mesh = null;
+                if (m_CurrentWeaponMeshRender != null) m_CurrentWeaponMeshRender.material = null;
+                if (m_EnergyMesh != null) m_EnergyMesh.mesh = null;
+                BroadcastAllStatDeltas(itemSO, false);
+            }
         }
     }
     private void SetWeapon(QuestItemSO itemSO)

@@ -40,7 +40,7 @@ public class NotifyMission : BaseNotify
         {
             questDataCurrent = questData;
             HandlerShowMission(true);
-            UpdateMission(false);
+            UpdateMission(questDataCurrent.isCompleteMission);
         }
     }
     private void OnReceiveUiUpdateItem(object value)
@@ -48,7 +48,7 @@ public class NotifyMission : BaseNotify
         if (QuestManager.HasInstance)
         {
             questDataCurrent = QuestManager.Instance.CurrentQuest;
-            UpdateMission(false);
+            UpdateMission(questDataCurrent.isCompleteMission);
         }
     }
     private void OnReceiveMissionComplete(object value)
@@ -61,6 +61,15 @@ public class NotifyMission : BaseNotify
                 {
                     questDataCurrent.isCompleteMission = true;
                     UpdateMission(isComplete);
+                    if(UIManager.HasInstance)
+                    {
+                        NotifyMessageMission < NotifyMission> notifyMessageMission = new()
+                        {
+                            uiElement = this,
+                            questData = questDataCurrent,
+                        };
+                        UIManager.Instance.ShowNotify<NotifySystem>(notifyMessageMission,true);
+                    }
                 }
                
             }    

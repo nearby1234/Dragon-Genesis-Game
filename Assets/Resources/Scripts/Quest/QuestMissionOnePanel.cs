@@ -90,7 +90,13 @@ public class QuestMissionOnePanel : BasePopup
         SettingCamera();
         if (UIManager.HasInstance)
         {
+            NotifyMessageMission<QuestMissionOnePanel> notifyMessageMission = new()
+            {
+                uiElement = this,
+                questData = m_QuestDataMissionOne,
+            };
             UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
+            UIManager.Instance.ShowNotify<NotifySystem>(notifyMessageMission, true);
             UIManager.Instance.ShowNotify<NotifyMission>();
         }
         if (PlayerManager.HasInstance)

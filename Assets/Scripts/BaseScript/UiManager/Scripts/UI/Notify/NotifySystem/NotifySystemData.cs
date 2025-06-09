@@ -2,6 +2,12 @@ using Sirenix.OdinInspector;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct NotifyMessageMission<T> where T : MonoBehaviour
+{
+    public T uiElement;
+    public QuestData questData;
+    public string message;
+}
 public enum NotifyType
 {
     StartGame,
@@ -18,6 +24,7 @@ public class NotifySystemData : ScriptableObject, IEnumKeyed<NotifyType>
     public float timeShowContentStartGame = 2f;
     public float timeAcceptFirstMission = 4f;
     public float timeFade;
+    public float timeHideNotify;
 
     [Header("Content Show")]
     [TextArea(3,3)]

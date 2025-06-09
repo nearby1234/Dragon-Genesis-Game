@@ -2,14 +2,13 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 using UnityEngine;
+using UnityEngine.Android;
 using UnityEngine.InputSystem;
 
 public class PlayerDamage : MonoBehaviour
 {
     [SerializeField] private InputAction m_ButtonAttackLeftMouse;
     [SerializeField] private InputAction m_ButtonAttackRightMouse;
-    //[SerializeField] private bool m_IsPressLeftMouse;
-    //[SerializeField] private bool m_IsPressRightMouse;
     [SerializeField] private string[] m_AttackNameAnim; // Danh sách tên animation
     [SerializeField] private int[] m_AttackAnimStringToHash; // Mã hash animation
     [SerializeField] private int m_AttackAnimIndex = 0; // Chỉ số animation hiện tại
@@ -18,6 +17,7 @@ public class PlayerDamage : MonoBehaviour
     [SerializeField] private int m_PlusDamageValue;
     [SerializeField] private PivotScaleWeapon m_PivotScaleWeapon;
     public int PlusDamageValue => m_PlusDamageValue; // Giá trị damage cộng thêm
+    public bool isNotWeapon;
 
     private Animator playerAnimator; // Animator của player
     private bool m_IsHeavyAttack = false;
@@ -72,8 +72,21 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnPerformedAttackRightMouse(InputAction.CallbackContext context)
     {
-
-        //if (context.phase != InputActionPhase.Started) return;
+        if (PlayerManager.HasInstance)
+        {
+            if (PlayerManager.instance.playerWeapon.CurrentItem == null)
+            {
+                if (UIManager.HasInstance)
+                {
+                    NotifyMessageMission<PlayerDamage> systemData = new()
+                    {
+                        message = "Không có vũ khí nào được trang bị. Hãy trang bị vũ khí để thực hiện tấn công.",
+                    };
+                    UIManager.Instance.ShowNotify<NotifySystem>(systemData, true);
+                }
+            }
+        }
+        if (isNotWeapon) return;
         // Nếu animation Heavy Attack chưa đang chạy thì play nó
         if (!playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Heavy Attack"))
         {
@@ -85,8 +98,23 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
-        //m_IsPressLeftMouse = true;
+        if (PlayerManager.HasInstance)
+        {
+            if (PlayerManager.instance.playerWeapon.CurrentItem == null)
+            {
+                if(UIManager.HasInstance)
+                {
+                    NotifyMessageMission<PlayerDamage> systemData = new()
+                    {
+                        message = "Không có vũ khí nào được trang bị. Hãy trang bị vũ khí để thực hiện tấn công.",
+                    };
+                    UIManager.Instance.ShowNotify<NotifySystem>(systemData,true);
+                }
+            }
+        }
 
+        if (isNotWeapon) return;
+        
         // Nếu animation attack hiện tại vẫn chưa hoàn thành, bỏ qua việc kích hoạt lại attack
         if (playerAnimator.GetCurrentAnimatorStateInfo(0).normalizedTime < 0.5f &&
             playerAnimator.GetCurrentAnimatorStateInfo(0).IsTag("Attack"))

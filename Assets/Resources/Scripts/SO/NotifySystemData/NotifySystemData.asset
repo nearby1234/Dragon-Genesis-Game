@@ -16,12 +16,13 @@ MonoBehaviour:
   timeShowContentStartGame: 2
   timeAcceptFirstMission: 4
   timeFade: 0.5
+  timeHideNotify: 2
   StartGame: "Ch\xE0o m\u1EEBng b\u1EA1n \u0111\u1EBFn th\u1EBF gi\u1EDBi <B><color=#0DFF00>
     Dragon Genesis!"
   AcceptFirstMission: "H\xE3y t\xECm g\u1EB7p <B><color=#0DFF00>Tr\u01B0\u1EDFng
     l\xE0ng Long H\u1EEFu</color></B> \u0111\u1EC3 nh\u1EADn s\u1EF1 m\u1EC7nh c\u1EE7a
     m\xECnh."
-  Color: {r: 0.050980568, g: 1, b: 0, a: 0}
-  hex: '#0DFF00'
-  key: <color=#0DFF00>
+  Color: {r: 0.97882116, g: 1, b: 0, a: 0}
+  hex: '#FAFF00'
+  key: <color=#FAFF00>
   endColorKey: </color>
