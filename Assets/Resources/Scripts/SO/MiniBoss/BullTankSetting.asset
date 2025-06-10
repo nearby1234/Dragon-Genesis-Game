@@ -20,7 +20,7 @@ MonoBehaviour:
   RangeAttackJump: 8
   RangeAttackSword: 6
   RangeAttackThrow: 15
-  Heal: 1500
+  Heal: 100
   DamageBase: 200
   percentAttackAxe: 15
   percentAttackThrowAxe: 0

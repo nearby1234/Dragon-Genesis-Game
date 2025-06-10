@@ -5844,6 +5844,7 @@ MonoBehaviour:
   playerHeal: {fileID: 0}
   playerMana: {fileID: 0}
   playerStamina: {fileID: 0}
+  playerWeapon: {fileID: 0}
   playerCasting: {fileID: 0}
   playerDodge: {fileID: 0}
   effectSpawn: {fileID: 0}
@@ -5920,6 +5921,7 @@ MonoBehaviour:
   m_PlayerDamageBase: 0
   m_PlusDamageValue: 2
   m_PivotScaleWeapon: {fileID: 0}
+  isNotWeapon: 0
 --- !u!114 &3286362027152036089
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58826,7 +58828,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
   m_IsTakeDamaged: 0
-  m_timer: 0.2
+  m_timer: 1
   tagList: []
 --- !u!1 &6511328590097995561
 GameObject:

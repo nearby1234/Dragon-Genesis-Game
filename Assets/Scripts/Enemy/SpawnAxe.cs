@@ -8,7 +8,7 @@ public class SpawnAxe : MonoBehaviour
     [SerializeField] private GameObject axePrefab;
     [SerializeField] private GameObject Player;
     [SerializeField] private Transform throwOrigin;
-    [SerializeField] private int circleCount = 16;      // số phân thân sẽ tỏa vòng tròn
+    [SerializeField] private int circleCount = 8;      // số phân thân sẽ tỏa vòng tròn
     [SerializeField] private int poolCount = 16;  
     [SerializeField] private float axeSpeed = 10f;
     [SerializeField] private float zSpinSpeed = 10f;
@@ -16,6 +16,7 @@ public class SpawnAxe : MonoBehaviour
     [SerializeField] private float posY;
     [SerializeField] private Vector3 boxHalfExtents = new(1f, 1f, 1f);
     [SerializeField] private LayerMask layerMask;
+    [SerializeField] private Vector3 rotate;
 
 
     [SerializeField] private float delayBeforeCircle = 0.5f; // delay trước khi tỏa
@@ -42,19 +43,31 @@ public class SpawnAxe : MonoBehaviour
         // Lấy vị trí trung tâm từ rìu ban đầu
         //Vector3 center = axePrefab.transform.position;
         Vector3 center = transform.position + transform.up * posY;
+        // 1) Độ mở góc fan (ví dụ 90°)
+        float fanAngle = 90f;
+        // 2) Tính góc bắt đầu và bước giữa các thanh
+        float startAngle = -fanAngle * 0.5f;
+        float step = (circleCount > 1)
+                     ? fanAngle / (circleCount - 1)
+                     : 0f;
+
 
         // Spawn circleCount rìu tỏa đều 360°
         for (int i = 0; i < circleCount; i++)
         {
-            float angle = i * (360f / circleCount);
-            Quaternion circleYaw = Quaternion.Euler(180, angle, 90);
-            Vector3 dir = circleYaw * Vector3.forward;
+            float angle = startAngle + step * i;
+            Quaternion baseRot = transform.rotation;
+            Quaternion yawOffset = Quaternion.AngleAxis(angle, transform.up);
+            Quaternion extraOffset = Quaternion.Euler(rotate);
+            Quaternion rot = extraOffset * yawOffset * baseRot;
+            Vector3 dir = rot * Vector3.forward;
+
 
             // Lấy rìu từ pool và set position, rotation
             var clone = GetPool();
             if (clone != null)
             {
-                clone.transform.SetPositionAndRotation(center, circleYaw);
+                clone.transform.SetPositionAndRotation(center, rot);
                 clone.SetActive(true);
 
                 activeAxes.Add(clone);

@@ -5,6 +5,7 @@ using ColorUtility = UnityEngine.ColorUtility;
 
 public enum PopupType
 {
+    Default,
     Confirm,
     OK,
     WIN,

@@ -15,6 +15,7 @@ public class PlayParrticleEarth : MonoBehaviour
     [SerializeField] private GameObject earthSkillGameObj;
     [SerializeField] private BullTankHeal bullTankHeal;
     [SerializeField] private BehaviorGraphAgent graphAgent;
+    private bool m_IsPlayEarthSkill;
 
     private void Awake()
     {
@@ -27,10 +28,18 @@ public class PlayParrticleEarth : MonoBehaviour
         {
             bullTankHeal.OnActionAgent += ReceiverActionEvent;
         }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN,OnEventClickButtonPlayAgain);
+        }
     }
     private void OnDestroy()
     {
         bullTankHeal.OnActionAgent -= ReceiverActionEvent;
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, OnEventClickButtonPlayAgain);
+        }
     }
 
     // Animation Event  => Animation Clip : Jump
@@ -38,14 +47,23 @@ public class PlayParrticleEarth : MonoBehaviour
     {
         if (earthSkill != null)
         {
-            earthSkillGameObj.transform.position = earthSkillContainer.transform.position;
-            earthSkill.Play();
-            if (ListenerManager.HasInstance)
+            if (!m_IsPlayEarthSkill)
             {
-                string nameSound = "SFX-Spell-03-Earth_wav";
-                ListenerManager.Instance.BroadCast(ListenType.PLAYSOUNDSE_BOSSBULLTANK, nameSound);
+                earthSkillGameObj.transform.position = earthSkillContainer.transform.position;
+                earthSkill.Play();
+                if (earthSkill.TryGetComponent<CapsuleCollider>(out var capsuleCollider))
+                {
+                    capsuleCollider.enabled = true;
+                }
+                if (ListenerManager.HasInstance)
+                {
+                    string nameSound = "SFX-Spell-03-Earth_wav";
+                    ListenerManager.Instance.BroadCast(ListenType.PLAYSOUNDSE_BOSSBULLTANK, nameSound);
+                }
+                m_IsPlayEarthSkill = true;
             }
         }
+        StartCoroutine(SetHideCollider());
     }
     // Animation Event  => Animation Clip : Jump
     public void PlayTrackZone()
@@ -101,7 +119,7 @@ public class PlayParrticleEarth : MonoBehaviour
 
     public void ShakeCamera()
     {
-        if(CameraManager.HasInstance)
+        if (CameraManager.HasInstance)
         {
             CameraManager.Instance.ShakeCamera();
         }
@@ -124,7 +142,23 @@ public class PlayParrticleEarth : MonoBehaviour
             }
         return false;
     }
+    IEnumerator SetHideCollider()
+    {
+        yield return new WaitForSeconds(1f);
+       if (earthSkill.TryGetComponent<CapsuleCollider>(out var capsuleCollider))
+        {
+            capsuleCollider.enabled = false;
+            m_IsPlayEarthSkill = false;
+        }    
+    }    
 
-    
+    private void OnEventClickButtonPlayAgain(object value)
+    {
+        if(ThunderArmor.isPlaying)
+        {
+            ThunderArmor.Stop();
+        }
+    }
+
 
 }

@@ -46,6 +46,7 @@ public class BullTankHeal : MonoBehaviour
             };
             ListenerManager.Instance.BroadCast(ListenType.SEND_DATAHEAL_VALUE, dataBull);
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverEventOnClickPlayAgain);
+            ListenerManager.Instance.Register(ListenType.PLAYER_DIE, OnEventPlayerDie);
 
         }
         graphAgent = GetComponent<BehaviorGraphAgent>();
@@ -60,6 +61,7 @@ public class BullTankHeal : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, ReceiverEventOnClickPlayAgain);
+            ListenerManager.Instance.Unregister(ListenType.PLAYER_DIE, OnEventPlayerDie);
         }
     }
 
@@ -121,6 +123,7 @@ public class BullTankHeal : MonoBehaviour
     {
         if (GameManager.HasInstance)
         {
+            graphAgent.SetVariableValue<bool>("IsPlayerDie", false);
             CreepType creep = GameManager.Instance.GetCreepType();
             if (creep == CreepType.BullTank)
             {
@@ -141,6 +144,7 @@ public class BullTankHeal : MonoBehaviour
                 animator.CrossFade("Idle", 0.1f);
                 StartCoroutine(SetStateNodeClickPlayAgain());
             }
+            
         }
     }
 
@@ -149,10 +153,10 @@ public class BullTankHeal : MonoBehaviour
         if (graphAgent != null)
         {
             graphAgent.SetVariableValue<float>("BullTankHeal", heal);
-            graphAgent.SetVariableValue<bool>("IsShowHealBar", false);
+           
             graphAgent.SetVariableValue<PhaseState>("PhaseStateBoss", PhaseState.None);
             graphAgent.SetVariableValue<bool>("HasChased", false);
-            graphAgent.SetVariableValue<bool>("IsClickPlayAgain", true);
+            //graphAgent.SetVariableValue<bool>("IsClickPlayAgain", true);
             graphAgent.SetVariableValue<bool>("IsAngry", false);
             graphAgent.SetVariableValue<bool>("IsSuperAngry", false);
         }
@@ -172,6 +176,14 @@ public class BullTankHeal : MonoBehaviour
         if (graphAgent != null)
         {
             graphAgent.SetVariableValue<bool>("IsClickPlayAgain", false);
+            graphAgent.SetVariableValue<bool>("IsShowHealBar", false);
+        }
+    }
+    private void OnEventPlayerDie(object value)
+    {
+        if (value is bool died)
+        {
+            graphAgent.SetVariableValue<bool>("IsPlayerDie", died);
         }
     }
 }

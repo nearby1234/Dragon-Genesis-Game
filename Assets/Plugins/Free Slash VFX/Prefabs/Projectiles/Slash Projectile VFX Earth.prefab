@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3038515511254748201}
   - component: {fileID: 3038515511254748203}
   - component: {fileID: 3038515511254748202}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Trails (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4902,7 +4902,7 @@ GameObject:
   - component: {fileID: 4046814069334642722}
   - component: {fileID: 4046814069334642720}
   - component: {fileID: 4046814069334642721}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Debris
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9735,7 +9735,7 @@ GameObject:
   - component: {fileID: 4046814070516281808}
   - component: {fileID: 4046814070516281774}
   - component: {fileID: 4046814070516281775}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Flying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14644,7 +14644,7 @@ GameObject:
   - component: {fileID: 4046814071347948289}
   - component: {fileID: 4046814071347948319}
   - component: {fileID: 4046814071347948288}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Trails Flying
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19478,7 +19478,9 @@ GameObject:
   - component: {fileID: 4416080445347060709}
   - component: {fileID: 4416080445347060710}
   - component: {fileID: 941001116792977075}
-  m_Layer: 0
+  - component: {fileID: 7516422435802080576}
+  - component: {fileID: 500685166706286512}
+  m_Layer: 18
   m_Name: Slash Projectile VFX Earth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23151,9 +23153,9 @@ ParticleSystem:
         m_NumAlphaKeys: 2
     range: {x: 0, y: 1}
   CollisionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
-    type: 0
+    type: 1
     collisionMode: 0
     colliderForce: 0
     multiplyColliderForceByParticleSize: 0
@@ -23321,25 +23323,25 @@ ParticleSystem:
         m_RotationOrder: 4
     minKillSpeed: 0
     maxKillSpeed: 10000
-    radiusScale: 1
+    radiusScale: 1.25
     collidesWith:
       serializedVersion: 2
-      m_Bits: 4294967295
+      m_Bits: 1024
     maxCollisionShapes: 256
     quality: 0
     voxelSize: 0.5
-    collisionMessages: 0
+    collisionMessages: 1
     collidesWithDynamic: 1
     interiorCollisions: 0
   TriggerModule:
     enabled: 0
     serializedVersion: 2
-    inside: 1
+    inside: 0
     outside: 0
-    enter: 0
+    enter: 2
     exit: 0
-    colliderQueryMode: 0
-    radiusScale: 1
+    colliderQueryMode: 1
+    radiusScale: 1.22
     primitives: []
   SubModule:
     serializedVersion: 2
@@ -24380,6 +24382,40 @@ MonoBehaviour:
   SpawnWhenFinish: {fileID: 0}
   speed: 20
   distance: 30
+--- !u!114 &7516422435802080576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416080445347060711}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 200f1e28eb6747142821eaa2bb13952b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  typeCollider: 3
+--- !u!65 &500685166706286512
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4416080445347060711}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 2, y: 0.2, z: 2}
+  m_Center: {x: -0.01, y: -0.00000071525403, z: 0}
 --- !u!1 &4416080446063441733
 GameObject:
   m_ObjectHideFlags: 0
@@ -24392,7 +24428,7 @@ GameObject:
   - component: {fileID: 4416080446063441754}
   - component: {fileID: 4416080446063441755}
   - component: {fileID: 7311250514237202320}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -24408,7 +24444,7 @@ Transform:
   m_GameObject: {fileID: 4416080446063441733}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0.00000011920929, z: 0.00000025331974, w: 0.7071068}
-  m_LocalPosition: {x: -0.586482, y: 0.00000017881393, z: 0.000008338368}
+  m_LocalPosition: {x: -0.42570698, y: -0.01659128, z: -0.040828876}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29245,7 +29281,7 @@ GameObject:
   - component: {fileID: 4416080446205361371}
   - component: {fileID: 4416080446205361369}
   - component: {fileID: 4416080446205361370}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Slash Distortion
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -34078,7 +34114,7 @@ GameObject:
   - component: {fileID: 4416080446743201617}
   - component: {fileID: 4416080446743201623}
   - component: {fileID: 4416080446743201616}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Flying 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38920,7 +38956,7 @@ GameObject:
   - component: {fileID: 4416080447252152761}
   - component: {fileID: 4416080447252152767}
   - component: {fileID: 4416080447252152760}
-  m_Layer: 0
+  m_Layer: 18
   m_Name: Trails
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43808,9 +43844,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4416080446063441732}
     m_Modifications:
+    - target: {fileID: 637968014551906757, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: 1035977224672214417, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
       propertyPath: m_Name
       value: Impact (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 1035977224672214417, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 1418760837371908204, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
       propertyPath: stopAction
@@ -43917,6 +43961,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3200377639586277203, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3200377639586277203, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -43963,6 +44011,10 @@ PrefabInstance:
     - target: {fileID: 4054212429024354123, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5837239117075306285, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 5885339532838503758, guid: 057aa477789506a44bd206e9c5acad19, type: 3}
       propertyPath: looping

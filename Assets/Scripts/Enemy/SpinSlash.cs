@@ -10,8 +10,8 @@ public class SpinSlash : MonoBehaviour
     [SerializeField] private GameObject prefabs;
     [SerializeField] private float PosY;
     [SerializeField] private float RotateZ;
-    private readonly int count = 3;
-    private readonly float fanAngle = 60f;
+    [SerializeField] private int count = 3;
+    [SerializeField] private float fanAngle = 60f;
     private Queue<GameObject> poolSlash = new();
 
     public void FireFan()

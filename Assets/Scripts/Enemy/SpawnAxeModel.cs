@@ -15,6 +15,20 @@ public class SpawnAxeModel : MonoBehaviour
     [SerializeField] private BehaviorTreeSO bullTankSetting;
     [SerializeField] private BehaviorGraphAgent graphAgent;
 
+    private void Start()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_PLAYAGAIN, OnEventClickButtonPlayAgain);
+        }
+    }
+    private void OnDestroy()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_PLAYAGAIN, OnEventClickButtonPlayAgain);
+        }
+    }
     public void SpawnAxe()
     {
 
@@ -81,5 +95,21 @@ public class SpawnAxeModel : MonoBehaviour
                 }
             } 
         }    
+    }
+    private void OnEventClickButtonPlayAgain(object value)
+    {
+        if(!m_AxePrefabs.activeSelf)
+        {
+            m_AxePrefabs.SetActive(true);
+            if(m_AxePrefabs.TryGetComponent<ParticleSystem>(out var particleSystem))
+            {
+                if(particleSystem.isPlaying)
+                {
+                    particleSystem.Stop();
+                }
+                
+            }
+
+        }
     }
 }

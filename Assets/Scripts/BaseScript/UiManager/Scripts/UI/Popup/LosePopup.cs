@@ -13,12 +13,13 @@ public class LosePopup : BasePopup
     [SerializeField] private Button m_PlayAgainBtn;
     [SerializeField] private Button m_MainMenuBtn;
     [SerializeField] private Button m_ExitBtn;
+    [SerializeField] private GridLayoutGroup parentButton;
 
     public override void Show(object data)
     {
         Debug.Log("LosePopup show");
         base.Show(data);
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
@@ -31,154 +32,66 @@ public class LosePopup : BasePopup
                     case PopupType.LOSE:
 
                         if (PlayerManager.HasInstance) PlayerManager.instance.m_IsShowingLosePopup = true;
-                       
-                        m_MainMenuBtn.gameObject.SetActive(true);
-                        m_PlayAgainBtn.gameObject.SetActive(true);
-                        m_Title.gameObject.SetActive(true);
-                        m_NameBoss.gameObject.SetActive(false);
-                        m_NameDefeat.gameObject.SetActive(false);
-                        m_Title.text = msg.titleLose;
-                        m_Title.color = msg.TitleLoseColor;
-                        m_ExitBtn.image.color = new(1, 1, 1, 0);
-                        m_ExitBtn.interactable = false;
+
+                        AddlistenerPlayAgainButton(true, msg,msg.popupType);
+                        AddlistenerMainMenuButton(true, msg);
+                        SetTilte(true, msg.TitleLoseColor, msg.titleLose);
+                        SetContentBossShow(false);
+                        SetButtonExit(false);
                         m_TitlePlayAgain.text = msg.titlePlayAgain;
-                        m_PlayAgainBtn.onClick.RemoveAllListeners();
-                        m_PlayAgainBtn.onClick.AddListener(() =>
+
+                        if (PlayerManager.HasInstance)
                         {
-                            msg.OnPlayAgain?.Invoke();
-                            if (GameManager.HasInstance)
-                            {
-                                GameManager.Instance.HideCursor();
-                            }
-                            if(ListenerManager.HasInstance)
-                            {
-                               
-                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                            }
-                            if (AudioManager.HasInstance)
-                            {
-                                AudioManager.Instance.PlaySE("ExitSound");
-                            }
-                            if(PlayerManager.HasInstance)
-                            {
-                                PlayerManager.Instance.m_IsShowingLosePopup = false;
-                            }
-                            this.Hide();
-                        });
-                        m_MainMenuBtn.onClick.RemoveAllListeners();
-                        m_MainMenuBtn.onClick.AddListener(() =>
-                        {
-                            msg.OnMainMenu?.Invoke();
-                            if (Cheat.HasInstance)
-                            {
-                                Cheat.Instance.StopParticleOpen();
-                            }
-                            if (ListenerManager.HasInstance)
-                            {
-                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                            }
-                            if (AudioManager.HasInstance)
-                            {
-                                AudioManager.Instance.PlaySE("ExitSound");
-                            }
-                            if (PlayerManager.HasInstance)
-                            {
-                                PlayerManager.Instance.m_IsShowingLosePopup = false;
-                            }
-                            this.Hide();
-                        });
+                            PlayerManager.Instance.m_IsShowingLosePopup = false;
+                        }
 
                         break;
                     case PopupType.WORM_DIE:
                         {
-                            m_Title.gameObject.SetActive(false);
-                            m_NameBoss.gameObject.SetActive(true);
-                            m_NameDefeat.gameObject.SetActive(true);
-                            m_NameBoss.text = msg.WormDie;
-                            m_NameDefeat.text = msg.nameState;
-                            m_Title.color = msg.TitleWinColor;
-                            m_ExitBtn.image.color = new(1, 1, 1, 0);
-                            m_ExitBtn.interactable = false;
-                            m_MainMenuBtn.gameObject.SetActive(false);
-                            m_PlayAgainBtn.gameObject.SetActive(false);
-                            if (ListenerManager.HasInstance)
-                            {
-                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                            }
+                            SetTilte(false);
+                            SetContentBossShow(true, msg.WormDie, msg.nameState);
+                            SetButtonExit(true);
+                            AddlistenerPlayAgainButton(false);
+                            SetGrizLayout(true);
+                            AddlistenerMainMenuButton(true, msg);
                             if (Cheat.HasInstance)
                             {
                                 Cheat.Instance.StartParticleOpen();
                             }
-                            StartCoroutine(HideWinPopup());
+                            if (GameManager.HasInstance)
+                            {
+                                GameManager.Instance.ShowCursor();
+                            }
                         }
                         break;
                     case PopupType.BULLTANK_DIE:
                         {
-                            m_Title.gameObject.SetActive(false);
-                            m_NameBoss.gameObject.SetActive(true);
-                            m_NameDefeat.gameObject.SetActive(true);
-                            m_NameBoss.text = msg.BullTankDie;
-                            m_NameDefeat.text = msg.nameState;
-                            m_Title.color = msg.TitleWinColor;
-                            m_ExitBtn.image.color = new(1, 1, 1, 0);
-                            m_ExitBtn.interactable = false;
-                            m_MainMenuBtn.gameObject.SetActive(false);
-                            m_PlayAgainBtn.gameObject.SetActive(false);
+                            SetTilte(false);
+                            SetContentBossShow(true, msg.BullTankDie, msg.nameState);
+                            SetButtonExit(true);
+                            AddlistenerMainMenuButton(true, msg);
+                            AddlistenerPlayAgainButton(false);
+                            SetGrizLayout(true);
                             if (ListenerManager.HasInstance)
                             {
-                                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
                             }
-                            StartCoroutine(HideWinPopup());
+                            if (GameManager.HasInstance)
+                            {
+                                GameManager.Instance.ShowCursor();
+                            }
+
                         }
                         break;
                     case PopupType.PAUSE:
                         {
-                            m_Title.gameObject.SetActive(true);
-                            m_NameBoss.gameObject.SetActive(false);
-                            m_NameDefeat.gameObject.SetActive(false);
-                            m_Title.text = msg.titlePause;
-                            m_Title.color = msg.TitlePauseColor;
-                            m_ExitBtn.image.color = new(1, 1, 1, 0);
-                            m_ExitBtn.interactable = false;
+                            SetTilte(true, msg.TitlePauseColor, msg.titlePause);
+                            SetContentBossShow(false);
+                            SetButtonExit(false);
                             m_TitlePlayAgain.text = msg.titleResume;
-                            m_MainMenuBtn.gameObject.SetActive(true);
-                            m_PlayAgainBtn.gameObject.SetActive(true);
-                            m_PlayAgainBtn.onClick.RemoveAllListeners();
-                            m_PlayAgainBtn.onClick.AddListener(() =>
-                            {
-                                msg.OnResume?.Invoke();
-                                if (GameManager.HasInstance)
-                                {
-                                    GameManager.Instance.HideCursor();
-                                }
-                                if (ListenerManager.HasInstance)
-                                {
-                                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                                }
-                                if (AudioManager.HasInstance)
-                                {
-                                    AudioManager.Instance.PlaySE("ExitSound");
-                                }
-                                this.Hide();
-                            });
-                            m_MainMenuBtn.onClick.RemoveAllListeners();
-                            m_MainMenuBtn.onClick.AddListener(() =>
-                            {
-                                msg.OnMainMenu?.Invoke();
-                                if(Cheat.HasInstance)
-                                {
-                                    Cheat.Instance.StopParticleOpen();
-                                }
-                                if (ListenerManager.HasInstance)
-                                {
-                                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-                                }
-                                if (AudioManager.HasInstance)
-                                {
-                                    AudioManager.Instance.PlaySE("ExitSound");
-                                }
-                                this.Hide();
-                            });
+                            AddlistenerPlayAgainButton(true, msg, msg.popupType);
+                            AddlistenerMainMenuButton(true, msg);
+
                         }
                         break;
                     default:
@@ -192,11 +105,149 @@ public class LosePopup : BasePopup
     {
         yield return new WaitForSeconds(3f);
         this.Hide();
-      
+
         if (PlayerManager.HasInstance)
         {
             PlayerManager.Instance.m_IsShowingLosePopup = false;
         }
 
+    }
+
+    private void SetGrizLayout(bool isSet)
+    {
+        if (isSet)
+        {
+            parentButton.padding.left = -120;
+        }
+        else
+        {
+            parentButton.padding.left = -324;
+        }
+
+    }
+    private void AddlistenerMainMenuButton(bool isEnable = false, PopupMessage msg = null)
+    {
+        if (!isEnable)
+        {
+            m_MainMenuBtn.gameObject.SetActive(false);
+            return;
+
+        }
+        else
+        {
+            m_MainMenuBtn.gameObject.SetActive(true);
+            m_MainMenuBtn.onClick.RemoveAllListeners();
+            m_MainMenuBtn.onClick.AddListener(() =>
+            {
+                msg.OnMainMenu?.Invoke();
+                if (Cheat.HasInstance)
+                {
+                    Cheat.Instance.StopParticleOpen();
+                }
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ExitSound");
+                }
+                this.Hide();
+            });
+        }
+
+    }
+    private void AddlistenerPlayAgainButton(bool isEnable = false, PopupMessage msg = null, PopupType popupType = PopupType.Default)
+    {
+        if (!isEnable)
+        {
+            m_PlayAgainBtn.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            m_PlayAgainBtn.gameObject.SetActive(true);
+            m_PlayAgainBtn.onClick.RemoveAllListeners();
+            m_PlayAgainBtn.onClick.AddListener(() =>
+            {
+                switch (popupType)
+                {
+                    case PopupType.LOSE:
+                        msg.OnPlayAgain?.Invoke();
+                        break;
+                    case PopupType.PAUSE:
+                        msg.OnResume?.Invoke();
+                        break;
+                }
+                if (GameManager.HasInstance)
+                {
+                    GameManager.Instance.HideCursor();
+                }
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ExitSound");
+                }
+                this.Hide();
+            });
+        }
+
+    }
+    private void SetTilte(bool isShow = false, Color color = default, string content = null)
+    {
+        if (!isShow)
+        {
+            m_Title.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            m_Title.gameObject.SetActive(true);
+            m_Title.color = color;
+            m_Title.text = content;
+        }
+
+    }
+    private void SetContentBossShow(bool isShow = false, string nameBoss = null, string nameDefeat = null)
+    {
+        if (!isShow)
+        {
+            m_NameBoss.gameObject.SetActive(false);
+            m_NameDefeat.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            m_NameBoss.gameObject.SetActive(true);
+            m_NameDefeat.gameObject.SetActive(true);
+            m_NameBoss.text = nameBoss;
+            m_NameDefeat.text = nameDefeat;
+        }
+    }
+    private void SetButtonExit(bool isShow)
+    {
+        if (!isShow)
+        {
+            m_ExitBtn.image.color = new(1, 1, 1, 0);
+            m_ExitBtn.interactable = false;
+            return;
+        }
+        else
+        {
+            m_ExitBtn.image.color = new(1, 1, 1, 1);
+            m_ExitBtn.interactable = true;
+            m_ExitBtn.onClick.RemoveAllListeners();
+            m_ExitBtn.onClick.AddListener(() =>
+            {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
+                this.Hide();
+            });
+        }
     }
 }

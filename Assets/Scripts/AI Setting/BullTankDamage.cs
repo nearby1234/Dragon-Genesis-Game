@@ -130,7 +130,7 @@ public class BullTankDamage : MonoBehaviour
     {
         if (value !=null)
         {
-            if (value is (TypeCollider typeCollider,GameObject other))
+            if (value is (TypeCollider typeCollider,Collider other))
             {
                 Debug.Log("Da vao v�y");
                 PlayerHeal playerHeal = other.GetComponent<PlayerHeal>();

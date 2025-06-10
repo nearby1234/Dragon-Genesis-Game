@@ -21,7 +21,8 @@ public partial class PlayAnyAnimationClipAction : Action
         if(animator !=null )
         {
             hashName = Animator.StringToHash(Name.Value);
-            animator.CrossFade(hashName, 0.2f);
+            //animator.CrossFade(hashName, 0.2f);
+            animator.Play(hashName);
         }    
         return Status.Running;
     }

@@ -58,7 +58,7 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
         originalAnchoredPos = rectTransform.anchoredPosition; // Lưu vị trí ban đầu
 
         originalSiblingIndex = rectTransform.GetSiblingIndex();
-        if (OriginalParent.name != "InventoryItemPanel")
+        //if (OriginalParent.name != "InventoryItemPanel")
         {
             CreatePlaceholder();
             if (DragContainer != null)
