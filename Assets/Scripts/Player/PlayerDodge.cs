@@ -18,6 +18,7 @@ public class PlayerDodge : MonoBehaviour
 
     // Biến theo dõi: nếu true -> stamina cạn, không cho chạy được
     private bool isStaminaEmpty;
+    
 
 
     private void Start()
@@ -52,6 +53,7 @@ public class PlayerDodge : MonoBehaviour
 
     private void OnDodgePerformed(InputAction.CallbackContext context)
     {
+        
         // Nếu đang dodge rồi, không làm gì thêm
         if (!isDodging)
         {

@@ -31,10 +31,11 @@ public class NotifySystemData : ScriptableObject, IEnumKeyed<NotifyType>
     public string StartGame = $"Chào mừng bạn đến thế giới Dragon Genesis!";
     [TextArea(3, 3)]
     public string AcceptFirstMission;
+  
 
     [Header("Color")]
     // Khi thay đổi Color, Odin sẽ gọi UpdateKey()
-    [OnValueChanged(nameof(UpdateKey))]
+    //[OnValueChanged(nameof(UpdateKey))]
     public Color Color;
     public string hex;
     public string key;
@@ -43,7 +44,7 @@ public class NotifySystemData : ScriptableObject, IEnumKeyed<NotifyType>
 
 
 #if UNITY_EDITOR
-    private void UpdateKey()
+    private void OnValidate()
     {
         // Sinh lại hex và key mỗi khi Color thay đổi trong inspector
         hex = $"#{ColorUtility.ToHtmlStringRGB(Color)}";

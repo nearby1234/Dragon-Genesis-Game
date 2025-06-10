@@ -22,7 +22,6 @@ public class PlayerDamage : MonoBehaviour
     private Animator playerAnimator; // Animator của player
     private bool m_IsHeavyAttack = false;
     public bool Heavyattack => m_IsHeavyAttack;
-
     private void Awake()
     {
         m_PivotScaleWeapon = GetComponent<PivotScaleWeapon>();  
@@ -98,6 +97,7 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
+       
         if (PlayerManager.HasInstance)
         {
             if (PlayerManager.instance.playerWeapon.CurrentItem == null)

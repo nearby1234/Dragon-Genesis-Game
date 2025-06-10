@@ -33,28 +33,33 @@ public class NotifySystem : BaseNotify
 
                 case NotifyMessageMission<PlayerStamina> stamina:
                     contentNotifyTxt.text = $"<B><color=#FAFF00>{stamina.message}";
+                    StartCoroutine(SetHideNotify());
                     break;
                 case NotifyMessageMission<PlayerDamage> damage:
                     contentNotifyTxt.text = $"<B>{damage.message}";
+                    StartCoroutine(SetHideNotify());
                     break;
 
                 case NotifyMessageMission<NotifyMission> completed:
                     contentNotifyTxt.text = $"Hoàn thành nhiệm vụ <B><color=#0011FF>{completed.questData.questName}";
+                    StartCoroutine(SetHideNotify());
                     break;
 
                 case NotifyMessageMission<QuestMissionOnePanel> notify:
                     contentNotifyTxt.text = $"Nhận nhiệm vụ <B><color=#FF0E00>{notify.questData.questName}";
+                    StartCoroutine(SetHideNotify());
                     break;
 
                 case NotifyMessageMission<PopupScrollMagic> notify:
                     contentNotifyTxt.text = $"Nhận nhiệm vụ <B><color=#FF0E00>{notify.questData.questName}";
+                    StartCoroutine(SetHideNotify());
                     break;
-
+              
                 default:
-                    // Nếu còn loại khác thì thoát luôn
+                    
                     return;
             }
-            StartCoroutine(SetHideNotify());
+           
         }    
     }
     public override void Hide()
@@ -84,4 +89,9 @@ public class NotifySystem : BaseNotify
         yield return new WaitForSeconds(notifySystemData.timeHideNotify);
         Hide();
     }
+    IEnumerator NextNotify(string content)
+    {
+        yield return new WaitForSeconds(notifySystemData.timeHideNotify);
+        contentNotifyTxt.text = content;
+    }    
 }

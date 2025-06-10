@@ -16,6 +16,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     [SerializeField] private int m_PointCurrentValue;
     //[SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_GearBtn;
+    [SerializeField] private Button m_InstructionBtn;
     [SerializeField] private Button m_AcceptBtn;
     [SerializeField] private Button m_DenyBtn;
     [SerializeField] private int originalPointBackup;

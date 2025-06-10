@@ -12,6 +12,8 @@ public class LosePopup : BasePopup
     [SerializeField] private TextMeshProUGUI m_TitleMainMenu;
     [SerializeField] private Button m_PlayAgainBtn;
     [SerializeField] private Button m_MainMenuBtn;
+    [SerializeField] private Button m_SettingBtn;
+    [SerializeField] private Button m_IntructionBtn;
     [SerializeField] private Button m_ExitBtn;
     [SerializeField] private GridLayoutGroup parentButton;
 
@@ -36,6 +38,7 @@ public class LosePopup : BasePopup
                         AddlistenerPlayAgainButton(true, msg,msg.popupType);
                         AddlistenerMainMenuButton(true, msg);
                         SetTilte(true, msg.TitleLoseColor, msg.titleLose);
+                        ShowSetting(false);
                         SetContentBossShow(false);
                         SetButtonExit(false);
                         m_TitlePlayAgain.text = msg.titlePlayAgain;
@@ -51,6 +54,7 @@ public class LosePopup : BasePopup
                             SetTilte(false);
                             SetContentBossShow(true, msg.WormDie, msg.nameState);
                             SetButtonExit(true);
+                            ShowSetting(false);
                             AddlistenerPlayAgainButton(false);
                             SetGrizLayout(true);
                             AddlistenerMainMenuButton(true, msg);
@@ -69,6 +73,7 @@ public class LosePopup : BasePopup
                             SetTilte(false);
                             SetContentBossShow(true, msg.BullTankDie, msg.nameState);
                             SetButtonExit(true);
+                            ShowSetting(false);
                             AddlistenerMainMenuButton(true, msg);
                             AddlistenerPlayAgainButton(false);
                             SetGrizLayout(true);
@@ -88,6 +93,7 @@ public class LosePopup : BasePopup
                             SetTilte(true, msg.TitlePauseColor, msg.titlePause);
                             SetContentBossShow(false);
                             SetButtonExit(false);
+                            ShowSetting(true);
                             m_TitlePlayAgain.text = msg.titleResume;
                             AddlistenerPlayAgainButton(true, msg, msg.popupType);
                             AddlistenerMainMenuButton(true, msg);
@@ -247,6 +253,35 @@ public class LosePopup : BasePopup
                     ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
                 }
                 this.Hide();
+            });
+        }
+    }
+    private void ShowSetting(bool isShow)
+    {
+        if(!isShow)
+        {
+            m_SettingBtn.gameObject.SetActive(false);
+            m_IntructionBtn.gameObject.SetActive(false);
+            return;
+        }else
+        {
+            m_SettingBtn.gameObject.SetActive(true);
+            m_SettingBtn.onClick.RemoveAllListeners();
+            m_SettingBtn.onClick.AddListener(() =>
+            {
+               if(UIManager.HasInstance)
+                {
+                    UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
+                }
+            });
+            m_IntructionBtn.gameObject.SetActive(true);
+            m_IntructionBtn.onClick.RemoveAllListeners();
+            m_IntructionBtn.onClick.AddListener(() =>
+            {
+                if (UIManager.HasInstance)
+                {
+                    UIManager.Instance.ShowPopup<PopupInstructions>();
+                }
             });
         }
     }

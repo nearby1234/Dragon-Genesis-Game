@@ -46,7 +46,7 @@ MonoBehaviour:
     plusDefendArmor: 0
     m_NameArmorPrefabs: 
   _backupJson: "{\"itemID\":\"-CarriarGreatSwordSkill\",\"itemName\":\"Ki\u1EBFm
-    N\u0103ng L\u01B0\u1EE3ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57320},\"typeItem\":6,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":2.0,\"DespristionSkill\":\"H\u1EA5p
+    N\u0103ng L\u01B0\u1EE3ng\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57326},\"typeItem\":6,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":2.0,\"DespristionSkill\":\"H\u1EA5p
     th\u1EE5 n\u0103ng l\u01B0\u1EE3ng t\u1EA1o th\xE0nh 1 c\u1EF1 ki\u1EBFm n\u0103ng
     l\u01B0\u1EE3ng kh\u1ED5ng l\u1ED3 v\xE0 ch\xE9m t\u1EDBi \u0111\u1ED1i th\u1EE7
     , c\xE0ng h\u1EA5p th\u1EE5 nhi\u1EC1u n\u0103ng l\u01B0\u1EE3ng , c\u1EF1 ki\u1EBFm

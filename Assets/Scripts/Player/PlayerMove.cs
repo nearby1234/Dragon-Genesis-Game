@@ -46,7 +46,6 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float m_TurnSpeed = 5f; // Tốc độ xoay của player
 
     private Camera mainCamera;
-
     // Cho phép di chuyển hay không (có thể dùng để freeze khi cần)
     public bool canMove = true;
     // Biến theo dõi: nếu true -> stamina cạn, không cho chạy được
@@ -84,7 +83,7 @@ public class PlayerMove : MonoBehaviour
         }
 
         // Nếu nhấn LeftShift, gửi sự kiện cập nhật (nếu cần hiển thị UI thông tin)
-        if (m_ButtonLeftShift.IsPressed()&& inputVector.magnitude > Mathf.Epsilon)
+        if (m_ButtonLeftShift.IsPressed() && inputVector.magnitude > Mathf.Epsilon)
         {
             if (ListenerManager.HasInstance)
             {
@@ -111,7 +110,7 @@ public class PlayerMove : MonoBehaviour
         PlayerManager.instance.playerAnim.GetAnimator().SetBool("IsMove", isMoving);
 
         smoothInputVector = Vector2.Lerp(smoothInputVector, isMoving ? inputVector : Vector2.zero, Time.deltaTime / smoothTime);
-        
+
         // Set to exactly zero if very close to zero
         if (!isMoving && smoothInputVector.magnitude < 0.01f)
         {
@@ -212,14 +211,14 @@ public class PlayerMove : MonoBehaviour
         Vector2 dir = smoothInputVector.normalized;
         float speed = smoothInputVector.magnitude;
         var animator = PlayerManager.instance.playerAnim.GetAnimator();
-        
+
         // Apply smoothing to MoveX and MoveY
         float currentMoveX = animator.GetFloat("MoveX");
         float currentMoveY = animator.GetFloat("MoveY");
-        
+
         float smoothMoveX = Mathf.Lerp(currentMoveX, dir.x, Time.deltaTime / smoothTime);
         float smoothMoveY = Mathf.Lerp(currentMoveY, dir.y, Time.deltaTime / smoothTime);
-        
+
         animator.SetFloat("MoveX", smoothMoveX, 0f, 0f);
         animator.SetFloat("MoveY", smoothMoveY, 0f, 0f);
         animator.SetFloat("Speed", speed, 0.1f, Time.deltaTime);
@@ -228,22 +227,22 @@ public class PlayerMove : MonoBehaviour
     private void ResetAnimatorParameters()
     {
         var animator = PlayerManager.instance.playerAnim.GetAnimator();
-        
+
         // Get current values
         float currentMoveX = animator.GetFloat("MoveX");
         float currentMoveY = animator.GetFloat("MoveY");
         float currentSpeed = animator.GetFloat("Speed");
-        
+
         // Smoothly lerp to zero
         float smoothMoveX = Mathf.Lerp(currentMoveX, 0f, Time.deltaTime / smoothTime);
         float smoothMoveY = Mathf.Lerp(currentMoveY, 0f, Time.deltaTime / smoothTime);
         float smoothSpeed = Mathf.Lerp(currentSpeed, 0f, Time.deltaTime / smoothTime);
-        
+
         // Set the smoothed values
         animator.SetFloat("MoveX", smoothMoveX, 0f, 0f);
         animator.SetFloat("MoveY", smoothMoveY, 0f, 0f);
         animator.SetFloat("Speed", smoothSpeed, 0f, 0f);
-        
+
         // If values are very close to zero, set them to exactly zero
         if (Mathf.Abs(smoothMoveX) < 0.01f && Mathf.Abs(smoothMoveY) < 0.01f && smoothSpeed < 0.01f)
         {
@@ -263,10 +262,12 @@ public class PlayerMove : MonoBehaviour
     public void OnMove(InputValue value)
     {
         inputVector = value.Get<Vector2>();
+        
     }
 
     private void OnLeftShiftPerformed(InputAction.CallbackContext context)
     {
+        
         IsPressLeftShift = true;
     }
 
@@ -279,7 +280,7 @@ public class PlayerMove : MonoBehaviour
     {
         canMove = (move == 1);
     }
-  
+
     private void BroadCastStaminaPercent()
     {
         if (ListenerManager.HasInstance)

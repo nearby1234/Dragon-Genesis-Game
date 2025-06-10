@@ -22,7 +22,7 @@ MonoBehaviour:
   AcceptFirstMission: "H\xE3y t\xECm g\u1EB7p <B><color=#0DFF00>Tr\u01B0\u1EDFng
     l\xE0ng Long H\u1EEFu</color></B> \u0111\u1EC3 nh\u1EADn s\u1EF1 m\u1EC7nh c\u1EE7a
     m\xECnh."
-  Color: {r: 0.97882116, g: 1, b: 0, a: 0}
+  Color: {r: 0.9803922, g: 1, b: 0, a: 0}
   hex: '#FAFF00'
   key: <color=#FAFF00>
   endColorKey: </color>

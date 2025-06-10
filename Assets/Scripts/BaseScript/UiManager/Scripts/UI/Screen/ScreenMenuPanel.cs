@@ -33,6 +33,7 @@ public class ScreenMenuPanel : BaseScreen
     [Header("Button UI")]
     [SerializeField] private Button m_StartBtn;
     [SerializeField] private Button m_SettingBtn;
+    [SerializeField] private Button m_IntructionBtn;
     [SerializeField] private Button m_ExitGameBtn;
     private Sequence _shinyLoop;
 
@@ -60,6 +61,7 @@ public class ScreenMenuPanel : BaseScreen
         StartCoroutine(PlaySequence());
         m_StartBtn.onClick.AddListener(() => HandleButtonClick(OnClickStartButton));
         m_SettingBtn.onClick.AddListener(() => HandleButtonClick(OnClickSettingButton));
+        m_IntructionBtn.onClick.AddListener(() => HandleButtonClick(OnClickIntructionButton));
         m_ExitGameBtn.onClick.AddListener(() => HandleButtonClick(OnClickExitGameButton));
         if (ListenerManager.HasInstance)
         {
@@ -190,6 +192,13 @@ public class ScreenMenuPanel : BaseScreen
             UIManager.Instance.ShowScreen<ScreenLoadingPanel>();
         }
 
+    }
+    private void OnClickIntructionButton()
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowPopup<PopupInstructions>();
+        }
     }
     private void OnClickSettingButton()
     {
