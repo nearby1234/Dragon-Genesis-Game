@@ -38,6 +38,7 @@ public class PlayerStamina : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, ReceiverPlayerMoveConsumption);
             ListenerManager.Instance.Register(ListenType.PLAYER_DODGE_STAMINA_CONSUMPTION, ReceiverPlayerDodgeConsumption);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Register(ListenType.CHEAT_PLAYER_STAMINA, OnEventCheatStaminaValue);
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_STAMINA_VALUE, m_MaxStamina);
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
         }
@@ -58,6 +59,7 @@ public class PlayerStamina : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_MOVE_STAMINA_CONSUMPTION, ReceiverPlayerMoveConsumption);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_DODGE_STAMINA_CONSUMPTION, ReceiverPlayerDodgeConsumption);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Unregister(ListenType.CHEAT_PLAYER_STAMINA, OnEventCheatStaminaValue);
         }
     }
 
@@ -203,7 +205,6 @@ public class PlayerStamina : MonoBehaviour
                 };
                 UIManager.Instance.ShowNotify<NotifySystem>(notifyMessage,true);
             }
-
         }
     }
     private void ReceiverStateDodge(object value)
@@ -242,7 +243,6 @@ public class PlayerStamina : MonoBehaviour
         {
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_MOVE_STOP, isStaminaEmpty);
         }
-
     }
     private void CalcuDodgeStaminaConsumption()
     {
@@ -262,8 +262,6 @@ public class PlayerStamina : MonoBehaviour
             // Cập nhật max heal mới dựa trên điểm stat
             int newMax = (int)m_StaminaBase + (data.Point * (int)m_PlusStaminaValue);
             m_MaxStamina = newMax;
-
-
             if (ListenerManager.HasInstance)
             {
                 // Cập nhật max stamina mới tới UI
@@ -284,9 +282,17 @@ public class PlayerStamina : MonoBehaviour
                 particle.Stop();
             }
         }
+    }
+    private void OnEventCheatStaminaValue(object value)
+    {
+        if (value != null && value is float staminaValue )
+        {
+            m_MaxStamina = staminaValue;
+            m_CurrentStamina = m_MaxStamina; // Cập nhật current stamina bằng max stamina
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_STAMINA_VALUE, m_MaxStamina);
+            ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_STAMINA_VALUE, m_CurrentStamina);
 
-
-
+        }
     }
 
 }

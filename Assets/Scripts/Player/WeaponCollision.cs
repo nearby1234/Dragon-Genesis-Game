@@ -8,91 +8,86 @@ public class WeaponCollision : MonoBehaviour
     //[SerializeField] private GameObject m_BloodPrehabs;
     [SerializeField] private GameObject m_HitPrehabs;
     [SerializeField] private bool m_IsTakeDamaged;
-    [SerializeField] private float m_timer;
+    [SerializeField] private PlayerStatSO playerStatSO;
     [SerializeField] private List<string> tagList;
     private void OnTriggerEnter(Collider other)
     {
         string nameTag = other.gameObject.tag;
         if (!tagList.Contains(nameTag)) return;
 
-        //// Ch? x? l� n?u va ch?m v?i enemy ki?u Creep ho?c Boss
-        //if (!other.gameObject.CompareTag("Creep") && !other.gameObject.CompareTag("Boss"))
-        //    return;
-
-        // N?u player ?ang ? tr?ng th�i idle th� kh�ng g�y damage
-        if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.idle))
-            return;
-
-        // N?u enemy ?� b? damage trong ?�n n�y, b? qua
-        if (m_IsTakeDamaged)
-            return;
-        int damage = PlayerManager.instance.playerDamage.GetPlayerDamage();
-
-        if (PlayerManager.instance.playerDamage.Heavyattack)
+        // nếu player trong trạng thái này thì không xử lý va chạm
+        if (PlayerManager.instance.m_PlayerState.Equals(PlayerManager.PlayerState.attack))
         {
-            Debug.Log($"Heavyattack :{PlayerManager.instance.playerDamage.Heavyattack}");
-            int baseDamage = damage;
-            int bonus = Mathf.RoundToInt(baseDamage * 1.15f);
-            damage = bonus;
-            Debug.Log($"damage : {damage}");
-            Debug.Log($"bonus :{bonus}");
-        }
+            // Đã gây damage thì bỏ qua
+            if (m_IsTakeDamaged)
+                return;
+            int damage = PlayerManager.instance.playerDamage.GetPlayerDamage();
 
-        switch (other.gameObject.tag)
-        {
-            case "Creep":
-                {
-                    EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
-                    if (enemyHeal != null)
-                    {
-                        enemyHeal.ReducePlayerHealth(damage);
-                    }
-                    ShowDamageText(0, other, damage);
-                    CameraManager.Instance.ShakeCamera();
-                    if (AudioManager.HasInstance)
-                    {
-                        AudioManager.Instance.PlaySE("attaccolidersound");
-                    }
-                }
-                break;
-            case "Boss":
-                {
-                    if (other.TryGetComponent<WormBoss>(out var wormBoss))
-                    {
-                        wormBoss.GetDamage(damage);
-                    }
-                    ShowDamageText(1, other, damage);
-                    CameraManager.Instance.ShakeCamera();
-                    if (AudioManager.HasInstance)
-                    {
-                        AudioManager.Instance.PlaySE("WormBossHit");
-                        AudioManager.Instance.PlaySE("attaccolidersound");
+            if (PlayerManager.instance.playerDamage.Heavyattack)
+            {
+                Debug.Log($"Heavyattack :{PlayerManager.instance.playerDamage.Heavyattack}");
+                int baseDamage = damage;
+                int bonus = Mathf.RoundToInt(baseDamage * 1.15f);
+                damage = bonus;
+                Debug.Log($"damage : {damage}");
+                Debug.Log($"bonus :{bonus}");
+            }
 
-                    }
-                }
-                break;
-            case "BullTank":
-                {
-                    if(other.TryGetComponent<BullTankHeal>(out var bullTankHeal))
+            switch (other.gameObject.tag)
+            {
+                case "Creep":
                     {
-                        bullTankHeal.ReduceHeal(damage);
+                        EnemyHeal enemyHeal = other.GetComponentInParent<EnemyHeal>();
+                        if (enemyHeal != null)
+                        {
+                            enemyHeal.ReducePlayerHealth(damage);
+                        }
+                        ShowDamageText(0, other, damage);
+                        CameraManager.Instance.ShakeCamera();
+                        if (AudioManager.HasInstance)
+                        {
+                            AudioManager.Instance.PlaySE("attaccolidersound");
+                        }
                     }
-                    ShowDamageText(3, other, damage);
-                    CameraManager.Instance.ShakeCamera();
-                    if (AudioManager.HasInstance)
+                    break;
+                case "Boss":
                     {
-                        AudioManager.Instance.PlaySE("BullTankHit");
-                        AudioManager.Instance.PlaySE("attaccolidersound");
+                        if (other.TryGetComponent<WormBoss>(out var wormBoss))
+                        {
+                            wormBoss.GetDamage(damage);
+                        }
+                        ShowDamageText(1, other, damage);
+                        CameraManager.Instance.ShakeCamera();
+                        if (AudioManager.HasInstance)
+                        {
+                            AudioManager.Instance.PlaySE("WormBossHit");
+                            AudioManager.Instance.PlaySE("attaccolidersound");
+
+                        }
                     }
-                }
-                break;
+                    break;
+                case "BullTank":
+                    {
+                        if (other.TryGetComponent<BullTankHeal>(out var bullTankHeal))
+                        {
+                            bullTankHeal.ReduceHeal(damage);
+                        }
+                        ShowDamageText(3, other, damage);
+                        CameraManager.Instance.ShakeCamera();
+                        if (AudioManager.HasInstance)
+                        {
+                            AudioManager.Instance.PlaySE("BullTankHit");
+                            AudioManager.Instance.PlaySE("attaccolidersound");
+                        }
+                    }
+                    break;
 
-        }
-
-        // ?�nh d?u ?� g�y damage r?i v� reset flag sau m?t kho?ng th?i gian nh?t ??nh
-        m_IsTakeDamaged = true;
-        StartCoroutine(ResetDamageFlag());
-        SpawnHitPrehabs(other);
+            }
+            // đánh dấu đã gây damage và reset sau một khoảng thời gian
+            m_IsTakeDamaged = true;
+            StartCoroutine(ResetDamageFlag());
+            SpawnHitPrehabs(other);
+        }    
     }
 
     private void SpawnHitPrehabs(Collider other)
@@ -104,7 +99,7 @@ public class WeaponCollision : MonoBehaviour
     }
     private IEnumerator ResetDamageFlag()
     {
-        yield return new WaitForSeconds(m_timer);
+        yield return new WaitForSeconds(playerStatSO.timeResetFlagAttack);
         m_IsTakeDamaged = false;
     }
     private void ShowDamageText(int offSetPosZ, Collider collider, int damage)

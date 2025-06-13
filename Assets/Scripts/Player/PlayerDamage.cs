@@ -35,6 +35,7 @@ public class PlayerDamage : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_DAMAGE_VALUE, m_PlayerDamage);
+            ListenerManager.Instance.Register(ListenType.CHEAT_PLAYER_DAMAGE, OnEventCheatPlayerDamage);
         }
 
         // Khởi tạo danh sách animation hash
@@ -62,6 +63,7 @@ public class PlayerDamage : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Unregister(ListenType.CHEAT_PLAYER_DAMAGE, OnEventCheatPlayerDamage);
         }
         DegreeEventClickMouse();
     }
@@ -73,6 +75,7 @@ public class PlayerDamage : MonoBehaviour
     {
         if (PlayerManager.HasInstance)
         {
+            PlayerManager.instance.playerMove.ResetInput();
             if (PlayerManager.instance.playerWeapon.CurrentItem == null)
             {
                 if (UIManager.HasInstance)
@@ -97,9 +100,9 @@ public class PlayerDamage : MonoBehaviour
     }
     private void OnPerformedAttackLeftMouse(InputAction.CallbackContext context)
     {
-       
         if (PlayerManager.HasInstance)
         {
+            PlayerManager.instance.playerMove.ResetInput();
             if (PlayerManager.instance.playerWeapon.CurrentItem == null)
             {
                 if(UIManager.HasInstance)
@@ -195,5 +198,18 @@ public class PlayerDamage : MonoBehaviour
         yield return new WaitForSeconds(1f);
         m_IsHeavyAttack = false;
     }
-    
+    private void OnEventCheatPlayerDamage(object value)
+    {
+        if (value is int damageValue)
+        {
+            m_PlayerDamageBase = damageValue; // Cập nhật giá trị cơ bản
+            m_PlayerDamage = m_PlayerDamageBase;
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_DAMAGE_VALUE, m_PlayerDamage);
+            }
+        }
+    }
+
+
 }

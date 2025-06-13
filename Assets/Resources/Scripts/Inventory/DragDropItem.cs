@@ -237,7 +237,19 @@ public class DragDropItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEnd
     }
     private void ResetDraggedItemPosition()
     {
-        rectTransform.SetParent(OriginalParent.transform);
+        rectTransform.SetParent(OriginalParent.transform , false);
+        if(placeholder != null)
+        {
+            int idx = placeholder.transform.GetSiblingIndex();
+            rectTransform.SetSiblingIndex(idx);
+            Destroy(placeholder);
+            placeholder = null;
+        }
+        else
+        {
+            // Fallback: nếu không còn placeholder thì về vị trí cũ
+            rectTransform.SetSiblingIndex(originalSiblingIndex);
+        }
         rectTransform.anchoredPosition = originalAnchoredPos;
     }
 

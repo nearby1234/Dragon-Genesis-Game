@@ -22,7 +22,6 @@ public class ChildHitBox : MonoBehaviour
             }
             if (!IsCollisionParticle)
             {
-                
                 if (ListenerManager.HasInstance)
                 {
                     Debug.Log($"{this.gameObject.name}");

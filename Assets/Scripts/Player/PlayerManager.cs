@@ -149,6 +149,7 @@ public class PlayerManager : BaseManager<PlayerManager>
         {
             CameraManager.Instance.SetActiveInputAxisController(false);
         }
+        StopMove();
         isInteractingWithUI = true;
     }
     private void ReceiverEvenDisableShowUI(object value)
@@ -223,8 +224,8 @@ public class PlayerManager : BaseManager<PlayerManager>
                             {
                                 ListenerManager.Instance.BroadCast(ListenType.CLICK_BUTTON_PLAYAGAIN, null);
                             }
-
                         }
+                        m_IsShowingLosePopup = false;
                         var fakeLoadingSetting = new FakeLoadingSetting();
                         UIManager.Instance.ShowPopup<PopupFakeLoading>(fakeLoadingSetting, true);
                     },
@@ -263,6 +264,12 @@ public class PlayerManager : BaseManager<PlayerManager>
         }
         playerDamage.RegisterEventAttack();
     }
+    private void StopMove()
+    {
+        playerAnim.GetAnimator().SetFloat("MoveX", 0);
+        playerAnim.GetAnimator().SetFloat("MoveY", 0);
+        playerAnim.GetAnimator().SetFloat("Speed", 0);
+    }    
     private void CacheComponents()
     {
         controller = GetComponent<CharacterController>();

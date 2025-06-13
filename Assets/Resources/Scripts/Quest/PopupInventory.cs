@@ -11,7 +11,7 @@ public class PopupInventory : BasePopup, IStateUi
     [SerializeField] private int m_CountBox = 10;
     [SerializeField] private Vector2 m_Offset;
     [SerializeField] private RectTransform m_Rectranform;
-    //[SerializeField] private Button m_ExitBtn;
+    [SerializeField] private Button m_ExitBtn;
     [SerializeField] private TextMeshProUGUI m_MoneyTxt;
     [SerializeField] private Transform m_InventoryBoxPanel;
     [SerializeField] private Transform m_InventoryItemPanel;
@@ -64,10 +64,10 @@ public class PopupInventory : BasePopup, IStateUi
             PlayerManager.instance.isInteractingWithUI = true;
         }
 
-        //if (m_ExitBtn != null)
-        //{
-        //    m_ExitBtn.onClick.AddListener(OnClickExitBtn);
-        //}
+        if (m_ExitBtn != null)
+        {
+            m_ExitBtn.onClick.AddListener(OnClickExitBtn);
+        }
         else
         {
             Debug.LogWarning("Không gán được Button Exit!");
@@ -98,13 +98,43 @@ public class PopupInventory : BasePopup, IStateUi
         for (int i = 0; i < m_CountBox; i++)
         {
             GameObject box = Instantiate(m_BoxInventoryPrefab, m_InventoryBoxPanel);
-            if(box != null)
+            if (box != null)
             {
                 box.name = $"{m_BoxInventoryPrefab.name}-{i}";
                 listBoxInventory.Add(box);
             }
         }
-           
+
+    }
+    private void OnClickExitBtn()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.RemoverStateInDict<PopupInventory>();
+            if (UIManager.Instance.GetObjectInDict<PopupCharacterPanel>())
+            {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+                }
+            }
+            else
+            {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
+                if (GameManager.HasInstance)
+                {
+                    GameManager.Instance.HideCursor();
+                }
+            }
+        }
+        this.Hide();
     }
 
     /// <summary>
@@ -136,9 +166,9 @@ public class PopupInventory : BasePopup, IStateUi
             var type = newItem.questItemData.typeItem;
             //if (type == TYPEITEM.ITEM_MISSION || type == TYPEITEM.ITEM_EXP)
             //    continue;
-            switch(type)
+            switch (type)
             {
-                case TYPEITEM.ITEM_MISSION: 
+                case TYPEITEM.ITEM_MISSION:
                 case TYPEITEM.ITEM_EXP:
                 case TYPEITEM.ITEM_SKILL:
                     continue;
@@ -147,7 +177,7 @@ public class PopupInventory : BasePopup, IStateUi
             if (existing != null)
             {
                 existing.questItemData.count += newItem.questItemData.count;
-                if(ListenerManager.HasInstance)
+                if (ListenerManager.HasInstance)
                 {
                     ListenerManager.Instance.BroadCast(ListenType.UPDATE_COUNT_ITEM, (existing, existing.questItemData.count));
                 }
@@ -190,14 +220,15 @@ public class PopupInventory : BasePopup, IStateUi
     public void SetPositionMove()
     {
         RectTransform rectTransform = GetComponent<RectTransform>();
-        if(rectTransform != null)
+        if (rectTransform != null)
         {
             rectTransform.anchoredPosition = m_PosMove;
-        }else
+        }
+        else
         {
             Debug.LogWarning($"không tìm thấy {rectTransform}");
         }
-       
+
     }
     public void SetStateUi(StateUi value)
     {

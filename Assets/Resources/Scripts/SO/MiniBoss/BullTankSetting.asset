@@ -17,11 +17,12 @@ MonoBehaviour:
   SpeedAgent: 0.5
   SpeedWalk: 0
   SpeedRun: 5.5
+  moveDistance: 2
   RangeAttackJump: 8
   RangeAttackSword: 6
   RangeAttackThrow: 15
-  Heal: 1500
-  DamageBase: 200
+  Heal: 3000
+  DamageBase: 250
   percentAttackAxe: 15
   percentAttackThrowAxe: 0
   percentAttackJump: 20

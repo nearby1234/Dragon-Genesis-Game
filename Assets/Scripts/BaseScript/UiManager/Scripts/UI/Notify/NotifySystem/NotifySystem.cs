@@ -54,7 +54,11 @@ public class NotifySystem : BaseNotify
                     contentNotifyTxt.text = $"Nhận nhiệm vụ <B><color=#FF0E00>{notify.questData.questName}";
                     StartCoroutine(SetHideNotify());
                     break;
-              
+                case NotifyMessageMission<PopupPassword> notifyPassword:
+                    contentNotifyTxt.text = $"<B><color=#FF0E00>{notifyPassword.message}";
+                    StartCoroutine(SetHideNotify());
+                    break;
+
                 default:
                     
                     return;

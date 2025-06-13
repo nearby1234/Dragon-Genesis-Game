@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class PopupScrollMagic : BasePopup
 {
     [SerializeField] private Animator m_Animator;
-    //[SerializeField] private Button m_ExitBtn;
+    [SerializeField] private Button m_ExitBtn;
     [SerializeField] private HandleCanvasGroup m_RewardBtn;
     [SerializeField] private HandleCanvasGroup m_NextMisstionBtn;
     [SerializeField] private TypewriterByCharacter typewriterByCharacter;
@@ -54,10 +54,10 @@ public class PopupScrollMagic : BasePopup
 
         }
 
-        //if (m_ExitBtn != null)
-        //{
-        //    m_ExitBtn.onClick.AddListener(OnClickBtnExitScrollView);
-        //}
+        if (m_ExitBtn != null)
+        {
+            m_ExitBtn.onClick.AddListener(OnClickBtnExitScrollView);
+        }
         else
         {
             Debug.LogWarning("Exit button is not assigned.");
@@ -117,24 +117,28 @@ public class PopupScrollMagic : BasePopup
         }
 
     }
-    //private void OnClickBtnExitScrollView()
-    //{
-    //    if (AudioManager.HasInstance)
-    //    {
-    //        AudioManager.Instance.PlaySE("ScrollSound");
-    //    }
-    //    m_Animator.Play("MoveCenter");
-    //    if (GameManager.HasInstance)
-    //    {
-    //        GameManager.Instance.HideCursor();
-    //    }
-    //    if(ListenerManager.HasInstance)
-    //    {
-    //        ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-    //    }
-    //    StartCoroutine(DelayHide());
+    private void OnClickBtnExitScrollView()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ScrollSound");
+        }
+        m_Animator.Play("MoveCenter");
+        if (GameManager.HasInstance)
+        {
+            GameManager.Instance.HideCursor();
+        }
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+        }
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.ShowNotify<NotifyMission>();
+        }
+        StartCoroutine(DelayHide());
 
-    //}
+    }
     private void OnClickNextMission()
     {
         if (QuestManager.HasInstance)

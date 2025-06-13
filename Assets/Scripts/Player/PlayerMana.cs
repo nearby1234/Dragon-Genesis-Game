@@ -21,6 +21,7 @@ public class PlayerMana : MonoBehaviour
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_MANA_VALUE, m_CurrentMana);
             ListenerManager.Instance.Register(ListenType.PLAYER_SKILL_CONSUMPTION_MANA, ReceiverPlayerSkillConsumptionMana);
             ListenerManager.Instance.Register(ListenType.ITEM_USE_DATA_IS_MANA, RegenMana);
+            ListenerManager.Instance.Register(ListenType.CHEAT_PLAYER_MANA, OnEventCheatPlayerMana);
 
             // Đăng ký nhận sự kiện kiểm tra mana cho skill
             ListenerManager.Instance.Register(ListenType.PLAYER_SKILL_KEYDOWN, OnSkillKeyDown);
@@ -36,6 +37,7 @@ public class PlayerMana : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.ITEM_USE_DATA_IS_MANA, RegenMana);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SKILL_KEYDOWN, OnSkillKeyDown);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Unregister(ListenType.CHEAT_PLAYER_MANA, OnEventCheatPlayerMana);
         }
     }
 
@@ -112,6 +114,19 @@ public class PlayerMana : MonoBehaviour
     public void ResetMana()
     {
         m_CurrentMana = m_MaxMana; // Initialize current mana to max mana
+    }
+    private void OnEventCheatPlayerMana(object value)
+    {
+        if (value is float cheatManaValue)
+        {
+            m_MaxMana = cheatManaValue; // Cập nhật max mana
+            m_CurrentMana = m_MaxMana;
+            if (ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_MANA_VALUE, m_MaxMana);
+                ListenerManager.Instance.BroadCast(ListenType.PLAYER_UPDATE_MANA_VALUE, m_CurrentMana);
+            }
+        }
     }
 
 }

@@ -6612,7 +6612,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7229022032490913835
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8008,6 +8008,7 @@ MonoBehaviour:
   m_CharacterLevelTxt: {fileID: 2259374607270381847}
   m_PointTxt: {fileID: 7116686833935703908}
   m_PointCurrentValue: 0
+  m_ExitBtn: {fileID: 1591412099052557274}
   m_GearBtn: {fileID: 1778504532314326881}
   m_InstructionBtn: {fileID: 2301156811511000780}
   m_AcceptBtn: {fileID: 6288157581796537192}

@@ -14,7 +14,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
     [SerializeField] private TextMeshProUGUI m_PointTxt;
     //[SerializeField] private int m_PointDefaultValue = 0;
     [SerializeField] private int m_PointCurrentValue;
-    //[SerializeField] private Button m_ExitBtn;
+    [SerializeField] private Button m_ExitBtn;
     [SerializeField] private Button m_GearBtn;
     [SerializeField] private Button m_InstructionBtn;
     [SerializeField] private Button m_AcceptBtn;
@@ -110,7 +110,7 @@ public class PopupCharacterPanel : BasePopup, IStateUi
 
         m_AcceptBtn.onClick.AddListener(OnAcceptButton);
         m_DenyBtn.onClick.AddListener(OnDenyButton);
-        //if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
+        if (m_ExitBtn != null) m_ExitBtn.onClick.AddListener(() => HandlerExitSoundFx(OnExitButton));
         if (m_GearBtn != null) m_GearBtn.onClick.AddListener(() => HandlerClickSoundFx(OnClickGearButton));
         m_CharacterLevelTxt.text = $"Level {PlayerLevelManager.Instance.CurrentLevel}";
         originalPointBackup = PlayerLevelManager.Instance.TotalStatPoints;
@@ -122,6 +122,36 @@ public class PopupCharacterPanel : BasePopup, IStateUi
             if (PlayerManager.Instance.TryGetComponent<PlayerStamina>(out var playerStamina)) m_PlusStaminaValue = playerStamina.PlusStaminaValue;
             if (PlayerManager.Instance.TryGetComponent<PlayerDamage>(out var playerDamage)) m_PlusDamageValue = playerDamage.PlusDamageValue;
         }
+    }
+    private void OnExitButton()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+        }
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.RemoverStateInDict<PopupCharacterPanel>();
+            if (UIManager.Instance.GetObjectInDict<PopupInventory>())
+            {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+                }
+            }
+            else
+            {
+                if (ListenerManager.HasInstance)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                }
+                if (GameManager.HasInstance)
+                {
+                    GameManager.Instance.HideCursor();
+                }
+            }
+        }
+        this.Hide();
     }
     private void InitializeStats()
     {

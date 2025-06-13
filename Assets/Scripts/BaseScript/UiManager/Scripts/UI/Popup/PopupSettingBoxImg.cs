@@ -36,6 +36,10 @@ public class PopupSettingBoxImg : BasePopup
 
     private void OnToggleChanged(bool isOn, Toggle toggle, AudioSource audioSource, Slider slider, string key)
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
         SetAlphaCheckMask(toggle, isOn);
         SetValueSlider(audioSource, slider, isOn, key);
     }

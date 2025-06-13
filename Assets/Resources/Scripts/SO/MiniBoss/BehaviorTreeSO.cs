@@ -10,6 +10,9 @@ public class BehaviorTreeSO : ScriptableObject , IEnumKeyed<EnemyType>
     public float SpeedAgent = 3.5f;
     public float SpeedWalk;
     public float SpeedRun;
+    [Header("MoveSetting")]
+    public float moveDistance;
+
 
     [Header("AttackSetting")]
     public float RangeAttackJump;

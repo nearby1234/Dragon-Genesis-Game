@@ -1,11 +1,13 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PopupBoxSkill : BasePopup
 {
     [SerializeField] private GameObject m_ParentBoxSkill;
     [SerializeField] private GameObject m_ParentSkillSlotPanel;
+    [SerializeField] private Button m_ExitBtn;
     [SerializeField] private TextMeshProUGUI descriptionTxt;
     [SerializeField] private List<GameObject> boxPrefabsList = new();
     [SerializeField] private List<GameObject> skillSLotList = new();
@@ -33,6 +35,7 @@ public class PopupBoxSkill : BasePopup
             ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverEventSkillSlot);
             ListenerManager.Instance.BroadCast(ListenType.PU_BOXSKILL_SEND_TEXT, descriptionTxt);
         }
+        m_ExitBtn.onClick.AddListener(OnClickExitBtn);
     }
     private void OnDestroy()
     {
@@ -40,6 +43,14 @@ public class PopupBoxSkill : BasePopup
         {
             ListenerManager.Instance.Unregister(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverEventSkillSlot);
         }
+    }
+    private void OnClickExitBtn()
+    {
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+        }
+       this.Hide();
     }
     private void FillerItemSKill(List<QuestItemSO> questItemSO)
     {

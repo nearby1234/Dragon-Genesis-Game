@@ -38,6 +38,7 @@ public class ScreenPlayerImformation : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+            ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
         }
         RectTransform rectTransform = m_CharacterStatsBtn.GetComponent<RectTransform>();
         if (rectTransform != null)
@@ -53,6 +54,7 @@ public class ScreenPlayerImformation : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+            ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
         }
     }
     private void Update()
@@ -255,6 +257,13 @@ public class ScreenPlayerImformation : BaseScreen
     {
         Debug.Log($"screenplayerimformation");
         this.Hide();
+    }
+    private void OnEventClickDisableUi(object value)
+    {
+       if(isClick)
+        {
+            isClick = false;
+        }
     }
     //private void OnPlayerExpUpdated(object value)
     //{

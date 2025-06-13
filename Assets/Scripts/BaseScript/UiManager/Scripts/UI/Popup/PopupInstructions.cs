@@ -12,6 +12,10 @@ public class PopupInstructions : BasePopup
 
     private void OnExitButtonClicked()
     {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
         Hide();
     }
 }

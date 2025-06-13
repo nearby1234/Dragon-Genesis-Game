@@ -24,6 +24,7 @@ public class ScreenIconInventory : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+            ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUI);
         }
     }
     private void OnDestroy()
@@ -33,6 +34,7 @@ public class ScreenIconInventory : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+            ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUI);
         }
     }
     private void DoScaleIconInventory()
@@ -44,8 +46,8 @@ public class ScreenIconInventory : BaseScreen
     }
     private void OnClickIconInventory(InputAction.CallbackContext callback)
     {
-        isClick=!isClick;
-        if(isClick)
+        isClick = !isClick;
+        if (isClick)
         {
             if (UIManager.HasInstance)
             {
@@ -112,7 +114,7 @@ public class ScreenIconInventory : BaseScreen
             {
                 AudioManager.Instance.PlaySE("ExitSound");
             }
-            if(UIManager.HasInstance)
+            if (UIManager.HasInstance)
             {
                 UIManager.Instance.HidePopup<PopupInventory>();
             }
@@ -121,6 +123,13 @@ public class ScreenIconInventory : BaseScreen
     private void ReceiverEventCLickMainMenu(object value)
     {
         this.Hide();
-    } 
-        
+    }
+    private void OnEventClickDisableUI(object value)
+    {
+        if (isClick)
+        {
+            isClick = false;
+        }
+    }
+
 }

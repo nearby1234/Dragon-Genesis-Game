@@ -42,11 +42,7 @@ public class LosePopup : BasePopup
                         SetContentBossShow(false);
                         SetButtonExit(false);
                         m_TitlePlayAgain.text = msg.titlePlayAgain;
-
-                        if (PlayerManager.HasInstance)
-                        {
-                            PlayerManager.Instance.m_IsShowingLosePopup = false;
-                        }
+                        parentButton.padding.left = -310;
 
                         break;
                     case PopupType.WORM_DIE:
@@ -66,6 +62,7 @@ public class LosePopup : BasePopup
                             {
                                 GameManager.Instance.ShowCursor();
                             }
+                            parentButton.padding.left = -130;
                         }
                         break;
                     case PopupType.BULLTANK_DIE:
@@ -85,7 +82,7 @@ public class LosePopup : BasePopup
                             {
                                 GameManager.Instance.ShowCursor();
                             }
-
+                            parentButton.padding.left = -130;
                         }
                         break;
                     case PopupType.PAUSE:
@@ -97,6 +94,7 @@ public class LosePopup : BasePopup
                             m_TitlePlayAgain.text = msg.titleResume;
                             AddlistenerPlayAgainButton(true, msg, msg.popupType);
                             AddlistenerMainMenuButton(true, msg);
+                            parentButton.padding.left = -310;
 
                         }
                         break;
@@ -156,7 +154,7 @@ public class LosePopup : BasePopup
                 }
                 if (AudioManager.HasInstance)
                 {
-                    AudioManager.Instance.PlaySE("ExitSound");
+                    AudioManager.Instance.PlaySE("ClickSound");
                 }
                 this.Hide();
             });
@@ -195,7 +193,7 @@ public class LosePopup : BasePopup
                 }
                 if (AudioManager.HasInstance)
                 {
-                    AudioManager.Instance.PlaySE("ExitSound");
+                    AudioManager.Instance.PlaySE("ClickSound");
                 }
                 this.Hide();
             });
@@ -252,6 +250,18 @@ public class LosePopup : BasePopup
                 {
                     ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
                 }
+                if(PlayerManager.HasInstance)
+                {
+                    PlayerManager.Instance.m_IsShowingLosePopup = false;
+                }    
+                if(GameManager.HasInstance)
+                {
+                    GameManager.Instance.HideCursor();
+                }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ExitSound");
+                }
                 this.Hide();
             });
         }
@@ -273,6 +283,10 @@ public class LosePopup : BasePopup
                 {
                     UIManager.Instance.ShowPopup<PopupSettingBoxImg>();
                 }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ClickSound");
+                }
             });
             m_IntructionBtn.gameObject.SetActive(true);
             m_IntructionBtn.onClick.RemoveAllListeners();
@@ -281,6 +295,10 @@ public class LosePopup : BasePopup
                 if (UIManager.HasInstance)
                 {
                     UIManager.Instance.ShowPopup<PopupInstructions>();
+                }
+                if (AudioManager.HasInstance)
+                {
+                    AudioManager.Instance.PlaySE("ClickSound");
                 }
             });
         }

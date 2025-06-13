@@ -47,6 +47,7 @@ public class Cheat : BaseManager<Cheat>
         {
             ListenerManager.Instance.BroadCast(ListenType.SEND_POS_SPAWN_PLAYER, m_BossTranformSave);
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_POS, m_player);
+            ListenerManager.Instance.Register(ListenType.CREEP_TYPE, OnEventSendCreepType);
         }
         if (m_ParentCheckPoint != null)
         {
@@ -61,23 +62,41 @@ public class Cheat : BaseManager<Cheat>
     {
         m_translatButton.performed -= OnClickTranslateButton;
         m_translatButton.Disable();
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.Unregister(ListenType.CREEP_TYPE, OnEventSendCreepType);
+        }
 
     }
-#if UNITY_EDITOR
-    private void OnValidate()
-    {
-        // M?i l?n thay ??i creepType (ho?c m_ParentCheckPoint) trong Inspector, g?i l?i
+//#if UNITY_EDITOR
+//    private void OnValidate()
+//    {
+//        // M?i l?n thay ??i creepType (ho?c m_ParentCheckPoint) trong Inspector, g?i l?i
       
-        CheatPosition(creepType);
+//        CheatPosition(creepType);
 
-        // ?ánh d?u dirty ?? Inspector c?p nh?t giá tr? ngay
-        EditorUtility.SetDirty(this);
-    }
-#endif
+//        // ?ánh d?u dirty ?? Inspector c?p nh?t giá tr? ngay
+//        EditorUtility.SetDirty(this);
+//    }
+//#endif
 
     private void OnClickTranslateButton(InputAction.CallbackContext callback)
     {
-        TeleportPlayer();
+
+        if(UIManager.HasInstance)
+        {
+            Debug.Log($"Cheat Position:");
+            UIManager.Instance.ShowPopup<PopupPassword>();
+            if(GameManager.HasInstance)
+            {
+                GameManager.Instance.ShowCursor();
+            }
+        }    
+        if(ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+        }
+        //TeleportPlayer();
     }
 
     public void TeleportPlayer()
@@ -155,6 +174,15 @@ public class Cheat : BaseManager<Cheat>
                 cheatPosition = checkPointList[i];
                 return;
             }
+        }
+    }
+    private void OnEventSendCreepType(object value)
+    {
+        if (value is CreepType newCreepType)
+        {
+            GetCheckPoint(newCreepType);
+            CheatPosition(newCreepType);
+            TeleportPlayer();
         }
     }
 }

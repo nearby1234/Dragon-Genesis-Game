@@ -29,6 +29,7 @@ public class ScreenBookSkill : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+            ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
         }
     }
     private void OnDestroy()
@@ -38,6 +39,7 @@ public class ScreenBookSkill : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+            ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
         }
     }
 
@@ -106,5 +108,12 @@ public class ScreenBookSkill : BaseScreen
     private void ReceiverEventCLickMainMenu(object value)
     {
         this.Hide();
+    }
+    private void OnEventClickDisableUi(object value)
+    {
+        if (m_IsPress)
+        {
+            m_IsPress = false;
+        }
     }
 }

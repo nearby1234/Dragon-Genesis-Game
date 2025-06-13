@@ -35,10 +35,12 @@ public class ScreenOriginalScrollBtn : BaseScreen
         m_RectTransform.anchoredPosition3D = m_Offset;
         //button.onClick.AddListener(OnClickButtonShowPopupScrollView);
         InitObjDoMove();
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
-        }    
+            ListenerManager.Instance.Register(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
+
+        }
     }
     private void OnDestroy()
     {
@@ -47,12 +49,13 @@ public class ScreenOriginalScrollBtn : BaseScreen
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventCLickMainMenu);
+            ListenerManager.Instance.Unregister(ListenType.UI_DISABLE_SHOWUI, OnEventClickDisableUi);
         }
     }
     private void OnClickButtonShowPopupScrollView(InputAction.CallbackContext callback)
     {
         isClick = !isClick;
-        if(isClick)
+        if (isClick)
         {
             if (ListenerManager.HasInstance)
             {
@@ -79,17 +82,17 @@ public class ScreenOriginalScrollBtn : BaseScreen
         }
         else
         {
-            if(ListenerManager.HasInstance)
+            if (ListenerManager.HasInstance)
             {
-                ListenerManager.Instance.BroadCast(ListenType.HIDE_SCOLLVIEW, null);  
-                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);  
+                ListenerManager.Instance.BroadCast(ListenType.HIDE_SCOLLVIEW, null);
+                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
             }
-            if(UIManager.HasInstance)
+            if (UIManager.HasInstance)
             {
                 UIManager.Instance.ShowNotify<NotifyMission>();
             }
         }
-       
+
     }
     private void InitObjDoMove()
     {
@@ -141,5 +144,12 @@ public class ScreenOriginalScrollBtn : BaseScreen
     private void ReceiverEventCLickMainMenu(object value)
     {
         this.Hide();
-    }    
+    }
+    private void OnEventClickDisableUi(object value)
+    {
+        if (isClick)
+        {
+            isClick = false;
+        }
+    }
 }

@@ -23,31 +23,21 @@ public partial class RandommoveAction : Action
     {
         if (Agent?.Value == null)
         {
-            LogFailure("Agent is not set.", true);
             return Status.Failure;
         }
-
         animator = Agent.Value.GetComponent<Animator>();
         if (animator == null)
         {
-            LogFailure("Animator component not found on Agent.", true);
             return Status.Failure;
         }
-        
-
         _nav = Agent.Value.GetComponent<NavMeshAgent>();
         if (_nav == null)
         {
-            LogFailure("NavMeshAgent component not found on Agent.", true);
             return Status.Failure;
         }
-      
-
-        // Kiểm tra BlackboardVariables
-
-
         // Gán speed và animation
         _nav.speed = MovementSetting.Value.SpeedAgent;
+        _nav.stoppingDistance = MovementSetting.Value.moveDistance;
         animator.SetBool("Walk", true);
 
         _hasTarget = false;
@@ -61,8 +51,7 @@ public partial class RandommoveAction : Action
             Vector3 randomDir = UnityEngine.Random.insideUnitSphere * MovementSetting.Value.WanderRadius;
             randomDir.y = 0f;
             Vector3 randomPoint = Agent.Value.transform.position + randomDir;
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomPoint, out hit, MovementSetting.Value.WanderRadius, NavMesh.AllAreas))
+            if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, MovementSetting.Value.WanderRadius, NavMesh.AllAreas))
             {
                 _targetPos = hit.position;
 

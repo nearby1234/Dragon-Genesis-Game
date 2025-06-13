@@ -25,7 +25,7 @@ public class PlayerMove : MonoBehaviour
     [SerializeField] private float smoothTime = 0.1f;
 
     // Tỉ lệ tiêu hao stamina khi di chuyển, sử dụng Odin để trigger thay đổi ngay trong Play Mode
-    [OnValueChanged("OnStaminaPercentChanged", true)]
+    //[OnValueChanged("OnStaminaPercentChanged", true)]
     [SerializeField] private float StaminaConsumptionPercent;
     private float previousPercent; // Giá trị cũ, để so sánh
 
@@ -121,7 +121,21 @@ public class PlayerMove : MonoBehaviour
 
         if (smoothInputVector.magnitude > Mathf.Epsilon)
         {
-            UpdateAnimatorParameters();
+            if (PlayerManager.HasInstance)
+            {
+                AnimatorStateInfo stateInfo = PlayerManager.instance.playerAnim.GetAnimator().GetCurrentAnimatorStateInfo(0);
+                if (stateInfo.IsTag("Attack") && stateInfo.normalizedTime <0.6f)
+                {
+                    ResetInput();
+                    return;
+                }
+                else
+                {
+                    // Cập nhật animator parameters
+                    UpdateAnimatorParameters();
+                }
+
+            }
         }
         else
         {
@@ -262,12 +276,12 @@ public class PlayerMove : MonoBehaviour
     public void OnMove(InputValue value)
     {
         inputVector = value.Get<Vector2>();
-        
+
     }
 
     private void OnLeftShiftPerformed(InputAction.CallbackContext context)
     {
-        
+
         IsPressLeftShift = true;
     }
 

@@ -5749,7 +5749,7 @@ MonoBehaviour:
   characterController: {fileID: 0}
   m_SpeedMove: 0.8
   m_CurrentSpeed: 0
-  smoothTime: 0.05
+  smoothTime: 0.04
   StaminaConsumptionPercent: 0.1
   IsPressLeftShift: 0
   m_IsPressButtonSwap: 0
@@ -5834,7 +5834,15 @@ MonoBehaviour:
     m_Id: 07383bb3-e6e6-4141-8e81-a2b62ba8fd0b
     m_Processors: 
     m_Interactions: 
-    m_SingletonActionBindings: []
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 45b01858-03ad-4ff7-a80d-c8ab73eaef7a
+      m_Path: <Keyboard>/escape
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Esc Button
+      m_Flags: 0
     m_Flags: 0
   controller: {fileID: 0}
   playerMove: {fileID: 0}
@@ -58828,8 +58836,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HitPrehabs: {fileID: 100006, guid: 1d4ce069dbdf51645b197ab05e548723, type: 3}
   m_IsTakeDamaged: 0
-  m_timer: 1
-  tagList: []
+  playerStatSO: {fileID: 11400000, guid: 416aece4576b91146904393a73a36101, type: 2}
+  tagList:
+  - Creep
+  - Boss
+  - BullTank
 --- !u!1 &6511328590097995561
 GameObject:
   m_ObjectHideFlags: 0

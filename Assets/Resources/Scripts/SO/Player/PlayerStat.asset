@@ -19,4 +19,7 @@ MonoBehaviour:
   m_PlayerArmor: 5
   speedJogging: 2
   speedRun: 5
+  timeResetFlagAttack: 0.6
+  passwordAdmin: 1111
+  maxLengthPassword: 4
   playerType: 0

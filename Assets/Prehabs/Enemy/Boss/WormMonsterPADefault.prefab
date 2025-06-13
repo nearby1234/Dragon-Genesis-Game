@@ -21561,6 +21561,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Shockwave
       objectReference: {fileID: 0}
+    - target: {fileID: 1506483242779983101, guid: b9f7282ecdd7f074fa89bdf7d6b55389, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8313531025783035457, guid: b9f7282ecdd7f074fa89bdf7d6b55389, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

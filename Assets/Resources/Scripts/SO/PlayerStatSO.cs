@@ -19,6 +19,12 @@ public class PlayerStatSO : ScriptableObject , IEnumKeyed<PlayerType>
     public float speedJogging;
     public float speedRun;
 
+    [Header("Setting Attack")]
+    public float timeResetFlagAttack;
+
+    [Header("Setting Admin")]
+    public string passwordAdmin;
+    public int maxLengthPassword = 4;
     public PlayerType Key => playerType;
     public PlayerType playerType;
 }

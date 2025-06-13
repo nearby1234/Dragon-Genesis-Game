@@ -67,7 +67,7 @@ Material:
     - _BlendModePreserveSpecular: 1
     - _CastShadows: 1
     - _Cull: 2
-    - _DissvoleAmount: 0
+    - _DissvoleAmount: 1
     - _DissvoleScale: 40
     - _DissvoleWidht: 0.02
     - _DstBlend: 0

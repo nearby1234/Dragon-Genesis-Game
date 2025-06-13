@@ -36,6 +36,7 @@ public class PlayerHeal : MonoBehaviour
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_SEND_HEAL_VALUE, m_PlayerCurrentHeal);
             ListenerManager.Instance.Register(ListenType.ITEM_USE_DATA_IS_HEAL, ReceriverValueItemUseHeal);
             ListenerManager.Instance.Register(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Register(ListenType.CHEAT_PLAYER_HEAL, OnEventCheatPlayerHeal);
         }
     }
     private void OnDestroy()
@@ -44,9 +45,10 @@ public class PlayerHeal : MonoBehaviour
         {
             ListenerManager.Instance.Unregister(ListenType.ITEM_USE_DATA_IS_HEAL, ReceriverValueItemUseHeal);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_SEND_POINT, ReceiverPoint);
+            ListenerManager.Instance.Unregister(ListenType.CHEAT_PLAYER_HEAL, OnEventCheatPlayerHeal);
         }
     }
-    public void ReducePlayerHeal(int Enemydamage , TypeCollider typeCollider)
+    public void ReducePlayerHeal(int Enemydamage, TypeCollider typeCollider)
     {
         if (m_IsPlayerDeath) return;
         m_PlayerCurrentHeal -= Enemydamage;
@@ -58,24 +60,28 @@ public class PlayerHeal : MonoBehaviour
         {
             m_PlayerCurrentHeal = 0; // Đảm bảo current heal không âm
             m_IsPlayerDeath = true;
-            if(ListenerManager.HasInstance)
+            if (ListenerManager.HasInstance)
             {
                 Debug.Log($"m_IsPlayerDeath :{m_IsPlayerDeath}");
                 ListenerManager.Instance.BroadCast(ListenType.PLAYER_DIE, m_IsPlayerDeath);
-            }    
+            }
             PlayerManager.instance.playerAnim.GetAnimator().Play("Death");
         }
         else
         {
-            switch(typeCollider)
+            switch (typeCollider)
             {
-                case TypeCollider.Leg: PlayAnimationBigHit();
+                case TypeCollider.Leg:
+                    PlayAnimationBigHit();
                     break;
-                case TypeCollider.Axe:  PlayAnimationHit();
+                case TypeCollider.Axe:
+                    PlayAnimationHit();
                     break;
-                case TypeCollider.ThrowAxe: PlayAnimationHit();
+                case TypeCollider.ThrowAxe:
+                    PlayAnimationHit();
                     break;
-                case TypeCollider.ThrowAxeFx:  PlayAnimationHit();
+                case TypeCollider.ThrowAxeFx:
+                    PlayAnimationHit();
                     break;
             }
             StartCoroutine(ResetDamaging());
@@ -130,6 +136,17 @@ public class PlayerHeal : MonoBehaviour
 
     public void PlayAnimationBigHit() => PlayerManager.instance.playerAnim.GetAnimator().CrossFade(hashNameBigHit, 0.2f);
     public void PlayAnimationHit() => PlayerManager.instance.playerAnim.GetAnimator().CrossFade(hashNameHit, 0.2f);
+
+    private void OnEventCheatPlayerHeal(object value)
+    {
+        if (value is int healValue)
+        {
+            m_PlayerMaxHeal = healValue;
+            m_PlayerCurrentHeal = m_PlayerMaxHeal; // Đặt current heal bằng max heal
+            ListenerManager.Instance.BroadCast(ListenType.SEND_HEAL_VALUE, m_PlayerMaxHeal);
+            UpdateHealUI(); // gửi UI sau khi cheat hồi máu
+        }
+    }
 }
 
 
