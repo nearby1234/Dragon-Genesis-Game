@@ -61,6 +61,10 @@ public class PopupFakeLoading : BasePopup
                 canvasGroup.DOFade(0, 1f).OnComplete(() =>
                 {
                     this.Hide();
+                    if(UIManager.HasInstance)
+                    {
+                        UIManager.Instance.ShowNotify<NotifyMission>();
+                    }
                 });
                
             });

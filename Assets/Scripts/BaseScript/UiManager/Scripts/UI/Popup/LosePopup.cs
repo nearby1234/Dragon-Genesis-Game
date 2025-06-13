@@ -156,6 +156,10 @@ public class LosePopup : BasePopup
                 {
                     AudioManager.Instance.PlaySE("ClickSound");
                 }
+                if(UIManager.HasInstance)
+                {
+                    UIManager.Instance.HideNotify<NotifyMission>();
+                }
                 this.Hide();
             });
         }
@@ -194,6 +198,10 @@ public class LosePopup : BasePopup
                 if (AudioManager.HasInstance)
                 {
                     AudioManager.Instance.PlaySE("ClickSound");
+                }
+                if(UIManager.HasInstance)
+                {
+                    UIManager.Instance.HideNotify<NotifyMission>();
                 }
                 this.Hide();
             });
