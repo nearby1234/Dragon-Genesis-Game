@@ -88,7 +88,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 200}
+  m_SizeDelta: {x: 1000, y: 346.98}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &715041502999229760
 CanvasRenderer:
@@ -111,14 +111,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.29803923}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: babc264edeadb36419f85862b53d44f9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 8b7b289fffde23842bdc6d869bd754f5, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -193,9 +193,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ti\u1EBFp theo h\xE3y k\u1EBFt h\u1EE3p ph\xEDm di chuy\u1EC3n  \n<sprite
-    name=\"W\">v\xE0 ph\xEDm  <sprite name=\"Shift\">\u0111\u1EC3 th\u1EF1c hi\u1EC7n
-    h\xE0nh \u0111\u1ED9ng ch\u1EA1y nh\xE9 "
+  m_text: "<size= 50>H\xE3y t\xECm g\u1EB7p</size><size=60> Tr\u01B0\u1EDFng L\xE0ng
+    Long H\u1EEFu</size> <size=50> \u0111\u1EC3 nh\u1EADn s\u1EE9 m\u1EC7nh c\u1EE7a
+    m\xECnh</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 44.2
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -260,7 +260,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -344.78748, y: -55.026794, z: -362.36133, w: -46.084167}
+  m_margin: {x: -370.3764, y: -55.026794, z: -362.36133, w: -73.5542}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

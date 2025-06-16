@@ -350,6 +350,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_ParentBoxSkill: {fileID: 8139781242981077369}
   m_ParentSkillSlotPanel: {fileID: 2246530000225201999}
+  m_ExitBtn: {fileID: 930025140630634407}
   descriptionTxt: {fileID: 4926819515558234224}
   boxPrefabsList: []
   skillSLotList: []

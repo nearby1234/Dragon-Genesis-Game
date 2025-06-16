@@ -46,11 +46,12 @@ public class PopupBoxSkill : BasePopup
     }
     private void OnClickExitBtn()
     {
+        this.Hide();
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
         }
-       this.Hide();
+       
     }
     private void FillerItemSKill(List<QuestItemSO> questItemSO)
     {
