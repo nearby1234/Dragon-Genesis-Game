@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: DialogSystemSO
+  m_EditorClassIdentifier: Assembly-CSharp::DialogSystemSO
+  dialogMission: 1
+  DialogTitle: "M\u1ED9t Ng\u01B0\u1EDDi, M\u1ED9t L\xE0ng, M\u1ED9t Hy V\u1ECDng"
+  DialogContent: "<speed=10><i>\xC0... Long Chi\u1EBFn, cu\u1ED1i c\xF9ng con c\u0169ng
+    \u0111\xE3 \u0111\u1EBFn.\n\nNg\xF4i l\xE0ng n\xE0y... \u0111\xE3 ch\u1EDD \u0111\u1EE3i
+    m\u1ED9t ng\u01B0\u1EDDi nh\u01B0 con t\u1EEB l\xE2u r\u1ED3i.\n\nD\u1EA1o g\u1EA7n
+    \u0111\xE2y c\xF3 nhi\u1EC1u \u0111i\u1EC1u k\u1EF3 l\u1EA1 x\u1EA3y ra\u2014b\u1EA7y
+    qu\xE1i v\u1EADt tr\u1EDF n\xEAn hung h\u0103ng, r\u1EEBng gi\xE0 \u0111\xEAm
+    \u0111\xEAm vang ti\u1EBFng th\xEC th\u1EA7m.\n\nTr\u01B0\u1EDBc kia n\u01A1i
+    n\xE0y y\xEAn b\xECnh, gi\u1EDD th\xEC... \u0111\u1EBFn \xE1nh tr\u0103ng c\u0169ng
+    kh\xF4ng d\xE1m l\xF3 m\u1EB7t."
+  contentAcceptButton: "Ng\u01B0\u1EDDi c\u1EA7n con l\xE0m g\xEC?"
+  isClickAcceptButton: 0
+  dialogClickAcceptButton: "<speed=10><i>\u0110\xE3 c\xF3 d\u1EA5u hi\u1EC7u, \u0111i\u1EC1m
+    x\u1EA5u xu\u1EA5t hi\u1EC7n. B\u1EA7y d\u01A1i t\u1EEB r\u1EEBng ph\xEDa \u0110\xF4ng
+    \u0111\xE3 quay l\u1EA1i.\n\nN\u1EBFu ch\xFAng ta kh\xF4ng l\xE0m g\xEC, s\u1EDBm
+    mu\u1ED9n g\xEC ch\xFAng c\u0169ng tr\xE0n v\xE0o l\xE0ng."
+  isClickDenyButton: 1
+  contentDenyButton: "Nghe nh\u01B0 m\u1EA5y chuy\u1EC7n m\xEA t\xEDn qu\xE1 th\xF4i\u2026"
+  dialogClickDenyButton: "<speed=10><i>C\xF3 th\u1EC3 l\xE0 m\xEA t\xEDn... nh\u01B0ng
+    tu\u1EA7n tr\u01B0\u1EDBc \u0111\xE3 c\xF3 hai ng\u01B0\u1EDDi m\u1EA5t t\xEDch.
+    Ch\u1EC9 c\xF2n l\u1EA1i \xE1o r\xE1ch, kh\xF4ng c\xF3 m\xE1u.\n\nN\u1EBFu ch\u1EC9
+    l\xE0 tin \u0111\u1ED3n, ta mong con d\xF9ng l\u01B0\u1EE1i g\u01B0\u01A1m \u0111\u1EC3
+    ch\u1EE9ng minh \u0111i\u1EC1u \u0111\xF3."
+  Color: {r: 0.90943396, g: 0.2728301, b: 0.2728301, a: 0}
+  hex: '#E84646'
+  key: <color=#E84646>
+  speedText: 10
+  keySpeedText: <speed=10>
+  sizeText: 2.68
+  keySizeText: <size=2,68>
+  keyEndSizeText: </size>
+  keyTransition: <fade>
+  keyEndTransition: </fade>

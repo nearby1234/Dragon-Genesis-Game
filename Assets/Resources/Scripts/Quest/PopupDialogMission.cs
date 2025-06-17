@@ -5,17 +5,21 @@ using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class QuestMissionOnePanel : BasePopup
+public class PopupDialogMission : BasePopup
 {
     [SerializeField] private GameObject m_QuestMissionBar;
     [SerializeField] private GameObject m_QuestMissionBarElse;
     [SerializeField] private Button m_ButtonAccept;
+    [SerializeField] private TextMeshProUGUI m_AcceptTxt;
+    [SerializeField] private Button m_ButtonDeny;
+    [SerializeField] private TextMeshProUGUI m_DenyTxt;
     [SerializeField] private Button m_ButtonExit;
     [SerializeField] private TextMeshProUGUI m_ContentMission;
     [SerializeField] private TextMeshProUGUI m_ContentMissionElse;
     [SerializeField] private TextMeshProUGUI m_TitleMission;
     [InlineEditor]
-    [SerializeField] private QuestData m_QuestDataMissionOne;
+    [SerializeField] private QuestData currentMission;
+    [SerializeField] private DialogSystemSO systemSO;
     private PlayerDialog m_PlayerDialog;
     private TypewriterByCharacter TypewriterByCharacter;
     private bool m_HasShownContent;
@@ -31,18 +35,59 @@ public class QuestMissionOnePanel : BasePopup
 
     private void Start()
     {
-        m_ButtonAccept.gameObject.SetActive(false);
+        SetShowButton(false, false);
+        //m_ButtonAccept.gameObject.SetActive(false);
         //m_QuestDataMissionOne = DataManager.Instance.GetDataByID<QuestData,QuestType>("-QuestMissionOne");
-        m_QuestDataMissionOne = QuestManager.Instance.questList[0];
-        m_QuestDataMissionOne.isAcceptMission = false;
-       
+        currentMission = QuestManager.Instance.questList[0];
+        currentMission.isAcceptMission = false;
+
         m_ButtonAccept.onClick.AddListener(OnClickAcceptButton);
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
         ShowContentMission();
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
+        }
+    }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        if (data is DialogSystemSO dialog)
+        {
+            systemSO = dialog;
+            switch (dialog.dialogMission)
+            {
+                case DialogMission.DialogMissionFirst:
+                    {
+                        m_ButtonDeny.onClick.AddListener(() =>
+                        {
+                            if (AudioManager.HasInstance)
+                            {
+                                AudioManager.Instance.PlaySE("ClickSound");
+                            }
+                            systemSO.isClickDenyButton = true;
+                            systemSO.OnClickDenyButton?.Invoke();
+                        });
+
+                        if (systemSO.isClickDenyButton)
+                        {
+                            SetShowButton(false, false);
+                            Debug.Log("isClickDenyButton: " + systemSO.isClickDenyButton);
+                            m_ContentMission.text = systemSO.dialogClickDenyButton;
+                            return;
+                        }
+
+                        m_TitleMission.text = systemSO.DialogTitle;
+                        m_AcceptTxt.text = systemSO.contentAcceptButton;
+                        m_DenyTxt.text = systemSO.contentDenyButton;
+                        m_ContentMission.text = systemSO.DialogContent;
+
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
     private void Update()
@@ -59,7 +104,12 @@ public class QuestMissionOnePanel : BasePopup
     //Sau khi text chạy hết
     private void OnFinishedText() // API của package Text Animator
     {
-        m_ButtonAccept.gameObject.SetActive(true);
+        if(systemSO.isClickDenyButton)
+        {
+            SetShowButton(false, false);
+            return;
+        }
+        SetShowButton(true, true);
     }
     private void OnClickAcceptButton()
     {
@@ -68,17 +118,17 @@ public class QuestMissionOnePanel : BasePopup
         {
             AudioManager.Instance.PlaySE("ClickSound");
         }
-        if(GameManager.HasInstance) GameManager.Instance.HideCursor();
+        if (GameManager.HasInstance) GameManager.Instance.HideCursor();
         m_HasAcceptMission = true;
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.PLAYER_HAS_ACCEPT_QUEST, m_HasAcceptMission);
             ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
-        }    
+        }
         if (QuestManager.HasInstance)
         {
-            QuestManager.Instance.AcceptQuest(m_QuestDataMissionOne);
-            foreach(var item in m_QuestDataMissionOne.ItemMission)
+            QuestManager.Instance.AcceptQuest(currentMission);
+            foreach (var item in currentMission.ItemMission)
             {
                 if (item.questItemData.itemID.Equals("-ScrollGenesis"))
                 {
@@ -90,10 +140,10 @@ public class QuestMissionOnePanel : BasePopup
         SettingCamera();
         if (UIManager.HasInstance)
         {
-            NotifyMessageMission<QuestMissionOnePanel> notifyMessageMission = new()
+            NotifyMessageMission<PopupDialogMission> notifyMessageMission = new()
             {
                 uiElement = this,
-                questData = m_QuestDataMissionOne,
+                questData = currentMission,
             };
             UIManager.Instance.ShowScreen<ScreenOriginalScrollBtn>();
             UIManager.Instance.ShowNotify<NotifySystem>(notifyMessageMission, true);
@@ -103,9 +153,9 @@ public class QuestMissionOnePanel : BasePopup
         {
             PlayerManager.instance.isInteractingWithUI = false;
         }
-        if(m_QuestDataMissionOne != null && m_QuestDataMissionOne.questID.Equals(m_QuestID))
+        if (currentMission != null && currentMission.questID.Equals(m_QuestID))
         {
-            m_QuestDataMissionOne.ItemMission[0].questItemData.completionCount = 1;
+            currentMission.ItemMission[0].questItemData.completionCount = 1;
         }
     }
     private void OnButtonExit()
@@ -115,23 +165,23 @@ public class QuestMissionOnePanel : BasePopup
             AudioManager.Instance.PlaySE("ExitSound");
         }
         m_PlayerDialog.SetIsTalkingNPC(false);
-       SettingCamera();
+        SettingCamera();
         this.Hide();
-    }   
+    }
     private void ShowContentMission()
     {
-        if (m_QuestDataMissionOne != null)
+        if (currentMission != null)
         {
-            if (!m_QuestDataMissionOne.isAcceptMission && !m_PlayerDialog.HasAcceptQuest )
+            if (!currentMission.isAcceptMission && !m_PlayerDialog.HasAcceptQuest)
             {
-                if(!m_HasShownContent)
+                if (!m_HasShownContent)
                 {
                     ShowInitialMissionContent();
                 }
             }
             else
             {
-                if(!m_HasShownAlternative)
+                if (!m_HasShownAlternative)
                 {
                     ShowAlternativeContent();
                 }
@@ -140,21 +190,21 @@ public class QuestMissionOnePanel : BasePopup
     }
     private void ShowInitialMissionContent()
     {
-        m_TitleMission.text = m_QuestDataMissionOne.questName;
-        m_ContentMission.text = m_QuestDataMissionOne.description;
+        //m_TitleMission.text = currentMission.questName;
+        //m_ContentMission.text = currentMission.description;
         m_QuestMissionBar.SetActive(true);
         m_HasShownContent = true;
     }
     private void ShowAlternativeContent()
     {
         m_QuestMissionBar.SetActive(false);
-        m_ContentMissionElse.text = m_QuestDataMissionOne.descriptionElse;
+        //m_ContentMissionElse.text = currentMission.descriptionElse;
         m_QuestMissionBarElse.SetActive(true);
         m_HasShownAlternative = true;
     }
     private void ReceiverEventClickMainMenu(object value)
     {
-        m_QuestDataMissionOne.isAcceptMission = false;
+        currentMission.isAcceptMission = false;
         m_PlayerDialog.HasAcceptQuest = false;
         m_HasShownContent = false;
         m_HasShownAlternative = false;
@@ -175,5 +225,21 @@ public class QuestMissionOnePanel : BasePopup
                 Camera.main.cullingMask |= combinedMask;
             }
         }
-    }    
+    }
+    private void SetShowButton(bool isShowAcceptBtn, bool isShowDenyBtn)
+    {
+        if (m_ButtonAccept.TryGetComponent(out CanvasGroup canvasGroupAccept))
+        {
+            canvasGroupAccept.alpha = isShowAcceptBtn ? 1f : 0f;
+            canvasGroupAccept.interactable = isShowAcceptBtn;
+            canvasGroupAccept.blocksRaycasts = isShowAcceptBtn;
+        }
+        if (m_ButtonDeny.TryGetComponent(out CanvasGroup canvasGroupDeny))
+        {
+            canvasGroupDeny.alpha = isShowDenyBtn ? 1f : 0f;
+            canvasGroupDeny.interactable = isShowDenyBtn;
+            canvasGroupDeny.blocksRaycasts = isShowDenyBtn;
+        }
+    }
+
 }

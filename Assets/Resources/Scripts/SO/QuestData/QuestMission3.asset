@@ -16,20 +16,6 @@ MonoBehaviour:
   questID: -QuestMission3
   questName: "\u0110\u1ED9i Qu\xE2n R\u1ED3ng L\u1EEDa"
   QuestGiver: {fileID: 0}
-  description: "<speed=6>{Fade}Nguy hi\u1EC3m ng\xE0y c\xE0ng gia t\u0103ng.Nh\u1EEFng
-    con<color=#FF0003><B>R\u1ED3ng L\u1EEDa</color></B> xu\u1EA5t hi\u1EC7n ng\xE0y
-    c\xE0ng nhi\u1EC1u, mang theo s\u1EF1 h\u1EE7y di\u1EC7t v\xE0 n\u1ED7i kinh
-    ho\xE0ng. S\u1EE9c m\u1EA1nh c\u1EE7a ch\xFAng v\u01B0\u1EE3t tr\u1ED9i, \u0111e
-    d\u1ECDa s\u1EF1 an to\xE0n c\u1EE7a d\xE2n l\xE0ng.\n\n\u0110\xE2y kh\xF4ng
-    c\xF2n l\xE0 nh\u1EEFng m\u1ED1i h\u1ECDa \u0111\u01A1n l\u1EBB. M\u1ED9t \u0111\u1ED9i
-    qu\xE2n b\xF3ng t\u1ED1i \u0111ang h\xECnh th\xE0nh t\u1EEB nh\u1EEFng sinh v\u1EADt
-    hung t\u1EE3n n\xE0y. H\xE3y \u0111\u1EE9ng l\xEAn, <B>Long Chi\u1EBFn</B>. B\u1EA3o
-    v\u1EC7 nh\u1EEFng ng\u01B0\u1EDDi v\xF4 t\u1ED9i n\xE0y .\n\nH\xE3y ti\xEAu
-    di\u1EC7t ch\xFAng. M\u1ED7i chi\u1EBFn th\u1EAFng s\u1EBD \u0111\u1EA9y l\xF9i
-    b\xF3ng t\u1ED1i, mang l\u1EA1i hy v\u1ECDng cho v\xF9ng \u0111\u1EA5t n\xE0y.
-    H\xE3y c\u1EA9n tr\u1ECDng v\u1EDBi ng\u1ECDn l\u1EEDa c\u1EE7a ch\xFAng"
-  descriptionElse: 
-  m_TextColor: {r: 1, g: 0, b: 0.013105392, a: 0}
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

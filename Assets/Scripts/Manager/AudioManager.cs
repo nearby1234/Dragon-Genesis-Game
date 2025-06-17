@@ -19,6 +19,7 @@ public class AudioManager : BaseManager<AudioManager>
     public AudioSource AttachSESource;
     public AudioSource loopSESource;
     public AudioSource FootstepSource;
+    public AudioSource voiceSource;
 
     // Loaded clips
     [ShowInInspector]
@@ -203,5 +204,18 @@ public class AudioManager : BaseManager<AudioManager>
         }
         
         AudioSource.PlayClipAtPoint(seDic[enemysound], position, volume);
+    }
+    public void PlayVoiceSe(string voiceName, float volume = 1f)
+    {
+        if (!seDic.ContainsKey(voiceName))
+        {
+            Debug.LogWarning($"Voice SE not found: {voiceName}");
+            return;
+        }
+
+        voiceSource.volume = Mathf.Clamp01(volume);
+        voiceSource.clip = seDic[voiceName];
+        voiceSource.Play();
+
     }
 }

@@ -45,7 +45,7 @@ public class NotifySystem : BaseNotify
                     StartCoroutine(SetHideNotify());
                     break;
 
-                case NotifyMessageMission<QuestMissionOnePanel> notify:
+                case NotifyMessageMission<PopupDialogMission> notify:
                     contentNotifyTxt.text = $"Nhận nhiệm vụ <B><color=#FF0E00>{notify.questData.questName}";
                     StartCoroutine(SetHideNotify());
                     break;

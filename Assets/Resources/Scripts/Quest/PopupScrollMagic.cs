@@ -76,7 +76,7 @@ public class PopupScrollMagic : BasePopup
 
 
         m_TitleText.text = m_CurrentQuestData.questName;
-        m_ContentText.text = m_CurrentQuestData.description;
+        //m_ContentText.text = m_CurrentQuestData.description;
 
         m_RewardItemParentObject.HideCanvasGroup();
         m_MisionItemParentObject.HideCanvasGroup();
@@ -350,7 +350,7 @@ public class PopupScrollMagic : BasePopup
         if (typewriterByCharacter != null)
         {
             // Chạy lại typewriter cho nội dung mới
-            typewriterByCharacter.ShowText(m_CurrentQuestData.description);
+            //typewriterByCharacter.ShowText(m_CurrentQuestData.description);
         }
         //OnFinishWrittingText();
     }

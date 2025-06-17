@@ -1,7 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using Unity.Cinemachine;
+﻿using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerDialog : MonoBehaviour
 {
@@ -11,6 +10,9 @@ public class PlayerDialog : MonoBehaviour
     [SerializeField] private bool m_IsTalkingNPC;
     [SerializeField] private bool m_HasAcceptQuest;
     [SerializeField] private float m_Distance;
+    [SerializeField] private InputAction pressedButton;
+    private bool isShowPopupGuide;
+    private bool isHidePopupGuide;
     public bool HasAcceptQuest
     {
         get => m_HasAcceptQuest;
@@ -29,13 +31,40 @@ public class PlayerDialog : MonoBehaviour
             }
         }
     }
+    private void Start()
+    {
+        pressedButton.Enable();
+        pressedButton.performed += (Context) => OnClickButton();
+    }
+    private void OnDestroy()
+    {
+        pressedButton.Disable();
+        pressedButton.performed -= (Context) => OnClickButton();
+    }
+
 
     private void Update()
     {
         CheckNPCDistance();
-        HandleInput();
+        //HandleInput();
        
     }
+    private void OnClickButton()
+    {
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("HoverSound");
+        }
+        HandleNPCInteraction();
+        if (GameManager.HasInstance) GameManager.Instance.ShowCursor();
+        if (ListenerManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+            ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
+        }
+
+          
+    }    
     private void HandleInput()
     {
         if (!m_IsCollisionNpc) return;
@@ -60,17 +89,30 @@ public class PlayerDialog : MonoBehaviour
     {
         if (DistanceWithNPC() <= m_Distance)
         {
-            m_IsCollisionNpc = true;
-
-            if (m_IsPressButtonJ && m_IsCollisionNpc)
+            if (isShowPopupGuide) return;
+            isHidePopupGuide = false;
+            if (UIManager.HasInstance)
             {
-                HandleNPCInteraction();
-                m_IsPressButtonJ = false;
+                UIManager.Instance.ShowPopup<DialobGuidePopup>();
             }
+            isShowPopupGuide = true;
+            //m_IsCollisionNpc = true;
+
+            //if (m_IsPressButtonJ && m_IsCollisionNpc)
+            //{
+            //    HandleNPCInteraction();
+            //    m_IsPressButtonJ = false;
+            //}
         }
         else
         {
-            m_IsCollisionNpc = false;
+            if (isHidePopupGuide) return;
+            isShowPopupGuide = false;
+            if (UIManager.HasInstance)
+            {
+                UIManager.Instance.HidePopup<DialobGuidePopup>();
+            }
+            isHidePopupGuide = true;
         }
     }
 
@@ -94,7 +136,26 @@ public class PlayerDialog : MonoBehaviour
         if (UIManager.HasInstance)
         {
             UIManager.Instance.HidePopup<DialobGuidePopup>();
-            UIManager.Instance.ShowPopup<QuestMissionOnePanel>();
+            isHidePopupGuide = true;
+            if(DataManager.HasInstance)
+            {
+                DialogSystemSO dialogMissionFirst = DataManager.Instance.GetData<DialogSystemSO,DialogMission>(DialogMission.DialogMissionFirst);
+                dialogMissionFirst.OnClickAcceptButton += () =>
+                {
+                    
+                };
+                dialogMissionFirst.OnClickDenyButton += () =>
+                {
+                    dialogMissionFirst.isClickDenyButton = true;
+                    UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst, true);
+                };
+                UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst,true);
+            }
+           
+        }
+        if(AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlayVoiceSe("AbeVoice1");
         }
     }
     private void OnIsTalkingNPCChanged()

@@ -16,24 +16,6 @@ MonoBehaviour:
   questID: -QuestMission4
   questName: "Hi\u1EC3m h\u1ECDa t\u1EEB Hung Th\xFA Gi\u1EEF C\u1EEDa"
   QuestGiver: {fileID: 0}
-  description: "<speed=6>{Fade}Ng\u01B0\u01A1i \u0111\xE3 v\u01B0\u1EE3t qua nh\u1EEFng
-    th\u1EED th\xE1ch tr\u01B0\u1EDBc, Long Chi\u1EBFn. Nh\u01B0ng s\u1EE9c m\u1EA1nh
-    b\xF3ng t\u1ED1i v\u1EABn c\xF2n \u0111\xF3 . M\u1ED9t hi\u1EC3m h\u1ECDa m\u1EDBi 
-    \u0111\xE3 xu\u1EA5t hi\u1EC7n, m\u1ED9t k\u1EBB th\xF9 \u0111\xE1ng s\u1EE3
-    h\u01A1n b\u1EA5t k\u1EF3 th\u1EE9 g\xEC ng\u01B0\u01A1i t\u1EEBng \u0111\u1ED1i
-    m\u1EB7t . H\xE3y c\u1EA9n th\u1EADn, Long Chi\u1EBFn. Hi\u1EC3m h\u1ECDa \u0111\xF3
-    l\xE0 qu\xE1i v\u1EADt g\u1ECDi l\xE0  <color=#FA00FF><B>S\xE2u H\u1EAFc \xC1m</color></B>
-    . \n\nChi\u1EBFn S\u1EE7ng m\u1EA1nh nh\u1EA5t c\u1EE7a <color=#00F3FF><B>H\u1EAFc
-    Ng\u01B0u Ma V\u01B0\u01A1ng</color></B>. S\u1EE9c m\u1EA1nh c\u1EE7a con qu\xE1i
-    v\u1EADt v\u01B0\u1EE3t xa m\u1ECDi t\u01B0\u1EDFng t\u01B0\u1EE3ng, v\xE0 s\u1EF1
-    hung t\xE0n c\u1EE7a n\xF3 gieo r\u1EAFc n\u1ED7i kinh ho\xE0ng kh\u1EAFp v\xF9ng
-    \u0111\u1EA5t.\u0110\u1EC3 ch\u1EE9ng minh s\u1EE9c m\u1EA1nh c\u1EE7a m\xECnh,
-    ng\u01B0\u01A1i ph\u1EA3i \u0111\xE1nh b\u1EA1i n\xF3. H\xE3y chu\u1EA9n b\u1ECB
-    tinh th\u1EA7n, Long Chi\u1EBFn. Cu\u1ED9c chi\u1EBFn n\xE0y s\u1EBD kh\xF4ng
-    d\u1EC5 d\xE0ng.\n\nM\u1EE5c ti\xEAu hi\u1EC7n t\u1EA1i: Ti\xEAu di\u1EC7t <color=#FA00FF><B>S\xE2u
-    H\u1EAFc \xC1m</color></B>"
-  descriptionElse: 
-  m_TextColor: {r: 0, g: 0.95446754, b: 1, a: 0}
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

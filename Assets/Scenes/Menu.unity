@@ -505,6 +505,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1574235632
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1574235633}
+  m_Layer: 0
+  m_Name: SaveManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1574235633
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1574235632}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 201.36044, y: 2.488717, z: 166.01886}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1983556768 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2750675322253743371, guid: ba7aa4c2ef0b33c48867a11090cefc20, type: 3}
@@ -923,6 +954,14 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[0]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[1]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 2306e52d5d4288b419ae55a56bf513dc, type: 2}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: 'questList.Array.data[3]'
       value: 
       objectReference: {fileID: 11400000, guid: 53602d221030e204984aa6532a8a3f54, type: 2}
@@ -1124,3 +1163,4 @@ SceneRoots:
   - {fileID: 7410869993196733964}
   - {fileID: 159532939666453221}
   - {fileID: 5277835560680022003}
+  - {fileID: 1574235633}

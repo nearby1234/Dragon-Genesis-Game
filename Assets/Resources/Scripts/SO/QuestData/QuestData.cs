@@ -13,13 +13,7 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>, IResettableSO
     public string questName;
     public GameObject QuestGiver;
 
-    [TextArea(3, 10)]
-    public string description;
-
-    [TextArea(3, 10)]
-    public string descriptionElse;
-
-    public Color m_TextColor;
+  
     public bool isAcceptMission;
     public bool isCompleteMission;
 

@@ -1,5 +1,3 @@
-using Sirenix.OdinInspector;
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct NotifyMessageMission<T> where T : MonoBehaviour
@@ -34,8 +32,6 @@ public class NotifySystemData : ScriptableObject, IEnumKeyed<NotifyType>
   
 
     [Header("Color")]
-    // Khi thay đổi Color, Odin sẽ gọi UpdateKey()
-    //[OnValueChanged(nameof(UpdateKey))]
     public Color Color;
     public string hex;
     public string key;
