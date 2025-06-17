@@ -12,6 +12,7 @@ public enum DialogMission
 }
 
 [CreateAssetMenu(fileName = "DialogSystemSO", menuName = "Dialog System/DialogSystemSO")]
+[System.Serializable]
 public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
 {
     public DialogMission Key => dialogMission;
@@ -65,15 +66,5 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
     }
 #endif
 
-    public void BackupData()
-    {
-        _backupJson = JsonUtility.ToJson(this);
-    }
-    public void RestoreData()
-    {
-        if (!string.IsNullOrEmpty(_backupJson))
-        {
-            JsonUtility.FromJsonOverwrite(_backupJson, this);
-        }
-    }
+    
 }

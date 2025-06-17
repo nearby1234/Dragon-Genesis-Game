@@ -1,4 +1,6 @@
-﻿using TMPro;
+﻿using System.Collections.Generic;
+using TMPro;
+using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -140,6 +142,16 @@ public class PlayerDialog : MonoBehaviour
             if(DataManager.HasInstance)
             {
                 DialogSystemSO dialogMissionFirst = DataManager.Instance.GetData<DialogSystemSO,DialogMission>(DialogMission.DialogMissionFirst);
+                if (SaveManager.HasInstance)
+                {
+                    var saveManager = SaveManager.Instance;
+                    
+                   saveManager.SaveOrUpdateDialog(dialogMissionFirst);
+                }
+                else
+                {
+                    Debug.LogError("SaveManager.Instance không tồn tại!");
+                }
                 dialogMissionFirst.OnClickAcceptButton += () =>
                 {
                     
@@ -148,6 +160,7 @@ public class PlayerDialog : MonoBehaviour
                 {
                     dialogMissionFirst.isClickDenyButton = true;
                     UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst, true);
+                   
                 };
                 UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst,true);
             }

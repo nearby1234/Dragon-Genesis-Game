@@ -67,6 +67,7 @@ public class PopupDialogMission : BasePopup
                                 AudioManager.Instance.PlaySE("ClickSound");
                             }
                             systemSO.isClickDenyButton = true;
+                           
                             systemSO.OnClickDenyButton?.Invoke();
                         });
 

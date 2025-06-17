@@ -13,7 +13,6 @@ public class DataManager : BaseManager<DataManager>
     {
         base.Awake();
         LoadAllData();
-        //BackupAllData();
     }
 
     public void LoadAllData()
@@ -46,32 +45,6 @@ public class DataManager : BaseManager<DataManager>
         Debug.Log("🔄 Data Loaded!");
     }
 
-    //private void BackupAllData()
-    //{
-    //    // Duyệt qua toàn bộ các asset trong enumDataDictionary
-    //    foreach (var subDict in enumDataDictionary.Values)
-    //    {
-    //        foreach (var asset in subDict.Values)
-    //        {
-    //            // Chỉ backup nếu asset chưa có trong backup
-    //            if (!originalDataBackup.ContainsKey(asset))
-    //            {
-    //                string json = JsonUtility.ToJson(asset);
-    //                originalDataBackup.Add(asset, json);
-    //            }
-    //        }
-    //    }
-    //    Debug.Log("🔄 Data Backup Completed!");
-    //}
-    //private void RestoreOriginalData()
-    //{
-    //    foreach (var pair in originalDataBackup)
-    //    {
-    //        // pair.Key là asset, pair.Value là JSON backup
-    //        JsonUtility.FromJsonOverwrite(pair.Value, pair.Key);
-    //    }
-    //    Debug.Log("🔄 Data Restored to Original State!");
-    //}
 
     public T GetClonedData<T, TEnum>(TEnum key) where T : ScriptableObject, IEnumKeyed<TEnum> where TEnum : Enum
     {
