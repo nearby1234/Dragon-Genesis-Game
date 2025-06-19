@@ -25,6 +25,7 @@ MonoBehaviour:
     itemUse: 0
     ItemDespri: 
     CountExp: 0
+    despriExp: 
     creepType: 0
     TimerSkillCoolDown: 0
     DespristionSkill: 
@@ -45,7 +46,7 @@ MonoBehaviour:
     plusDefendArmor: 0
     m_NameArmorPrefabs: Minotaur_Chest_1
   _backupJson: "{\"itemID\":\"-MinotaurChestArmor\",\"itemName\":\"\xC1o Gi\xE1p
-    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57456},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"typeArmor\":1,\"skinnedArmor\":{\"instanceID\":-2392},\"DespristionArmor\":\"\u0110\u01B0\u1EE3c
+    Tr\xE2u\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57486},\"typeItem\":8,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"despriExp\":\"\",\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":0,\"m_SwordPrefabs\":{\"instanceID\":0},\"m_SwordMesh\":{\"instanceID\":0},\"m_SwordMaterial\":{\"instanceID\":0},\"DespristionWeapon\":\"\",\"typeArmor\":1,\"skinnedArmor\":{\"instanceID\":-3382644},\"DespristionArmor\":\"\u0110\u01B0\u1EE3c
     ch\u1EBF t\xE1c b\u1EDFi nh\u1EEFng th\u1EE3 r\xE8n b\u1EADc th\u1EA7y c\u1EE7a
     t\u1ED9c Minotaur, \\nmang trong m\xECnh linh h\u1ED3n c\u1EE7a lo\xE0i qu\xE1i
     v\u1EADt n\xE0y.\",\"plusStrengthArmor\":0,\"plusAgilityArmor\":0,\"plusStaminaArmor\":2,\"plusHealArmor\":4,\"plusDefendArmor\":0,\"m_NameArmorPrefabs\":\"Minotaur_Chest_1\"}"

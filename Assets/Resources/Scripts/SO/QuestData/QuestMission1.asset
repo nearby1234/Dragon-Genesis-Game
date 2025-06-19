@@ -15,7 +15,7 @@ MonoBehaviour:
   questType: 3
   questID: -QuestMission1
   questName: "L\u1EDDi Ti\xEAn Tri"
-  QuestGiver: {fileID: 0}
+  QuestGiver: 0
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

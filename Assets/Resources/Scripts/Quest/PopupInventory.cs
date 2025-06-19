@@ -41,10 +41,12 @@ public class PopupInventory : BasePopup, IStateUi
         m_Rectranform = GetComponent<RectTransform>();
         m_BoxImgPath = configSO.m_BoxImgPath;
         m_ItemImgPath = configSO.m_ItemImgPath;
+      
     }
 
     private void Start()
     {
+       this.Hide();
         m_Rectranform.anchoredPosition = m_Offset;
         m_BoxInventoryPrefab = Resources.Load<GameObject>(m_BoxImgPath);
         if (m_BoxInventoryPrefab == null) Debug.LogWarning($"không tim thầy đường dẫn : {m_BoxImgPath}");
@@ -78,6 +80,7 @@ public class PopupInventory : BasePopup, IStateUi
         {
             ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverListItemReward);
             ListenerManager.Instance.Register(ListenType.PU_CHARACTER_IMFORMA, ReceiverEventPUCharacter);
+            ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI,null);
         }
     }
 
@@ -219,8 +222,7 @@ public class PopupInventory : BasePopup, IStateUi
     }
     public void SetPositionMove()
     {
-        RectTransform rectTransform = GetComponent<RectTransform>();
-        if (rectTransform != null)
+        if (TryGetComponent<RectTransform>(out var rectTransform))
         {
             rectTransform.anchoredPosition = m_PosMove;
         }

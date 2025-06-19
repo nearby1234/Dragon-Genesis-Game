@@ -2,6 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum NPCName
+{
+    None,
+    Abe,
+}
+
 [System.Serializable]
 [CreateAssetMenu(fileName = "NewQuest", menuName = "Scriptable Object/Quest/Quest Data/Quest Mission")]
 public class QuestData : ScriptableObject, IEnumKeyed<QuestType>, IResettableSO
@@ -11,9 +17,9 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>, IResettableSO
     public QuestType questType;
     public string questID;
     public string questName;
-    public GameObject QuestGiver;
+    public NPCName QuestGiver;
 
-  
+
     public bool isAcceptMission;
     public bool isCompleteMission;
 

@@ -4,7 +4,8 @@ public class Billboard : MonoBehaviour
 {
     [SerializeField] private Transform mainCamera;
     [SerializeField] private bool m_Invert;
-    [SerializeField] private bool m_IsClick;
+    [SerializeField] private bool m_IsClickMainMenu;
+    [SerializeField] private bool m_IsClickTalkNPC;
 
     private void Awake()
     {
@@ -12,9 +13,10 @@ public class Billboard : MonoBehaviour
     }
     private void Start()
     {
-        if(ListenerManager.HasInstance)
+        if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverClickMainMenu);
+            ListenerManager.Instance.Register(ListenType.CLICK_TALK_NPC, OnEventClickTalkNPC);
         }
     }
     private void OnDestroy()
@@ -22,11 +24,12 @@ public class Billboard : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverClickMainMenu);
+            ListenerManager.Instance.Unregister(ListenType.CLICK_TALK_NPC, OnEventClickTalkNPC);
         }
     }
     private void Update()
     {
-        if (m_IsClick) return;
+        if (m_IsClickMainMenu) return;
         RotationTarget();
     }
     private void RotationTarget()
@@ -39,11 +42,31 @@ public class Billboard : MonoBehaviour
         }
         else
         {
-            transform.rotation = Quaternion.LookRotation(direction);
+            if (m_IsClickTalkNPC)
+            {
+                transform.rotation = Quaternion.LookRotation(direction);
+            }
+            else
+            {
+                transform.rotation = Quaternion.LookRotation(direction) * Quaternion.Euler(0, -30f, 0);
+            }
+
+
+
         }
+
     }
     private void ReceiverClickMainMenu(object value)
     {
-        m_IsClick = true;
+        m_IsClickMainMenu = true;
     }
+
+    private void OnEventClickTalkNPC(object value)
+    {
+        if (value is bool isClick)
+            m_IsClickTalkNPC = isClick;
+
+    }
+
+
 }

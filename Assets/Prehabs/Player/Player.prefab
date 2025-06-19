@@ -6017,6 +6017,15 @@ MonoBehaviour:
   m_IsTalkingNPC: 0
   m_HasAcceptQuest: 0
   m_Distance: 3
+  pressedButton:
+    m_Name: Pressed Button
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 54ac3327-3778-4ff0-9f1d-805170a93770
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!114 &242744660293143043
 MonoBehaviour:
   m_ObjectHideFlags: 0

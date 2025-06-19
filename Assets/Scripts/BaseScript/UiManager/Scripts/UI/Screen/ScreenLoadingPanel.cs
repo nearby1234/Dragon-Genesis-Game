@@ -97,11 +97,18 @@ public class ScreenLoadingPanel : BaseScreen
                 if (GameManager.Instance.GameState == GAMESTATE.START)
                 {
                     UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
+                    UIManager.Instance.ShowScreen<ScreenIconInventory>();
+                    UIManager.Instance.ShowPopup<PopupInventory>();
+
                     NotifySystemData notifyData = DataManager.Instance.GetData<NotifySystemData,NotifyType>(NotifyType.StartGame);
                     UIManager.Instance.ShowNotify<NotifySystem>(notifyData, true);
                     GameManager.Instance.ShowBoardPlayerStats();
                     GameManager.Instance.HideCursor();
                     this.Hide();
+                    if (ListenerManager.HasInstance)
+                    {
+                        ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+                    }
                 }
             }
         });

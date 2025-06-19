@@ -15,7 +15,7 @@ MonoBehaviour:
   questType: 4
   questID: -QuestMission2
   questName: "D\u1EA5u V\u1EBFt B\xF3ng \u0110\xEAm"
-  QuestGiver: {fileID: 0}
+  QuestGiver: 1
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

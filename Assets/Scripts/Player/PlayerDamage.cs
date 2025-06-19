@@ -151,6 +151,7 @@ public class PlayerDamage : MonoBehaviour
     }
     public void RegisterEventAttack()
     {
+        Debug.Log("da dang ky");
         m_ButtonAttackLeftMouse.performed += OnPerformedAttackLeftMouse;
         m_ButtonAttackLeftMouse.canceled += OnCancelAttackLeftMouse;
         m_ButtonAttackLeftMouse.Enable();

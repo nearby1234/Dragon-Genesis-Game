@@ -4,6 +4,13 @@ using Unity.AppUI.UI;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
+
+public struct DataStateMission
+{
+    public DialogSystemSO dialogSystemSO;
+    public QuestData questData;
+    public bool isCompleteMission;
+}
 public class PlayerDialog : MonoBehaviour
 {
     [SerializeField] private bool m_IsPressButtonJ;
@@ -49,7 +56,7 @@ public class PlayerDialog : MonoBehaviour
     {
         CheckNPCDistance();
         //HandleInput();
-       
+
     }
     private void OnClickButton()
     {
@@ -62,31 +69,31 @@ public class PlayerDialog : MonoBehaviour
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-            ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
+            ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, false);
         }
 
-          
-    }    
-    private void HandleInput()
-    {
-        if (!m_IsCollisionNpc) return;
-            
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            if(AudioManager.HasInstance)
-            {
-                AudioManager.Instance.PlaySE("HoverSound");
-            }
-            if(GameManager.HasInstance) GameManager.Instance.ShowCursor();
-            m_IsPressButtonJ = true;
-            SetIsTalkingNPC(true);
-            if (ListenerManager.HasInstance)
-            {
-                ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-                ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
-            }
-        }
+
     }
+    //private void HandleInput()
+    //{
+    //    if (!m_IsCollisionNpc) return;
+
+    //    if (Input.GetKeyDown(KeyCode.J))
+    //    {
+    //        if (AudioManager.HasInstance)
+    //        {
+    //            AudioManager.Instance.PlaySE("HoverSound");
+    //        }
+    //        if (GameManager.HasInstance) GameManager.Instance.ShowCursor();
+    //        m_IsPressButtonJ = true;
+    //        SetIsTalkingNPC(true);
+    //        if (ListenerManager.HasInstance)
+    //        {
+    //            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
+    //            ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
+    //        }
+    //    }
+    //}
     private void CheckNPCDistance()
     {
         if (DistanceWithNPC() <= m_Distance)
@@ -114,6 +121,7 @@ public class PlayerDialog : MonoBehaviour
             {
                 UIManager.Instance.HidePopup<DialobGuidePopup>();
             }
+
             isHidePopupGuide = true;
         }
     }
@@ -127,49 +135,17 @@ public class PlayerDialog : MonoBehaviour
             int weaponLayer = LayerMask.NameToLayer("Weapon");
             int fxLayer = LayerMask.NameToLayer("FX");
 
-            int combinedMask = (1 << playerLayer) | (1 << weaponLayer)| (1 << fxLayer);
-            if (camera != null )
+            int combinedMask = (1 << playerLayer) | (1 << weaponLayer) | (1 << fxLayer);
+            if (camera != null)
             {
                 camera.Priority = 15;
-                Camera.main.cullingMask &= ~combinedMask;
+                //Camera.main.cullingMask &= ~combinedMask;
             }
         }
+        CheckMission();
 
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.HidePopup<DialobGuidePopup>();
-            isHidePopupGuide = true;
-            if(DataManager.HasInstance)
-            {
-                DialogSystemSO dialogMissionFirst = DataManager.Instance.GetData<DialogSystemSO,DialogMission>(DialogMission.DialogMissionFirst);
-                if (SaveManager.HasInstance)
-                {
-                    var saveManager = SaveManager.Instance;
-                    
-                   saveManager.SaveOrUpdateDialog(dialogMissionFirst);
-                }
-                else
-                {
-                    Debug.LogError("SaveManager.Instance không tồn tại!");
-                }
-                dialogMissionFirst.OnClickAcceptButton += () =>
-                {
-                    
-                };
-                dialogMissionFirst.OnClickDenyButton += () =>
-                {
-                    dialogMissionFirst.isClickDenyButton = true;
-                    UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst, true);
-                   
-                };
-                UIManager.Instance.ShowPopup<PopupDialogMission>(dialogMissionFirst,true);
-            }
-           
-        }
-        if(AudioManager.HasInstance)
-        {
-            AudioManager.Instance.PlayVoiceSe("AbeVoice1");
-        }
+
+       
     }
     private void OnIsTalkingNPCChanged()
     {
@@ -202,5 +178,119 @@ public class PlayerDialog : MonoBehaviour
             }
         }
     }
+    private void ShowDialogPopupMission(DialogSystemSO dialogMission, QuestData questData = null)
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.HidePopup<DialobGuidePopup>();
+            isHidePopupGuide = true;
+            if (DataManager.HasInstance)
+            {
+                if (SaveManager.HasInstance)
+                {
+                    var saveManager = SaveManager.Instance;
+                    saveManager.SaveOrUpdateDialog(dialogMission);
+                }
+                //dialogMission.OnClickAcceptButton += () =>
+                //{
+                //    dialogMission.isClickAcceptButton = true;
+                //    DataStateMission dataStateMission = new()
+                //    {
+                //        dialogSystemSO = dialogMission,
+                //        questData = questData,
+                //        isCompleteMission = questData.isCompleteMission
+                //    };
+                //    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+                //};
+                //dialogMission.OnClickDenyButton += () =>
+                //{
+                //    dialogMission.isClickDenyButton = true;
+                //    DataStateMission dataStateMission = new()
+                //    {
+                //        dialogSystemSO = dialogMission,
+                //        questData = questData,
+                //        isCompleteMission = questData.isCompleteMission
+                //    };
+                //    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+
+                //};
+                DataStateMission dataStateMission = new()
+                {
+                    dialogSystemSO = dialogMission,
+                    questData = questData,
+                    isCompleteMission = questData.isCompleteMission
+                };
+                UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+            }
+
+        }
+    }
+
+    private void ShowDialogPopupReward(DialogSystemSO dialogMission, QuestData questData = null)
+    {
+        if (UIManager.HasInstance)
+        {
+            UIManager.Instance.HidePopup<DialobGuidePopup>();
+            isHidePopupGuide = true;
+            if (DataManager.HasInstance)
+            {
+                //if (SaveManager.HasInstance)
+                //{
+                //    var saveManager = SaveManager.Instance;
+                //    saveManager.SaveOrUpdateDialog(dialogMission);
+                //}
+                dialogMission.OnClickChoseRewardButton += () =>
+                {
+                    DataStateMission dataStateMission = new()
+                    {
+                        dialogSystemSO = dialogMission,
+                        questData = questData,
+                        isCompleteMission = questData.isCompleteMission
+                    };
+                    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+                };
+                dialogMission.OnClickDenyButton += () =>
+                {
+                    DataStateMission dataStateMission = new()
+                    {
+                        dialogSystemSO = dialogMission,
+                        questData = questData,
+                        isCompleteMission = questData.isCompleteMission
+                    };
+                    UIManager.Instance.ShowPopup<PopupDialogMission>((dialogMission, questData), true);
+
+                };
+                DataStateMission dataStateMission = new()
+                {
+                    dialogSystemSO = dialogMission,
+                    questData = questData,
+                    isCompleteMission = questData.isCompleteMission
+                };
+                UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+            }
+
+        }
+    }
+    private void CheckMission()
+    {
+        if (npcObject.TryGetComponent(out QuestGiver questGiver))
+        {
+            if (questGiver.QuestData.QuestGiver == questGiver.NPCName)
+            {
+                if (!questGiver.QuestData.isCompleteMission)
+                {
+                    ShowDialogPopupMission(questGiver.DialogSystemSO, questGiver.QuestData);
+                }
+                else
+                {
+                    ShowDialogPopupReward(questGiver.DialogSystemSO, questGiver.QuestData);
+                }
+
+            }
+        }
+    }
+
+
+
 
 }

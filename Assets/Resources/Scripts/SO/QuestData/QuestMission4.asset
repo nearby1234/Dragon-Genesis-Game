@@ -15,7 +15,7 @@ MonoBehaviour:
   questType: 6
   questID: -QuestMission4
   questName: "Hi\u1EC3m h\u1ECDa t\u1EEB Hung Th\xFA Gi\u1EEF C\u1EEDa"
-  QuestGiver: {fileID: 0}
+  QuestGiver: 0
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

@@ -17,6 +17,7 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
 {
     public DialogMission Key => dialogMission;
     public DialogMission dialogMission;
+    public DialogState currentDialogState;
 
     [Header("Dialog Content")]
     [TextArea(3, 10)]
@@ -25,14 +26,19 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
     public string DialogContent;
     [TextArea(3, 10)]
     public string contentAcceptButton;
-    public bool isClickAcceptButton;
     [TextArea(3, 10)]
     public string dialogClickAcceptButton;
-    public bool isClickDenyButton;
     [TextArea(3, 10)]
     public string contentDenyButton;
     [TextArea(3, 10)]
     public string dialogClickDenyButton;
+    [TextArea(20, 10)]
+    public string DialogReward;
+    [TextArea(3, 10)]
+    public string contentChoseRewardButton;
+    public float alighnmentLeftChoseRewardButton = -70f;
+    [TextArea(3, 10)]
+    public string contentRewardButton;
     [Header("Color")]
     public Color Color;
     public string hex;
@@ -51,8 +57,10 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
     [Header("Event")]
     public Action OnClickAcceptButton;
     public Action OnClickDenyButton;
+    public Action OnClickRewardButton;
+    public Action OnClickChoseRewardButton;
 
-    private string _backupJson;
+   
 
 
 #if UNITY_EDITOR

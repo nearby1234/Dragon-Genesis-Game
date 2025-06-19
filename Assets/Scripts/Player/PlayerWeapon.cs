@@ -18,6 +18,7 @@ public class PlayerWeapon : MonoBehaviour
     {
         m_CurrentWeaponMesh = m_CurrentWeapon.GetComponent<MeshFilter>();
         m_CurrentWeaponMeshRender = m_CurrentWeapon.GetComponent<MeshRenderer>();
+        
     }
     private void Start()
     {
@@ -41,7 +42,10 @@ public class PlayerWeapon : MonoBehaviour
         if (value is QuestItemSO itemSO)
         {
             m_CurrentItem = itemSO;
-
+            if(ListenerManager.HasInstance)
+            {
+                ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
+            }
             BroadcastAllStatDeltas(itemSO, true);
             SetWeapon(m_CurrentItem);
         }

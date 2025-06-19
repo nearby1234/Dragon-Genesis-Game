@@ -4,8 +4,9 @@ using UnityEngine;
 public class DialogSaveData : IKeyed<DialogMission>
 {
     public DialogMission dialogKey;
-    public bool isClickAcceptButton;
-    public bool isClickDenyButton;
+    public DialogState dialogState;
+    //public bool isClickAcceptButton;
+    //public bool isClickDenyButton;
 
     public DialogMission Key => dialogKey;
 
@@ -15,9 +16,10 @@ public class DialogSaveData : IKeyed<DialogMission>
         var data = new DialogSaveData
         {
             dialogKey = so.dialogMission,
-            isClickAcceptButton = so.isClickAcceptButton,
-            isClickDenyButton = so.isClickDenyButton
-            
+            //isClickAcceptButton = so.isClickAcceptButton,
+            //isClickDenyButton = so.isClickDenyButton
+            dialogState = so.currentDialogState,
+
         };
         return data;
         
@@ -26,8 +28,9 @@ public class DialogSaveData : IKeyed<DialogMission>
     public static void OverwriteToSO(DialogSaveData data, DialogSystemSO so)
     {
         so.dialogMission = data.dialogKey;
-        so.isClickAcceptButton = data.isClickAcceptButton;
-        so.isClickDenyButton = data.isClickDenyButton;
+        //so.isClickAcceptButton = data.isClickAcceptButton;
+        //so.isClickDenyButton = data.isClickDenyButton;
+        so.currentDialogState = data.dialogState;
     }
 }
 

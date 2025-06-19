@@ -10,6 +10,7 @@ public class NPCRotation : MonoBehaviour
     private bool shouldRotate = false;
     private bool m_PlayerHasAcceptMission;
     [SerializeField] private GameObject m_IconQuestionMark;
+    [SerializeField] private GameObject m_IconexclamationMark;
 
 
     private void Start()
@@ -54,9 +55,22 @@ public class NPCRotation : MonoBehaviour
     private void Update()
     {
         if (shouldRotate && player != null) RotateTowardsPlayer();
-        if (m_PlayerHasAcceptMission) m_IconQuestionMark.SetActive(false);
+        if (m_PlayerHasAcceptMission) SwapIconMark(m_PlayerHasAcceptMission);
 
     }
+    private void SwapIconMark(bool acceptMission)
+    {
+        if(acceptMission)
+        {
+            m_IconQuestionMark.SetActive(false);
+            m_IconexclamationMark.SetActive(true);
+        }
+        else
+        {
+            m_IconQuestionMark.SetActive(true);
+            m_IconexclamationMark.SetActive(false);
+        }
+    }    
     private void RotateTowardsPlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
@@ -66,7 +80,11 @@ public class NPCRotation : MonoBehaviour
 
     private void ReceiverEventClickTalkNPC(object value)
     {
-        shouldRotate = false;
+        if(value is bool isClick)
+        {
+            shouldRotate = isClick;
+        }
+      
         StartCoroutine(RotateTowardCameraCoroutine());
     }
     private void ReceiverEventPlayerClickAccept(object value)

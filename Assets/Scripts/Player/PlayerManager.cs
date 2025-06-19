@@ -154,13 +154,16 @@ public class PlayerManager : BaseManager<PlayerManager>
     }
     private void ReceiverEvenDisableShowUI(object value)
     {
+        
         playerDamage.RegisterEventAttack();
         if (playerWeapon.CurrentItem == null)
         {
+            Debug.Log("CurrentItem null");
             playerDamage.isNotWeapon = true;
         }
         else
         {
+            Debug.Log("CurrentItem not null");
             playerDamage.isNotWeapon = false;
         }
 

@@ -73,7 +73,6 @@ public class SaveManager : BaseManager<SaveManager>
         try
         {
             string json = JsonUtility.ToJson(CurrentSaveData, true);
-            Debug.Log($"[DEBUG] Save content:\n{json}");
             File.WriteAllText(SaveFilePath, json);
             Debug.Log($"✅ Game saved to: {SaveFilePath}");
         }

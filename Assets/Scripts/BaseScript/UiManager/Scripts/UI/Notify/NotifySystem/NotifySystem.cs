@@ -24,6 +24,7 @@ public class NotifySystem : BaseNotify
         base.Show(data);
         if (data != null)
         {
+           
             switch (data)
             {
                 case NotifySystemData sys:
@@ -56,6 +57,10 @@ public class NotifySystem : BaseNotify
                     break;
                 case NotifyMessageMission<PopupPassword> notifyPassword:
                     contentNotifyTxt.text = $"<B><color=#FF0E00>{notifyPassword.message}";
+                    StartCoroutine(SetHideNotify());
+                    break;
+                case NotifyMessageMission<RewardItem> notifyitem:
+                    contentNotifyTxt.text = $"{notifyitem.message}";
                     StartCoroutine(SetHideNotify());
                     break;
 

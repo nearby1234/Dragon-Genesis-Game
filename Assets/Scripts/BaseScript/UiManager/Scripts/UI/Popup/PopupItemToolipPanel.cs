@@ -32,6 +32,27 @@ public class PopupItemToolipPanel : BasePopup
         Hide();
 
     }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        if(data is QuestItemSO itemSO)
+        {
+            switch(itemSO.questItemData.typeItem)
+            {
+                case TYPEITEM.ITEM_USE:
+                    ShowTooltipItemUSE(itemSO);
+                    break;
+                case TYPEITEM.ITEM_ARMOR:
+                    ShowToolTipItemArmor(itemSO);
+                    break;
+                case TYPEITEM.ITEM_EXP:
+                    ShowTooltipItemExp(itemSO);
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
     private void Start()
     {
         //Hide();
@@ -53,9 +74,8 @@ public class PopupItemToolipPanel : BasePopup
     }
     public void TooltipFollowMouse()
     {
-        Vector2 movePos;
         Vector2 mousePosision = Mouse.current.position.ReadValue();
-        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, mousePosision, null, out movePos);
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(parentCanvas.transform as RectTransform, mousePosision, null, out Vector2 movePos);
 
         m_ItemToolipPanel.localPosition = movePos + new Vector2(100, 100);
     }
@@ -83,7 +103,7 @@ public class PopupItemToolipPanel : BasePopup
             case TYPEITEM.ITEM_ARMOR:
                 m_ItemDespri.text = itemSo.questItemData.DespristionArmor;
                 break;
-                default:
+            default:
                 break;
         }
         
@@ -97,9 +117,6 @@ public class PopupItemToolipPanel : BasePopup
             ("plusStaminaArmor",  itemSo.questItemData.plusStaminaArmor),
         };
         var positiveBonuses = pairs.Where(p => p.value > 0).ToList().ToDictionary(p => p.name, p => p.value);
-
-
-
         int idx = 0;
         foreach (var kvp in positiveBonuses)
         {
@@ -130,6 +147,15 @@ public class PopupItemToolipPanel : BasePopup
         for (int j = idx; j < textList.Count; j++)
             textList[j].gameObject.SetActive(false);
     }
+
+    public void ShowTooltipItemExp(QuestItemSO itemSo)
+    {
+        ClearBonusLines();
+        m_ItemName.text = itemSo.questItemData.itemName;
+        m_ItemDespri.text = itemSo.questItemData.despriExp;
+        m_ItemImage.sprite = itemSo.questItemData.icon;
+
+    }    
     private void ClearBonusLines()
     {
         foreach (var t in textList)

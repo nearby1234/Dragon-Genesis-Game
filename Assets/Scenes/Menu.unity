@@ -505,6 +505,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!223 &1649669799 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 8545873617508486784, guid: ba7aa4c2ef0b33c48867a11090cefc20, type: 3}
+  m_PrefabInstance: {fileID: 2185715327203932008}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1983556768 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2750675322253743371, guid: ba7aa4c2ef0b33c48867a11090cefc20, type: 3}
@@ -919,21 +924,29 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1983556768}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: mainCanvas
+      value: 
+      objectReference: {fileID: 1649669799}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: questList.Array.size
-      value: 5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: 'questList.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 68bf2681f95c17c4fa4fbc5cd70be353, type: 2}
+      objectReference: {fileID: 11400000, guid: 904c44cb4378ed64cab9ff35d38fede1, type: 2}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: 'questList.Array.data[1]'
       value: 
-      objectReference: {fileID: 11400000, guid: 2306e52d5d4288b419ae55a56bf513dc, type: 2}
+      objectReference: {fileID: 11400000, guid: 904c44cb4378ed64cab9ff35d38fede1, type: 2}
+    - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
+      propertyPath: 'questList.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 904c44cb4378ed64cab9ff35d38fede1, type: 2}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: 'questList.Array.data[3]'
       value: 
-      objectReference: {fileID: 11400000, guid: 53602d221030e204984aa6532a8a3f54, type: 2}
+      objectReference: {fileID: 11400000, guid: 904c44cb4378ed64cab9ff35d38fede1, type: 2}
     - target: {fileID: 6201489759157943068, guid: 7a338209220743f428ba7983d83e2698, type: 3}
       propertyPath: 'questList.Array.data[4]'
       value: 

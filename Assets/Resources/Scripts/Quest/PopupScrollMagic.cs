@@ -216,7 +216,7 @@ public class PopupScrollMagic : BasePopup
             AudioManager.Instance.PlaySE("ClickSound");
         }
         // Gọi xử lý nhận phần thưởng từ QuestManager (Controller)
-        QuestManager.Instance.GrantReward(m_CurrentQuestData.bonus);
+        //QuestManager.Instance.GrantReward(m_CurrentQuestData.bonus);
         m_NextMisstionBtn.ShowCanvasGroup();
         // Update UI của Popup: disable button và thay đổi màu như logic ban đầu
         m_RewardBtn.GetComponent<Button>().interactable = false;

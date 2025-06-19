@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4224739275598980}
   - component: {fileID: 198286636766414264}
   - component: {fileID: 199864349465765058}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Flashes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4923,7 +4923,7 @@ GameObject:
   - component: {fileID: 4597530021455018}
   - component: {fileID: 198004529895467308}
   - component: {fileID: 199701082417913160}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: ShockWave
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9826,7 +9826,7 @@ GameObject:
   - component: {fileID: 4893710003923474}
   - component: {fileID: 198064705231385314}
   - component: {fileID: 199591257686416832}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Lvlup
   m_TagString: Untagged
   m_Icon: {fileID: 0}

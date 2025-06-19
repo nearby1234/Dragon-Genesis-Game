@@ -19,19 +19,32 @@ public class NotifyMission : BaseNotify
         }
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Register(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
+            //ListenerManager.Instance.Register(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
             ListenerManager.Instance.Register(ListenType.UI_UPDATE_ITEM_MISSION, OnReceiveUiUpdateItem);
             ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE,OnReceiveMissionComplete);
         }
-        HandlerShowMission(false);
+        //HandlerShowMission(false);
     }
     private void OnDestroy()
     {
         if (ListenerManager.HasInstance)
         {
-            ListenerManager.Instance.Unregister(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
+            //ListenerManager.Instance.Unregister(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
             ListenerManager.Instance.Unregister(ListenType.UI_UPDATE_ITEM_MISSION, OnReceiveUiUpdateItem);
             ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, OnReceiveMissionComplete);
+        }
+    }
+    public override void Show(object data)
+    {
+        base.Show(data);
+        if(data != null)
+        {
+            if (data is QuestData questData)
+            {
+                questDataCurrent = questData;
+                HandlerShowMission(true);
+                UpdateMission(questDataCurrent.isCompleteMission);
+            }
         }
     }
     private void OnReceiveQuestMission(object value)
