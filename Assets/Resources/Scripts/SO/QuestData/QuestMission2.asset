@@ -17,7 +17,7 @@ MonoBehaviour:
   questName: "D\u1EA5u V\u1EBFt B\xF3ng \u0110\xEAm"
   QuestGiver: 1
   isAcceptMission: 0
-  isCompleteMission: 0
+  isCompleteMission: 1
   ItemMission:
   - {fileID: 11400000, guid: 8fa1bdea40308cc4f819cb3ec3401eab, type: 2}
   bonus:

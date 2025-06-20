@@ -95,7 +95,7 @@ public enum ListenType
     ITEM_CHOSED,
     ITEM_DISABLE_CHOSED,
     FULL_LIST_ITEM_REWARD,
-
+    SEND_ITEM_INIT_POOL,
 
 
 

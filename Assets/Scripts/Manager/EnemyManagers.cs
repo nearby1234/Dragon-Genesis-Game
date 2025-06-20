@@ -2,7 +2,6 @@
 
 public class EnemyManagers : BaseManager<EnemyManagers>
 {
-    public static EnemyManagers instance;
     [SerializeField] private Transform m_ParentSpawnEnemyPool;
     [SerializeField] private SpawnEnemyPool[] spawnEnemyPool;
     
@@ -41,9 +40,7 @@ public class EnemyManagers : BaseManager<EnemyManagers>
 
                 if (enemy != null)
                 {
-
                     enemy.transform.SetPositionAndRotation(pool.transform.position, Quaternion.identity);
-
                 }
             }
         }

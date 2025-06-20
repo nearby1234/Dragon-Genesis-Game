@@ -21,7 +21,11 @@ public class NotifySystem : BaseNotify
     }
     public override void Show(object data)
     {
-        base.Show(data);
+        canvasGroup.DOFade(1f, notifySystemData.timeFade).OnComplete(() =>
+        {
+            base.Show(data);
+        });
+       
         if (data != null)
         {
            
@@ -78,6 +82,7 @@ public class NotifySystem : BaseNotify
             base.Hide();
         });
     }
+    
     private void ShowContent(string content)
     {
         canvasGroup.DOFade(1f, notifySystemData.timeFade).OnComplete(() =>

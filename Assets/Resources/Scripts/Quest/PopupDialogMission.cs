@@ -91,7 +91,20 @@ public class PopupDialogMission : BasePopup
                         if (!dataStateMission.isCompleteMission)
                         {
                             m_TitleMission.text = systemSO.DialogTitle;
-                            SetupInitialDialog();
+                            switch (systemSO.currentDialogState)
+                            {
+                                case DialogState.Accept:
+                                    SetContent(systemSO.dialogClickAcceptButton);
+                                    SetVoiceIntro();
+                                    break;
+                                case DialogState.Deny:
+                                    SetContent(systemSO.dialogClickDenyButton);
+                                    SetVoiceIntro();
+                                    break;
+                                case DialogState.Default:
+                                    SetupInitialDialog();
+                                    break;
+                            }
                         }
                         else
                         {
@@ -236,8 +249,8 @@ public class PopupDialogMission : BasePopup
     }
     void SetVoiceIntro()
     {
-        if (systemSO.currentDialogState == DialogState.Deny) PlayVoiceIntro("AbeVoice2");
-        else if (systemSO.currentDialogState == DialogState.Accept) PlayVoiceIntro("AbeVoice3");
+        if (systemSO.currentDialogState == DialogState.Deny) PlayVoiceIntro("AbeVoice3");
+        else if (systemSO.currentDialogState == DialogState.Accept) PlayVoiceIntro("AbeVoice2");
     }
     void SetupInitialDialog()
     {
@@ -308,6 +321,7 @@ public class PopupDialogMission : BasePopup
         {
             QuestManager.Instance.GrantReward(itemRewardList);
         }
+        SetShowButton(false,false,true);
     }
     void BroadcastQuestAccepted()
     {

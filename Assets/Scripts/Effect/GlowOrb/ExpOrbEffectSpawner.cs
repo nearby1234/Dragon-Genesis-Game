@@ -20,35 +20,39 @@ public class ExpOrbEffectSpawner : MonoBehaviour
         explosionPrefab = EffectManager.Instance.GetPrefabs("GlowingOrb40(Dup)");
         PoolOrbEffect();
     }
-   
-
-    public void SpawnOrbs(Vector3 position, int count)
+    public void SpawnOrbs(Vector3 position, int count, GameObject obj = null)
     {
-        for (int i = 0; i < count; i++)
+        if (obj == null)
         {
-            GameObject orb = GetOrbFromPool();
-            if (orb == null) continue;
-            orb.transform.position = position;
+            for (int i = 0; i < count; i++)
+            {
+                GameObject orb = GetOrbFromPool();
+                if (orb == null) continue;
+                orb.transform.position = position;
 
-            // Tạo vị trí XZ ngẫu nhiên
-            Vector2 randomXZ = Random.insideUnitCircle * scatterRadius;
-            Vector3 scatterTarget = new(position.x + randomXZ.x, 0.5f, position.z + randomXZ.y);
-
-            float height = Random.Range(3f, 5f); // Độ cao văng lên
-            float halfDuration = scatterDuration * 0.5f;
-
-            // Giai đoạn 1: Văng lên theo Y
-            orb.transform.DOMoveY(position.y + height, halfDuration)
-                .SetEase(Ease.OutQuad)
-                .OnComplete(() =>
-                {
-                    // Giai đoạn 2: Rơi xuống vị trí ngẫu nhiên
-                    orb.transform.DOMove(scatterTarget, halfDuration)
-                        .SetEase(Ease.InQuad);
-                });
+                TweenItem(orb, position);
+            }
         }
     }
+    private void TweenItem(GameObject orb, Vector3 position)
+    {
+        // Tạo vị trí XZ ngẫu nhiên
+        Vector2 randomXZ = Random.insideUnitCircle * scatterRadius;
+        Vector3 scatterTarget = new(position.x + randomXZ.x, 0.5f, position.z + randomXZ.y);
 
+        float height = Random.Range(3f, 5f); // Độ cao văng lên
+        float halfDuration = scatterDuration * 0.5f;
+
+        // Giai đoạn 1: Văng lên theo Y
+        orb.transform.DOMoveY(position.y + height, halfDuration)
+            .SetEase(Ease.OutQuad)
+            .OnComplete(() =>
+            {
+                // Giai đoạn 2: Rơi xuống vị trí ngẫu nhiên
+                orb.transform.DOMove(scatterTarget, halfDuration)
+                    .SetEase(Ease.InQuad);
+            });
+    }
     private void PoolOrbEffect()
     {
         for (int i = 0; i < m_PoolCount; i++)
@@ -81,6 +85,4 @@ public class ExpOrbEffectSpawner : MonoBehaviour
         orb.SetActive(false);
         orb.transform.position = Vector3.zero; // Đặt vị trí của orb về 0
     }
-
-   
 }

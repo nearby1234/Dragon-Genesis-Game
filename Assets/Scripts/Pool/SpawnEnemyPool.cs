@@ -8,7 +8,7 @@ public class SpawnEnemyPool : MonoBehaviour
     [SerializeField] private GameObject m_EnemyPrehabs;
     [SerializeField] private int m_ActiveEnemiesCount = 5;  // Biến để điều chỉnh số lượng quái vật sử dụng
 
-    private List<GameObject> activeEnemies = new List<GameObject>();  // Danh sách quái vật đang sử dụng
+    private List<GameObject> activeEnemies = new();  // Danh sách quái vật đang sử dụng
 
     private void Awake()
     {

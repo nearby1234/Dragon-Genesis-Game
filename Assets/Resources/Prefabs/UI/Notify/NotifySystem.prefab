@@ -35,8 +35,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: -166.8}
-  m_SizeDelta: {x: 100, y: 100}
+  m_AnchoredPosition: {x: 0, y: -70}
+  m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &4089296921874918716
 MonoBehaviour:
@@ -50,7 +50,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 04ec226c4e24a7841b707bc2a9cf8888, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0, y: -150, z: 0}
+  offset: {x: 0, y: -70, z: 0}
   contentNotifyTxt: {fileID: 4714054883765128557}
   notifySystemData: {fileID: 11400000, guid: 544150d38bdee19448db3c81ba7bdfdf, type: 2}
 --- !u!1 &4523948221288548352
@@ -88,7 +88,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 346.98}
+  m_SizeDelta: {x: 1000, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &715041502999229760
 CanvasRenderer:
@@ -193,9 +193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "<size= 50>H\xE3y t\xECm g\u1EB7p</size><size=60> Tr\u01B0\u1EDFng L\xE0ng
-    Long H\u1EEFu</size> <size=50> \u0111\u1EC3 nh\u1EADn s\u1EE9 m\u1EC7nh c\u1EE7a
-    m\xECnh</size>"
+  m_text: "Ch\xE0o m\u1EEBng b\u1EA1n \u0111\u1EBFn th\u1EBF gi\u1EDBi \nDragon Genesis"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -222,7 +220,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 50.1
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -260,7 +258,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -370.3764, y: -55.026794, z: -362.36133, w: -73.5542}
+  m_margin: {x: -366.94098, y: -29.812927, z: -369.14624, w: -33.87555}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0

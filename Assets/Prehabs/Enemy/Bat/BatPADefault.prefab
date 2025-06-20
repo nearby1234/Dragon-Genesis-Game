@@ -209,13 +209,14 @@ GameObject:
   - component: {fileID: 6970228653438277908}
   - component: {fileID: 7183992851952234658}
   - component: {fileID: 26052474023415600}
+  - component: {fileID: 4045199567642695520}
   m_Layer: 7
   m_Name: BatPADefault
   m_TagString: Creep
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7398994603330103207
 Transform:
   m_ObjectHideFlags: 0
@@ -349,6 +350,19 @@ MonoBehaviour:
   m_DistacneWithPlayer: 0
   m_DictanceStopped: 2
   m_MaxDistance: 6
+--- !u!114 &4045199567642695520
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1157678344734440959}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce0ef712193e30040ab3cf479d32a99f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questItem: {fileID: 11400000, guid: 4e1f7c18dcf49f542afdb3fb21820b8b, type: 2}
 --- !u!1 &1221960353147460276
 GameObject:
   m_ObjectHideFlags: 0
@@ -1324,9 +1338,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9856e4b00dc900546863efe4c86dadea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_target: {fileID: 0}
+  mainCamera: {fileID: 0}
   m_Invert: 1
-  m_IsClick: 0
+  m_IsClickMainMenu: 0
+  m_IsClickTalkNPC: 0
 --- !u!1 &5288852173813489732
 GameObject:
   m_ObjectHideFlags: 0

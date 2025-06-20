@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: DialogMisionFirst
   m_EditorClassIdentifier: 
   dialogMission: 1
-  currentDialogState: 4
+  currentDialogState: 1
   DialogTitle: "M\u1ED9t Ng\u01B0\u1EDDi, M\u1ED9t L\xE0ng, M\u1ED9t Hy V\u1ECDng"
   DialogContent: "<speed=10><i>\xC0... <B>Long Chi\u1EBFn,</B>, cu\u1ED1i c\xF9ng
     con c\u0169ng \u0111\xE3 \u0111\u1EBFn.\n\nNg\xF4i l\xE0ng n\xE0y... \u0111\xE3
@@ -48,6 +48,7 @@ MonoBehaviour:
   contentChoseRewardButton: "Xem Ph\u1EA7n Th\u01B0\u1EDFng"
   alighnmentLeftChoseRewardButton: -70
   contentRewardButton: "Nh\u1EADn Th\u01B0\u1EDFng"
+  contentRewardedButton: "\u0110\xE3 Nh\u1EADn"
   Color: {r: 0, g: 0, b: 0, a: 0}
   hex: '#000000'
   key: <color=#000000>

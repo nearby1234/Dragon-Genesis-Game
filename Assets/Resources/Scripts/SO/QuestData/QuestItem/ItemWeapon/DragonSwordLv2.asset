@@ -20,6 +20,7 @@ MonoBehaviour:
     completionCount: 0
     icon: {fileID: 21300000, guid: e51bfe66598185349afe5f28b827f56f, type: 3}
     typeItem: 7
+    initialSize: 1
     percentIncrease: 0
     timeCoolDown: 0
     itemUse: 0
@@ -52,7 +53,7 @@ MonoBehaviour:
     plusDefendArmor: 0
     m_NameArmorPrefabs: 
   _backupJson: "{\"itemID\":\"-DragonSwordLv2\",\"itemName\":\"Ki\u1EBFm H\u1ECFa
-    Long\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57376},\"typeItem\":7,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"despriExp\":\"\",\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":61510},\"m_SwordMesh\":{\"instanceID\":61512},\"m_SwordMaterial\":{\"instanceID\":58398},\"DespristionWeapon\":\"Thanh
+    Long\",\"count\":1,\"requestCount\":0,\"completionCount\":0,\"icon\":{\"instanceID\":57380},\"typeItem\":7,\"initialSize\":1,\"percentIncrease\":0.0,\"timeCoolDown\":0.0,\"itemUse\":0,\"ItemDespri\":\"\",\"CountExp\":0,\"despriExp\":\"\",\"creepType\":0,\"TimerSkillCoolDown\":0.0,\"DespristionSkill\":\"\",\"typeWeapon\":1,\"m_SwordPrefabs\":{\"instanceID\":61924},\"m_SwordMesh\":{\"instanceID\":61926},\"m_SwordMaterial\":{\"instanceID\":58402},\"DespristionWeapon\":\"Thanh
     ki\u1EBFm \u0111\u01B0\u1EE3c ch\u1EBF t\u1EA1o t\u1EEB H\u1ECFa Long , x\u01B0\u01A1ng
     l\xE0m l\u01B0\u1EE1i ki\u1EBFm , \\nv\u1EA3y l\xE0m chu\xF4i ki\u1EBFm , m\xE1u
     l\xE0m h\u1ED3n ki\u1EBFm . Ng\u01B0\u1EDDi s\u1EDF h\u1EEFu \u0111\u01B0\u1EE3c

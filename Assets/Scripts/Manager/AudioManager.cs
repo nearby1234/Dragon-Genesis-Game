@@ -212,7 +212,7 @@ public class AudioManager : BaseManager<AudioManager>
             Debug.LogWarning($"Voice SE not found: {voiceName}");
             return;
         }
-
+        voiceSource.Stop();
         voiceSource.volume = Mathf.Clamp01(volume);
         voiceSource.clip = seDic[voiceName];
         voiceSource.Play();

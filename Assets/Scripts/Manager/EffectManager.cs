@@ -17,6 +17,7 @@ public class EffectManager : BaseManager<EffectManager>
             effects.Add(pref);
         }
         expOrbEffectSpawner = GetComponent<ExpOrbEffectSpawner>();
+        //multiItemPooll = GetComponent<MultiItemPooll>();
     }
 
     public GameObject GetPrefabs(string name)

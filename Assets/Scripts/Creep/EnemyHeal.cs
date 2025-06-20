@@ -50,6 +50,11 @@ public class EnemyHeal : MonoBehaviour
             {
                 EffectManager.Instance.ExpOrbEffectSpawner.SpawnOrbs(transform.position, 5);
             }
+            if(PoolManager.HasInstance)
+            {
+                string itemID = m_EnemyController.EnemyItem.ItemId;
+                PoolManager.Instance.MultiItemPooll.SpawnItems(itemID,transform.position);
+            }
             if (ListenerManager.HasInstance)
             {
                 ListenerManager.Instance.BroadCast(ListenType.CREEP_IS_DEAD, creepType);

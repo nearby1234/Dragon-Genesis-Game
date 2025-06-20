@@ -55,6 +55,7 @@ public class QuestItem
     [PreviewField(70, ObjectFieldAlignment.Left)]
     public Sprite icon;
     public TYPEITEM typeItem;
+    public int initialSize;
 
     // Chỉ hiện khi là ITEM_USE
     [ShowIf("@typeItem == TYPEITEM.ITEM_USE")]

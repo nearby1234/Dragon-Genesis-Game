@@ -39,6 +39,8 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
     public float alighnmentLeftChoseRewardButton = -70f;
     [TextArea(3, 10)]
     public string contentRewardButton;
+    [TextArea(3, 10)]
+    public string contentRewardedButton = "Đã Nhận Thưởng";
     [Header("Color")]
     public Color Color;
     public string hex;

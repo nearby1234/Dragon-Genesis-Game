@@ -13,6 +13,7 @@ public class EnemyStatSO : ScriptableObject , IEnumKeyed<EnemyType>
     public int m_PhysicsDamage;
     public int m_MagicDamage;
     public int m_EffectDamage;
+    public int amountEnemyDeath;
 
     [Header("Else Setting")]
     [ShowIf("@creepType == CreepType.BullTank")]

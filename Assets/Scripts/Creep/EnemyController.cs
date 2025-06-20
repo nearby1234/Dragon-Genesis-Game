@@ -15,6 +15,7 @@ public class EnemyController : MonoBehaviour
     [SerializeField] private Collider enemyCollider;
     [SerializeField] private EnemyStatSO enemyStatSO;
     [SerializeField] private BatPanel batPanel;
+    [SerializeField] private BaseEnemyItem enemyItem;
 
 
     private void Awake()
@@ -25,6 +26,7 @@ public class EnemyController : MonoBehaviour
         enemyHeal = GetComponent<EnemyHeal>();
         enemyDetecPlayer = GetComponent<BaseEnemyDetecPlayer>();
         enemyCollider = GetComponentInChildren<Collider>();
+        enemyItem = GetComponent<BaseEnemyItem>();
 
     }
     void Start()
@@ -84,6 +86,7 @@ public class EnemyController : MonoBehaviour
     public BaseEnemyDetecPlayer GetEnemyDetecPlayer() => enemyDetecPlayer;
     public EnemyStatSO GetEnemyStatSO => enemyStatSO;
     public Collider GetCollider => enemyCollider;
+    public BaseEnemyItem EnemyItem => enemyItem;
 
 
 }

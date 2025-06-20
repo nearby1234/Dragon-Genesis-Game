@@ -74,26 +74,6 @@ public class PlayerDialog : MonoBehaviour
 
 
     }
-    //private void HandleInput()
-    //{
-    //    if (!m_IsCollisionNpc) return;
-
-    //    if (Input.GetKeyDown(KeyCode.J))
-    //    {
-    //        if (AudioManager.HasInstance)
-    //        {
-    //            AudioManager.Instance.PlaySE("HoverSound");
-    //        }
-    //        if (GameManager.HasInstance) GameManager.Instance.ShowCursor();
-    //        m_IsPressButtonJ = true;
-    //        SetIsTalkingNPC(true);
-    //        if (ListenerManager.HasInstance)
-    //        {
-    //            ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
-    //            ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, null);
-    //        }
-    //    }
-    //}
     private void CheckNPCDistance()
     {
         if (DistanceWithNPC() <= m_Distance)
@@ -143,9 +123,6 @@ public class PlayerDialog : MonoBehaviour
             }
         }
         CheckMission();
-
-
-       
     }
     private void OnIsTalkingNPCChanged()
     {
@@ -191,29 +168,6 @@ public class PlayerDialog : MonoBehaviour
                     var saveManager = SaveManager.Instance;
                     saveManager.SaveOrUpdateDialog(dialogMission);
                 }
-                //dialogMission.OnClickAcceptButton += () =>
-                //{
-                //    dialogMission.isClickAcceptButton = true;
-                //    DataStateMission dataStateMission = new()
-                //    {
-                //        dialogSystemSO = dialogMission,
-                //        questData = questData,
-                //        isCompleteMission = questData.isCompleteMission
-                //    };
-                //    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
-                //};
-                //dialogMission.OnClickDenyButton += () =>
-                //{
-                //    dialogMission.isClickDenyButton = true;
-                //    DataStateMission dataStateMission = new()
-                //    {
-                //        dialogSystemSO = dialogMission,
-                //        questData = questData,
-                //        isCompleteMission = questData.isCompleteMission
-                //    };
-                //    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
-
-                //};
                 DataStateMission dataStateMission = new()
                 {
                     dialogSystemSO = dialogMission,
