@@ -11521,6 +11521,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05eac43f188304345967f880467d5c1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemList: []
 --- !u!1 &651783033
 GameObject:
   m_ObjectHideFlags: 0
@@ -13947,6 +13948,37 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1212860673136338792, guid: b0520e678eed16142bd10ff37ffd7fdd, type: 3}
   m_PrefabInstance: {fileID: 800387899}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &801075993
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 801075994}
+  m_Layer: 0
+  m_Name: BatBossSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &801075994
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801075993}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -109.81, y: 0, z: 35.23}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1451327051}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &801117628
 GameObject:
   m_ObjectHideFlags: 0
@@ -24523,11 +24555,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6303881440507485324, guid: 70b6da77022c30f4ea567236826b64ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6303881440507485324, guid: 70b6da77022c30f4ea567236826b64ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 210.07
+      value: 241.5
       objectReference: {fileID: 0}
     - target: {fileID: 6303881440507485324, guid: 70b6da77022c30f4ea567236826b64ea, type: 3}
       propertyPath: m_LocalRotation.w
@@ -24896,7 +24928,8 @@ Transform:
   m_LocalPosition: {x: 295.65887, y: 0, z: 210.921}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 801075994}
   m_Father: {fileID: 206636547}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1465239763 stripped

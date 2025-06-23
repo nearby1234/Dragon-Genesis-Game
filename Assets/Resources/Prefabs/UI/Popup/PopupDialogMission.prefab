@@ -1202,8 +1202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "H\xE3y ch\u1ECDn 4 m\xF3n trong c\xE1c ph\u1EA7n th\u01B0\u1EDDng d\u01B0\u1EDBi
-    \u0111\xE2y : 0/4"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ea3f7d32b3d5e8746afa71dc5c0621be, type: 2}
   m_sharedMaterial: {fileID: -5446699831333975287, guid: ea3f7d32b3d5e8746afa71dc5c0621be, type: 2}
@@ -1282,7 +1281,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6294598168801968834}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0.98
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -1654,8 +1653,10 @@ MonoBehaviour:
   rewardPartent: {fileID: 745375610586099508}
   rewardPrefabs: {fileID: 8970481080079254890, guid: c7fd8259afc3f0742b9ffd61f595da60, type: 3}
   titledRewardTxt: {fileID: 2240737055667180535}
+  amountItemReward: 0
   currentMission: {fileID: 0}
   systemSO: {fileID: 0}
+  gameSetting: {fileID: 11400000, guid: 25de1063395006f49badf1eeda740dea, type: 2}
 --- !u!1 &8188541099183824381
 GameObject:
   m_ObjectHideFlags: 0
@@ -1721,7 +1722,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Nghe nh\u01B0 m\u1EA5y chuy\u1EC7n m\xEA t\xEDn qu\xE1 th\xF4i\u2026"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1748,7 +1749,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 25.35
+  m_fontSize: 25
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2012,7 +2013,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Ng\u01B0\u1EDDi c\u1EA7n con l\xE0m g\xEC vi\u1EC7c g\xEC ?"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

@@ -9,8 +9,9 @@ public class NPCRotation : MonoBehaviour
     private Transform player;
     private bool shouldRotate = false;
     private bool m_PlayerHasAcceptMission;
+    private bool m_FinishMission;
     [SerializeField] private GameObject m_IconQuestionMark;
-    [SerializeField] private GameObject m_IconexclamationMark;
+    [SerializeField] private GameObject m_IconExclamationMark;
 
 
     private void Start()
@@ -20,6 +21,7 @@ public class NPCRotation : MonoBehaviour
             ListenerManager.Instance.Register(ListenType.PLAYER_HAS_ACCEPT_QUEST, ReceiverValueHasAcceptMission);
             ListenerManager.Instance.Register(ListenType.CLICK_TALK_NPC, ReceiverEventClickTalkNPC);
             ListenerManager.Instance.Register(ListenType.PLAYER_HAS_ACCEPT_QUEST, ReceiverEventPlayerClickAccept);
+            ListenerManager.Instance.Register(ListenType.FINISH_QUEST_MISSION, OnEventFinishMission);
         }
     }
     private void OnDestroy()
@@ -29,6 +31,7 @@ public class NPCRotation : MonoBehaviour
             ListenerManager.Instance.Unregister(ListenType.PLAYER_HAS_ACCEPT_QUEST, ReceiverValueHasAcceptMission);
             ListenerManager.Instance.Unregister(ListenType.CLICK_TALK_NPC, ReceiverEventClickTalkNPC);
             ListenerManager.Instance.Unregister(ListenType.PLAYER_HAS_ACCEPT_QUEST, ReceiverEventPlayerClickAccept);
+            ListenerManager.Instance.Unregister(ListenType.FINISH_QUEST_MISSION, OnEventFinishMission);
         }
     }
     private void OnTriggerEnter(Collider other)
@@ -54,23 +57,34 @@ public class NPCRotation : MonoBehaviour
     }
     private void Update()
     {
+
         if (shouldRotate && player != null) RotateTowardsPlayer();
-        if (m_PlayerHasAcceptMission) SwapIconMark(m_PlayerHasAcceptMission);
+        if (m_FinishMission)
+        {
+            m_IconExclamationMark.SetActive(false);
+            return;
+        }
+        if (m_PlayerHasAcceptMission)
+        {
+            SwapIconMark(m_PlayerHasAcceptMission);
+        }
+        
+
 
     }
     private void SwapIconMark(bool acceptMission)
     {
-        if(acceptMission)
+        if (acceptMission)
         {
             m_IconQuestionMark.SetActive(false);
-            m_IconexclamationMark.SetActive(true);
+            m_IconExclamationMark.SetActive(true);
         }
         else
         {
             m_IconQuestionMark.SetActive(true);
-            m_IconexclamationMark.SetActive(false);
+            m_IconExclamationMark.SetActive(false);
         }
-    }    
+    }
     private void RotateTowardsPlayer()
     {
         Vector3 direction = (player.position - transform.position).normalized;
@@ -80,16 +94,16 @@ public class NPCRotation : MonoBehaviour
 
     private void ReceiverEventClickTalkNPC(object value)
     {
-        if(value is bool isClick)
+        if (value is bool isClick)
         {
             shouldRotate = isClick;
         }
-      
+
         StartCoroutine(RotateTowardCameraCoroutine());
     }
     private void ReceiverEventPlayerClickAccept(object value)
     {
-        if(value is bool isClick) shouldRotate = isClick;
+        if (value is bool isClick) shouldRotate = isClick;
 
     }
     private void ReceiverValueHasAcceptMission(object value)
@@ -138,4 +152,10 @@ public class NPCRotation : MonoBehaviour
             yield return null;
         }
     }
+    private void OnEventFinishMission(object value)
+    {
+        m_FinishMission = true;
+        
+    }
+
 }

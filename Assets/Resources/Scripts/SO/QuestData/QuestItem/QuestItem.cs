@@ -45,7 +45,7 @@ public enum ITEMUSE
 }
 
 [System.Serializable]
-public class QuestItem
+public class QuestItem 
 {
     public string itemID;
     public string itemName;
@@ -142,5 +142,5 @@ public class QuestItem
     [BoxGroup("Item Use Stats")]
     public string m_NameArmorPrefabs;
 
-
+   
 }

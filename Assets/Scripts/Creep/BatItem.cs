@@ -1,5 +1,3 @@
-using UnityEditor.SceneManagement;
-using UnityEngine;
 
 public class BatItem : BaseEnemyItem
 {
@@ -13,10 +11,11 @@ public class BatItem : BaseEnemyItem
     }
     protected override void SetItem()
     {
-        itemID = questItem.questItemData.itemID;
-        prefabs = questItem.questItemData.m_SwordPrefabs;
-        initialSize = questItem.questItemData.initialSize;
+        if(questItemEffect != null)
+        {
+            itemID = questItemEffect.QuestItemSO.questItemData.itemID;
+            prefabs = questItemEffect.QuestItemSO.questItemData.m_SwordPrefabs;
+            initialSize = questItemEffect.QuestItemSO.questItemData.initialSize;
+        }
     }
-
-    
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class DialogSaveData : IKeyed<DialogMission>
+public class DialogSaveData : ISaveKeyed<DialogMission>
 {
     public DialogMission dialogKey;
     public DialogState dialogState;
@@ -18,7 +18,7 @@ public class DialogSaveData : IKeyed<DialogMission>
             dialogKey = so.dialogMission,
             //isClickAcceptButton = so.isClickAcceptButton,
             //isClickDenyButton = so.isClickDenyButton
-            dialogState = so.currentDialogState,
+            //dialogState = so.currentDialogState,
 
         };
         return data;
@@ -30,7 +30,7 @@ public class DialogSaveData : IKeyed<DialogMission>
         so.dialogMission = data.dialogKey;
         //so.isClickAcceptButton = data.isClickAcceptButton;
         //so.isClickDenyButton = data.isClickDenyButton;
-        so.currentDialogState = data.dialogState;
+        //so.currentDialogState = data.dialogState;
     }
 }
 

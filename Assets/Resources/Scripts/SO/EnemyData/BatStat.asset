@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   creepType: 1
   enemyType: 1
-  heal: 60
+  heal: 40
   damage: 10
   m_PhysicsDamage: 0
   m_MagicDamage: 0

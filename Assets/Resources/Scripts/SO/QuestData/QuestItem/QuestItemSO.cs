@@ -3,17 +3,22 @@ using UnityEngine;
 
 [CreateAssetMenu(fileName = "New Quest Item", menuName = "Scriptable Object/Quest/Quest Data/Quest Item")]
 [System.Serializable]
-public class QuestItemSO : ScriptableObject, IResettableSO
+public class QuestItemSO : ScriptableObject, IResettableSO , IEnumKeyed<TYPEITEM>
 {
     public QuestItem questItemData;
 
     [SerializeField, HideInInspector] 
     private string _backupJson;
 
+    public TYPEITEM typeItem;
+
+    public TYPEITEM Key => typeItem;
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
         questItemData.itemID = "-" + this.name;
+        typeItem = questItemData.typeItem;
     }
 #endif
 

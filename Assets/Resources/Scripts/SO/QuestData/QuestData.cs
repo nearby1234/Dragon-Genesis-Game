@@ -6,6 +6,15 @@ public enum NPCName
 {
     None,
     Abe,
+    BatBoss,
+}
+
+public enum PlayerChoice
+{
+    None = 0,
+    Accept,
+    Deny,
+    Reward,
 }
 
 [System.Serializable]
@@ -20,6 +29,7 @@ public class QuestData : ScriptableObject, IEnumKeyed<QuestType>, IResettableSO
     public NPCName QuestGiver;
 
 
+    public PlayerChoice playerChoice;
     public bool isAcceptMission;
     public bool isCompleteMission;
 

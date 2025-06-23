@@ -13,47 +13,67 @@ MonoBehaviour:
   m_Name: DialogMisionFirst
   m_EditorClassIdentifier: 
   dialogMission: 1
-  currentDialogState: 1
-  DialogTitle: "M\u1ED9t Ng\u01B0\u1EDDi, M\u1ED9t L\xE0ng, M\u1ED9t Hy V\u1ECDng"
-  DialogContent: "<speed=10><i>\xC0... <B>Long Chi\u1EBFn,</B>, cu\u1ED1i c\xF9ng
-    con c\u0169ng \u0111\xE3 \u0111\u1EBFn.\n\nNg\xF4i l\xE0ng n\xE0y... \u0111\xE3
-    ch\u1EDD \u0111\u1EE3i m\u1ED9t ng\u01B0\u1EDDi nh\u01B0 con t\u1EEB l\xE2u r\u1ED3i.\n\nD\u1EA1o
-    g\u1EA7n \u0111\xE2y c\xF3 nhi\u1EC1u \u0111i\u1EC1u k\u1EF3 l\u1EA1 x\u1EA3y
-    ra\u2014b\u1EA7y qu\xE1i v\u1EADt tr\u1EDF n\xEAn hung h\u0103ng, r\u1EEBng gi\xE0
-    \u0111\xEAm \u0111\xEAm vang ti\u1EBFng th\xEC th\u1EA7m.\n\nTr\u01B0\u1EDBc
-    kia n\u01A1i n\xE0y y\xEAn b\xECnh, gi\u1EDD th\xEC... \u0111\u1EBFn \xE1nh tr\u0103ng
-    c\u0169ng kh\xF4ng d\xE1m l\xF3 m\u1EB7t."
-  contentAcceptButton: "Ng\u01B0\u1EDDi c\u1EA7n con l\xE0m g\xEC?"
-  dialogClickAcceptButton: "<speed=10><i>\u0110\xE3 c\xF3 d\u1EA5u hi\u1EC7u, \u0111i\u1EC1m
-    x\u1EA5u xu\u1EA5t hi\u1EC7n. B\u1EA7y d\u01A1i t\u1EEB r\u1EEBng ph\xEDa \u0110\xF4ng
-    \u0111\xE3 quay l\u1EA1i.\n\nN\u1EBFu ch\xFAng ta kh\xF4ng l\xE0m g\xEC... s\u1EDBm
-    mu\u1ED9n g\xEC ch\xFAng c\u0169ng tr\xE0n v\xE0o l\xE0ng...Ng\u01B0\u1EDDi d\xE2n
-    s\u1EBD g\u1EB7p nguy hi\u1EC3m."
-  contentDenyButton: "Nghe nh\u01B0 m\u1EA5y chuy\u1EC7n m\xEA t\xEDn qu\xE1 th\xF4i\u2026"
-  dialogClickDenyButton: "<speed=10><i>C\xF3 th\u1EC3 l\xE0 m\xEA t\xEDn... nh\u01B0ng
-    tu\u1EA7n tr\u01B0\u1EDBc \u0111\xE3 c\xF3 hai ng\u01B0\u1EDDi m\u1EA5t t\xEDch.
-    Ch\u1EC9 c\xF2n l\u1EA1i \xE1o r\xE1ch, kh\xF4ng c\xF3 m\xE1u.\n\nN\u1EBFu ch\u1EC9
-    l\xE0 tin \u0111\u1ED3n, ta mong con d\xF9ng l\u01B0\u1EE1i g\u01B0\u01A1m \u0111\u1EC3
-    ch\u1EE9ng minh \u0111i\u1EC1u \u0111\xF3."
-  DialogReward: "<speed=10><i> Con \u0111\xE3 tr\u1EDF v\u1EC1 an to\xE0n\u2026 t\u1ED1t
-    l\u1EAFm, <B>Long Chi\u1EBFn</B>\n\nB\u1EA7y d\u01A1i \u0111\xE3 l\u1EB7ng \u0111i.
-    D\xE2n l\xE0ng c\xF3 th\u1EC3 ng\u1EE7 y\xEAn \u0111\xEAm nay, nh\u1EDD con .
-    Ta thay m\u1EB7t d\xE2n l\xE0ng kh\xE1c c\u1EA3m \u01A1n con \n\nNh\u01B0ng \u0111\xF3
-    m\u1EDBi ch\u1EC9 l\xE0 b\u01B0\u1EDBc kh\u1EDFi \u0111\u1EA7u. Ta c\u1EA3m gi\xE1c
-    \u0111\u01B0\u1EE3c c\xF3 th\u1EE9 g\xEC \u0111\xF3... \u0111\xE1ng s\u1EE3 h\u01A1n,
-    \u0111ang \u0111\u1EBFn g\u1EA7n ch\xFAng ta . N\u1EBFu \u0111\u01B0\u1EE3c con
-    h\xE3y \u0111i \u0111\u1EC1u tra th\u1EED \u1EDF h\u01B0\u1EDBng t\xE2y hang
-    \u1EDF b\u1EA7y d\u01A1i  xem c\xF3 chuy\u1EC7n g\xEC l\u1EA1 \u0111ang ph\xE1t
-    sinh kh\xF4ng."
-  contentChoseRewardButton: "Xem Ph\u1EA7n Th\u01B0\u1EDFng"
   alighnmentLeftChoseRewardButton: -70
-  contentRewardButton: "Nh\u1EADn Th\u01B0\u1EDFng"
-  contentRewardedButton: "\u0110\xE3 Nh\u1EADn"
+  dialogEntries:
+  - state: 0
+    content: "<speed=10><B><i>Long Chi\u1EBFn</B>, cu\u1ED1i c\xF9ng con c\u0169ng
+      \u0111\xE3 \u0111\u1EBFn.\n\nNg\xF4i l\xE0ng n\xE0y... \u0111\xE3 ch\u1EDD
+      \u0111\u1EE3i m\u1ED9t ng\u01B0\u1EDDi nh\u01B0 con t\u1EEB l\xE2u r\u1ED3i\n\nD\u1EA1o
+      g\u1EA7n \u0111\xE2y c\xF3 nhi\u1EC1u \u0111i\u1EC1u k\u1EF3 l\u1EA1 x\u1EA3y
+      ra\u2014b\u1EA7y qu\xE1i v\u1EADt tr\u1EDF n\xEAn hung h\u0103ng, r\u1EEBng
+      gi\xE0 \u0111\xEAm \u0111\xEAm vang ti\u1EBFng th\xEC th\u1EA7m.\n\nTr\u01B0\u1EDBc
+      kia n\u01A1i n\xE0y y\xEAn b\xECnh, gi\u1EDD th\xEC... \u0111\u1EBFn \xE1nh
+      tr\u0103ng c\u0169ng kh\xF4ng d\xE1m l\xF3 m\u1EB7t."
+    contentFriendly: "Ng\u01B0\u1EDDi c\u1EA7n con l\xE0m g\xEC?"
+    contentUnFriendly: "Nghe nh\u01B0 m\u1EA5y chuy\u1EC7n m\xEA t\xEDn qu\xE1 th\xF4i\u2026"
+    voiceClip: {fileID: 8300000, guid: 22ec8d4d300548c43a447d25959f5603, type: 3}
+  - state: 1
+    content: "<speed=10>\u0110\xE3 c\xF3 d\u1EA5u hi\u1EC7u, \u0111i\u1EC1m x\u1EA5u
+      xu\u1EA5t hi\u1EC7n. B\u1EA7y d\u01A1i t\u1EEB r\u1EEBng ph\xEDa \u0110\xF4ng
+      \u0111\xE3 quay l\u1EA1i.\n\nN\u1EBFu ch\xFAng ta kh\xF4ng l\xE0m g\xEC, s\u1EDBm
+      mu\u1ED9n g\xEC ch\xFAng c\u0169ng tr\xE0n v\xE0o l\xE0ng."
+    contentFriendly: 
+    contentUnFriendly: 
+    voiceClip: {fileID: 8300000, guid: d1c9f79b3ba53754dbde814c28e02991, type: 3}
+  - state: 2
+    content: "<speed=10>C\xF3 th\u1EC3 l\xE0 m\xEA t\xEDn... nh\u01B0ng tu\u1EA7n
+      tr\u01B0\u1EDBc \u0111\xE3 c\xF3 hai ng\u01B0\u1EDDi m\u1EA5t t\xEDch. Ch\u1EC9
+      c\xF2n l\u1EA1i \xE1o r\xE1ch, kh\xF4ng c\xF3 m\xE1u.\n\nN\u1EBFu ch\u1EC9
+      l\xE0 tin \u0111\u1ED3n, ta mong con d\xF9ng l\u01B0\u1EE1i g\u01B0\u01A1m
+      \u0111\u1EC3 ch\u1EE9ng minh \u0111i\u1EC1u \u0111\xF3."
+    contentFriendly: 
+    contentUnFriendly: 
+    voiceClip: {fileID: 8300000, guid: afdae75ea9975db41be52345ce58fdda, type: 3}
+  - state: 3
+    content: "Con tr\u1EDF v\u1EC1 an to\xE0n\u2026 t\u1ED1t l\u1EAFm, Long Chi\u1EBFn.\n\nB\u1EA7y
+      d\u01A1i \u0111\xE3 l\u1EB7ng \u0111i. D\xE2n l\xE0ng c\xF3 th\u1EC3 ng\u1EE7
+      y\xEAn \u0111\xEAm nay, nh\u1EDD con.\u201D\n\nNh\u01B0ng \u0111\xF3 m\u1EDBi
+      ch\u1EC9 l\xE0 b\u01B0\u1EDBc kh\u1EDFi \u0111\u1EA7u. C\xF3 th\u1EE9 g\xEC
+      \u0111\xF3... m\u1EA1nh m\u1EBD h\u01A1n, \u0111ang \u0111\u1EBFn g\u1EA7n.\n\nNg\u1ECDn
+      \u0111\u1ED3i ph\xEDa T\xE2y \u2013 n\u01A1i t\u1EEBng c\xF3 ng\u1ECDn l\u1EEDa
+      thi\xEAng \u2013 gi\u1EDD ch\u1EC9 c\xF2n tro t\xE0n v\xE0 m\xF9i kh\xE9t."
+    contentFriendly: 
+    contentUnFriendly: "Ch\u1ECDn Ph\u1EA7n Th\u01B0\u1EDFng"
+    voiceClip: {fileID: 8300000, guid: b95ec46d5058e8e4ebcae6693e0bca30, type: 3}
+  - state: 4
+    content: 
+    contentFriendly: 
+    contentUnFriendly: "Nh\u1EADn Th\u01B0\u1EDFng"
+    voiceClip: {fileID: 0}
+  - state: 6
+    content: "Kh\xF4ng bi\u1EBFt khi n\xE0o th\xEC l\xE0ng ta m\u1EDBi \u0111\u01B0\u1EE3c
+      y\xEAn b\xECnh \u0111\xE2y."
+    contentFriendly: 
+    contentUnFriendly: 
+    voiceClip: {fileID: 0}
+  rewardText: 
+  itemCountToChoose: 0
+  rewardedText: "\u0110\xE3 Nh\u1EADn Th\u01B0\u1EDFng"
   Color: {r: 0, g: 0, b: 0, a: 0}
   hex: '#000000'
   key: <color=#000000>
-  speedText: 0.05
-  keySpeedText: <speed=0,05>
+  speedText: 10
+  keySpeedText: <speed=10>
   sizeText: 0.05
   keySizeText: <size=0,05>
   keyEndSizeText: </size>

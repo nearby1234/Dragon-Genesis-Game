@@ -253,7 +253,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   m_Invert: 0
-  m_IsClick: 0
+  m_IsClickMainMenu: 0
+  m_IsClickTalkNPC: 0
 --- !u!1001 &1426888490781481082
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -652,7 +653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotationSpeed: 3
   m_IconQuestionMark: {fileID: 8678239218091978964}
-  m_IconexclamationMark: {fileID: 2432650155556387545}
+  m_IconExclamationMark: {fileID: 2432650155556387545}
 --- !u!114 &1090379657888620854
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -780,7 +781,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   m_Invert: 0
-  m_IsClick: 0
+  m_IsClickMainMenu: 0
+  m_IsClickTalkNPC: 0
 --- !u!1001 &6042787159817050802
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -897,4 +899,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mainCamera: {fileID: 0}
   m_Invert: 0
-  m_IsClick: 0
+  m_IsClickMainMenu: 0
+  m_IsClickTalkNPC: 0

@@ -1,14 +1,19 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyManagers : BaseManager<EnemyManagers>
 {
     [SerializeField] private Transform m_ParentSpawnEnemyPool;
     [SerializeField] private SpawnEnemyPool[] spawnEnemyPool;
+   
+    
     
     private void Start()
     {
         GetChildSpawnPool();
+       
     }
+  
     private void Update()
     {
         CallObjectSpawnEnemy();
@@ -45,4 +50,13 @@ public class EnemyManagers : BaseManager<EnemyManagers>
             }
         }
     }
+    private void SpawnEnemyBoss(GameObject enemyBossPrefabs,Transform posEnemyBoss)
+    {
+        if(enemyBossPrefabs != null)
+        {
+            GameObject enemyBossPref = Instantiate(enemyBossPrefabs, this.transform);
+            enemyBossPref.transform.position = posEnemyBoss.position;
+        }
+    }
+   
 }

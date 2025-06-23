@@ -85,7 +85,7 @@ public class SaveManager : BaseManager<SaveManager>
     /// Generic upsert: thêm mới hoặc cập nhật newData trong list dựa trên Key
     /// </summary>
     public void SaveOrUpdate<TSaveData, TKey>(List<TSaveData> list, TSaveData newData)
-        where TSaveData : IKeyed<TKey>
+        where TSaveData : ISaveKeyed<TKey>
     {
         if (newData == null) return;
         if (list == null) return;

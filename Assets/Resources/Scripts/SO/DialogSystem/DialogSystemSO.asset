@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd2d3a31758ad9a4590755fbb32fe658, type: 3}
+  m_Name: DialogSystemSO
+  m_EditorClassIdentifier: 
+  dialogMission: 2
+  rewardText: 
+  itemCountToChoose: 0
+  rewardedText: "\u0110\xE3 Nh\u1EADn Th\u01B0\u1EDFng"
+  Color: {r: 0, g: 0, b: 0, a: 0}
+  hex: '#000000'
+  key: <color=#000000>
+  speedText: 0.05
+  keySpeedText: <speed=0,05>
+  sizeText: 0.05
+  keySizeText: <size=0,05>
+  keyEndSizeText: </size>
+  keyTransition: <fade>
+  keyEndTransition: </fade>

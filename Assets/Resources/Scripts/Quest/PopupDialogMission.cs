@@ -5,15 +5,7 @@ using TMPro;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.UI;
-public enum DialogState
-{
-    Default = 0,
-    Accept,
-    Deny,
-    ChooseReward,
-    Reward,
-    Wait,
-}
+
 public class PopupDialogMission : BasePopup
 {
     [SerializeField] private GameObject m_QuestMissionBar;
@@ -30,10 +22,13 @@ public class PopupDialogMission : BasePopup
     [SerializeField] private Transform rewardPartent;
     [SerializeField] private GameObject rewardPrefabs;
     [SerializeField] private TextMeshProUGUI titledRewardTxt;
+    [SerializeField] private int amountItemReward;
 
     [InlineEditor]
     [SerializeField] private QuestData currentMission;
     [SerializeField] private DialogSystemSO systemSO;
+    [SerializeField] private GameSettingConfig gameSetting;
+    private DialogEntry dialogEntry;
 
     private PlayerDialog m_PlayerDialog;
     private TypewriterByCharacter TypewriterByCharacter;
@@ -55,13 +50,14 @@ public class PopupDialogMission : BasePopup
         ShowCanvasGroup(titledRewardTxt.transform, false);
         m_ButtonExit.onClick.AddListener(OnButtonExit);
         TypewriterByCharacter.onTextShowed.AddListener(OnFinishedText);
-        UpdateTitleReward();
+        //UpdateTitleReward();
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
-            ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE, OnEventQuestComplete);
+            //ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE, OnEventQuestComplete);
             ListenerManager.Instance.Register(ListenType.ITEM_CHOSED, OnEventItemChosed);
             ListenerManager.Instance.Register(ListenType.ITEM_DISABLE_CHOSED, OnEventDisableItemChosed);
+            ListenerManager.Instance.Register(ListenType.SHOW_DIALOG_LINE, OnEventShowDialogLine);
         }
     }
     private void OnDestroy()
@@ -69,9 +65,10 @@ public class PopupDialogMission : BasePopup
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Unregister(ListenType.CLICK_BUTTON_MAINMENU, ReceiverEventClickMainMenu);
-            ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, OnEventQuestComplete);
+            //ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, OnEventQuestComplete);
             ListenerManager.Instance.Unregister(ListenType.ITEM_CHOSED, OnEventItemChosed);
             ListenerManager.Instance.Unregister(ListenType.ITEM_DISABLE_CHOSED, OnEventDisableItemChosed);
+            ListenerManager.Instance.Unregister(ListenType.SHOW_DIALOG_LINE, OnEventShowDialogLine);
         }
     }
 
@@ -79,43 +76,15 @@ public class PopupDialogMission : BasePopup
     {
         base.Show(data);
         if (data == null) return;
-        if (data is DataStateMission dataStateMission)
+        if(data is DialogEntry dialogEntry)
         {
-            currentMission = dataStateMission.questData;
-            systemSO = dataStateMission.dialogSystemSO;
-            //ClearAllButtonListeners();
-            switch (dataStateMission.dialogSystemSO.dialogMission)
+            this.dialogEntry = dialogEntry;
+            if(QuestManager.HasInstance)
             {
-                case DialogMission.DialogMissionFirst:
-                    {
-                        if (!dataStateMission.isCompleteMission)
-                        {
-                            m_TitleMission.text = systemSO.DialogTitle;
-                            switch (systemSO.currentDialogState)
-                            {
-                                case DialogState.Accept:
-                                    SetContent(systemSO.dialogClickAcceptButton);
-                                    SetVoiceIntro();
-                                    break;
-                                case DialogState.Deny:
-                                    SetContent(systemSO.dialogClickDenyButton);
-                                    SetVoiceIntro();
-                                    break;
-                                case DialogState.Default:
-                                    SetupInitialDialog();
-                                    break;
-                            }
-                        }
-                        else
-                        {
-                            m_TitleMission.text = systemSO.DialogTitle;
-                            SetupRewardDialog();
-                        }
-                    }
-                    break;
-                default:
-                    break;
+                m_TitleMission.text = QuestManager.Instance.CurrentQuest.questName;
             }
+            m_AcceptTxt.text = dialogEntry.contentFriendly;
+            m_DenyTxt.text = dialogEntry.contentUnFriendly;
         }
     }
 
@@ -123,7 +92,7 @@ public class PopupDialogMission : BasePopup
     //Sau khi text chạy hết
     private void OnFinishedText() // API của package Text Animator
     {
-        switch (systemSO.currentDialogState)
+        switch (dialogEntry.state)
         {
             case DialogState.Accept:
                 SetShowButton(false, false, true);
@@ -133,6 +102,7 @@ public class PopupDialogMission : BasePopup
                 break;
 
             case DialogState.ChooseReward:
+                SetupRewardDialog();
                 SetShowButton(false, true, false);
                 SetAlightmentButton(true);
                 break;
@@ -141,25 +111,31 @@ public class PopupDialogMission : BasePopup
                 SetAlightmentButton(true);
                 break;
 
-            case DialogState.Wait:
+            case DialogState.Exit:
+                SetShowButton(false, false, true);
+                break;
+            case DialogState.Default:
+                SetupInitialDialog();
                 SetShowButton(true, true, false);
                 SetAlightmentButton(false);
                 break;
             default:
-                SetShowButton(true, true, false);
-                SetAlightmentButton(false);
                 break;
         }
     }
     private void SetAlightmentButton(bool isPadding)
     {
-        if (isPadding) m_GridLayoutButton.padding.left = (int)systemSO.alighnmentLeftChoseRewardButton;
+        if(DialogManager.HasInstance)
+        {
+            if (isPadding) m_GridLayoutButton.padding.left = (int)DialogManager.Instance.CurrentDialogSO.alighnmentLeftChoseRewardButton;
+        }
+      
         else m_GridLayoutButton.padding.left = basePaddingLeft;
         LayoutRebuilder.ForceRebuildLayoutImmediate(m_GridLayoutButton.GetComponent<RectTransform>());
     }
     private void SetState(DialogState dialogState)
     {
-        systemSO.currentDialogState = dialogState;
+        //systemSO.currentDialogState = dialogState;
     }
 
     private void OnButtonExit()
@@ -167,6 +143,7 @@ public class PopupDialogMission : BasePopup
         if (AudioManager.HasInstance)
         {
             AudioManager.Instance.PlaySE("ExitSound");
+            AudioManager.Instance.StopVoiceSe();
         }
         m_PlayerDialog.SetIsTalkingNPC(false);
         SettingCamera();
@@ -174,11 +151,22 @@ public class PopupDialogMission : BasePopup
         {
             ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
             ListenerManager.Instance.BroadCast(ListenType.CLICK_TALK_NPC, false);
+            if (currentMission != null)
+            {
+                if (currentMission.isCompleteMission)
+                {
+                    ListenerManager.Instance.BroadCast(ListenType.FINISH_QUEST_MISSION, null);
+                }
+            }
         }
         if (GameManager.HasInstance)
         {
             GameManager.Instance.HideCursor();
-        }
+        }   
+        
+        SetShowButton(false, false, true);
+        ShowCanvasGroup(rewardPartent, false);
+        ShowCanvasGroup(titledRewardTxt.transform, false);
         this.Hide();
     }
     private void ReceiverEventClickMainMenu(object value)
@@ -249,43 +237,49 @@ public class PopupDialogMission : BasePopup
     }
     void SetVoiceIntro()
     {
-        if (systemSO.currentDialogState == DialogState.Deny) PlayVoiceIntro("AbeVoice3");
-        else if (systemSO.currentDialogState == DialogState.Accept) PlayVoiceIntro("AbeVoice2");
+        //if (systemSO.currentDialogState == DialogState.Deny) PlayVoiceIntro("AbeVoice3");
+        //else if (systemSO.currentDialogState == DialogState.Accept) PlayVoiceIntro("AbeVoice2");
     }
     void SetupInitialDialog()
     {
-        // 1) gán text cho 3 label
-        m_AcceptTxt.text = systemSO.contentAcceptButton;
-        m_DenyTxt.text = systemSO.contentDenyButton;
-        m_ContentMission.text = systemSO.DialogContent;
-        PlayVoiceIntro("AbeVoice1");
+        //// 1) gán text cho 3 label
+        m_AcceptTxt.text = dialogEntry.contentFriendly;
+        m_DenyTxt.text = dialogEntry.contentUnFriendly;
 
         // 2) gán listener
         m_ButtonDeny.onClick.AddListener(OnDenyInitial);
         m_ButtonAccept.onClick.AddListener(OnAcceptInitial);
 
     }
-    private void SetContent(string content)
-    {
-        m_ContentMission.text = content;
-    }
     void SetupRewardDialog()
     {
         PlayVoiceIntro("AbeVoice4");
         // đổi nội dung và button
-        m_ContentMission.text = systemSO.DialogReward;
-        m_DenyTxt.text = systemSO.contentChoseRewardButton;
-        SetState(DialogState.ChooseReward);
-        OnFinishedText();
+        //m_ContentMission.text = systemSO.DialogReward;
+        //m_DenyTxt.text = systemSO.contentChoseRewardButton;
+        //OnFinishedText();
         m_ButtonDeny.onClick.RemoveAllListeners();
         m_ButtonDeny.onClick.AddListener(OnChooseReward);
 
     }
+    void SetupFinishDialog()
+    {
+        PlayVoiceIntro("AbeVoice4");
+        //m_ContentMission.text = systemSO.DialogReward;
+        //OnFinishedText();
+    }
     void OnDenyInitial()
     {
         PlaySound("ClickSound");
-        SetState(DialogState.Deny);
-        SetContent(systemSO.dialogClickDenyButton);
+        if (DialogManager.HasInstance)
+        {
+            DialogManager.Instance.ShowNextDialog(DialogState.Deny);
+        }
+        if (QuestManager.HasInstance)
+        {
+            QuestManager.Instance.CurrentQuest.playerChoice = PlayerChoice.Deny;
+        }
+
         SetVoiceIntro();
         BroadcastQuestAccepted();
         ShowUI();
@@ -294,9 +288,14 @@ public class PopupDialogMission : BasePopup
     void OnAcceptInitial()
     {
         PlaySound("ClickSound");
-        SetState(DialogState.Accept);
-        SetContent(systemSO.dialogClickAcceptButton);
-        SetVoiceIntro();
+        if (DialogManager.HasInstance)
+        {
+            DialogManager.Instance.ShowNextDialog(DialogState.Accept);
+        }
+        if(QuestManager.HasInstance)
+        {
+            QuestManager.Instance.CurrentQuest.playerChoice = PlayerChoice.Accept;
+        }
         BroadcastQuestAccepted();
         ShowUI();
         OnFinishedText();
@@ -306,9 +305,18 @@ public class PopupDialogMission : BasePopup
         PlaySound("ClickSound");
         ShowCanvasGroup(rewardPartent, true);
         ShowCanvasGroup(titledRewardTxt.transform, true);
+        if(DialogManager.HasInstance)
+        {
+            DialogManager.Instance.ShowNextDialog(DialogState.Reward);
+        }
         InitItemPrefabs();
-        SetState(DialogState.Reward);
-        m_DenyTxt.text = systemSO.contentRewardButton;
+        if(QuestManager.HasInstance)
+        {
+            SetupAmountReward(QuestManager.Instance.CurrentQuest.playerChoice);
+        }
+        //SetState(DialogState.Reward);
+        //m_DenyTxt.text = systemSO.contentRewardButton;
+        //UpdateTitleReward();
         m_ButtonDeny.onClick.RemoveAllListeners();
         m_ButtonDeny.onClick.AddListener(OnReward);
     }
@@ -316,28 +324,38 @@ public class PopupDialogMission : BasePopup
     void OnReward()
     {
         PlaySound("ClickSound");
-        SetState(DialogState.Default);
-        if (QuestManager.HasInstance)
+
+        if(QuestManager.HasInstance)
         {
             QuestManager.Instance.GrantReward(itemRewardList);
+            QuestManager.Instance.CurrentQuest.playerChoice = PlayerChoice.Reward;
         }
-        SetShowButton(false,false,true);
+        if(DialogManager.HasInstance)
+        {
+            DialogManager.Instance.EndDialog();
+        }
+      
+        SetShowButton(false, false, true);
     }
     void BroadcastQuestAccepted()
     {
         if (!ListenerManager.HasInstance) return;
-        ListenerManager.Instance.BroadCast(ListenType.SEND_QUESTMISSION_CURRENT, currentMission);
+        if(QuestManager.HasInstance)
+        {
+            ListenerManager.Instance.BroadCast(ListenType.SEND_QUESTMISSION_CURRENT, QuestManager.Instance.CurrentQuest);
+        }
+      
         ListenerManager.Instance.BroadCast(ListenType.PLAYER_HAS_ACCEPT_QUEST, true);
     }
     void ShowUI()
     {
         if (UIManager.HasInstance)
         {
-            UIManager.Instance.ShowNotify<NotifyMission>(currentMission, true);
+            UIManager.Instance.ShowNotify<NotifyMission>(QuestManager.Instance.CurrentQuest, true);
             NotifyMessageMission<PopupDialogMission> notifyMessageMission = new()
             {
                 uiElement = this,
-                questData = currentMission,
+                questData = QuestManager.Instance.CurrentQuest,
             };
             UIManager.Instance.ShowNotify<NotifySystem>(notifyMessageMission, true);
         }
@@ -351,16 +369,21 @@ public class PopupDialogMission : BasePopup
             canvasGroup.blocksRaycasts = isShow;
         }
     }
-    private void OnEventQuestComplete(object value)
-    {
-        if (value is bool isQuestComplete)
-        {
-            currentMission.isCompleteMission = isQuestComplete;
-        }
-    }
+    //private void OnEventQuestComplete(object value)
+    //{
+    //    if (value is bool isQuestComplete)
+    //    {
+    //        currentMission.isCompleteMission = isQuestComplete;
+    //        SetState(DialogState.ChooseReward);
+    //    }
+    //}
 
     void InitItemPrefabs()
     {
+        if(QuestManager.HasInstance)
+        {
+            currentMission = QuestManager.Instance.CurrentQuest;
+        }
         for (int i = 0; i < currentMission.bonus.itemsReward.Count; i++)
         {
             GameObject gameObject = Instantiate(rewardPrefabs, rewardPartent.transform);
@@ -372,20 +395,54 @@ public class PopupDialogMission : BasePopup
             }
         }
     }
+    private void SetupAmountReward(PlayerChoice state)
+    {
+        switch (state)
+        {
+            case PlayerChoice.Accept:
+                {
+                    
+                    for (int i = 0; i < gameSetting.setAmountItemRewards.Count; i++)
+                    {
+                        if (currentMission.bonus.itemsReward.Count.Equals(gameSetting.setAmountItemRewards[i].CountItemRewards))
+                        {
+                            Debug.Log("aaaaaa");
+                            amountItemReward = gameSetting.setAmountItemRewards[i].AmountAsAccept;
+                            UpdateTitleReward();
+                            return;
+                        }
+                    }
+                }
+                break;
+            case PlayerChoice.Deny:
+                {
+                    for (int i = 0; i < gameSetting.setAmountItemRewards.Count; i++)
+                    {
+                        if (currentMission.bonus.itemsReward.Count.Equals(gameSetting.setAmountItemRewards[i].CountItemRewards))
+                        {
+                            Debug.Log("bbbbb");
+                            amountItemReward = gameSetting.setAmountItemRewards[i].AmountAsReject;
+                            UpdateTitleReward();
+                            return;
+                        }
+                    }
+                }
+                break;
+        }
+    }
     private void UpdateTitleReward()
     {
-        titledRewardTxt.text = $"Hãy chọn 4 món trong các phần thường dưới đây : {itemRewardList.Count} / 4";
+        titledRewardTxt.text = $"Hãy chọn {amountItemReward} món trong các phần thường dưới đây : {itemRewardList.Count} / {amountItemReward}";
     }
     private void OnEventItemChosed(object value)
     {
-
         if (value is RewardItem item)
         {
             if (!itemRewardList.Find(x => x.CurrentItem.questItemData.itemID == item.CurrentItem.questItemData.itemID))
             {
                 itemRewardList.Add(item);
                 UpdateTitleReward();
-                if (itemRewardList.Count >= 4)
+                if (itemRewardList.Count >= amountItemReward)
                 {
                     if (ListenerManager.HasInstance)
                     {
@@ -404,12 +461,21 @@ public class PopupDialogMission : BasePopup
             {
                 itemRewardList.Remove(item);
                 UpdateTitleReward();
-                if (itemRewardList.Count < 4)
+                if (itemRewardList.Count < amountItemReward)
                     if (ListenerManager.HasInstance)
                     {
                         ListenerManager.Instance.BroadCast(ListenType.FULL_LIST_ITEM_REWARD, false);
                     }
             }
+        }
+    }
+    private void OnEventShowDialogLine(object value)
+    {
+        if (value is DialogEntry entry)
+        {
+            dialogEntry = entry;
+            m_ContentMission.text = entry.content;
+            OnFinishedText();
         }
     }
 }

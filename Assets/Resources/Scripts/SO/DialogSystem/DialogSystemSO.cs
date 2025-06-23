@@ -1,4 +1,5 @@
-using System;
+using Sirenix.OdinInspector;
+using System.Collections.Generic;
 using UnityEngine;
 
 public enum DialogMission
@@ -17,32 +18,44 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
 {
     public DialogMission Key => dialogMission;
     public DialogMission dialogMission;
-    public DialogState currentDialogState;
+   
 
-    [Header("Dialog Content")]
-    [TextArea(3, 10)]
-    public string DialogTitle;
-    [TextArea(20, 10)]
-    public string DialogContent;
-    [TextArea(3, 10)]
-    public string contentAcceptButton;
-    [TextArea(3, 10)]
-    public string dialogClickAcceptButton;
-    [TextArea(3, 10)]
-    public string contentDenyButton;
-    [TextArea(3, 10)]
-    public string dialogClickDenyButton;
-    [TextArea(20, 10)]
-    public string DialogReward;
-    [TextArea(3, 10)]
-    public string contentChoseRewardButton;
+    //[Header("Dialog Content")]
+    //[TextArea(3, 10)]
+    //public string DialogTitle;
+    //[TextArea(20, 10)]
+    //public string DialogContent;
+    //[TextArea(3, 10)]
+    //public string contentAcceptButton;
+    //public int amountItemFriendly;
+    //[TextArea(3, 10)]
+    //public string dialogClickAcceptButton;
+    //[TextArea(3, 10)]
+    //public string contentDenyButton;
+    //[TextArea(3, 10)]
+    //public string dialogClickDenyButton;
+    //public int amountItemUnFriendly;
+    //[TextArea(20, 10)]
+    //public string DialogReward;
+    //[TextArea(3, 10)]
+    //public string contentChoseRewardButton;
     public float alighnmentLeftChoseRewardButton = -70f;
-    [TextArea(3, 10)]
-    public string contentRewardButton;
-    [TextArea(3, 10)]
-    public string contentRewardedButton = "Đã Nhận Thưởng";
+    //[TextArea(3, 10)]
+    //public string contentRewardButton;
+    //[TextArea(3, 10)]
+    //public string contentRewardedButton = "Đã Nhận Thưởng";
+
+    [ShowInInspector]
+    public List<DialogEntry> dialogEntries = new();
+
+    [Header("Reward Settings")]
+    public string rewardText;
+    public int itemCountToChoose;
+    public string rewardedText = "Đã Nhận Thưởng";
+
     [Header("Color")]
     public Color Color;
+    public string GetColorHex() => $"#{ColorUtility.ToHtmlStringRGB(Color)}";
     public string hex;
     public string key;
     [Header("SpeedText")]
@@ -56,11 +69,13 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
     public string keyTransition = "<fade>";
     public string keyEndTransition = "</fade>";
 
-    [Header("Event")]
-    public Action OnClickAcceptButton;
-    public Action OnClickDenyButton;
-    public Action OnClickRewardButton;
-    public Action OnClickChoseRewardButton;
+
+
+    //[Header("Event")]
+    //public Action OnClickAcceptButton;
+    //public Action OnClickDenyButton;
+    //public Action OnClickRewardButton;
+    //public Action OnClickChoseRewardButton;
 
    
 
@@ -73,8 +88,14 @@ public class DialogSystemSO : ScriptableObject , IEnumKeyed<DialogMission>
         key = $"<color={hex}>";
         keySpeedText = $"<speed={speedText}>";
         keySizeText = $"<size={sizeText}>";
+
+        if (dialogEntries.Count > 0 && dialogEntries[0].GetType().IsSerializable == false)
+        {
+            Debug.LogWarning("DialogEntry đang thiếu [System.Serializable]!");
+        }
+
     }
 #endif
 
-    
+
 }

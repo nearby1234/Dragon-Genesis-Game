@@ -938,6 +938,8 @@ GameObject:
   - component: {fileID: 8984123204975370422}
   - component: {fileID: 4826544163375847690}
   - component: {fileID: 2468453092814570220}
+  - component: {fileID: -8052457566785608268}
+  - component: {fileID: 8121613077880910327}
   m_Layer: 7
   m_Name: BatBoss
   m_TagString: Creep
@@ -955,8 +957,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -89.58385, y: 0.20121157, z: -65.42668}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8090728539444599930}
   - {fileID: 2660370122190182036}
@@ -1041,8 +1043,9 @@ MonoBehaviour:
   randomNavMeshMovement: {fileID: 0}
   enemyDetecPlayer: {fileID: 0}
   enemyCollider: {fileID: 0}
-  enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
+  enemyStatSO: {fileID: 11400000, guid: 7c21a2646dfb75241be6cec78ba14e56, type: 2}
   batPanel: {fileID: 8912909807314694039}
+  enemyItem: {fileID: 0}
 --- !u!114 &4826544163375847690
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1078,6 +1081,38 @@ MonoBehaviour:
   m_DistacneWithPlayer: 0
   m_DictanceStopped: 2
   m_MaxDistance: 6
+--- !u!114 &-8052457566785608268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305418053042991882}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cbcbfe1e3ec8a444884a80540d3951a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questData: {fileID: 11400000, guid: 2b21da41e0fcdf446b70f6cc3fe540a5, type: 2}
+  dialogSystemSO: {fileID: 0}
+  nPCName: 0
+--- !u!114 &8121613077880910327
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6305418053042991882}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b3b0aa040d508ea499e3b55ac8ca4afe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  questItemEffect: {fileID: 0}
+  itemID: 
+  prefabs: {fileID: 0}
+  initialSize: 0
+  isAttack: 0
 --- !u!1 &6523366338124978800
 GameObject:
   m_ObjectHideFlags: 0

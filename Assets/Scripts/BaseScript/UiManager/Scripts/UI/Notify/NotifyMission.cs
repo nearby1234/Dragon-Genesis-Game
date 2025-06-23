@@ -22,6 +22,7 @@ public class NotifyMission : BaseNotify
             //ListenerManager.Instance.Register(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
             ListenerManager.Instance.Register(ListenType.UI_UPDATE_ITEM_MISSION, OnReceiveUiUpdateItem);
             ListenerManager.Instance.Register(ListenType.QUEST_COMPLETE,OnReceiveMissionComplete);
+            ListenerManager.Instance.Register(ListenType.FINISH_QUEST_MISSION, OnEventFinishMission);
         }
         //HandlerShowMission(false);
     }
@@ -32,6 +33,7 @@ public class NotifyMission : BaseNotify
             //ListenerManager.Instance.Unregister(ListenType.SEND_QUESTMISSION_CURRENT, OnReceiveQuestMission);
             ListenerManager.Instance.Unregister(ListenType.UI_UPDATE_ITEM_MISSION, OnReceiveUiUpdateItem);
             ListenerManager.Instance.Unregister(ListenType.QUEST_COMPLETE, OnReceiveMissionComplete);
+            ListenerManager.Instance.Unregister(ListenType.FINISH_QUEST_MISSION, OnEventFinishMission);
         }
     }
     public override void Show(object data)
@@ -93,7 +95,9 @@ public class NotifyMission : BaseNotify
     {
         foreach (var item in questDataCurrent.ItemMission)
         {
+            missionImg.color = new Color(1f, 1f, 1f, 1f);
             missionImg.sprite = item.questItemData.icon;
+
             if (isComplete)
             {
                 missionText.text = $"<B><color=#03FF00> {item.questItemData.itemName} {item.questItemData.completionCount}/{item.questItemData.requestCount}";
@@ -105,11 +109,22 @@ public class NotifyMission : BaseNotify
 
         }
     }
+    private void HideMissionText()
+    {
+        missionTitleText.text = "";
+        missionText.text = "";
+        missionImg.color = new Color(1, 1, 1, 0f);
+    }
+    private void OnEventFinishMission(object value)
+    {
+        HideMissionText();
+    }    
     private void HandlerShowMission(bool isShow)
     {
         missionImg.gameObject.SetActive(isShow);
         missionText.gameObject.SetActive(isShow);
         missionTitleText.gameObject.SetActive(isShow);
     }
+
 
 }

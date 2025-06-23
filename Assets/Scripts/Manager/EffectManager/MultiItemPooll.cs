@@ -54,7 +54,7 @@ public class MultiItemPooll : MonoBehaviour
             Queue<GameObject> newPool = new();
             for (int i = 0; i < item.InitialSize; i++)
             {
-                GameObject obj = Instantiate(item.Prefabs, itemParents);
+                GameObject obj = Instantiate(item.QuestItemEffect.ItemEffectPrefabs, itemParents);
                 obj.SetActive(false);
                 newPool.Enqueue(obj);
             }
@@ -102,6 +102,10 @@ public class MultiItemPooll : MonoBehaviour
         if(obj != null)
         {
             obj.transform.position = position;
+            if(obj.TryGetComponent(out ParticleSystem particleSystem))
+            {
+                particleSystem.Play();
+            }
             TweenItem(obj, position);
         }else
         {
@@ -112,10 +116,10 @@ public class MultiItemPooll : MonoBehaviour
     {
         // Tạo vị trí XZ ngẫu nhiên
         Vector2 randomXZ = Random.insideUnitCircle * scatterRadius;
-        Vector3 scatterTarget = new(position.x + randomXZ.x, 0.5f, position.z + randomXZ.y);
+        Vector3 scatterTarget = new(position.x + randomXZ.x, 0.1f, position.z + randomXZ.y);
 
         float height = Random.Range(3f, 5f); // Độ cao văng lên
-        float halfDuration = scatterDuration * 0.5f;
+        float halfDuration = scatterDuration*0.5f;
 
         // Giai đoạn 1: Văng lên theo Y
         orb.transform.DOMoveY(position.y + height, halfDuration)

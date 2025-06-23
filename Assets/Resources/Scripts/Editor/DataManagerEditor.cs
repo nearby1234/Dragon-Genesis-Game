@@ -1,68 +1,97 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
-using UnityEditor.TerrainTools;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
+
 [CustomEditor(typeof(DataManager))]
 public class DataManagerEditor : Editor
 {
     private DataManager dataManager;
-    private  string searchFilter = "";
-    private Dictionary<Type, Dictionary<Enum, ScriptableObject>> dataDictionary;
+    private string searchFilter = "";
+
+    // Lấy trực tiếp từ DataManager (List<SO> cho mỗi enum key)
+    private Dictionary<Type, Dictionary<Enum, List<ScriptableObject>>> dataDictionary;
+
 
     private void OnEnable()
     {
-        dataManager = (DataManager)target;
-        dataDictionary = dataManager.GetDataDictionary();
+        dataManager     = (DataManager)target;
+        dataDictionary  = dataManager.GetDataDictionary();
     }
 
     public override void OnInspectorGUI()
     {
         serializedObject.Update();
-        EditorGUILayout.LabelField("📦 Base Data Manager", EditorStyles.boldLabel);
 
+        // ───────── Base Data Manager ─────────
+        EditorGUILayout.LabelField("📦 Base Data Manager", EditorStyles.boldLabel);
         if (GUILayout.Button("🔄 Reload Data", GUILayout.Height(30)))
         {
+            
             dataManager.LoadAllData();
             dataDictionary = dataManager.GetDataDictionary();
-            EditorUtility.SetDirty(target);
+            //questItemGroupCache = null;
+            EditorUtility.SetDirty(dataManager);
         }
 
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("🔍 Search Data : ", EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("🔍 Search Data:", EditorStyles.boldLabel);
         searchFilter = EditorGUILayout.TextField(searchFilter);
 
+        // ───────── Loaded Data (now List<SO> per enum) ─────────
         EditorGUILayout.Space();
-        EditorGUILayout.LabelField("📜 Loaded Data:",EditorStyles.boldLabel);
+        EditorGUILayout.LabelField("📜 Loaded Data (SO lists):", EditorStyles.boldLabel);
+
         if (dataDictionary.Count > 0)
         {
             foreach (var typeEntry in dataDictionary)
             {
-                Type type = typeEntry.Key;
-                Dictionary<Enum, ScriptableObject> enumDict = typeEntry.Value;
-                EditorGUILayout.LabelField($"🔹 {type.Name}", EditorStyles.boldLabel);
-                foreach (var kvp in enumDict)
+                var soType = typeEntry.Key;               // e.g. QuestItemSO
+                var enumMap = typeEntry.Value;            // Dictionary<Enum, List<SO>>
+
+                EditorGUILayout.LabelField($"▶ {soType.Name}", EditorStyles.boldLabel);
+                EditorGUI.indentLevel++;
+
+                foreach (var kv in enumMap)
                 {
-                    Enum key = kvp.Key;
-                    ScriptableObject asset = kvp.Value;
-                    if (asset == null || (!string.IsNullOrEmpty(searchFilter) && !asset.name.ToLower().Contains(searchFilter.ToLower())))
-                        continue;
-                    EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
-                    EditorGUILayout.LabelField($"🔸 {key} : {asset.name}", EditorStyles.boldLabel);
-                    if (GUILayout.Button("👁️ View", GUILayout.Width(60)))
+                    var enumKey = kv.Key;                 // e.g. ITEM_ARMOR
+                    var soList  = kv.Value;               // List<ScriptableObject>
+
+                    // Skip empty
+                    if (soList == null || soList.Count == 0) continue;
+
+                    // Foldout style for enumKey
+                    EditorGUILayout.LabelField($"── {enumKey}", EditorStyles.miniBoldLabel);
+                    EditorGUI.indentLevel++;
+
+                    // Display each asset under this key
+                    foreach (var so in soList)
                     {
-                        Selection.activeObject = asset;
+                        if (so == null) continue;
+                        if (!string.IsNullOrEmpty(searchFilter) &&
+                            !so.name.Contains(searchFilter, StringComparison.OrdinalIgnoreCase))
+                            continue;
+
+                        EditorGUILayout.BeginHorizontal(EditorStyles.helpBox);
+                        GUILayout.Space(12);
+                        EditorGUILayout.ObjectField(so, so.GetType(), false);
+                        if (GUILayout.Button("👁", GUILayout.Width(30)))
+                            Selection.activeObject = so;
+                        EditorGUILayout.EndHorizontal();
                     }
-                    EditorGUILayout.EndHorizontal();
+
+                    EditorGUI.indentLevel--;
                 }
+
+                EditorGUI.indentLevel--;
+                EditorGUILayout.Space();
             }
         }
         else
         {
-            EditorGUILayout.HelpBox("❌ No data loaded . Click 'Reload Data' to load assets.", MessageType.Warning);
+            EditorGUILayout.HelpBox("❌ No data loaded. Click Reload Data.", MessageType.Warning);
         }
 
-        serializedObject.ApplyModifiedProperties();
     }
 }

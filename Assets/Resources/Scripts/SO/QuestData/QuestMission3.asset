@@ -16,6 +16,7 @@ MonoBehaviour:
   questID: -QuestMission3
   questName: "\u0110\u1ED9i Qu\xE2n R\u1ED3ng L\u1EEDa"
   QuestGiver: 0
+  playerChoice: 0
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:

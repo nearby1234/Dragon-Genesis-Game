@@ -90,15 +90,24 @@ public class ScreenBookSkill : BaseScreen
     private void OnClickButtonPress()
     {
         m_IsPress = !m_IsPress;
+       
         if (!ListenerManager.HasInstance) return;
 
         if (m_IsPress)
         {
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ClickSound");
+            }
             ShowPopupSkillBox();
             ListenerManager.Instance.BroadCast(ListenType.UI_CLICK_SHOWUI, null);
         }
         else
         {
+            if (AudioManager.HasInstance)
+            {
+                AudioManager.Instance.PlaySE("ExitSound");
+            }
             HidePopupSkillBox();
             ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
         }

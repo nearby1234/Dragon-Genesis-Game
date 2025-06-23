@@ -98,7 +98,13 @@ public class ScreenLoadingPanel : BaseScreen
                 {
                     UIManager.Instance.ShowScreen<ScreenPlayerImformation>();
                     UIManager.Instance.ShowScreen<ScreenIconInventory>();
+                    UIManager.Instance.ShowScreen<ScreenBox>();
+                    UIManager.Instance.ShowScreen<ScreenBookSkill>();
+                    UIManager.Instance.ShowScreen<ScreenBoxSkill>();
                     UIManager.Instance.ShowPopup<PopupInventory>();
+                    UIManager.Instance.ShowPopup<PopupBoxSkill>();
+                   
+                    
 
                     NotifySystemData notifyData = DataManager.Instance.GetData<NotifySystemData,NotifyType>(NotifyType.StartGame);
                     UIManager.Instance.ShowNotify<NotifySystem>(notifyData, true);

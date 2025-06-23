@@ -30,6 +30,7 @@ public class PopupBoxSkill : BasePopup
     }
     private void Start()
     {
+        this.Hide();
         if (ListenerManager.HasInstance)
         {
             ListenerManager.Instance.Register(ListenType.UI_SEND_LIST_ITEM_REWARD, ReceiverEventSkillSlot);
@@ -51,7 +52,11 @@ public class PopupBoxSkill : BasePopup
         {
             ListenerManager.Instance.BroadCast(ListenType.UI_DISABLE_SHOWUI, null);
         }
-       
+        if (AudioManager.HasInstance)
+        {
+            AudioManager.Instance.PlaySE("ExitSound");
+        }
+
     }
     private void FillerItemSKill(List<QuestItemSO> questItemSO)
     {

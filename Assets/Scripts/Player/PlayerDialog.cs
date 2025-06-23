@@ -1,16 +1,8 @@
-﻿using System.Collections.Generic;
-using TMPro;
-using Unity.AppUI.UI;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 
-public struct DataStateMission
-{
-    public DialogSystemSO dialogSystemSO;
-    public QuestData questData;
-    public bool isCompleteMission;
-}
+
 public class PlayerDialog : MonoBehaviour
 {
     [SerializeField] private bool m_IsPressButtonJ;
@@ -44,14 +36,14 @@ public class PlayerDialog : MonoBehaviour
     {
         pressedButton.Enable();
         pressedButton.performed += (Context) => OnClickButton();
+
     }
     private void OnDestroy()
     {
         pressedButton.Disable();
         pressedButton.performed -= (Context) => OnClickButton();
+
     }
-
-
     private void Update()
     {
         CheckNPCDistance();
@@ -168,83 +160,87 @@ public class PlayerDialog : MonoBehaviour
                     var saveManager = SaveManager.Instance;
                     saveManager.SaveOrUpdateDialog(dialogMission);
                 }
-                DataStateMission dataStateMission = new()
-                {
-                    dialogSystemSO = dialogMission,
-                    questData = questData,
-                    isCompleteMission = questData.isCompleteMission
-                };
-                UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
+
+                //UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
             }
 
         }
     }
 
-    private void ShowDialogPopupReward(DialogSystemSO dialogMission, QuestData questData = null)
-    {
-        if (UIManager.HasInstance)
-        {
-            UIManager.Instance.HidePopup<DialobGuidePopup>();
-            isHidePopupGuide = true;
-            if (DataManager.HasInstance)
-            {
-                //if (SaveManager.HasInstance)
-                //{
-                //    var saveManager = SaveManager.Instance;
-                //    saveManager.SaveOrUpdateDialog(dialogMission);
-                //}
-                dialogMission.OnClickChoseRewardButton += () =>
-                {
-                    DataStateMission dataStateMission = new()
-                    {
-                        dialogSystemSO = dialogMission,
-                        questData = questData,
-                        isCompleteMission = questData.isCompleteMission
-                    };
-                    UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
-                };
-                dialogMission.OnClickDenyButton += () =>
-                {
-                    DataStateMission dataStateMission = new()
-                    {
-                        dialogSystemSO = dialogMission,
-                        questData = questData,
-                        isCompleteMission = questData.isCompleteMission
-                    };
-                    UIManager.Instance.ShowPopup<PopupDialogMission>((dialogMission, questData), true);
 
-                };
-                DataStateMission dataStateMission = new()
-                {
-                    dialogSystemSO = dialogMission,
-                    questData = questData,
-                    isCompleteMission = questData.isCompleteMission
-                };
-                UIManager.Instance.ShowPopup<PopupDialogMission>(dataStateMission, true);
-            }
-
-        }
-    }
     private void CheckMission()
     {
         if (npcObject.TryGetComponent(out QuestGiver questGiver))
         {
             if (questGiver.QuestData.QuestGiver == questGiver.NPCName)
             {
-                if (!questGiver.QuestData.isCompleteMission)
+                if (UIManager.HasInstance)
                 {
-                    ShowDialogPopupMission(questGiver.DialogSystemSO, questGiver.QuestData);
+                    UIManager.Instance.HidePopup<DialobGuidePopup>();
+                    isHidePopupGuide = true;
                 }
-                else
+                if (DialogManager.HasInstance)
                 {
-                    ShowDialogPopupReward(questGiver.DialogSystemSO, questGiver.QuestData);
+                    if (questGiver.QuestData.playerChoice == PlayerChoice.Reward)
+                    {
+                        if (UIManager.HasInstance)
+                        {
+                            for (int i = 0; i < questGiver.DialogSystemSO.dialogEntries.Count; i++)
+                            {
+                                if (questGiver.DialogSystemSO.dialogEntries[i].state == DialogState.Exit)
+                                {
+                                    var entry = questGiver.DialogSystemSO.dialogEntries[i];
+                                    UIManager.Instance.ShowPopup<PopupDialogMission>(entry);
+                                    if (ListenerManager.HasInstance)
+                                    {
+                                        ListenerManager.Instance.BroadCast(ListenType.SHOW_DIALOG_LINE, entry);
+                                    }
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (!questGiver.IsSendQuestMission)
+                        {
+                            if (QuestManager.HasInstance)
+                            {
+                                QuestManager.Instance.CurrentQuest = questGiver.QuestData;
+                                questGiver.IsSendQuestMission = true;
+                                if (!DialogManager.Instance.IsPlaying)
+                                {
+                                    DialogManager.Instance.StartDialog(questGiver.DialogSystemSO);
+                                }
+                            }
+                        }
+                        if (QuestManager.Instance.CurrentQuest.isCompleteMission)
+                        {
+                            DialogManager.Instance.ShowNextDialog(DialogState.ChooseReward);
+                        }
+                        else
+                        {
+                            switch (QuestManager.Instance.CurrentQuest.playerChoice)
+                            {
+                                case PlayerChoice.Accept:
+                                    DialogManager.Instance.ShowNextDialog(DialogState.Accept);
+                                    break;
+                                case PlayerChoice.Deny:
+                                    DialogManager.Instance.ShowNextDialog(DialogState.Deny);
+                                    break;
+                                default:
+                                    break;
+
+                            }
+                        }
+                    }
+
+
+
                 }
 
             }
         }
     }
-
-
-
 
 }

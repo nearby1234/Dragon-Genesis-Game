@@ -67,6 +67,7 @@ public class EnemyController : MonoBehaviour
             }
             return;
         }
+        
         randomNavMeshMovement.EnemyMoveTarget();
         enemyDetecPlayer.CalculateDistance();
     }

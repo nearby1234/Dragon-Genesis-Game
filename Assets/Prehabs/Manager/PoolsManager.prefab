@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c19c8537a6c56e49992c52f69611387, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  multiItemPool: {fileID: 0}
 --- !u!114 &3764587580739084080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,7 +62,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scatterRadius: 2
-  scatterDuration: 1
+  scatterDuration: 0
   itemParents: {fileID: 5014626594344431905}
   itemPools: []
 --- !u!1 &1796937410851421177

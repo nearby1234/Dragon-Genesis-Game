@@ -14,10 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   questType: 4
   questID: -QuestMission2
-  questName: "D\u1EA5u V\u1EBFt B\xF3ng \u0110\xEAm"
+  questName: "Ti\u1EBFng R\xEDt Trong R\u1EEBng"
   QuestGiver: 1
+  playerChoice: 0
   isAcceptMission: 0
-  isCompleteMission: 1
+  isCompleteMission: 0
   ItemMission:
   - {fileID: 11400000, guid: 8fa1bdea40308cc4f819cb3ec3401eab, type: 2}
   bonus:

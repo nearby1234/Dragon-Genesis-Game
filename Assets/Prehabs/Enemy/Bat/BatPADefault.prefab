@@ -315,6 +315,7 @@ MonoBehaviour:
   enemyCollider: {fileID: 0}
   enemyStatSO: {fileID: 11400000, guid: 968ee4b41fa1e634ca08b73fe4f30bda, type: 2}
   batPanel: {fileID: 3743167356461639796}
+  enemyItem: {fileID: 0}
 --- !u!114 &7183992851952234658
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -357,12 +358,15 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1157678344734440959}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce0ef712193e30040ab3cf479d32a99f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  questItem: {fileID: 11400000, guid: 4e1f7c18dcf49f542afdb3fb21820b8b, type: 2}
+  questItemEffect: {fileID: 0}
+  itemID: 
+  prefabs: {fileID: 0}
+  initialSize: 0
 --- !u!1 &1221960353147460276
 GameObject:
   m_ObjectHideFlags: 0

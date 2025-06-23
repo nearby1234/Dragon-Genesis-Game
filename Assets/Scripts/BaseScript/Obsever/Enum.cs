@@ -96,6 +96,9 @@ public enum ListenType
     ITEM_DISABLE_CHOSED,
     FULL_LIST_ITEM_REWARD,
     SEND_ITEM_INIT_POOL,
+    FINISH_QUEST_MISSION,
+    SHOW_DIALOG_LINE,
+    END_DIALOG,
 
 
 
@@ -119,7 +122,9 @@ public enum CreepType
 {
     unknow = 0,
     BAT,
+    BATBOSS,
     DRAGON,
+    DRAGONBOSS,
     WORM,
     BullTank,
 }

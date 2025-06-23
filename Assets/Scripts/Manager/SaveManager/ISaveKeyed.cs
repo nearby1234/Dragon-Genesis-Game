@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IKeyed<TKey>
+public interface ISaveKeyed<TKey>
 {
     TKey Key { get; }
 }

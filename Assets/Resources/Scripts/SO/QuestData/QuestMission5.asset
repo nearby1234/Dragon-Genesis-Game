@@ -16,6 +16,7 @@ MonoBehaviour:
   questID: -QuestMission5
   questName: "\u0110\u1EA1i Chi\u1EBFn H\u1EAFc Ng\u01B0u Ma V\u01B0\u01A1ng"
   QuestGiver: 0
+  playerChoice: 0
   isAcceptMission: 0
   isCompleteMission: 0
   ItemMission:
